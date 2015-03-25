@@ -1,0 +1,17 @@
+extends layout
+block content
+	form(method="post", action="/lookup")
+		input(type="text",  name="start")
+		input(type="text",  name="end")
+		input(type="submit", value="Enter")
+		br
+		span="Node limit"
+		- var n = 20
+		select(name="nodelimit")
+			while n > 0
+				option=n--
+		span="Synonym level"
+		- var n = 20
+		select(name="synonymlevel")
+			while n > 1
+				option=n--

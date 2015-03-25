@@ -1,0 +1,36 @@
+$gray: lightgray;
+body {
+    font-size:16px;
+    font-family: Helvetica, sans-serif;
+}
+span {
+	color:$gray;
+	font-size:12px;
+}
+
+input {
+    border:none;
+    background:$gray;
+    padding:0.5em;
+    margin-right:10px;
+    font-size:18px;
+}
+input:focus {
+	background:gray;
+}
+input[type="submit"] {
+	cursor:pointer;
+	border:none;
+	background:none;
+	color:$gray;
+	&:hover {
+		color:black;
+	}
+}
+select {
+	margin:1em;
+}
+
+.end {
+	color:red;
+}
