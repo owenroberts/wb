@@ -1,5 +1,25 @@
 extends layout
 block content
-	each node in path
-		div=node
-	div.word.end= end
+	header
+		div.start= start
+		each node in path
+			a.node-nugget(href='#'+node)
+		div.end= end
+		hr
+	div.nodes
+		each node in path
+			div.node-dad
+				div.node(id=node)=node
+
+	script(type='text/javascript').
+		$('.node-nugget').on('mouseover', function() {
+			var id = this.hash;
+			$(id).addClass('hover');
+		});
+		$('.node-nugget').on('mouseout', function() {
+			$('.node').removeClass('hover');
+		});
+		$('.node-nugget').on('click', function() {
+			var id = this.hash;
+			$('.nodes').css('top', -$(id).parent().position().top);
+		});

@@ -6,7 +6,7 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     routes = require('./routes/index'),
     wordnet = require('wordnet'),
-    thesaurus = require("thesaurus");
+    chain = require('./chain');
 
 var app = express();
 
@@ -33,68 +33,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', function(req, res) {
     res.render('index');
 });
+app.get('/lookup', function(req, res) {
+  res.redirect(req.get('referer'));
+});
 app.post('/lookup', function(req, res) {
-  var start = req.body.start;
-  var end = req.body.end;
-
-  var allsynomyms = [start];
-  var allpaths = [];
-  var reg = /^[a-z]+$/;
-  var nodelimit = req.body.nodelimit;
-  var synonymlevel = req.body.synonymlevel;
-
-  var findSynonyms = function(word, path, runagain) {
-    
-    var wordPath = path;
-    wordPath.push(word);
-
-    var tmp = thesaurus.find(word);
-    var synonyms = [];
-    for (var i = 0; i < tmp.length; i++) {
-      //console.log(tmp[i]);
-      if (reg.test(tmp[i]) 
-        && allsynomyms.indexOf(tmp[i]) == -1 
-        && allsynomyms.indexOf(tmp[i]+"s") == -1
-        && synonyms.length < 10 ) {
-        synonyms.push(tmp[i]);
-        allsynomyms.push(tmp[i]);
-      }
-    }
-    for (var i = 0; i < synonyms.length; i++) {
-      if (synonyms[i] == end) {
-        //console.log("got it");
-        //wordPath.push(end);
-        allpaths.push(wordPath);
-      }
-    }
-
-    for (var i = 0; i < synonyms.length; i++) {
-      //console.log(word, i, synonyms[i], wordPath.length);
-      if (runagain && wordPath.length < nodelimit) {
-        var newpath = wordPath.slice(0);
-        findSynonyms(synonyms[i], newpath, true);
-      }
-    }
-  }
-
-  findSynonyms(start, [], true);
-  function shortestPath() {
-    if (allpaths.length > 0) {
-      console.log(allpaths.length);
-      console .log(allpaths[0]);
-    } else {
-      allsynomyms = [start];
-      nodelimit++;
-      findSynonyms(start, [], true);
-      shortestPath();
-    }
-  }
-  shortestPath();
-
-  res.render('lookup', {
-    start:req.body.start,
-    path: allpaths[0],
-    end:req.body.end
+  chain.makeChain(req.body.start, req.body.end, req.body.nodelimit, req.body.synonymlevel, function(data) {
+    res.render('lookup', {
+      title: data.start + " - " + data.end,
+      start: data.start,
+      path: data.path,
+      end: data.end
+    });
   });
 });
 

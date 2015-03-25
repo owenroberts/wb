@@ -1,9 +1,10 @@
 body {
-  font-size: 16px;
-  font-family: Helvetica, sans-serif; }
+  font-size: 24px;
+  font-family: Helvetica, sans-serif;
+  margin: 0; }
 
 span {
-  color: lightgrey;
+  color: grey;
   font-size: 12px; }
 
 input {
@@ -27,5 +28,52 @@ input[type="submit"] {
 select {
   margin: 1em; }
 
+/*  look up page */
+header {
+  background: white;
+  padding: 0.5em;
+  padding-bottom: 0;
+  z-index: 1;
+  position: relative; }
+
+.start, .end {
+  background: lightgrey;
+  padding: 0.5em;
+  display: inline-block; }
+
+.start {
+  margin-right: 0.5em; }
+
 .end {
-  color: red; }
+  margin-left: 0.5em; }
+
+hr {
+  border: 2px solid lightgrey;
+  height: 0;
+  margin-bottom: 0; }
+
+.nodes {
+  position: relative;
+  padding: 0.5em;
+  transition: top 500ms; }
+
+.node-dad {
+  position: relative; }
+  .node-dad .node {
+    color: lightgrey;
+    display: inline-block;
+    cursor: pointer;
+    margin: 0.2em 0.1em; }
+    .node-dad .node:hover, .node-dad .node.hover {
+      color: grey; }
+
+.node-nugget {
+  width: 0.3em;
+  height: 0.3em;
+  border-radius: 0.5em;
+  background-color: lightgrey;
+  margin: 0 10px;
+  display: inline-block;
+  cursor: pointer; }
+  .node-nugget:hover {
+    background-color: grey; }

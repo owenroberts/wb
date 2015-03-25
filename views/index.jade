@@ -11,7 +11,10 @@ block content
 			while n > 0
 				option=n--
 		span="Synonym level"
-		- var n = 20
+		- var n = 1
 		select(name="synonymlevel")
-			while n > 1
-				option=n--
+			while n < 20
+				if n == 10
+					option(selected="selected")=n++
+				else 
+					option=n++
