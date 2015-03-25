@@ -3,6 +3,9 @@ body {
   font-family: Helvetica, sans-serif;
   margin: 0; }
 
+.index {
+  margin: 0.5em; }
+
 span {
   color: grey;
   font-size: 12px; }

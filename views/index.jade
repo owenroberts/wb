@@ -1,20 +1,21 @@
 extends layout
 block content
-	form(method="post", action="/lookup")
-		input(type="text",  name="start")
-		input(type="text",  name="end")
-		input(type="submit", value="Enter")
-		br
-		span="Node limit"
-		- var n = 20
-		select(name="nodelimit")
-			while n > 0
-				option=n--
-		span="Synonym level"
-		- var n = 1
-		select(name="synonymlevel")
-			while n < 20
-				if n == 10
-					option(selected="selected")=n++
-				else 
-					option=n++
+	div.index
+		form(method="post", action="/lookup")
+			input(type="text",  name="start")
+			input(type="text",  name="end")
+			input(type="submit", value="Enter")
+			br
+			span="Node limit"
+			- var n = 20
+			select(name="nodelimit")
+				while n > 0
+					option=n--
+			span="Synonym level"
+			- var n = 1
+			select(name="synonymlevel")
+				while n < 20
+					if n == 10
+						option(selected="selected")=n++
+					else 
+						option=n++
