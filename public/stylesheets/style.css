@@ -6,6 +6,19 @@ body {
 .index {
   margin: 0.5em; }
 
+.errormsg {
+  margin-top: 1em;
+  border: 1px solid lightgrey;
+  display: inline-block;
+  padding: 0.5em; }
+
+.msg {
+  margin-top: 1em;
+  border: 1px solid lightgrey;
+  display: inline-block;
+  padding: 0.5em;
+  display: none; }
+
 span {
   color: grey;
   font-size: 12px; }
@@ -58,7 +71,8 @@ hr {
 .nodes {
   position: relative;
   padding: 0.5em;
-  transition: top 500ms; }
+  transition: top 500ms;
+  top: 0px; }
 
 .node-dad {
   position: relative; }

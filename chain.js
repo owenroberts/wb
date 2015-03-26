@@ -3,12 +3,15 @@ var thesaurus = require("thesaurus");
 var makeChain = function(startWord, endWord, limit, level, callback) {
   var start = startWord;
   var end = endWord;
+  var reg = /^[a-z]+$/;
 
   var allsynomyms = [start];
   var allpaths = [];
-  var reg = /^[a-z]+$/;
   var nodelimit = limit;
   var synonymlevel = level;
+  var data = {};
+  data.start = start;
+  data.end = end;
 
   var findSynonyms = function(word, path, runagain) {
     
@@ -43,8 +46,8 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
 
   function shortestPath() {
     if (allpaths.length > 0) {
-      console.log(allpaths.length);
-      console .log(allpaths[0]);
+      data.path = allpaths[0];
+      callback(null, data);
     } else {
       allsynomyms = [start];
       nodelimit++;
@@ -52,14 +55,21 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
       shortestPath();
     }
   }
-  shortestPath();
 
-  var data = {};
-  data.start = start;
-  data.end = end;
-  data.path = allpaths[0];
+  if (reg.test(start) && reg.test(end)) {
+    if (thesaurus.find(start).length > 0) {
+      if (thesaurus.find(end).length > 0) {
+        shortestPath();
+      } else {
+        callback("Your second word was not found.");
+      }
+    } else {
+      callback("Your first word was not found.");
+    }
+  } else {
+    callback("Please input single words with all lower case letters.");
+  }
 
-  callback(data);
 }
 
 exports.makeChain = makeChain;

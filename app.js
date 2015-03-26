@@ -33,17 +33,22 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', function(req, res) {
     res.render('index');
 });
-app.get('/lookup', function(req, res) {
-  res.redirect(req.get('referer'));
-});
+
 app.post('/lookup', function(req, res) {
-  chain.makeChain(req.body.start, req.body.end, req.body.nodelimit, req.body.synonymlevel, function(data) {
-    res.render('lookup', {
-      title: data.start + " - " + data.end,
-      start: data.start,
-      path: data.path,
-      end: data.end
-    });
+  console.log('MEMORY:', process.memoryUsage().heapUsed / 1024 / 1024, 'MB');
+  chain.makeChain(req.body.start, req.body.end, req.body.nodelimit, req.body.synonymlevel, function(err, data) {
+    if (err) {
+      res.render('index', {
+        errormsg: err
+      });
+    } else {
+      res.render('lookup', {
+        title: data.start + " - " + data.end,
+        start: data.start,
+        path: data.path,
+        end: data.end
+      });
+    }
   });
 });
 
@@ -53,8 +58,7 @@ var server = app.listen(3000, function() {
     console.log('Example app listening at http://%s:%s', host, port);
 });
     
-
-
+global.gc();
 
 // error handlers
 

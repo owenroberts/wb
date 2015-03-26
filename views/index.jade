@@ -19,3 +19,10 @@ block content
 						option(selected="selected")=n++
 					else 
 						option=n++
+		if errormsg					
+			div.errormsg=errormsg
+		div.msg="Please wait while your search is performed."
+	script(type="text/javascript").
+		$('input[value="Enter"]').on('click', function() {
+			$('.msg').fadeIn();
+		});
