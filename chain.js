@@ -8,6 +8,7 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
   var allsynomyms = [start];
   var allpaths = [];
   var nodelimit = limit;
+  var nodenumber = 0;
   var synonymlevel = level;
   var data = {};
   data.start = start;
@@ -37,7 +38,7 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
 
     for (var i = 0; i < synonyms.length; i++) {
       //console.log(word, i, synonyms[i], wordPath.length);
-      if (runagain && wordPath.length < nodelimit) {
+      if (runagain && wordPath.length < nodenumber) {
         var newpath = wordPath.slice(0);
         findSynonyms(synonyms[i], newpath, true);
       }
@@ -50,7 +51,7 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
       callback(null, data);
     } else {
       allsynomyms = [start];
-      nodelimit++;
+      if (nodenumber < nodelimit) nodenumber++;
       findSynonyms(start, [], true);
       shortestPath();
     }
