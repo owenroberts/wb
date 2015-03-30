@@ -8,8 +8,9 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
   var allsynomyms = [start];
   var allpaths = [];
   var nodelimit = limit;
-  var nodenumber = 0;
+  var nodenumber = limit;
   var synonymlevel = level;
+  
   var data = {};
   data.start = start;
   data.end = end;
@@ -18,6 +19,8 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
     
     var wordPath = path;
     wordPath.push(word);
+
+    //console.log(wordPath);
 
     var tmp = thesaurus.find(word);
     var synonyms = [];
@@ -30,6 +33,11 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
         allsynomyms.push(tmp[i]);
       }
     }
+
+    if (synonyms.length > synonymlevel) {
+      synonyms.splice(synonymlevel, synonyms.length - synonymlevel);
+    }
+
     for (var i = 0; i < synonyms.length; i++) {
       if (synonyms[i] == end) {
         allpaths.push(wordPath);
@@ -37,7 +45,6 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
     }
 
     for (var i = 0; i < synonyms.length; i++) {
-      //console.log(word, i, synonyms[i], wordPath.length);
       if (runagain && wordPath.length < nodenumber) {
         var newpath = wordPath.slice(0);
         findSynonyms(synonyms[i], newpath, true);
@@ -52,6 +59,12 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
     } else {
       allsynomyms = [start];
       if (nodenumber < nodelimit) nodenumber++;
+      else if (nodenumber >= nodelimit) {
+        if (nodelimit == 20 && synonymlevel == 20) 
+          callback("Your search has exceeded the capacity of the algorithm.  Please try a new search.");
+        else
+          callback("Your search was not able to be performed with the current parameters.  Try adjusting the node limit or synonym level.");
+      }
       findSynonyms(start, [], true);
       shortestPath();
     }
@@ -60,7 +73,14 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
   if (reg.test(start) && reg.test(end)) {
     if (thesaurus.find(start).length > 0) {
       if (thesaurus.find(end).length > 0) {
-        shortestPath();
+        findSynonyms(start, [], true);
+        if (allpaths.length > 0) {
+          data.path = allpaths[0];
+          callback(null, data);
+        } else {
+          nodenumber = 1;
+          shortestPath();
+        }
       } else {
         callback("Your second word was not found.");
       }

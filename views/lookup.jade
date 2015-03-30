@@ -10,6 +10,8 @@ block content
 		each node in path
 			div.node-dad
 				div.node(id=node)=node
+	div.newsearch
+		a(href="/")="Try a new search"
 
 	script(type='text/javascript').
 		$('.node-nugget').on('mouseover', function() {

@@ -6,6 +6,7 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     routes = require('./routes/index'),
     wordnet = require('wordnet'),
+    memwatch = require('memwatch'),
     chain = require('./chain');
 
 var app = express();
@@ -31,11 +32,11 @@ app.use(
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res) {
-    res.render('index');
+  res.render('index');
 });
 
 app.post('/lookup', function(req, res) {
-  console.log('MEMORY:', process.memoryUsage().heapUsed / 1024 / 1024, 'MB');
+  //var hd = new memwatch.HeapDiff();
   chain.makeChain(req.body.start, req.body.end, req.body.nodelimit, req.body.synonymlevel, function(err, data) {
     if (err) {
       res.render('index', {
@@ -50,8 +51,17 @@ app.post('/lookup', function(req, res) {
       });
     }
   });
+  //var diff = hd.end();
+  //global.gc();
 });
 
+/*memwatch.on('leak', function(info) {
+  console.log("leak" + info);
+});
+memwatch.on('stats', function(stats) { 
+  console.log("garbage collection!") 
+});
+*/
 var server = app.listen(3000, function() {
     var host = server.address().host;
     var port = server.address().port;
