@@ -73,10 +73,10 @@ header {
 	display:inline-block;
 }
 .start {
-	margin-right:0.5em;
+	margin:0.5em;
 }
 .end {
-	margin-left:0.5em;	
+	margin:0.5em;	
 }
 
 hr {
@@ -92,6 +92,7 @@ hr {
 }
 .node-dad {
 	position: relative;
+	display:none;
 	.node {
 		color:$lightgray;
 		display:inline-block;
@@ -116,7 +117,9 @@ hr {
 	}
 }
 .newsearch {
-	margin:0.5em;
+	position:absolute;
+	right:0.5em;
+	top:0.5em;
 	a {
 		padding:0.5em;
 		border:1px solid $lightgray;

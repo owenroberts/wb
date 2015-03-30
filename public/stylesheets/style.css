@@ -64,10 +64,10 @@ header {
   display: inline-block; }
 
 .start {
-  margin-right: 0.5em; }
+  margin: 0.5em; }
 
 .end {
-  margin-left: 0.5em; }
+  margin: 0.5em; }
 
 hr {
   border: 2px solid lightgrey;
@@ -81,7 +81,8 @@ hr {
   top: 0px; }
 
 .node-dad {
-  position: relative; }
+  position: relative;
+  display: none; }
   .node-dad .node {
     color: lightgrey;
     display: inline-block;
@@ -102,7 +103,9 @@ hr {
     background-color: grey; }
 
 .newsearch {
-  margin: 0.5em; }
+  position: absolute;
+  right: 0.5em;
+  top: 0.5em; }
   .newsearch a {
     padding: 0.5em;
     border: 1px solid lightgrey; }

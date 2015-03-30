@@ -1,27 +1,21 @@
 extends layout
 block content
-	header
-		div.start= start
-		each node in path
-			a.node-nugget(href='#'+node)
-		div.end= end
-		hr
+	div.start= start
 	div.nodes
-		each node in path
-			div.node-dad
-				div.node(id=node)=node
+		each node, index in path
+			if index != 0
+				div.node-dad
+					div.node(id=node)=node
+	div.end= end
 	div.newsearch
 		a(href="/")="Try a new search"
 
 	script(type='text/javascript').
-		$('.node-nugget').on('mouseover', function() {
-			var id = this.hash;
-			$(id).addClass('hover');
-		});
-		$('.node-nugget').on('mouseout', function() {
-			$('.node').removeClass('hover');
-		});
-		$('.node-nugget').on('click', function() {
-			var id = this.hash;
-			$('.nodes').css('top', -$(id).parent().position().top);
-		});
+		var nodes = $('.node-dad');
+		for (var i = 0; i < nodes.length; i++) {
+			var showNode = function(num) {
+				setTimeout( function() {
+					$(nodes[num]).fadeIn();
+				}, num*500);
+			}(i);
+		}
