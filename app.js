@@ -6,7 +6,7 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     routes = require('./routes/index'),
     wordnet = require('wordnet'),
-    memwatch = require('memwatch'),
+    //memwatch = require('memwatch'),
     chain = require('./chain');
 
 var app = express();
