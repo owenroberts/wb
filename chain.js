@@ -51,22 +51,24 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
   }
 
   function shortestPath() {
+    console.log("shortest");
     if (allpaths.length > 0) {
       data.path = allpaths[0];
       data.path.push(end);
-      console.log(data.path);
+      console.log("path" + data.path);
       callback(null, data);
     } else {
-      allsynomyms = [start];
-      if (nodenumber < nodelimit) nodenumber++;
-      else if (nodenumber >= nodelimit) {
+      if (nodenumber < nodelimit) {
+        nodenumber++;
+        allsynomyms = [start];
+        findSynonyms(start, [], true);
+        shortestPath();
+      } else {
         if (nodelimit == 20 && synonymlevel == 20) 
-          callback("Your search has exceeded the capacity of the algorithm.  Please try a new search.");
+          callback("This search has exceeded the capacity of the algorithm.  Please try a new search.");
         else
-          callback("Your search was not able to be performed with the current parameters.  Try adjusting the node limit or synonym level.");
+          callback("This search was not able to be performed with the current parameters.  Try adjusting the node limit or synonym level.");
       }
-      findSynonyms(start, [], true);
-      shortestPath();
     }
   }
 
@@ -80,14 +82,13 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
           data.path.push(end);
           callback(null, data);
         } else {
-          callback("Your search was not able to be performed with the current parameters.  Try adjusting the node limit or synonym level.");
-          //shortestPath();
+          shortestPath();
         }
       } else {
-        callback("Your second word was not found.");
+        callback("The second word was not found.");
       }
     } else {
-      callback("Your first word was not found.");
+      callback("The first word was not found.");
     }
   } else {
     callback("Please input single words with all lower case letters.");
