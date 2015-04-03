@@ -12,8 +12,6 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
   var synonymlevel = level;
   
   var data = {};
-  data.start = start;
-  data.end = end;
 
   var findSynonyms = function(word, path, runagain) {
     
@@ -55,6 +53,8 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
   function shortestPath() {
     if (allpaths.length > 0) {
       data.path = allpaths[0];
+      data.path.push(end);
+      console.log(data.path);
       callback(null, data);
     } else {
       allsynomyms = [start];
@@ -70,16 +70,18 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
     }
   }
 
+
   if (reg.test(start) && reg.test(end)) {
     if (thesaurus.find(start).length > 0) {
       if (thesaurus.find(end).length > 0) {
         findSynonyms(start, [], true);
         if (allpaths.length > 0) {
           data.path = allpaths[0];
+          data.path.push(end);
           callback(null, data);
         } else {
-          nodenumber = 1;
-          shortestPath();
+          callback("Your search was not able to be performed with the current parameters.  Try adjusting the node limit or synonym level.");
+          //shortestPath();
         }
       } else {
         callback("Your second word was not found.");

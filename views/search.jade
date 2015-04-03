@@ -1,0 +1,31 @@
+extends layout
+block content
+	div.filter
+		a= "Filter results by definition."
+	div.nodes
+		each node in path
+			div.node-dad
+				div.node(id=node)=node
+	
+	div.newsearch
+		a(href="/")="Try a new search"
+
+	script(type='text/javascript').
+		var nodes = $('.node-dad');
+		for (var i = 0; i < nodes.length; i++) {
+			var showNode = function(num) {
+				setTimeout( function() {
+					$(nodes[num]).fadeIn();
+				}, num*500);
+			}(i);
+		}
+
+		//- function filterButton(ev) {
+		//- 	$('.filter').css('top', $(this).parent().position().top);
+		//- 	$('.filter').text("Filter " + $(this).text() + " by definition.");
+		//- 	$('.filter').fadeIn(100);
+		//- }
+		//- $('.node').on('mouseover', filterButton);
+		//- $('.node').on('mouseout', function() {
+		//- 	$('.filter').fadeOut(100);
+		//- })

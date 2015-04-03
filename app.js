@@ -35,7 +35,7 @@ app.get('/', function(req, res) {
   res.render('index');
 });
 
-app.post('/lookup', function(req, res) {
+app.post('/search', function(req, res) {
   //var hd = new memwatch.HeapDiff();
   chain.makeChain(req.body.start, req.body.end, req.body.nodelimit, req.body.synonymlevel, function(err, data) {
     if (err) {
@@ -43,11 +43,9 @@ app.post('/lookup', function(req, res) {
         errormsg: err
       });
     } else {
-      res.render('lookup', {
-        title: data.start + " - " + data.end,
-        start: data.start,
-        path: data.path,
-        end: data.end
+      res.render('search', {
+        title: data.path[0] + " - " + data.path[data.path.length - 1],
+        path: data.path
       });
     }
   });

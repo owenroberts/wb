@@ -67,17 +67,7 @@ header {
 	z-index:1;
 	position:relative;
 }
-.start, .end {
-	background:$lightgray;
-	padding:0.5em;
-	display:inline-block;
-}
-.start {
-	margin:0.5em;
-}
-.end {
-	margin:0.5em;	
-}
+
 
 hr {
 	border:2px solid $lightgray;
@@ -104,18 +94,26 @@ hr {
 	}
 }
 
-.node-nugget {
-	width:0.3em;
-	height:0.3em;
-	border-radius:0.5em;
-	background-color:$lightgray;
-	margin:0 10px;
+.node-dad:first-child, .node-dad:last-child {
+	background:$lightgray;
+	padding:0.25em;
 	display:inline-block;
-	cursor:pointer;
-	&:hover {
-		background-color:$gray;
+	.node { 
+		color:$gray;
 	}
 }
+
+.filter {
+	position:absolute;
+	padding:0.5em;
+	margin:0.25em;
+	box-shadow:0 0 5px $lightgray;
+	display:none;
+	left:200px;
+	font-size:14px;
+	border-radius:4px;
+}
+
 .newsearch {
 	position:absolute;
 	right:0.5em;
