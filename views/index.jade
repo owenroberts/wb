@@ -5,22 +5,22 @@ block content
 			input(type="text",  name="start")
 			input(type="text",  name="end")
 			input(type="submit", value="Enter")
-			br
-			span="Node limit"
-			- var n = 20
-			select(name="nodelimit")
-				while n > 0
-					if n == 10
-						option(selected="selected")=n--
-					option=n--
-			span="Synonym level"
-			- var n = 1
-			select(name="synonymlevel")
-				while n < 21
-					if n == 10
-						option(selected="selected")=n++
-					else 
-						option=n++
+			//
+				span="Node limit"
+				- var n = 20
+				select(name="nodelimit")
+					while n > 0
+						if n == 10
+							option(selected="selected")=n--
+						option=n--
+				span="Synonym level"
+				- var n = 1
+				select(name="synonymlevel")
+					while n < 21
+						if n == 10
+							option(selected="selected")=n++
+						else 
+							option=n++
 		if errormsg					
 			div.errormsg=errormsg
 		div.msg="Please wait while your search is performed."

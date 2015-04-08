@@ -40,8 +40,9 @@ input {
     border:none;
     background:$lightgray;
     padding:0.5em;
-    margin-right:10px;
+    margin:10px;
     font-size:18px;
+    display:block;
 }
 input:focus {
 	background:gray;
@@ -85,7 +86,7 @@ hr {
 	display:none;
 	.node {
 		color:$lightgray;
-		display:inline-block;
+		display:block;
 		cursor:pointer;
 		margin:0.2em 0.1em;
 		&:hover, &.hover {
@@ -95,11 +96,10 @@ hr {
 }
 
 .node-dad:first-child, .node-dad:last-child {
-	background:$lightgray;
 	padding:0.25em;
-	display:inline-block;
+	display:block;
 	.node { 
-		color:$gray;
+		color:$black;
 	}
 }
 
@@ -115,9 +115,7 @@ hr {
 }
 
 .newsearch {
-	position:absolute;
-	right:0.5em;
-	top:0.5em;
+
 	a {
 		padding:0.5em;
 		border:1px solid $lightgray;
