@@ -44,6 +44,8 @@ app.post('/search', function(req, res) {
       });
     } else {
       res.render('search', {
+        nodelimit:req.body.nodelimit,
+        synonymlevel:req.body.synonymlevel,
         start:data.path[0],
         end:data.path[data.path.length - 1],
         title: data.path[0] + " - " + data.path[data.path.length - 1],
