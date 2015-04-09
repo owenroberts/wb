@@ -23,8 +23,8 @@ a {
 	}
 }
 .index {
-	margin:0.5em;
-	margin-left:42px;
+	padding:0.25em 0.5em;
+	padding-left:42px;
 	input {    
 	    background:$lightgray;
 	    padding:0.5em;
@@ -115,6 +115,7 @@ select {
 		margin-top: -8px;
 	}
 
+
 	label {
 		margin:1em 0;
 		display:block;
@@ -123,7 +124,7 @@ select {
 
 .nodes {
 	position: relative;
-	padding: 0.5em;
+	padding: 0.5em 0;
 	transition:top 500ms;
 	top:0px;
 	margin-left:64px;
@@ -141,9 +142,13 @@ select {
 		}
 	}
 }
+.ldr {
+	width:12px;
+}
 
 .node-dad:first-child, .node-dad:last-child {
 	padding:0.25em 0;
+	display:block;
 	.node { 
 		color:$black;
 	}

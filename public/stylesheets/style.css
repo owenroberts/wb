@@ -303,8 +303,8 @@ a {
     color: lightgrey; }
 
 .index {
-  margin: 0.5em;
-  margin-left: 42px; }
+  padding: 0.25em 0.5em;
+  padding-left: 42px; }
   .index input {
     background: lightgrey;
     padding: 0.5em;
@@ -384,7 +384,7 @@ select {
 
 .nodes {
   position: relative;
-  padding: 0.5em;
+  padding: 0.5em 0;
   transition: top 500ms;
   top: 0px;
   margin-left: 64px; }
@@ -400,8 +400,12 @@ select {
     .node-dad .node:hover, .node-dad .node.hover {
       color: grey; }
 
+.ldr {
+  width: 12px; }
+
 .node-dad:first-child, .node-dad:last-child {
-  padding: 0.25em 0; }
+  padding: 0.25em 0;
+  display: block; }
   .node-dad:first-child .node, .node-dad:last-child .node {
     color: black; }
 

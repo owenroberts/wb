@@ -17,9 +17,6 @@ block content
 		each node in path
 			div.node-dad
 				div.node(id=node)=node
-	//
-		div.newsearch
-			a(href="/")="Try a new search"
 
 	script(type='text/javascript').
 		var nodes = $('.node-dad');
@@ -37,3 +34,10 @@ block content
 				$('.adjust').slideUp();
 		}
 		$('.menu').on('click', openMenu);
+		$('input[value="Enter"]').on('click', function(e) {
+			$('.adjust').slideUp();
+			for (var i = 1; i < nodes.length - 1; i++) 
+				$(nodes[i]).fadeOut();
+			var ldr = $('<img>').attr({'class':'ldr', 'src':'images/ldr.gif'});
+			$(nodes[0]).after(ldr);
+		});
