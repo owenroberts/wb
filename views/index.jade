@@ -1,26 +1,14 @@
 extends layout
 block content
+	div.menu
+		img(src="/images/dots.png")
 	div.index
 		form(method="post", action="/search")
 			input(type="text",  name="start")
 			input(type="text",  name="end")
+			input(type="hidden",value=10,name="nodelimit")
+			input(type="hidden",value="10",name="synonymlevel")
 			input(type="submit", value="Enter")
-			//
-				span="Node limit"
-				- var n = 20
-				select(name="nodelimit")
-					while n > 0
-						if n == 10
-							option(selected="selected")=n--
-						option=n--
-				span="Synonym level"
-				- var n = 1
-				select(name="synonymlevel")
-					while n < 21
-						if n == 10
-							option(selected="selected")=n++
-						else 
-							option=n++
 		if errormsg					
 			div.errormsg=errormsg
 		div.msg="Please wait while your search is performed."
@@ -29,3 +17,7 @@ block content
 			$('.msg').fadeIn().css("display","inline-block");;
 			$('.errormsg').fadeOut();
 		});
+		$('.menu').on('click', openMenu);
+		function openMenu() {
+			console.log("menu");
+		}

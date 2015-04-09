@@ -1,7 +1,18 @@
 extends layout
 block content
-	div.filter
-		a= "Filter results by definition."
+	div.menu
+		img(src="/images/dots.png")
+
+	div.adjust
+		form(method="post", action="/search")
+			input(type="hidden",name="start",value=start)
+			input(type="hidden",name="end", value=end)
+			label(for="nodelimit")="Results"
+			input(type="range",min=1,max=20,value=10,id="nodelimit",name="nodelimit")
+			label(for="synonymlevel")="Search"
+			input(type="range",min=1,max=20,value=10,id="synonymlevel",name="synonymlevel")
+			input(type="submit", value="Enter")
+
 	div.nodes
 		each node in path
 			div.node-dad
@@ -19,13 +30,10 @@ block content
 				}, num*500);
 			}(i);
 		}
-
-		//- function filterButton(ev) {
-		//- 	$('.filter').css('top', $(this).parent().position().top);
-		//- 	$('.filter').text("Filter " + $(this).text() + " by definition.");
-		//- 	$('.filter').fadeIn(100);
-		//- }
-		//- $('.node').on('mouseover', filterButton);
-		//- $('.node').on('mouseout', function() {
-		//- 	$('.filter').fadeOut(100);
-		//- })
+		function openMenu() {
+			if ($('.adjust').css('display') == 'none')
+				$('.adjust').slideDown();
+			else 
+				$('.adjust').slideUp();
+		}
+		$('.menu').on('click', openMenu);

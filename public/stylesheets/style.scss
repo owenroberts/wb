@@ -1,11 +1,18 @@
+@import 'fonts';
+
+$akz: AkzidenzGroteskBE-Md;
+
+
 $lightgray: lightgray;
 $gray: gray;
 $black: black;
 $white: white;
+$lightblue:#f7f9ff;
+$blue: rgb(106,117,255);
 
 body {
     font-size:24px;
-    font-family: Helvetica, sans-serif;
+    font-family: $akz, Helvetica, sans-serif;
     margin:0;
 }
 a {
@@ -17,7 +24,40 @@ a {
 }
 .index {
 	margin:0.5em;
+	margin-left:42px;
+	input {    
+	    background:$lightgray;
+	    padding:0.5em;
+	    margin:10px;
+	    font-size:18px;
+	    display:block;  
+	}
+	input:focus {
+		background:gray;
+	}
+	input[type="submit"] {
+		cursor:pointer;
+		border:none;
+		background:none;
+		color:$lightgray;
+		&:hover {
+			color:$black;
+		}
+	}
 }
+input {
+	font-family:$akz, Helvetica, sans-serif;
+	border:none;
+}
+.menu {
+	margin-left:16px;
+	margin-top:18px;
+	position:fixed;
+	img {
+		height:32px;
+	}
+}
+
 .errormsg {
 	margin-top:1em;
 	border:1px solid $lightgray;
@@ -36,50 +76,57 @@ span {
 	font-size:12px;
 }
 
-input {
-    border:none;
-    background:$lightgray;
-    padding:0.5em;
-    margin:10px;
-    font-size:18px;
-    display:block;
-}
-input:focus {
-	background:gray;
-}
-input[type="submit"] {
-	cursor:pointer;
-	border:none;
-	background:none;
-	color:$lightgray;
-	&:hover {
-		color:$black;
-	}
-}
+
+
 select {
 	margin:1em;
 }
 
-/*  look up page */
-header {
-	background:$white;
-	padding:0.5em;
-	padding-bottom:0;
-	z-index:1;
-	position:relative;
-}
+/*  results page */
 
 
-hr {
-	border:2px solid $lightgray;
-	height:0;
-	margin-bottom:0;
+.adjust {
+	padding-left:64px;
+	background:$lightblue;
+	font-size:12px;
+	color:$lightgray;
+	padding-top:1em;
+	display:none;
+	input {
+		background:none;
+		display:block;
+		padding:1em 0;
+	}
+	input[type=range]{
+    	-webkit-appearance: none;
+	}
+	input[type=range]::-webkit-slider-runnable-track {
+	    height: 3px;
+	    background: $lightgray;
+	    border: none;
+	    border-radius: 3px;
+	}
+	input[type=range]::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		background:$blue;
+		width:20px;
+		height:20px;
+		border-radius:10px;
+		margin-top: -8px;
+	}
+
+	label {
+		margin:1em 0;
+		display:block;
+	}
 }
+
 .nodes {
 	position: relative;
-	padding:0.5em;
+	padding: 0.5em;
 	transition:top 500ms;
 	top:0px;
+	margin-left:64px;
 }
 .node-dad {
 	position: relative;
@@ -96,8 +143,7 @@ hr {
 }
 
 .node-dad:first-child, .node-dad:last-child {
-	padding:0.25em;
-	display:block;
+	padding:0.25em 0;
 	.node { 
 		color:$black;
 	}

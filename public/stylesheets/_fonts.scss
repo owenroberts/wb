@@ -2,11 +2,14 @@
   font-family: 'AkzidenzGroteskBE-Md';
   src: url('fonts/AkzidenzGroteskBE-Md.eot') format('embedded-opentype');
   font-weight: normal;
-  font-style: normal; }
+  font-style: normal;
+}
+
 
 @font-face {
   font-family: 'AkzidenzGroteskBE-Md';
-  src: url('fonts/AkzidenzGroteskBE-Md.otf') format('opentype'), url(data:application/x-font-woff;charset=utf-8;base64,d09GRgABAAAAAD6gAA8AAAAAcIwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABGRlRNAAA+hAAAABoA
+  src:  url('fonts/AkzidenzGroteskBE-Md.otf')  format('opentype'),
+	     url(data:application/x-font-woff;charset=utf-8;base64,d09GRgABAAAAAD6gAA8AAAAAcIwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABGRlRNAAA+hAAAABoA
 AAAcLq1JyUdERUYAADkQAAAAHwAAACABFQAGR1BPUwAAOVAAAAU0AAAQHlgrSElHU1VCAAA5MAAA
 ACAAAAAgbJF0j09TLzIAAAHMAAAAVAAAAGBXJA0rY21hcAAABCwAAAJbAAAC0inuoSZnYXNwAAA5
 CAAAAAgAAAAI//8AA2dseWYAAAhcAAAsNgAATTxb1Wm8aGVhZAAAAVgAAAA0AAAANgXteeNoaGVh
@@ -287,134 +290,9 @@ X8qxg0dG5v/n2v258R27aUbkOzUqM/ROa7FOHpVJfm/n+xExdyvmbK5LVDB6xchVyTV73dQKSlnm
 +6P6hHOxf9YMn5CKz8OJQgt+bfXSNWsOrNmnPUsm/uXO6hV2oUpTM1zrqJNxULr6TOeyMXNaPK/z
 c4xZzDCLmcL3qt5/I4Wn8WO/VCOc5Pmm5Yu7iq8qC99PcHVTpujPHVIHUTdDn+6SknKf1CUP5CE9
 e0zqkTlSL7rM07+ULKLaEmmIvT9NL5dJI+z7W7hrR3bp8578JhP/AKdPSvV42mNgYGBkAIJjqdtP
-gegtyif+w2gAUfQH6gAA) format('woff'), url('AkzidenzGroteskBE-Md.ttf') format('truetype'), url('AkzidenzGroteskBE-Md.svg#AkzidenzGroteskBE-Md') format('svg');
+gegtyif+w2gAUfQH6gAA) format('woff'), url('AkzidenzGroteskBE-Md.ttf')  format('truetype'), url('AkzidenzGroteskBE-Md.svg#AkzidenzGroteskBE-Md') format('svg');
   font-weight: normal;
-  font-style: normal; }
+  font-style: normal;
+}
 
-body {
-  font-size: 24px;
-  font-family: AkzidenzGroteskBE-Md, Helvetica, sans-serif;
-  margin: 0; }
 
-a {
-  color: grey;
-  text-decoration: none; }
-  a:hover {
-    color: lightgrey; }
-
-.index {
-  margin: 0.5em;
-  margin-left: 42px; }
-  .index input {
-    background: lightgrey;
-    padding: 0.5em;
-    margin: 10px;
-    font-size: 18px;
-    display: block; }
-  .index input:focus {
-    background: gray; }
-  .index input[type="submit"] {
-    cursor: pointer;
-    border: none;
-    background: none;
-    color: lightgrey; }
-    .index input[type="submit"]:hover {
-      color: black; }
-
-input {
-  font-family: AkzidenzGroteskBE-Md, Helvetica, sans-serif;
-  border: none; }
-
-.menu {
-  margin-left: 16px;
-  margin-top: 18px;
-  position: fixed; }
-  .menu img {
-    height: 32px; }
-
-.errormsg {
-  margin-top: 1em;
-  border: 1px solid lightgrey;
-  display: inline-block;
-  padding: 0.5em; }
-
-.msg {
-  margin-top: 1em;
-  border: 1px solid lightgrey;
-  display: inline-block;
-  padding: 0.5em;
-  display: none; }
-
-span {
-  color: grey;
-  font-size: 12px; }
-
-select {
-  margin: 1em; }
-
-/*  results page */
-.adjust {
-  padding-left: 64px;
-  background: #f7f9ff;
-  font-size: 12px;
-  color: lightgrey;
-  padding-top: 1em;
-  display: none; }
-  .adjust input {
-    background: none;
-    display: block;
-    padding: 1em 0; }
-  .adjust input[type=range] {
-    -webkit-appearance: none; }
-  .adjust input[type=range]::-webkit-slider-runnable-track {
-    height: 3px;
-    background: lightgrey;
-    border: none;
-    border-radius: 3px; }
-  .adjust input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    background: #6a75ff;
-    width: 20px;
-    height: 20px;
-    border-radius: 10px;
-    margin-top: -8px; }
-  .adjust label {
-    margin: 1em 0;
-    display: block; }
-
-.nodes {
-  position: relative;
-  padding: 0.5em;
-  transition: top 500ms;
-  top: 0px;
-  margin-left: 64px; }
-
-.node-dad {
-  position: relative;
-  display: none; }
-  .node-dad .node {
-    color: lightgrey;
-    display: block;
-    cursor: pointer;
-    margin: 0.2em 0.1em; }
-    .node-dad .node:hover, .node-dad .node.hover {
-      color: grey; }
-
-.node-dad:first-child, .node-dad:last-child {
-  padding: 0.25em 0; }
-  .node-dad:first-child .node, .node-dad:last-child .node {
-    color: black; }
-
-.filter {
-  position: absolute;
-  padding: 0.5em;
-  margin: 0.25em;
-  box-shadow: 0 0 5px lightgrey;
-  display: none;
-  left: 200px;
-  font-size: 14px;
-  border-radius: 4px; }
-
-.newsearch a {
-  padding: 0.5em;
-  border: 1px solid lightgrey; }

@@ -44,6 +44,8 @@ app.post('/search', function(req, res) {
       });
     } else {
       res.render('search', {
+        start:data.path[0],
+        end:data.path[data.path.length - 1],
         title: data.path[0] + " - " + data.path[data.path.length - 1],
         path: data.path
       });
