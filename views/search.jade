@@ -122,6 +122,12 @@ block content
 			$('body').append(container);
 		}
 		$('.synonym').on('click', makeNewChain);
+		document.ontouchstart = function(e){ 
+    		e.preventDefault(); 
+		}
+		document.ontouchmove = function(e){ 
+    		e.preventDefault(); 
+		}
 
 
 
