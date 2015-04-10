@@ -181,6 +181,8 @@ select {
 		font-size:24px;
 		white-space:pre-wrap;
 		text-align:left;
+		border:none;
+		background:$lightgray;
 	}
 	button#cancel {
 		background:$lightgray;
