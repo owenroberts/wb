@@ -405,6 +405,7 @@ select {
   .node-dad .node {
     color: lightgrey;
     padding: 0.2em;
+    padding-left: 0;
     display: inline; }
   .node-dad .synonym {
     display: none;
@@ -431,7 +432,9 @@ select {
   #modified-search input[type="submit"] {
     font-size: 24px;
     white-space: pre-wrap;
-    text-align: left; }
+    text-align: left;
+    border: none;
+    background: lightgrey; }
   #modified-search button#cancel {
     background: lightgrey;
     font-size: 20px;
