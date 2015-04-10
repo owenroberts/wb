@@ -292,9 +292,11 @@ gegtyif+w2gAUfQH6gAA) format('woff'), url('AkzidenzGroteskBE-Md.ttf') format('tr
   font-style: normal; }
 
 body {
-  font-size: 24px;
+  font-size: 26px;
   font-family: AkzidenzGroteskBE-Md, Helvetica, sans-serif;
-  margin: 0; }
+  margin: 0;
+  width: 100%;
+  overflow-x: hidden; }
 
 a {
   color: grey;
@@ -391,23 +393,52 @@ select {
 
 .node-dad {
   position: relative;
-  display: none; }
+  display: none;
+  transition: background 300ms;
+  padding: 0.2em 0;
+  margin: 0.2em 0; }
+  .node-dad:hover {
+    background: #f7f9ff; }
+    .node-dad:hover .synonym {
+      display: inline; }
   .node-dad .node {
     color: lightgrey;
-    display: block;
-    cursor: pointer;
-    margin: 0.2em 0.1em; }
-    .node-dad .node:hover, .node-dad .node.hover {
-      color: grey; }
+    margin: 0.2em 0.1em;
+    display: inline; }
+  .node-dad .synonym {
+    display: none;
+    margin-left: 0.5em;
+    transition: display 300ms;
+    color: lightgrey; }
+    .node-dad .synonym:hover {
+      color: black; }
 
 .ldr {
   width: 12px; }
+
+#modified-search {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2em; }
+  #modified-search form {
+    margin-bottom: 1em; }
+  #modified-search input[type="submit"] {
+    font-size: 24px; }
+  #modified-search #cancel {
+    background: lightgrey;
+    padding: 0.1em; }
 
 .node-dad:first-child, .node-dad:last-child {
   padding: 0.25em 0;
   display: block; }
   .node-dad:first-child .node, .node-dad:last-child .node {
     color: black; }
+  .node-dad:first-child:hover, .node-dad:last-child:hover {
+    background: none; }
 
 .filter {
   position: absolute;

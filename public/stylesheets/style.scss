@@ -11,9 +11,11 @@ $lightblue:#f7f9ff;
 $blue: rgb(106,117,255);
 
 body {
-    font-size:24px;
+    font-size:26px;
     font-family: $akz, Helvetica, sans-serif;
     margin:0;
+    width:100%;
+    overflow-x:hidden;
 }
 a {
 	color:$gray;
@@ -132,18 +134,51 @@ select {
 .node-dad {
 	position: relative;
 	display:none;
+	transition:background 300ms;
+	padding:0.2em 0;
+	margin:0.2em 0;
+	&:hover {
+		background:$lightblue;
+		& .synonym {
+			display:inline;
+		}
+	}
 	.node {
 		color:$lightgray;
-		display:block;
-		cursor:pointer;
 		margin:0.2em 0.1em;
-		&:hover, &.hover {
-			color:$gray;
+		display:inline;
+	}
+	.synonym {
+		display:none;
+		margin-left:0.5em;
+		transition:display 300ms;
+		color:$lightgray;
+		&:hover {
+			color:$black;
 		}
 	}
 }
 .ldr {
 	width:12px;
+}
+#modified-search {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: rgba(255,255,255,0.9);
+	padding: 2em;
+	form {
+		margin-bottom:1em;
+	}
+	input[type="submit"] {
+		font-size:24px;
+	}
+	#cancel {
+		background:$lightgray;
+		padding:0.1em;
+	}
 }
 
 .node-dad:first-child, .node-dad:last-child {
@@ -151,6 +186,9 @@ select {
 	display:block;
 	.node { 
 		color:$black;
+	}
+	&:hover {
+		background:none;
 	}
 }
 

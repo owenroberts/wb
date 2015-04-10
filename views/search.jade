@@ -14,11 +14,20 @@ block content
 			input(type="submit", value="Enter")
 
 	div.nodes
-		each node in path
-			div.node-dad
-				div.node(id=node)=node
+		each node, index in path
+			div.node-dad.draggable
+				div.node=node.node
+				if node.synonyms
+					if index != 0
+						each synonym in node.synonyms
+							div.synonym=synonym
 
+	// javascript // 
 	script(type='text/javascript').
+		$( '.draggable' ).draggable({ 
+			axis: "x", 
+			containment:[-1000,0,64,0]
+		});
 		var nodes = $('.node-dad');
 		for (var i = 0; i < nodes.length; i++) {
 			var showNode = function(num) {
@@ -41,3 +50,77 @@ block content
 			var ldr = $('<img>').attr({'class':'ldr', 'src':'images/ldr.gif'});
 			$(nodes[0]).after(ldr);
 		});
+		function makeNewChain() {
+			var synonym = $(this).html();
+			var parent = $(this).parent().index();
+			var data = !{JSON.stringify(path)};
+			var oldpath = data.slice(0, parent);
+			var container = $('<div>')
+				.attr('id', 'modified-search');
+			var form = $('<form>')
+				.attr({
+					'method':'post',
+					'action':'/search/modified',
+				});
+			var start = $('<input>')
+				.attr({
+					'name':'start',
+					'type':'hidden',
+					'value':synonym
+				});
+			var end = $('<input>')
+				.attr({
+					'name':'end',
+					'type':'hidden',
+					'value':"#{end}"
+				});
+			var nodelimit = $('<input>')
+				.attr({
+					'name':'nodelimit',
+					'type':'hidden',
+					'value':10
+				});
+			var synonymlevel = $('<input>')
+				.attr({
+					'name':'synonymlevel',
+					'type':'hidden',
+					'value':10
+				});
+			var path = $('<input>')
+				.attr({
+					'name':'path',
+					'type':'hidden',
+					'value':JSON.stringify(oldpath)
+					});
+			var submit = $('<input>')
+				.attr({
+					'type':'submit',
+					'value':"Modify search with " + synonym + "?"
+				});
+			var cancel = $('<btn>')
+				.attr('id', 'cancel')
+				.html('Cancel');
+			$(cancel).on('click', function() {
+				$('#modified-search').remove();
+			});
+			form.append(start).append(end).append(nodelimit).append(synonymlevel).append(path).append(submit);
+			container.append(form);
+			container.append(cancel);
+			$('body').append(container);
+		}
+		$('.synonym').on('click', makeNewChain);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

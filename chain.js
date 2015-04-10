@@ -16,10 +16,6 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
   var findSynonyms = function(word, path, runagain) {
     
     var wordPath = path;
-    wordPath.push(word);
-
-    //console.log(wordPath);
-
     var tmp = thesaurus.find(word);
     var synonyms = [];
     for (var i = 0; i < tmp.length; i++) {
@@ -35,6 +31,11 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
     if (synonyms.length > synonymlevel) {
       synonyms.splice(synonymlevel, synonyms.length - synonymlevel);
     }
+
+    wordPath.push({
+      node:word,
+      synonyms:synonyms
+    });
 
     for (var i = 0; i < synonyms.length; i++) {
       if (synonyms[i] == end) {
@@ -52,8 +53,9 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
     console.log("shortest");
     if (allpaths.length > 0) {
       data.path = allpaths[0];
-      data.path.push(end);
-      console.log("path" + data.path);
+      data.path.push({
+        node:end
+      });
       callback(null, data);
     } else {
       if (nodenumber < nodelimit) {
@@ -77,7 +79,9 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
         findSynonyms(start, [], true);
         if (allpaths.length > 0) {
           data.path = allpaths[0];
-          data.path.push(end);
+          data.path.push({
+            node:end
+          });
           callback(null, data);
         } else {
           shortestPath();

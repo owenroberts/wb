@@ -36,7 +36,6 @@ app.get('/', function(req, res) {
 });
 
 app.post('/search', function(req, res) {
-  //var hd = new memwatch.HeapDiff();
   chain.makeChain(req.body.start, req.body.end, req.body.nodelimit, req.body.synonymlevel, function(err, data) {
     if (err) {
       res.render('index', {
@@ -44,26 +43,42 @@ app.post('/search', function(req, res) {
       });
     } else {
       res.render('search', {
-        nodelimit:req.body.nodelimit,
-        synonymlevel:req.body.synonymlevel,
-        start:data.path[0],
-        end:data.path[data.path.length - 1],
-        title: data.path[0] + " - " + data.path[data.path.length - 1],
+        nodelimit: req.body.nodelimit,
+        synonymlevel: req.body.synonymlevel,
+        start:data.path[0].node,
+        end:data.path[data.path.length - 1].node,
+        title: data.path[0].node + " - " + data.path[data.path.length - 1].node,
         path: data.path
       });
     }
   });
-  //var diff = hd.end();
-  //global.gc();
 });
 
-/*memwatch.on('leak', function(info) {
-  console.log("leak" + info);
+app.post('/search/modified', function(req, res) {
+  var path = JSON.parse(req.body.path);
+  chain.makeChain(req.body.start, req.body.end, req.body.nodelimit, req.body.synonymlevel, function(err, data) {
+    if (err) {
+      res.render('index', {
+        errormsg: err
+      });
+    } else {
+      data.path.forEach(function(node)  {
+        path.push(node);
+      });
+      res.render('search', {
+        nodelimit: req.body.nodelimit,
+        synonymlevel: req.body.synonymlevel,
+        start:path[0].node,
+        end:path[path.length - 1].node,
+        title: path[0].node + " - " + path[path.length - 1].node,
+        path: path
+      });
+    }
+  });
 });
-memwatch.on('stats', function(stats) { 
-  console.log("garbage collection!") 
-});
-*/
+
+
+
 var server = app.listen(3000, function() {
     var host = server.address().host;
     var port = server.address().port;
