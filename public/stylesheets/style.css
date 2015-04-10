@@ -287,7 +287,7 @@ X8qxg0dG5v/n2v258R27aUbkOzUqM/ROa7FOHpVJfm/n+xExdyvmbK5LVDB6xchVyTV73dQKSlnm
 +6P6hHOxf9YMn5CKz8OJQgt+bfXSNWsOrNmnPUsm/uXO6hV2oUpTM1zrqJNxULr6TOeyMXNaPK/z
 c4xZzDCLmcL3qt5/I4Wn8WO/VCOc5Pmm5Yu7iq8qC99PcHVTpujPHVIHUTdDn+6SknKf1CUP5CE9
 e0zqkTlSL7rM07+ULKLaEmmIvT9NL5dJI+z7W7hrR3bp8578JhP/AKdPSvV42mNgYGBkAIJjqdtP
-gegtyif+w2gAUfQH6gAA) format('woff'), url('AkzidenzGroteskBE-Md.ttf') format('truetype'), url('AkzidenzGroteskBE-Md.svg#AkzidenzGroteskBE-Md') format('svg');
+gegtyif+w2gAUfQH6gAA) format('woff'), url('fonts/AkzidenzGroteskBE-Md.ttf') format('truetype'), url('fonts/AkzidenzGroteskBE-Md.svg#AkzidenzGroteskBE-Md') format('svg');
   font-weight: normal;
   font-style: normal; }
 
@@ -397,19 +397,21 @@ select {
   transition: background 300ms;
   padding: 0.2em 0;
   margin: 0.2em 0; }
-  .node-dad:hover {
+  .node-dad:hover .synonym, .node-dad.hover .synonym {
+    display: inline;
     background: #f7f9ff; }
-    .node-dad:hover .synonym {
-      display: inline; }
+  .node-dad:hover .node, .node-dad.hover .node {
+    background: #f7f9ff; }
   .node-dad .node {
     color: lightgrey;
-    margin: 0.2em 0.1em;
+    padding: 0.2em;
     display: inline; }
   .node-dad .synonym {
     display: none;
-    margin-left: 0.5em;
     transition: display 300ms;
-    color: lightgrey; }
+    color: lightgrey;
+    padding: 0.2em;
+    padding-left: 0.5em; }
     .node-dad .synonym:hover {
       color: black; }
 
@@ -427,10 +429,15 @@ select {
   #modified-search form {
     margin-bottom: 1em; }
   #modified-search input[type="submit"] {
-    font-size: 24px; }
-  #modified-search #cancel {
+    font-size: 24px;
+    white-space: pre-wrap;
+    text-align: left; }
+  #modified-search button#cancel {
     background: lightgrey;
-    padding: 0.1em; }
+    font-size: 20px;
+    padding: 0.25em;
+    border: none;
+    font-family: AkzidenzGroteskBE-Md, Helvetica, sans-serif; }
 
 .node-dad:first-child, .node-dad:last-child {
   padding: 0.25em 0;

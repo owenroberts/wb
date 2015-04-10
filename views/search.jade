@@ -25,9 +25,20 @@ block content
 	// javascript // 
 	script(type='text/javascript').
 		$( '.draggable' ).draggable({ 
+			scroll:false,
 			axis: "x", 
-			containment:[-1000,0,64,0]
+			containment:[-1000,0,64,0],
+			drag: function() {
+				$('.draggable')
+					.removeClass('hover')
+					.css({
+						top:0,
+						left:0
+					});
+				$(this).addClass('hover');
+			}
 		});
+
 		var nodes = $('.node-dad');
 		for (var i = 0; i < nodes.length; i++) {
 			var showNode = function(num) {
@@ -53,6 +64,8 @@ block content
 		function makeNewChain() {
 			var synonym = $(this).html();
 			var parent = $(this).parent().index();
+			var word = $(this).parent().find('.node').html();
+			console.log(word);
 			var data = !{JSON.stringify(path)};
 			var oldpath = data.slice(0, parent);
 			var container = $('<div>')
@@ -95,9 +108,9 @@ block content
 			var submit = $('<input>')
 				.attr({
 					'type':'submit',
-					'value':"Modify search with " + synonym + "?"
+					'value':"Replace " + word + " with " + synonym + "?"
 				});
-			var cancel = $('<btn>')
+			var cancel = $('<button>')
 				.attr('id', 'cancel')
 				.html('Cancel');
 			$(cancel).on('click', function() {
