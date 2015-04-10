@@ -1,8 +1,8 @@
 var thesaurus = require("thesaurus");
 
 var makeChain = function(startWord, endWord, limit, level, callback) {
-  var start = startWord;
-  var end = endWord;
+  var start = startWord.toLowerCase();
+  var end = endWord.toLowerCase();
   var reg = /^[a-z]+$/;
 
   var allsynomyms = [start];
@@ -74,26 +74,30 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
 
 
   if (reg.test(start) && reg.test(end)) {
-    if (thesaurus.find(start).length > 0) {
-      if (thesaurus.find(end).length > 0) {
-        findSynonyms(start, [], true);
-        if (allpaths.length > 0) {
-          data.path = allpaths[0];
-          data.path.push({
-            node:end
-          });
-          callback(null, data);
+    if (start != end) {
+      if (thesaurus.find(start).length > 0) {
+        if (thesaurus.find(end).length > 0) {
+          findSynonyms(start, [], true);
+          if (allpaths.length > 0) {
+            data.path = allpaths[0];
+            data.path.push({
+              node:end
+            });
+            callback(null, data);
+          } else {
+            shortestPath();
+          }
         } else {
-          shortestPath();
+          callback("The second word was not found.");
         }
       } else {
-        callback("The second word was not found.");
+        callback("The first word was not found.");
       }
     } else {
-      callback("The first word was not found.");
+      callback("Please enter different words.")
     }
   } else {
-    callback("Please input single words with all lower case letters.");
+    callback("Please input single words with no spaces or dashes.");
   }
 
 }
