@@ -3,13 +3,15 @@
 $akz: AkzidenzGroteskBE-Md;
 
 
-$lightgray: lightgray;
-$gray: gray;
+$lightgray: #f1f1f2;
+$gray: #c6c8ca;
 $black: black;
 $white: white;
 $lightblue:#f7f9ff;
-$blue: rgb(106,117,255);
-
+$blue: #6a75ff;
+* {
+	box-sizing:border-box;
+}
 body {
     font-size:26px;
     font-family: $akz, Helvetica, sans-serif;
@@ -24,59 +26,98 @@ a {
 		color:$lightgray;
 	}
 }
+ul, li {
+	padding:0;
+	margin:0;
+	list-style:none;
+}
+
+hr {
+	border:none;
+	border-bottom: 1px solid $gray;
+	clear:both;
+	margin:0;
+}
+
 .index {
-	padding:0.25em 0.5em;
-	padding-left:42px;
+	padding: 16px;
 	input {    
 	    background:$lightgray;
-	    padding:0.5em;
-	    margin:10px;
-	    font-size:18px;
-	    display:block;  
+	    border-radius: 0.25em;
+	    font-size:26px;
+	    display:block;
+	    width:100%;
+	    margin-bottom:8px;
+	    padding:0.2em;
 	}
 	input:focus {
-		background:gray;
+		background:$gray;
 	}
 	input[type="submit"] {
 		cursor:pointer;
 		border:none;
 		background:none;
-		color:$lightgray;
+		color:$gray;
+		padding:0;
 		&:hover {
 			color:$black;
 		}
+		text-align:left;
 	}
 }
 input {
 	font-family:$akz, Helvetica, sans-serif;
 	border:none;
 }
-.menu {
-	margin-left:16px;
-	margin-top:18px;
-	position:fixed;
-	img {
-		height:32px;
+header {
+	padding:0 16px;
+	padding-top:16px;
+	min-height:48px;
+	border-bottom:1px solid $lightgray;
+	.menu {
+		position:absolute;
+		top:16px;
+		left:16px;
+		img {
+			width:20px;
+		}
+	}
+	.paths {
+		text-align:center;
+		.path {
+			display:inline-block;
+			margin:0 4px;
+			font-size:18px;
+		}
+		.path:before {
+			content:"\2022";
+			color:$gray;
+		}
+	}
+	.plus {
+		position:absolute;
+		top:16px;
+		right:16px;
+		img {
+			width:20px;
+		}
 	}
 }
 
+
 .errormsg {
 	margin-top:1em;
-	border:1px solid $lightgray;
 	display:inline-block;
 	padding:0.5em;
 }
 .msg {
-	margin-top:1em;
-	border:1px solid $lightgray;
 	display:inline-block;
-	padding:0.5em;
+	position:absolute;
+	bottom:20px;
+	font-size:20px;
 	display:none;
 }
-span {
-	color:$gray;
-	font-size:12px;
-}
+
 
 
 
@@ -87,26 +128,58 @@ select {
 /*  results page */
 
 
-.adjust {
-	padding-left:64px;
-	background:$lightblue;
-	font-size:12px;
-	color:$lightgray;
-	padding-top:1em;
-	display:none;
+.fadein {
+	opacity:0;
+}
+
+#main {
+	position:absolute;
+	width:100%;
+	border-left:1px solid $lightgray;
+	height:100%;
+}
+
+#sidebar {
+	position:absolute;	
+	z-index:1;
+	background:white;
+	height:100%;
+	li {
+		border-bottom:1px solid $lightgray;
+		padding:0.5em;
+		height:48px;
+		a {
+			color:$black;
+		}
+	}
+}
+
+#adjust {
+	padding:16px;
+	position:absolute;
+	border-bottom:1px solid $lightgray;
+	border-right:1px solid $lightgray;
+	height:100%;
+	width:260px;
+	line-height:2em;
+	span {
+		color:$gray;
+	}
 	input {
 		background:none;
-		display:block;
+		
 		padding:1em 0;
 	}
 	input[type=range]{
     	-webkit-appearance: none;
+		width:100%;
 	}
 	input[type=range]::-webkit-slider-runnable-track {
 	    height: 3px;
 	    background: $lightgray;
 	    border: none;
 	    border-radius: 3px;
+	    
 	}
 	input[type=range]::-webkit-slider-thumb {
 		-webkit-appearance: none;
@@ -115,22 +188,34 @@ select {
 		height:20px;
 		border-radius:10px;
 		margin-top: -8px;
-		border:none;
+		border:none;	
 	}
-
-
+	input[type=range]:active input[type=submit] {
+		color: $blue;
+	}
+	input[type="submit"] {
+		font-size: 1em;
+		text-align:center;
+		width:100%;
+	}
 	label {
-		margin:1em 0;
+		font-size:16px;
 		display:block;
+		line-height:1.4em;
+		margin:1em 0;
+	}
+	.numbers {
+		font-size:12px;
 	}
 }
 
-.nodes {
+#nodes {
 	position: relative;
+	width:100%;
 	padding: 0.5em 0;
 	transition:top 500ms;
 	top:0px;
-	margin-left:64px;
+	margin-left:16px;
 }
 .node-dad {
 	position: relative;
@@ -138,25 +223,40 @@ select {
 	transition:background 300ms;
 	padding:0.2em 0;
 	margin:0.2em 0;
+	
 	&:hover, &.hover {
 		& .synonym {
 			display:inline;
 			background:$lightblue;
 		}
 		& .node {
-			background:$lightblue;
+			/* background:$lightblue; */
 		}
 	}
+	.toggle {
+		margin-right:8px;
+		display:inline-block;
+		overflow:hidden;
+		width:0px;
+		img {
+			width:24px;
+			vertical-align:middle;
+		}
+	}
+	.dots {
+		display:inline-block;
+		margin:0 2px;
+		font-size:18px;
+		color:$gray;
+	}
 	.node {
-		color:$lightgray;
-		padding:0.2em;
-		padding-left:0;
+		color:$black;
 		display:inline;
 	}
 	.synonym {
 		display:none;
 		transition:display 300ms;
-		color:$lightgray;
+		color:$black;
 		padding:0.2em;
 		padding-left:0.5em;
 		&:hover {

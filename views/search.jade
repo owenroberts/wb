@@ -1,29 +1,85 @@
 extends layout
 block content
-	div.menu
-		img(src="/images/dots.png")
 
-	div.adjust
-		form(method="post", action="/search")
-			input(type="hidden",name="start",value=start)
-			input(type="hidden",name="end", value=end)
-			label(for="nodelimit")="Results"
-			input(type="range",min=1,max=20,value=nodelimit,id="nodelimit",name="nodelimit")
-			label(for="synonymlevel")="Search"
-			input(type="range",min=1,max=20,value=synonymlevel,id="synonymlevel",name="synonymlevel")
-			input(type="submit", value="Enter")
+	div#sidebar
+		ul
+			li
+				a(href="/")="new search"
+			li
+				a(href="#")="about synopath"
+			li
+				a(href="#")="how it works"
+			li
+				a(href="#")="feedback"
 
-	div.nodes
-		each node, index in path
-			div.node-dad.draggable
-				div.node=node.node
-				if node.synonyms
-					if index != 0
-						each synonym in node.synonyms
-							div.synonym=synonym
+
+	div#main
+		header
+			div.menu
+				img(src="/images/menu.svg")
+			div.paths.fadein
+				div.path(id="p0")
+			div.plus.fadein
+				img(src="/images/plus.svg")
+	
+		div#adjust
+			div="path adjustments"
+			hr
+			form(method="post", action="/search")
+				input(type="hidden",name="start",value=start)
+				input(type="hidden",name="end", value=end)
+
+				label(style="color:black")="path length: "
+					span="select how many words to use in a path."
+				input(type="range",min=1,max=15,value=nodelimit,id="nodelimit",name="nodelimit")
+				div.numbers
+					- var n = 1
+					while n < 16
+						span= n++
+
+				hr
+				label(style="color:black")="path depth: "
+					span="select the maximum number of synonyms to search for each word in a path."
+				input(type="range",min=1,max=15,value=synonymlevel,id="synonymlevel",name="synonymlevel")
+
+				hr
+				input(type="submit", value="apply adjustment")
+		div#nodes
+			each node, index in Object.keys(path)
+				div.node-dad
+					if index == 0
+						span.toggle.adjust-button
+							img(src="/images/toggle.svg")
+					else if index < Object.keys(path).length - 1
+						span.toggle
+							span.dots=" •  •"
+					else 
+						span.toggle
+					div.node=path[node].node
+					if node.synonyms
+						if index != 0
+							each synonym in node.synonyms
+								div.synonym=synonym
 
 	// javascript // 
 	script(type='text/javascript').
+		$('#nodes').animate({
+			"margin-left":"32px"
+		}, 900, function() {
+			$('.toggle').animate({width:"24px"}, 900, function() {
+				var nodes = $('.node-dad');
+				for (var i = 0; i < nodes.length; i++) {
+					var showNode = function(num) {
+						setTimeout( function() {
+							$(nodes[num]).fadeIn();
+						}, num*800);
+					}(i);
+				}
+			});
+		});
+		$('.fadein').animate({
+			opacity: 1
+		}, 900);
 		$('.draggable' ).draggable({
 			scroll:false,
 			axis: "x",
@@ -39,21 +95,61 @@ block content
 			}
 		});
 
-		var nodes = $('.node-dad');
-		for (var i = 0; i < nodes.length; i++) {
-			var showNode = function(num) {
-				setTimeout( function() {
-					$(nodes[num]).fadeIn();
-				}, num*500);
-			}(i);
+		
+		var adjust = false;
+		var adjustOffset = 260;
+		$('#adjust').css('left', -adjustOffset);
+		function adjustMenu() {
+			if (!adjust) {
+				$('#nodes').animate({
+					'left': adjustOffset
+				}, 500);
+				$('#adjust').animate({
+					'left': 0
+				}, 500);
+				adjust = true;
+			} else {
+				$('#nodes').animate({
+					'left': 0
+				}, 500);
+				$('#adjust').animate({
+					'left': -adjustOffset
+				}, 500);
+				adjust = false;
+			}
 		}
+		$('.adjust-button').on('click', adjustMenu);
+
+		$('input[type="range"]').on('change', function() {
+			$('#adjust input[type="submit"]').css({
+				'color':'#6a75ff'
+			});
+		});
+		
+		var menu = false;
+		var sidebarOffset = $('#sidebar').width();
+		$('#sidebar').css('left', -sidebarOffset);
 		function openMenu() {
-			if ($('.adjust').css('display') == 'none')
-				$('.adjust').slideDown();
-			else 
-				$('.adjust').slideUp();
+			if (!menu) {
+				$('#main').animate({
+					'left': sidebarOffset
+				}, 500);
+				$('#sidebar').animate({
+					'left': 0
+				}, 500);
+				menu = true;
+			} else {
+				$('#main').animate({
+					'left': 0
+				}, 500);
+				$('#sidebar').animate({
+					'left': -sidebarOffset
+				}, 500);
+				menu = false;
+			}
 		}
 		$('.menu').on('click', openMenu);
+
 		$('input[value="Enter"]').on('click', function(e) {
 			$('.adjust').slideUp();
 			for (var i = 1; i < nodes.length - 1; i++) 

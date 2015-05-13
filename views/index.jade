@@ -1,21 +1,27 @@
 extends layout
 block content
-	div.menu
-		img(src="/images/dots.png")
+	header
+		div.menu
+			img(src="/images/menu.svg")
+	hr
 	div.index
 		form(method="post", action="/search")
 			input(type="text",  name="start")
 			input(type="text",  name="end")
 			input(type="hidden",value=10,name="nodelimit")
 			input(type="hidden",value="10",name="synonymlevel")
-			input(type="submit", value="Enter")
+			input(type="submit", value="search")
 		if errormsg					
 			div.errormsg=errormsg
 		div.msg="Please wait while your search is performed."
 	script(type="text/javascript").
-		$('input[value="Enter"]').on('click', function() {
+		$('input[value="search"]').on('click', function() {
 			$('.msg').fadeIn().css("display","inline-block");;
 			$('.errormsg').fadeOut();
+			$(this).fadeOut();
+			$('input[type="text"]').animate({
+				"background-color":"transparent"
+			}, 500);
 		});
 		$('.menu').on('click', openMenu);
 		function openMenu() {

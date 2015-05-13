@@ -291,6 +291,9 @@ gegtyif+w2gAUfQH6gAA) format('woff'), url('fonts/AkzidenzGroteskBE-Md.ttf') form
   font-weight: normal;
   font-style: normal; }
 
+* {
+  box-sizing: border-box; }
+
 body {
   font-size: 26px;
   font-family: AkzidenzGroteskBE-Md, Helvetica, sans-serif;
@@ -299,27 +302,41 @@ body {
   overflow-x: hidden; }
 
 a {
-  color: grey;
+  color: #c6c8ca;
   text-decoration: none; }
   a:hover {
-    color: lightgrey; }
+    color: #f1f1f2; }
+
+ul, li {
+  padding: 0;
+  margin: 0;
+  list-style: none; }
+
+hr {
+  border: none;
+  border-bottom: 1px solid #c6c8ca;
+  clear: both;
+  margin: 0; }
 
 .index {
-  padding: 0.25em 0.5em;
-  padding-left: 42px; }
+  padding: 16px; }
   .index input {
-    background: lightgrey;
-    padding: 0.5em;
-    margin: 10px;
-    font-size: 18px;
-    display: block; }
+    background: #f1f1f2;
+    border-radius: 0.25em;
+    font-size: 26px;
+    display: block;
+    width: 100%;
+    margin-bottom: 8px;
+    padding: 0.2em; }
   .index input:focus {
-    background: gray; }
+    background: #c6c8ca; }
   .index input[type="submit"] {
     cursor: pointer;
     border: none;
     background: none;
-    color: lightgrey; }
+    color: #c6c8ca;
+    padding: 0;
+    text-align: left; }
     .index input[type="submit"]:hover {
       color: black; }
 
@@ -327,53 +344,92 @@ input {
   font-family: AkzidenzGroteskBE-Md, Helvetica, sans-serif;
   border: none; }
 
-.menu {
-  margin-left: 16px;
-  margin-top: 18px;
-  position: fixed; }
-  .menu img {
-    height: 32px; }
+header {
+  padding: 0 16px;
+  padding-top: 16px;
+  min-height: 48px;
+  border-bottom: 1px solid #f1f1f2; }
+  header .menu {
+    position: absolute;
+    top: 16px;
+    left: 16px; }
+    header .menu img {
+      width: 20px; }
+  header .paths {
+    text-align: center; }
+    header .paths .path {
+      display: inline-block;
+      margin: 0 4px;
+      font-size: 18px; }
+    header .paths .path:before {
+      content: "\2022";
+      color: #c6c8ca; }
+  header .plus {
+    position: absolute;
+    top: 16px;
+    right: 16px; }
+    header .plus img {
+      width: 20px; }
 
 .errormsg {
   margin-top: 1em;
-  border: 1px solid lightgrey;
   display: inline-block;
   padding: 0.5em; }
 
 .msg {
-  margin-top: 1em;
-  border: 1px solid lightgrey;
   display: inline-block;
-  padding: 0.5em;
+  position: absolute;
+  bottom: 20px;
+  font-size: 20px;
   display: none; }
-
-span {
-  color: grey;
-  font-size: 12px; }
 
 select {
   margin: 1em; }
 
 /*  results page */
-.adjust {
-  padding-left: 64px;
-  background: #f7f9ff;
-  font-size: 12px;
-  color: lightgrey;
-  padding-top: 1em;
-  display: none; }
-  .adjust input {
+.fadein {
+  opacity: 0; }
+
+#main {
+  position: absolute;
+  width: 100%;
+  border-left: 1px solid #f1f1f2;
+  height: 100%; }
+
+#sidebar {
+  position: absolute;
+  z-index: 1;
+  background: white;
+  height: 100%; }
+  #sidebar li {
+    border-bottom: 1px solid #f1f1f2;
+    padding: 0.5em;
+    height: 48px; }
+    #sidebar li a {
+      color: black; }
+
+#adjust {
+  padding: 16px;
+  position: absolute;
+  border-bottom: 1px solid #f1f1f2;
+  border-right: 1px solid #f1f1f2;
+  height: 100%;
+  width: 260px;
+  line-height: 2em; }
+  #adjust span {
+    color: #c6c8ca; }
+  #adjust input {
     background: none;
-    display: block;
     padding: 1em 0; }
-  .adjust input[type=range] {
-    -webkit-appearance: none; }
-  .adjust input[type=range]::-webkit-slider-runnable-track {
+  #adjust input[type=range] {
+    -webkit-appearance: none;
+    width: 100%; }
+  #adjust input[type=range]::-webkit-slider-runnable-track {
     height: 3px;
-    background: lightgrey;
+    background: #f1f1f2;
     border: none;
     border-radius: 3px; }
-  .adjust input[type=range]::-webkit-slider-thumb {
+  #adjust input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
     background: #6a75ff;
     width: 20px;
@@ -381,16 +437,27 @@ select {
     border-radius: 10px;
     margin-top: -8px;
     border: none; }
-  .adjust label {
-    margin: 1em 0;
-    display: block; }
+  #adjust input[type=range]:active input[type=submit] {
+    color: #6a75ff; }
+  #adjust input[type="submit"] {
+    font-size: 1em;
+    text-align: center;
+    width: 100%; }
+  #adjust label {
+    font-size: 16px;
+    display: block;
+    line-height: 1.4em;
+    margin: 1em 0; }
+  #adjust .numbers {
+    font-size: 12px; }
 
-.nodes {
+#nodes {
   position: relative;
+  width: 100%;
   padding: 0.5em 0;
   transition: top 500ms;
   top: 0px;
-  margin-left: 64px; }
+  margin-left: 16px; }
 
 .node-dad {
   position: relative;
@@ -401,17 +468,26 @@ select {
   .node-dad:hover .synonym, .node-dad.hover .synonym {
     display: inline;
     background: #f7f9ff; }
-  .node-dad:hover .node, .node-dad.hover .node {
-    background: #f7f9ff; }
+  .node-dad .toggle {
+    margin-right: 8px;
+    display: inline-block;
+    overflow: hidden;
+    width: 0px; }
+    .node-dad .toggle img {
+      width: 24px;
+      vertical-align: middle; }
+  .node-dad .dots {
+    display: inline-block;
+    margin: 0 2px;
+    font-size: 18px;
+    color: #c6c8ca; }
   .node-dad .node {
-    color: lightgrey;
-    padding: 0.2em;
-    padding-left: 0;
+    color: black;
     display: inline; }
   .node-dad .synonym {
     display: none;
     transition: display 300ms;
-    color: lightgrey;
+    color: black;
     padding: 0.2em;
     padding-left: 0.5em; }
     .node-dad .synonym:hover {
@@ -430,7 +506,7 @@ select {
   padding: 2em; }
   #modified-search form {
     margin-bottom: 1em;
-    background: lightgrey; }
+    background: #f1f1f2; }
   #modified-search input[type="submit"] {
     font-size: 24px;
     white-space: pre-wrap;
@@ -438,7 +514,7 @@ select {
     border: none;
     background: none; }
   #modified-search button#cancel {
-    background: lightgrey;
+    background: #f1f1f2;
     font-size: 20px;
     padding: 0.25em;
     border: none;
@@ -456,7 +532,7 @@ select {
   position: absolute;
   padding: 0.5em;
   margin: 0.25em;
-  box-shadow: 0 0 5px lightgrey;
+  box-shadow: 0 0 5px #f1f1f2;
   display: none;
   left: 200px;
   font-size: 14px;
@@ -464,4 +540,4 @@ select {
 
 .newsearch a {
   padding: 0.5em;
-  border: 1px solid lightgrey; }
+  border: 1px solid #f1f1f2; }
