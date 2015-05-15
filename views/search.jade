@@ -35,12 +35,16 @@ block content
 				div.numbers
 					- var n = 1
 					while n < 16
-						span= n++
+						span.num= n++
 
 				hr
 				label(style="color:black")="path depth: "
 					span="select the maximum number of synonyms to search for each word in a path."
 				input(type="range",min=1,max=15,value=synonymlevel,id="synonymlevel",name="synonymlevel")
+				div.numbers
+					- var n = 1
+					while n < 16
+						span.num= n++
 
 				hr
 				input(type="submit", value="apply adjustment")
@@ -124,7 +128,12 @@ block content
 			$('#adjust input[type="submit"]').css({
 				'color':'#6a75ff'
 			});
+			var e = $(this);
+			e.next().children().css({color:"#c6c8ca"})
+			e.next().children(':nth-child('+e[0].value+')').css({color:"black"});
 		});
+		$('.numbers').children(':nth-child(10)').css({color:"black"});
+
 		
 		var menu = false;
 		var sidebarOffset = $('#sidebar').width();

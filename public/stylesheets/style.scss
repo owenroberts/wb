@@ -107,8 +107,6 @@ header {
 
 .errormsg {
 	margin-top:1em;
-	display:inline-block;
-	padding:0.5em;
 }
 .msg {
 	display:inline-block;
@@ -161,13 +159,15 @@ select {
 	border-right:1px solid $lightgray;
 	height:100%;
 	width:260px;
-	line-height:2em;
+	hr {
+		margin:0.5em 0;
+	}
 	span {
 		color:$gray;
 	}
 	input {
 		background:none;
-		
+		margin:0;
 		padding:1em 0;
 	}
 	input[type=range]{
@@ -206,6 +206,11 @@ select {
 	}
 	.numbers {
 		font-size:12px;
+		text-align:center;
+		.num {
+			display:inline-block;
+			width:6.6%;
+		}
 	}
 }
 

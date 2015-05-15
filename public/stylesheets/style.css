@@ -414,12 +414,14 @@ select {
   border-bottom: 1px solid #f1f1f2;
   border-right: 1px solid #f1f1f2;
   height: 100%;
-  width: 260px;
-  line-height: 2em; }
+  width: 260px; }
+  #adjust hr {
+    margin: 0.5em 0; }
   #adjust span {
     color: #c6c8ca; }
   #adjust input {
     background: none;
+    margin: 0;
     padding: 1em 0; }
   #adjust input[type=range] {
     -webkit-appearance: none;
@@ -449,7 +451,11 @@ select {
     line-height: 1.4em;
     margin: 1em 0; }
   #adjust .numbers {
-    font-size: 12px; }
+    font-size: 12px;
+    text-align: center; }
+    #adjust .numbers .num {
+      display: inline-block;
+      width: 6.6%; }
 
 #nodes {
   position: relative;
