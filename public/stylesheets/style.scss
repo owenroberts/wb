@@ -139,7 +139,7 @@ select {
 
 #sidebar {
 	position:absolute;	
-	z-index:1;
+	z-index:11;
 	background:white;
 	height:100%;
 	li {
@@ -173,22 +173,50 @@ select {
 	input[type=range]{
     	-webkit-appearance: none;
 		width:100%;
+	    overflow:hidden;
+	    border-radius:8px;
+	}
+	input[type=range]::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		background:$blue;
+		width:10px;
+		height:10px;
+		border-radius:10px;
+		margin-top: -4px;
+		border:none;
+		position:relative;
+		pointer-events:none;
 	}
 	input[type=range]::-webkit-slider-runnable-track {
 	    height: 3px;
 	    background: $lightgray;
 	    border: none;
 	    border-radius: 3px;
-	    
 	}
-	input[type=range]::-webkit-slider-thumb {
-		-webkit-appearance: none;
-		background:$blue;
-		width:20px;
-		height:20px;
-		border-radius:10px;
-		margin-top: -8px;
-		border:none;	
+	input[type=range]::-webkit-slider-thumb:before {
+		content:"-";
+		font-style: 0;
+		line-height:0;
+		position: absolute;
+		left:-300px;
+		right:0;
+		top:4px;
+		bottom:3px;
+		background: $blue;
+	}
+	input[type=range]::-webkit-slider-thumb:after {
+		content: "";
+		position: absolute;
+		left:-4px;
+		right:-4px;
+		top:-4px;
+		bottom:-4px;
+		background: $blue;
+		border-radius: 50%;
+		z-index: 10;
+	}
+	input[type=range]:focus {
+		outline:none;
 	}
 	input[type=range]:active input[type=submit] {
 		color: $blue;
@@ -229,13 +257,11 @@ select {
 	padding:0.2em 0;
 	margin:0.2em 0;
 	
-	&:hover, &.hover {
+	&.selected {
+		border-bottom: 1px solid $lightgray;
+		border-top: 1px solid $lightgray;
 		& .synonym {
-			display:inline;
-			background:$lightblue;
-		}
-		& .node {
-			/* background:$lightblue; */
+			display:inline-block;
 		}
 	}
 	.toggle {
@@ -253,15 +279,16 @@ select {
 		margin:0 2px;
 		font-size:18px;
 		color:$gray;
+		transition: transform 500ms;
 	}
 	.node {
 		color:$black;
-		display:inline;
+		display:inline-block;
 	}
 	.synonym {
 		display:none;
 		transition:display 300ms;
-		color:$black;
+		color:$gray;
 		padding:0.2em;
 		padding-left:0.5em;
 		&:hover {

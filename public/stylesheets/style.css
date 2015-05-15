@@ -372,9 +372,7 @@ header {
       width: 20px; }
 
 .errormsg {
-  margin-top: 1em;
-  display: inline-block;
-  padding: 0.5em; }
+  margin-top: 1em; }
 
 .msg {
   display: inline-block;
@@ -398,7 +396,7 @@ select {
 
 #sidebar {
   position: absolute;
-  z-index: 1;
+  z-index: 11;
   background: white;
   height: 100%; }
   #sidebar li {
@@ -425,20 +423,46 @@ select {
     padding: 1em 0; }
   #adjust input[type=range] {
     -webkit-appearance: none;
-    width: 100%; }
+    width: 100%;
+    overflow: hidden;
+    border-radius: 8px; }
+  #adjust input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background: #6a75ff;
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    margin-top: -4px;
+    border: none;
+    position: relative;
+    pointer-events: none; }
   #adjust input[type=range]::-webkit-slider-runnable-track {
     height: 3px;
     background: #f1f1f2;
     border: none;
     border-radius: 3px; }
-  #adjust input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
+  #adjust input[type=range]::-webkit-slider-thumb:before {
+    content: "-";
+    font-style: 0;
+    line-height: 0;
+    position: absolute;
+    left: -300px;
+    right: 0;
+    top: 4px;
+    bottom: 3px;
+    background: #6a75ff; }
+  #adjust input[type=range]::-webkit-slider-thumb:after {
+    content: "";
+    position: absolute;
+    left: -4px;
+    right: -4px;
+    top: -4px;
+    bottom: -4px;
     background: #6a75ff;
-    width: 20px;
-    height: 20px;
-    border-radius: 10px;
-    margin-top: -8px;
-    border: none; }
+    border-radius: 50%;
+    z-index: 10; }
+  #adjust input[type=range]:focus {
+    outline: none; }
   #adjust input[type=range]:active input[type=submit] {
     color: #6a75ff; }
   #adjust input[type="submit"] {
@@ -471,9 +495,11 @@ select {
   transition: background 300ms;
   padding: 0.2em 0;
   margin: 0.2em 0; }
-  .node-dad:hover .synonym, .node-dad.hover .synonym {
-    display: inline;
-    background: #f7f9ff; }
+  .node-dad.selected {
+    border-bottom: 1px solid #f1f1f2;
+    border-top: 1px solid #f1f1f2; }
+    .node-dad.selected .synonym {
+      display: inline-block; }
   .node-dad .toggle {
     margin-right: 8px;
     display: inline-block;
@@ -486,14 +512,15 @@ select {
     display: inline-block;
     margin: 0 2px;
     font-size: 18px;
-    color: #c6c8ca; }
+    color: #c6c8ca;
+    transition: transform 500ms; }
   .node-dad .node {
     color: black;
-    display: inline; }
+    display: inline-block; }
   .node-dad .synonym {
     display: none;
     transition: display 300ms;
-    color: black;
+    color: #c6c8ca;
     padding: 0.2em;
     padding-left: 0.5em; }
     .node-dad .synonym:hover {

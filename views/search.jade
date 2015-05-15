@@ -32,7 +32,7 @@ block content
 				label(style="color:black")="path length: "
 					span="select how many words to use in a path."
 				input(type="range",min=1,max=15,value=nodelimit,id="nodelimit",name="nodelimit")
-				div.numbers
+				div.numbers.nodelim
 					- var n = 1
 					while n < 16
 						span.num= n++
@@ -41,7 +41,7 @@ block content
 				label(style="color:black")="path depth: "
 					span="select the maximum number of synonyms to search for each word in a path."
 				input(type="range",min=1,max=15,value=synonymlevel,id="synonymlevel",name="synonymlevel")
-				div.numbers
+				div.numbers.synlev
 					- var n = 1
 					while n < 16
 						span.num= n++
@@ -60,9 +60,9 @@ block content
 					else 
 						span.toggle
 					div.node=path[node].node
-					if node.synonyms
+					if path[node].synonyms
 						if index != 0
-							each synonym in node.synonyms
+							each synonym in path[node].synonyms
 								div.synonym=synonym
 
 	// javascript // 
@@ -84,19 +84,50 @@ block content
 		$('.fadein').animate({
 			opacity: 1
 		}, 900);
+
+		var prevSelected;
+		$('.dots').on('click', function() {
+			var parent = $(this).parent().parent();
+			if (parent.hasClass('selected')) {
+				parent.removeClass('selected');
+				parent.removeClass('draggable');
+				parent.draggable('destroy');
+				parent.find('.dots').css({transform:"rotate(0deg)"});
+				prevSelected = undefined;
+			} else {
+				if (prevSelected) {
+					prevSelected.removeClass('selected');
+					prevSelected.removeClass('draggable');
+					prevSelected.draggable('destroy');
+					prevSelected.find('.dots').css({transform:"rotate(0deg)"});
+				}
+				$(this).css({transform:"rotate(-90deg)"});
+				parent.addClass('selected');
+				parent.addClass('draggable');
+				prevSelected = parent;
+				var c = parent.children();
+				var w = 0;
+				for (var i = 0; i < c.length; i++) {
+					w += $(c[i]).width();
+					w += 16; // approx padding
+				}
+				var leftContain = -w + window.innerWidth;
+				if (leftContain > 0 ) {
+					leftContain = 32;
+				}
+				parent.css({width:w});
+				parent.draggable({
+					scroll:false,
+					axis: 'x',
+					containment: [leftContain, 0, 32, 0]
+				});
+			}
+		});
+
 		$('.draggable' ).draggable({
 			scroll:false,
 			axis: "x",
-			containment:[-1000,0,64,0],
-			drag: function() {
-				$('.draggable')
-					.removeClass('hover')
-					.css({
-						top:0,
-						left:0
-					});
-				$(this).addClass('hover');
-			}
+			containment:[-1000,0,32,0],
 		});
 
 		
@@ -132,7 +163,8 @@ block content
 			e.next().children().css({color:"#c6c8ca"})
 			e.next().children(':nth-child('+e[0].value+')').css({color:"black"});
 		});
-		$('.numbers').children(':nth-child(10)').css({color:"black"});
+		$('.nodelim').children(':nth-child('+#{nodelimit}+')').css({color:"black"});
+		$('.synlev').children(':nth-child('+#{synonymlevel}+')').css({color:"black"});
 
 		
 		var menu = false;
@@ -235,17 +267,3 @@ block content
 			$('body').append(container);
 		}
 		$('.synonym').on('click', makeNewChain);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
