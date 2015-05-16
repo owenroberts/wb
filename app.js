@@ -42,7 +42,7 @@ app.post('/search', function(req, res) {
         errormsg: err
       });
     } else {
-      //console.log(data.path);
+      console.log(data.path);
       res.render('search', {
         nodelimit: req.body.nodelimit,
         synonymlevel: req.body.synonymlevel,

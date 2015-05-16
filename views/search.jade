@@ -51,6 +51,7 @@ block content
 		div#nodes
 			each node, index in Object.keys(path)
 				div.node-dad
+
 					if index == 0
 						span.toggle.adjust-button
 							img(src="/images/toggle.svg")
@@ -59,11 +60,16 @@ block content
 							span.dots=" •  •"
 					else 
 						span.toggle
+
 					div.node=path[node].node
-					if path[node].synonyms
-						if index != 0
-							each synonym in path[node].synonyms
-								div.synonym=synonym
+						div.node-btn.noded
+					
+					if index != 0
+						if path[index - 1].synonyms
+							each synonym in path[index - 1].synonyms
+								if synonym != path[index].node
+									div.synonym=synonym
+										div.node-btn
 
 	// javascript // 
 	script(type='text/javascript').
@@ -93,6 +99,7 @@ block content
 				parent.removeClass('draggable');
 				parent.draggable('destroy');
 				parent.find('.dots').css({transform:"rotate(0deg)"});
+				parent.find('.node-btn').fadeOut();
 				prevSelected = undefined;
 			} else {
 				if (prevSelected) {
@@ -108,12 +115,13 @@ block content
 				$(this).css({transform:"rotate(-90deg)"});
 				parent.addClass('selected');
 				parent.addClass('draggable');
+				parent.find('.node-btn').fadeIn(500);
 				prevSelected = parent;
 				var c = parent.children();
 				var w = 0;
 				for (var i = 0; i < c.length; i++) {
 					w += $(c[i]).width();
-					w += 16; // approx padding
+					w += 24; // approx padding
 				}
 				var leftContain = -w + window.innerWidth;
 				if (leftContain > 0 ) {
@@ -202,13 +210,24 @@ block content
 			var ldr = $('<img>').attr({'class':'ldr', 'src':'/images/ldr.gif'});
 			$(nodes[0]).after(ldr);
 		});
+
 		function makeNewChain() {
-			var synonym = $(this).html();
-			var parent = $(this).parent().index();
-			var word = $(this).parent().find('.node').html();
-			console.log(word);
+			
+			$('.noded').removeClass('noded');
+			$(this).addClass('noded');
+
+			var parent = $(this).parent();
+			var synonym = parent[0].innerText;
+			var nodeparent = parent.parent();
+			var node = nodeparent.find('.node');
+			var word = node[0].innerText;
+			
+			parent.siblings().animate({
+				opacity: 0
+			}, 500);
+
 			var data = !{JSON.stringify(path)};
-			var oldpath = data.slice(0, parent);
+			var oldpath = data.slice(0, parent.index());
 			var container = $('<div>')
 				.attr('id', 'modified-search');
 			var form = $('<form>')
@@ -250,7 +269,7 @@ block content
 				.attr({
 					'type':'submit',
 					'id':'mod',
-					'value':"Replace " + word + " with " + synonym + "?"
+					'value':"Click to replace " + word + " with " + synonym
 				});
 			$(submit).on('click', function() {
 				$('#modified-search').remove();
@@ -264,10 +283,15 @@ block content
 				.html('Cancel');
 			$(cancel).on('click', function() {
 				$('#modified-search').remove();
+				parent.siblings().animate({
+					opacity: 1
+				}, 500);
 			});
 			form.append(start).append(end).append(nodelimit).append(synonymlevel).append(path).append(submit);
 			container.append(form);
 			container.append(cancel);
+			container.css({opacity:0});
 			$('body').append(container);
+			container.animate({opacity:1}, 500);
 		}
-		$('.synonym').on('click', makeNewChain);
+		$('.node-btn').on('click', makeNewChain);

@@ -296,7 +296,7 @@ gegtyif+w2gAUfQH6gAA) format('woff'), url('fonts/AkzidenzGroteskBE-Md.ttf') form
 
 body {
   font-size: 26px;
-  font-family: AkzidenzGroteskBE-Md, Helvetica, sans-serif;
+  font-family: Helvetica, sans-serif;
   margin: 0;
   width: 100%;
   overflow-x: hidden; }
@@ -509,7 +509,9 @@ select {
     margin-right: 8px;
     display: inline-block;
     overflow: hidden;
-    width: 0px; }
+    width: 0px;
+    position: relative;
+    top: 6px; }
     .node-dad .toggle img {
       width: 24px;
       vertical-align: middle; }
@@ -521,13 +523,26 @@ select {
     transition: transform 500ms; }
   .node-dad .node {
     color: black;
-    display: inline-block; }
+    display: inline-block;
+    position: relative;
+    padding-right: 24px; }
+  .node-dad .node-btn {
+    background-image: url('/images/radio.png');
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    left: -14px;
+    top: 9px;
+    background-repeat: no-repeat;
+    display: none; }
+    .node-dad .node-btn.noded {
+      background-position: -12px; }
   .node-dad .synonym {
     display: none;
     transition: display 300ms;
     color: #c6c8ca;
-    padding: 0.2em;
-    padding-left: 0.5em; }
+    padding-right: 24px;
+    position: relative; }
     .node-dad .synonym:hover {
       color: black; }
 
@@ -560,7 +575,8 @@ select {
 
 .node-dad:first-child, .node-dad:last-child {
   padding: 0.25em 0;
-  display: block; }
+  display: block;
+  font-weight: 600; }
   .node-dad:first-child .node, .node-dad:last-child .node {
     color: black; }
   .node-dad:first-child:hover, .node-dad:last-child:hover {
