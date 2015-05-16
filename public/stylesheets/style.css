@@ -543,8 +543,6 @@ select {
     color: #c6c8ca;
     padding-right: 24px;
     position: relative; }
-    .node-dad .synonym:hover {
-      color: black; }
 
 .ldr {
   width: 12px; }

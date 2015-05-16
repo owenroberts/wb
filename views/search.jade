@@ -73,6 +73,11 @@ block content
 
 	// javascript // 
 	script(type='text/javascript').
+
+		document.ontouchmove = function(event){
+			event.preventDefault();
+		}
+
 		$('#nodes').animate({
 			"margin-left":"32px"
 		}, 900, function() {
@@ -106,6 +111,7 @@ block content
 					prevSelected.removeClass('selected');
 					prevSelected.removeClass('draggable');
 					prevSelected.draggable('destroy');
+					prevSelected.find('.node-btn').fadeOut();
 					prevSelected.css({
 						top:0,
 						left:0
@@ -214,7 +220,7 @@ block content
 		function makeNewChain() {
 			
 			$('.noded').removeClass('noded');
-			$(this).addClass('noded');
+			$(this).addClass('noded'); 
 
 			var parent = $(this).parent();
 			var synonym = parent[0].innerText;
