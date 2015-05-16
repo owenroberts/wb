@@ -99,6 +99,10 @@ block content
 					prevSelected.removeClass('selected');
 					prevSelected.removeClass('draggable');
 					prevSelected.draggable('destroy');
+					prevSelected.css({
+						top:0,
+						left:0
+					});
 					prevSelected.find('.dots').css({transform:"rotate(0deg)"});
 				}
 				$(this).css({transform:"rotate(-90deg)"});

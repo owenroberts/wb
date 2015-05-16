@@ -39,6 +39,10 @@ hr {
 	margin:0;
 }
 
+input:focus {
+	outline:none;
+}
+
 .index {
 	padding: 16px;
 	input {    
@@ -256,7 +260,8 @@ select {
 	transition:background 300ms;
 	padding:0.2em 0;
 	margin:0.2em 0;
-	
+	border-bottom: 	1px solid transparent;
+	border-top: 	1px solid transparent;
 	&.selected {
 		border-bottom: 1px solid $lightgray;
 		border-top: 1px solid $lightgray;
