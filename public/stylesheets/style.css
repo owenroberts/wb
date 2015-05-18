@@ -423,20 +423,6 @@ select {
     margin: 0.5em 0; }
   #adjust span {
     color: #c6c8ca; }
-  #adjust label {
-    font-size: 16px;
-    display: block;
-    line-height: 1.4em;
-    margin: 1em 0; }
-  #adjust .numbers {
-    font-size: 12px;
-    text-align: center; }
-    #adjust .numbers .num {
-      display: inline-block;
-      width: 6.6%; }
-
-/*  media query for fancy range */
-@media only screen and (min-width: 600px) {
   #adjust input {
     background: none;
     margin: 0;
@@ -488,8 +474,20 @@ select {
   #adjust input[type="submit"] {
     font-size: 1em;
     text-align: center;
-    width: 100%; } }
+    width: 100%; }
+  #adjust label {
+    font-size: 16px;
+    display: block;
+    line-height: 1.4em;
+    margin: 1em 0; }
+  #adjust .numbers {
+    font-size: 12px;
+    text-align: center; }
+    #adjust .numbers .num {
+      display: inline-block;
+      width: 6.6%; }
 
+/*  */
 #nodes {
   position: relative;
   width: 100%;
@@ -570,8 +568,10 @@ select {
     text-align: left;
     border: none;
     background: none; }
-  #modified-search button#cancel {
+  #modified-search button {
     background: #f1f1f2;
+    text-align: left;
+    border-radius: 4px;
     font-size: 20px;
     padding: 0.25em;
     border: none;

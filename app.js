@@ -56,6 +56,7 @@ app.post('/search', function(req, res) {
 });
 
 app.post('/search/modified', function(req, res) {
+  console.log(req.body);
   var path = JSON.parse(req.body.path);
   chain.makeChain(req.body.start, req.body.end, req.body.nodelimit, req.body.synonymlevel, function(err, data) {
     if (err) {

@@ -226,6 +226,65 @@ block content
 			$(nodes[0]).after(ldr);
 		});
 
+		function modifyChain() {
+			$('.noded').removeClass('noded');
+			$(this).addClass('noded'); 
+
+			var parent = $(this).parent();
+			var synonym = parent[0].innerText;
+			var nodeparent = parent.parent();
+			var node = nodeparent.find('.node');
+			var word = node[0].innerText;
+			
+			parent.siblings().animate({
+				opacity: 0
+			}, 500);
+
+			var data = !{JSON.stringify(path)};
+			var oldpath = data.slice(0, nodeparent.index());
+
+			var container = $('<div>')
+				.attr('id', 'modified-search');
+			var submitBtn = $('<button>')
+				.attr('id', 'mod')
+				.text("Click to replace " + word + " with " + synonym);
+			var cancelBtn = $('<button>')
+				.attr('id', 'cancel')
+				.html('Cancel');
+
+			$(submitBtn).on('click', function() {
+				$.ajax({
+					url: '/search/modified',
+					type: 'POST',
+					data: {
+						start: synonym,
+						end: "#{end}",
+						synonymlevel: #{synonymlevel},
+						nodelimit: #{nodelimit} - nodeparent.index(),
+						path: JSON.stringify(oldpath),
+						success: function(data) {
+							console.log(data);
+						}
+					}
+				});
+			});
+
+			$(cancelBtn).on('click', function() {
+				$('#modified-search').remove();
+				parent.siblings().animate({
+					opacity: 1
+				}, 500);
+			});
+
+			
+
+			container.append(submitBtn);
+			container.append(cancelBtn);
+			$('body').append(container);
+			container.animate({opacity:1}, 500);
+
+		}
+
 		function makeNewChain() {
 			
 			$('.noded').removeClass('noded');
@@ -242,7 +301,8 @@ block content
 			}, 500);
 
 			var data = !{JSON.stringify(path)};
-			var oldpath = data.slice(0, parent.index());
+			var oldpath = data.slice(0, nodeparent.index());
+
 			var container = $('<div>')
 				.attr('id', 'modified-search');
 			var form = $('<form>')
@@ -266,13 +326,13 @@ block content
 				.attr({
 					'name':'nodelimit',
 					'type':'hidden',
-					'value':10
+					'value':#{nodelimit} - nodeparent.index()
 				});
 			var synonymlevel = $('<input>')
 				.attr({
 					'name':'synonymlevel',
 					'type':'hidden',
-					'value':10
+					'value':#{synonymlevel}
 				});
 			var path = $('<input>')
 				.attr({
@@ -309,4 +369,4 @@ block content
 			$('body').append(container);
 			container.animate({opacity:1}, 500);
 		}
-		$('.node-btn').on('click', makeNewChain);
+		$('.node-btn').on('click', modifyChain);
