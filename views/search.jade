@@ -76,7 +76,7 @@ block content
 	script(type='text/javascript').
 
 		document.ontouchmove = function(e) {e.preventDefault()};
-		$('#main').addEventListener('touchmove', function(event){
+		$('#main').on('touchmove', function(event){
 			event.stopPropagation();
 		});
 
