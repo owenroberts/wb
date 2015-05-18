@@ -76,6 +76,9 @@ block content
 	script(type='text/javascript').
 
 		document.ontouchmove = function(e) {e.preventDefault()};
+		$('#main').addEventListener('touchmove', function(event){
+    		event.stopPropagation();
+		});
 
 		$('#nodes').animate({
 			"margin-left":"32px"
