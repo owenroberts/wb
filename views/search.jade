@@ -48,7 +48,7 @@ block content
 
 				hr
 				input(type="submit", value="apply adjustment")
-		div#nodes
+		div#nodes.nonbounce
 			each node, index in Object.keys(path)
 				div.node-dad
 
@@ -71,12 +71,11 @@ block content
 									div.synonym=synonym
 										div.node-btn
 
+	script(type="text/javascript" src="/javacripts/nonbounce.js")									
 	// javascript // 
 	script(type='text/javascript').
 
-		document.ontouchmove = function(event){
-			event.preventDefault();
-		}
+		$.nonbounce(); 
 
 		$('#nodes').animate({
 			"margin-left":"32px"
