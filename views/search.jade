@@ -79,6 +79,9 @@ block content
 		$('#nodes').on('touchmove', function(event){
 			event.stopPropagation();
 		});
+		$('#adjust').on('touchmove', function(event){
+			event.stopPropagation();
+		});
 
 		$('#nodes').animate({
 			"margin-left":"32px"
