@@ -139,6 +139,7 @@ select {
 	width:100%;
 	border-left:1px solid $lightgray;
 	height:100%;
+	overflow-x: hidden;
 	overflow-y: auto;
 	-webkit-overflow-scrolling: touch;
 }
