@@ -172,6 +172,26 @@ select {
 	span {
 		color:$gray;
 	}
+	label {
+		font-size:16px;
+		display:block;
+		line-height:1.4em;
+		margin:1em 0;
+	}
+	.numbers {
+		font-size:12px;
+		text-align:center;
+		.num {
+			display:inline-block;
+			width:6.6%;
+		}
+	}
+}
+
+/*  media query for fancy range */
+
+@media only screen and (min-width: 600px) {
+#adjust {
 	input {
 		background:none;
 		margin:0;
@@ -233,21 +253,10 @@ select {
 		text-align:center;
 		width:100%;
 	}
-	label {
-		font-size:16px;
-		display:block;
-		line-height:1.4em;
-		margin:1em 0;
-	}
-	.numbers {
-		font-size:12px;
-		text-align:center;
-		.num {
-			display:inline-block;
-			width:6.6%;
-		}
-	}
 }
+}
+
+
 
 #nodes {
 	position: relative;
