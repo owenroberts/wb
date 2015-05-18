@@ -77,7 +77,7 @@ block content
 
 		document.ontouchmove = function(e) {e.preventDefault()};
 		$('#main').addEventListener('touchmove', function(event){
-    		event.stopPropagation();
+			event.stopPropagation();
 		});
 
 		$('#nodes').animate({
