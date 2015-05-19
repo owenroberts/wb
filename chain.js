@@ -16,6 +16,7 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
   var findSynonyms = function(word, path, runagain) {
     
     var wordPath = path;
+    allsynomyms.push(word);
     var tmp = thesaurus.find(word);
     var synonyms = [];
     for (var i = 0; i < tmp.length; i++) {

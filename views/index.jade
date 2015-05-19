@@ -1,20 +1,34 @@
 extends layout
 block content
-	header
-		div.menu
-			img(src="/images/menu.svg")
-	hr
-	div.index
-		form(method="post", action="/search")
-			input(type="text",  name="start")
-			input(type="text",  name="end")
-			input(type="hidden",value="10",name="nodelimit")
-			input(type="hidden",value="10",name="synonymlevel")
-			input(type="submit", value="search")
-		if errormsg					
-			div.errormsg=errormsg
-		div.msg="Please wait while your search is performed."
+
+	div#sidebar
+		ul
+			li
+				a(href="#")="about synopath"
+			li
+				a(href="#")="how it works"
+			li
+				a(href="#")="feedback"
+
+
+	div#main
+		header
+			div.menu
+				img(src="/images/menu.svg")
+		div.index
+			form(method="post", action="/search")
+				input(type="text",  name="start")
+				input(type="text",  name="end")
+				input(type="hidden",value="10",name="nodelimit")
+				input(type="hidden",value="10",name="synonymlevel")
+				input(type="submit", value="search")
+			if errormsg					
+				div.errormsg=errormsg
+			div.msg="Please wait while your search is performed."
+
+	// ** javascript ** // 
 	script(type="text/javascript").
+
 		$('input[value="search"]').on('click', function() {
 			$('.msg').fadeIn().css("display","inline-block");;
 			$('.errormsg').fadeOut();
@@ -23,7 +37,28 @@ block content
 				"background-color":"transparent"
 			}, 500);
 		});
-		$('.menu').on('click', openMenu);
+		
+		// ** sidebar menu ** //
+		var menu = false;
+		var sidebarOffset = $('#sidebar').width();
+		$('#sidebar').css('left', -sidebarOffset);
 		function openMenu() {
-			console.log("menu");
+			if (!menu) {
+				$('#main').animate({
+					'left': sidebarOffset
+				}, 500);
+				$('#sidebar').animate({
+					'left': 0
+				}, 500);
+				menu = true;
+			} else {
+				$('#main').animate({
+					'left': 0
+				}, 500);
+				$('#sidebar').animate({
+					'left': -sidebarOffset
+				}, 500);
+				menu = false;
+			}
 		}
+		$('.menu').on('click', openMenu);

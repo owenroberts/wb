@@ -101,31 +101,27 @@ block content
 			opacity: 1
 		}, 900);
 
+		var undrag = function(elem) {
+			elem.removeClass('selected');
+			elem.removeClass('draggable');
+			elem.draggable('destroy');
+			elem.css({
+					top:0,
+					left:0
+				});
+			elem.find('.dots').css({transform:"rotate(0deg)"});
+			elem.find('.node-btn').fadeOut();
+		}
+
 		var prevSelected;
 		$('.dots').on('click', function() {
 			var parent = $(this).parent().parent();
 			if (parent.hasClass('selected')) {
-				parent.removeClass('selected');
-				parent.removeClass('draggable');
-				parent.draggable('destroy');
-				parent.css({
-						top:0,
-						left:0
-					});
-				parent.find('.dots').css({transform:"rotate(0deg)"});
-				parent.find('.node-btn').fadeOut();
+				undrag(parent);
 				prevSelected = undefined;
 			} else {
 				if (prevSelected) {
-					prevSelected.removeClass('selected');
-					prevSelected.removeClass('draggable');
-					prevSelected.draggable('destroy');
-					prevSelected.find('.node-btn').fadeOut();
-					prevSelected.css({
-						top:0,
-						left:0
-					});
-					prevSelected.find('.dots').css({transform:"rotate(0deg)"});
+					undrag(prevSelected);
 				}
 				$(this).css({transform:"rotate(-90deg)"});
 				parent.addClass('selected');
@@ -193,7 +189,7 @@ block content
 		$('.nodelim').children(':nth-child('+#{nodelimit}+')').css({color:"black"});
 		$('.synlev').children(':nth-child('+#{synonymlevel}+')').css({color:"black"});
 
-		
+		// ** sidebar menu ** //
 		var menu = false;
 		var sidebarOffset = $('#sidebar').width();
 		$('#sidebar').css('left', -sidebarOffset);
@@ -363,13 +359,17 @@ block content
 
 			parent.siblings().animate({
 				opacity: 0
-			}, 500, function() {
-				parent.animate({
-					left: 0
-				}, 500, function() {
-					form.append(start).append(end).append(nodelimit).append(synonymlevel).append(path).append(submit);
-					form.submit();
-				});
+			}, 500);
+
+			parent.css({color:'black'});
+			parent.find('.node-btn').fadeOut();
+			$(nodeparent[0]).css({'border-color':'transparent'});
+
+			$(nodeparent[0]).animate({
+				left: -parent.offset().left + 64 + 'px'
+			}, 1000, function() {
+				form.append(start).append(end).append(nodelimit).append(synonymlevel).append(path).append(submit);
+				form.submit();
 			});
 
 			

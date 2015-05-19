@@ -355,7 +355,8 @@ header {
   header .menu {
     position: absolute;
     top: 16px;
-    left: 16px; }
+    left: 16px;
+    cursor: pointer; }
     header .menu img {
       width: 20px; }
   header .paths {
@@ -478,7 +479,8 @@ select {
   #adjust input[type="submit"] {
     font-size: 1em;
     text-align: center;
-    width: 100%; }
+    width: 100%;
+    cursor: pointer; }
   #adjust label {
     font-size: 16px;
     display: block;
@@ -545,7 +547,7 @@ select {
     position: absolute;
     width: 12px;
     height: 12px;
-    left: -14px;
+    left: -16px;
     top: 9px;
     background-repeat: no-repeat;
     display: none;
