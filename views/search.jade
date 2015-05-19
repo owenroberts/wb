@@ -296,9 +296,7 @@ block content
 			var node = nodeparent.find('.node');
 			var word = node[0].innerText;
 			
-			parent.siblings().animate({
-				opacity: 0
-			}, 500);
+
 
 			var data = !{JSON.stringify(path)};
 			var oldpath = data.slice(0, nodeparent.index());
@@ -362,11 +360,19 @@ block content
 					opacity: 1
 				}, 500);
 			});
-			form.append(start).append(end).append(nodelimit).append(synonymlevel).append(path).append(submit);
-			container.append(form);
-			container.append(cancel);
-			container.css({opacity:0});
-			$('body').append(container);
-			container.animate({opacity:1}, 500);
+
+			parent.siblings().animate({
+				opacity: 0
+			}, 500, function() {
+				parent.animate({
+					left: 0
+				}, 500, function() {
+					form.append(start).append(end).append(nodelimit).append(synonymlevel).append(path).append(submit);
+					form.submit();
+				});
+			});
+
+			
+
 		}
-		$('.node-btn').on('click', modifyChain);
+		$('.node-btn').on('click', makeNewChain);

@@ -506,16 +506,22 @@ select {
   border-top: 1px solid transparent; }
   .node-dad.selected {
     border-bottom: 1px solid #f1f1f2;
-    border-top: 1px solid #f1f1f2; }
+    border-top: 1px solid #f1f1f2;
+    cursor: -webkit-grab;
+    cursor: -moz-grab; }
+    .node-dad.selected:active {
+      cursor: -webkit-grabbing;
+      cursor: -moz-grabbing; }
     .node-dad.selected .synonym {
       display: inline-block; }
   .node-dad .toggle {
-    margin-right: 8px;
+    margin-right: 16px;
     display: inline-block;
     overflow: hidden;
     width: 0px;
     position: relative;
-    top: 6px; }
+    top: 6px;
+    cursor: pointer; }
     .node-dad .toggle img {
       width: 24px;
       vertical-align: middle; }
@@ -538,7 +544,8 @@ select {
     left: -14px;
     top: 9px;
     background-repeat: no-repeat;
-    display: none; }
+    display: none;
+    cursor: pointer; }
     .node-dad .node-btn.noded {
       background-position: -12px; }
   .node-dad .synonym {

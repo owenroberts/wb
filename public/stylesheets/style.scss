@@ -270,17 +270,24 @@ select {
 	&.selected {
 		border-bottom: 1px solid $lightgray;
 		border-top: 1px solid $lightgray;
+		cursor: -webkit-grab; 
+		cursor: -moz-grab;
+		&:active {
+			cursor: -webkit-grabbing; 
+			cursor: -moz-grabbing;
+		}
 		& .synonym {
 			display:inline-block;
 		}
 	}
 	.toggle {
-		margin-right:8px;
+		margin-right:16px;
 		display:inline-block;
 		overflow:hidden;
 		width:0px;
 		position:relative;
 		top:6px;
+		cursor:pointer;
 		img {
 			width:24px;
 			vertical-align:middle;
@@ -308,6 +315,7 @@ select {
   		top: 9px;
   		background-repeat: no-repeat;
   		display: none;
+  		cursor:pointer;
   		&.noded {
   			background-position:-12px;
   		}

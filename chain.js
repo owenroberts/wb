@@ -40,13 +40,11 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
     for (var i = 0; i < synonyms.length; i++) {
       if (synonyms[i] == end) {
         allpaths.push(wordPath);
-        return;
       } else {
         if (runagain && wordPath.length < nodenumber) {
           var newpath = wordPath.slice(0);
           findSynonyms(synonyms[i], newpath, true);
         } else {
-          return;
         }
       }
     }
