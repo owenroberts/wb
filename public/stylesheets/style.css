@@ -441,7 +441,11 @@ select {
     margin-top: -4px;
     border: none;
     position: relative;
-    pointer-events: none; }
+    cursor: -webkit-grab;
+    cursor: -moz-grab; }
+    #adjust input[type=range]::-webkit-slider-thumb:active {
+      cursor: -webkit-grabbing;
+      cursor: -moz-grabbing; }
   #adjust input[type=range]::-webkit-slider-runnable-track {
     height: 3px;
     background: #f1f1f2;

@@ -192,7 +192,12 @@ select {
 		margin-top: -4px;
 		border:none;
 		position:relative;
-		pointer-events:none;
+		cursor: -webkit-grab; 
+		cursor: -moz-grab;
+		&:active {
+			cursor: -webkit-grabbing; 
+			cursor: -moz-grabbing;
+		}
 	}
 	input[type=range]::-webkit-slider-runnable-track {
 	    height: 3px;
@@ -210,6 +215,7 @@ select {
 		top:4px;
 		bottom:3px;
 		background: $blue;
+		
 	}
 	input[type=range]::-webkit-slider-thumb:after {
 		content: "";
@@ -221,6 +227,7 @@ select {
 		background: $blue;
 		border-radius: 50%;
 		z-index: 10;
+		
 	}
 	input[type=range]:focus {
 		outline:none;
