@@ -38,11 +38,12 @@ app.get('/', function(req, res) {
 app.post('/search', function(req, res) {
   chain.makeChain(req.body.start, req.body.end, req.body.nodelimit, req.body.synonymlevel, function(err, data) {
     if (err) {
+      alert(err);
       res.render('index', {
         errormsg: err
       });
     } else {
-      console.log(data.path);
+      /*console.log(data.path);*/
       res.render('search', {
         nodelimit: req.body.nodelimit,
         synonymlevel: req.body.synonymlevel,
@@ -56,7 +57,7 @@ app.post('/search', function(req, res) {
 });
 
 app.post('/search/modified', function(req, res) {
-  console.log(req.body);
+
   var path = JSON.parse(req.body.path);
   chain.makeChain(req.body.start, req.body.end, req.body.nodelimit, req.body.synonymlevel, function(err, data) {
     if (err) {
