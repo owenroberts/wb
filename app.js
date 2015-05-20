@@ -54,24 +54,17 @@ app.post('/search', function(req, res) {
   });
 });
 
-app.post('/search/modified', function(req, res) {
-  var path = JSON.parse(req.body.path);
-  chain.makeChain(req.body.start, req.body.end, req.body.nodelimit, req.body.synonymlevel, function(err, data) {
+app.get('/search/modified', function(req, res) {
+  console.log(req.query);
+  chain.makeChain(req.query.start, req.query.end, req.query.nodelimit, req.query.synonymlevel, function(err, data) {
     if (err) {
+      console.log(err);
       res.render('index', {
         errormsg: err
       });
     } else {
-      data.path.forEach(function(node)  {
-        path.push(node);
-      });
-      res.render('search', {
-        nodelimit: req.body.nodelimit,
-        synonymlevel: req.body.synonymlevel,
-        start:path[0].node,
-        end:path[path.length - 1].node,
-        title: path[0].node + " - " + path[path.length - 1].node,
-        path: path
+      res.json({
+        path: data.path
       });
     }
   });

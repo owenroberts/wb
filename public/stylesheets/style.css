@@ -303,7 +303,8 @@ body {
 
 a {
   color: #c6c8ca;
-  text-decoration: none; }
+  text-decoration: none;
+  transition: color 500ms; }
   a:hover {
     color: #f1f1f2; }
 
@@ -347,10 +348,10 @@ input {
   font-family: AkzidenzGroteskBE-Md, Helvetica, sans-serif;
   border: none; }
 
-svg {
-  transition: all 500ms; }
-  svg:hover * {
-    stroke: black; }
+svg * {
+  transition: stroke 500ms; }
+svg:hover * {
+  stroke: black; }
 
 a:hover {
   cursor: pointer;
@@ -372,8 +373,7 @@ header {
       margin: 0 4px;
       font-size: 18px; }
     header .paths .path:before {
-      content: "\2022";
-      color: #c6c8ca; }
+      content: "\2022"; }
   header .plus {
     position: absolute;
     top: 16px;
@@ -486,7 +486,8 @@ select {
     font-size: 1em;
     text-align: center;
     width: 100%;
-    cursor: pointer; }
+    cursor: pointer;
+    transition: color 500ms; }
   #adjust label {
     font-size: 16px;
     display: block;

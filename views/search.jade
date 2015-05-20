@@ -99,7 +99,7 @@ block content
 					var showNode = function(num) {
 						setTimeout( function() {
 							$(nodes[num]).fadeIn();
-						}, num*800);
+						}, num*400);
 					}(i);
 				}
 			});
@@ -238,148 +238,74 @@ block content
 			var nodeparent = parent.parent();
 			var node = nodeparent.find('.node');
 			var word = node[0].innerText;
-			
-			parent.siblings().animate({
-				opacity: 0
-			}, 500);
 
-			var data = !{JSON.stringify(path)};
-			var oldpath = data.slice(0, nodeparent.index());
-
-			var container = $('<div>')
-				.attr('id', 'modified-search');
-			var submitBtn = $('<button>')
-				.attr('id', 'mod')
-				.text("Click to replace " + word + " with " + synonym);
-			var cancelBtn = $('<button>')
-				.attr('id', 'cancel')
-				.html('Cancel');
-
-			$(submitBtn).on('click', function() {
-				$.ajax({
-					url: '/search/modified',
-					type: 'POST',
-					data: {
-						start: synonym,
-						end: "#{end}",
-						synonymlevel: #{synonymlevel},
-						nodelimit: #{nodelimit} - nodeparent.index(),
-						path: JSON.stringify(oldpath),
-						success: function(data) {
-							console.log(data);
-						}
-					}
-				});
-			});
-
-			$(cancelBtn).on('click', function() {
-				$('#modified-search').remove();
-				parent.siblings().animate({
-					opacity: 1
-				}, 500);
-			});
-
-			
-
-			container.append(submitBtn);
-			container.append(cancelBtn);
-			$('body').append(container);
-			container.animate({opacity:1}, 500);
-
-		}
-
-		function makeNewChain() {
-			
-			$('.noded').removeClass('noded');
-			$(this).addClass('noded'); 
-
-			var parent = $(this).parent();
-			var synonym = parent[0].innerText;
-			var nodeparent = parent.parent();
-			var node = nodeparent.find('.node');
-			var word = node[0].innerText;
-			
-
-
-			var data = !{JSON.stringify(path)};
-			var oldpath = data.slice(0, nodeparent.index());
-
-			var container = $('<div>')
-				.attr('id', 'modified-search');
-			var form = $('<form>')
-				.attr({
-					'method':'post',
-					'action':'/search/modified',
-				});
-			var start = $('<input>')
-				.attr({
-					'name':'start',
-					'type':'hidden',
-					'value':synonym
-				});
-			var end = $('<input>')
-				.attr({
-					'name':'end',
-					'type':'hidden',
-					'value':"#{end}"
-				});
-			var nodelimit = $('<input>')
-				.attr({
-					'name':'nodelimit',
-					'type':'hidden',
-					'value':#{nodelimit} - nodeparent.index()
-				});
-			var synonymlevel = $('<input>')
-				.attr({
-					'name':'synonymlevel',
-					'type':'hidden',
-					'value':#{synonymlevel}
-				});
-			var path = $('<input>')
-				.attr({
-					'name':'path',
-					'type':'hidden',
-					'value':JSON.stringify(oldpath)
-					});
-			var submit = $('<input>')
-				.attr({
-					'type':'submit',
-					'id':'mod',
-					'value':"Click to replace " + word + " with " + synonym
-				});
-			$(submit).on('click', function() {
-				$('#modified-search').remove();
-				for (var i = parent; i < nodes.length - 1; i++) 
-					$(nodes[i]).fadeOut();
-				var ldr = $('<img>').attr({'class':'ldr', 'src':'/images/ldr.gif'});
-				$(nodes[parent]).after(ldr);
-			});
-			var cancel = $('<button>')
-				.attr('id', 'cancel')
-				.html('Cancel');
-			$(cancel).on('click', function() {
-				$('#modified-search').remove();
-				parent.siblings().animate({
-					opacity: 1
-				}, 500);
-			});
 
 			parent.siblings().animate({
 				opacity: 0
 			}, 500);
-
 			parent.css({color:'black'});
 			parent.find('.node-btn').fadeOut();
 			$(nodeparent[0]).css({'border-color':'transparent'});
-
 			$(nodeparent[0]).animate({
-				left: -parent.offset().left + 64 + 'px'
-			}, 1000, function() {
-				form.append(start).append(end).append(nodelimit).append(synonymlevel).append(path).append(submit);
-				form.submit();
+				left: -parent.offset().left + 72 + 'px'
+			}, 1000);
+
+			var nodes = $('.node-dad:gt('+nodeparent.index()+')');
+
+			for (var i = 0; i < nodes.length - 1; i++) {
+				var n = i;
+				$(nodes[i]).fadeOut((nodes.length - i) * 300, function(n) {
+					this.remove();
+				});
+			}
+
+			$.ajax({
+				url: '/search/modified',
+				type: 'get',
+				dataType:'json',
+				data: {
+					start: synonym,
+					end: "#{end}",
+					synonymlevel: #{synonymlevel},
+					nodelimit: #{nodelimit} - nodeparent.index()		
+				},
+				success: function(data) {
+					alert('Data received, building new path.');
+					undrag($('.selected'));
+					$('.selected').remove();
+					for (var i = 0; i < data.path.length - 1; i ++) {
+						var newnodedad = $('<div>')
+							.addClass('node-dad')
+							.css({display:'block'});
+						var newtoggle = $('<span>')
+							.addClass('toggle')
+							.css({width:'24px'});
+						var newdots = $('<a>')
+							.addClass('dots')
+							.text(' •  •');
+						newtoggle.append(newdots);
+						
+						var newnode = $('<div>')
+							.addClass('node')
+							.text(data.path[i].node);
+						var newnodebtn = $('<div>')
+							.addClass('node-btn');
+						newnode.append(newnodebtn);
+						newnodedad.append(newtoggle);
+						newnodedad.append(newnode);
+						
+						//console.log(data.path[i].synonyms[0]);
+						//- for (var h = 0; h < data.path[i].synonyms.length; h++) {
+						//- 	var newsynnode = $('<div>')
+						//- 		.addClass('synonym')
+						//- 		.text(data.path[i].synonyms[h]);
+						//- 	newsynnode.append(newnodebtn);
+						//- 	newnodedad.append(newsynnode);
+						//- }
+						newnodedad.insertBefore('.node-dad:last-child()');
+					}
+				}
 			});
 
-			
-
 		}
-		$('.node-btn').on('click', makeNewChain);
+		$('.node-btn').on('click', modifyChain);
