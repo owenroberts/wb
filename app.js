@@ -80,6 +80,13 @@ app.post('/search/modified', function(req, res) {
   });
 });
 
+app.get('/jsontest', function(req,res) {
+  console.log("body " + JSON.stringify(req.query));
+  res.json({
+    ok: req.query
+  });
+});
+
 
 
 var server = app.listen(3000, function() {
