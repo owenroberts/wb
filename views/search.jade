@@ -15,12 +15,15 @@ block content
 
 	div#main
 		header
-			div.menu
-				img(src="/images/menu.svg")
+			a.menu
+				svg(width="22" height="22" viewBox="0 0 20 20")
+					path(fill="none" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round" d="M17.2 7.6H1.1M17.2 1.2H1.1M17.2 14H1.1")
 			div.paths.fadein
-				div.path(id="p0")
-			div.plus.fadein
-				img(src="/images/plus.svg")
+				a.path(id="p0")
+			a.plus.fadein
+				svg(width="20" height="20" viewBox="0 0 20 20")
+					g(fill="none")
+					path(d="M9.6 1v17.1M18.1 9.6H1" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round")
 	
 		div#adjust
 			div="path adjustments"
@@ -53,13 +56,17 @@ block content
 				div.node-dad
 
 					if index == 0
-						span.toggle.adjust-button
-							img(src="/images/toggle.svg")
+						a.toggle.adjust-button
+							svg(width="20" height="20" viewBox="0 0 20 20")
+								path(fill="none" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round" d="M18.1 9.6H2")
+								path(fill="#fff" d="M7.6 9.6c0 1.3 1.1 2.4 2.4 2.4 1.3 0 2.4-1.1 2.4-2.4 0-1.3-1.1-2.4-2.4-2.4-1.3 0-2.4 1.1-2.4 2.4")
+								circle(fill="none" stroke="#C7C8CA" stroke-width="1.15" cx="10" cy="9.6" r="2.4")
+
 					else if index < Object.keys(path).length - 1
 						span.toggle
-							span.dots=" •  •"
+							a.dots=" •  •"
 					else 
-						span.toggle
+						a.toggle
 
 					div.node=path[node].node
 						div.node-btn.noded

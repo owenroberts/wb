@@ -347,6 +347,15 @@ input {
   font-family: AkzidenzGroteskBE-Md, Helvetica, sans-serif;
   border: none; }
 
+svg {
+  transition: all 500ms; }
+  svg:hover * {
+    stroke: black; }
+
+a:hover {
+  cursor: pointer;
+  color: black; }
+
 header {
   padding: 0 16px;
   padding-top: 16px;
@@ -355,10 +364,7 @@ header {
   header .menu {
     position: absolute;
     top: 16px;
-    left: 16px;
-    cursor: pointer; }
-    header .menu img {
-      width: 20px; }
+    left: 16px; }
   header .paths {
     text-align: center; }
     header .paths .path {
@@ -526,8 +532,7 @@ select {
     overflow: hidden;
     width: 0px;
     position: relative;
-    top: 6px;
-    cursor: pointer; }
+    top: 6px; }
     .node-dad .toggle img {
       width: 24px;
       vertical-align: middle; }
@@ -535,7 +540,6 @@ select {
     display: inline-block;
     margin: 0 2px;
     font-size: 18px;
-    color: #c6c8ca;
     transition: transform 500ms; }
   .node-dad .node {
     color: black;

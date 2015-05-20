@@ -73,6 +73,18 @@ input {
 	font-family:$akz, Helvetica, sans-serif;
 	border:none;
 }
+svg {
+	transition: all 500ms;
+	&:hover {
+		* {
+			stroke: $black;
+		}
+	}
+}
+a:hover {
+	cursor:pointer;
+	color: $black;
+}
 header {
 	padding:0 16px;
 	padding-top:16px;
@@ -82,10 +94,6 @@ header {
 		position:absolute;
 		top:16px;
 		left:16px;
-		cursor:pointer;
-		img {
-			width:20px;
-		}
 	}
 	.paths {
 		text-align:center;
@@ -96,7 +104,6 @@ header {
 		}
 		.path:before {
 			content:"\2022";
-			color:$gray;
 		}
 	}
 	.plus {
@@ -296,7 +303,6 @@ select {
 		width:0px;
 		position:relative;
 		top:6px;
-		cursor:pointer;
 		img {
 			width:24px;
 			vertical-align:middle;
@@ -306,7 +312,6 @@ select {
 		display:inline-block;
 		margin:0 2px;
 		font-size:18px;
-		color:$gray;
 		transition: transform 500ms;
 	}
 	.node {
