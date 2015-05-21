@@ -121,7 +121,7 @@ block content
 		}
 
 		var prevSelected;
-		$('.dots').on('click', function() {
+		$('body').on('click', '.dots', function() {
 			var parent = $(this).parent().parent();
 			if (parent.hasClass('selected')) {
 				undrag(parent);
@@ -239,7 +239,6 @@ block content
 			var node = nodeparent.find('.node');
 			var word = node[0].innerText;
 
-
 			parent.siblings().animate({
 				opacity: 0
 			}, 500);
@@ -270,42 +269,53 @@ block content
 					nodelimit: #{nodelimit} - nodeparent.index()		
 				},
 				success: function(data) {
-					alert('Data received, building new path.');
-					undrag($('.selected'));
-					$('.selected').remove();
-					for (var i = 0; i < data.path.length - 1; i ++) {
-						var newnodedad = $('<div>')
-							.addClass('node-dad')
-							.css({display:'block'});
-						var newtoggle = $('<span>')
-							.addClass('toggle')
-							.css({width:'24px'});
-						var newdots = $('<a>')
-							.addClass('dots')
-							.text(' •  •');
-						newtoggle.append(newdots);
-						
-						var newnode = $('<div>')
-							.addClass('node')
-							.text(data.path[i].node);
-						var newnodebtn = $('<div>')
-							.addClass('node-btn');
-						newnode.append(newnodebtn);
-						newnodedad.append(newtoggle);
-						newnodedad.append(newnode);
-						
-						//console.log(data.path[i].synonyms[0]);
-						//- for (var h = 0; h < data.path[i].synonyms.length; h++) {
-						//- 	var newsynnode = $('<div>')
-						//- 		.addClass('synonym')
-						//- 		.text(data.path[i].synonyms[h]);
-						//- 	newsynnode.append(newnodebtn);
-						//- 	newnodedad.append(newsynnode);
-						//- }
-						newnodedad.insertBefore('.node-dad:last-child()');
+					
+					if (data.errormsg) {
+						alert(data.errormsg + "\n\nClick okay to refresh the original results.");
+						document.location.reload(true);
+					}
+
+					else {
+						undrag($('.selected'));
+						nodeparent.remove();
+						prevSelected = null;
+						for (var i = 0; i < data.path.length - 1; i ++) {
+							var newnodedad = $('<div>')
+								.addClass('node-dad');
+							var newtoggle = $('<span>')
+								.addClass('toggle')
+								.css({width:'24px'});
+							var newdots = $('<a>')
+								.addClass('dots')
+								.text(' •  •');
+							newtoggle.append(newdots);
+							
+							var newnode = $('<div>')
+								.addClass('node')
+								.text(data.path[i].node);
+							var newnodebtn = $('<div>')
+								.addClass('node-btn');
+
+							newnode.append(newnodebtn);
+							newnodedad.append(newtoggle);
+							newnodedad.append(newnode);
+							
+							for (var h = 0; h < data.path[i].synonyms.length; h++) {
+								var newsynnode = $('<div>')
+									.addClass('synonym')
+									.text(data.path[i].synonyms[h]);
+								var synnodebtn = $('<div>')
+									.addClass('node-btn');
+								newsynnode.append(synnodebtn);
+								newnodedad.append(newsynnode);
+							}
+							newnodedad.insertBefore('.node-dad:last-child()');
+
+							newnodedad.fadeIn(i * 800 + 800);
+						}
 					}
 				}
 			});
 
 		}
-		$('.node-btn').on('click', modifyChain);
+		$('body').on('click', '.node-btn', modifyChain);

@@ -55,11 +55,9 @@ app.post('/search', function(req, res) {
 });
 
 app.get('/search/modified', function(req, res) {
-  console.log(req.query);
   chain.makeChain(req.query.start, req.query.end, req.query.nodelimit, req.query.synonymlevel, function(err, data) {
     if (err) {
-      console.log(err);
-      res.render('index', {
+      res.json({
         errormsg: err
       });
     } else {
