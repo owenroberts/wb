@@ -418,7 +418,8 @@ select {
   #sidebar li {
     border-bottom: 1px solid #f1f1f2;
     padding: 0.5em;
-    height: 48px; }
+    height: 48px;
+    width: 260px; }
     #sidebar li a {
       color: black; }
 
@@ -620,3 +621,8 @@ select {
 .newsearch a {
   padding: 0.5em;
   border: 1px solid #f1f1f2; }
+
+/*  media queries */
+@media only screen and (min-width: 800px) {
+  body {
+    font-size: 30px; } }

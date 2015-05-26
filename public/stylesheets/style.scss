@@ -167,6 +167,7 @@ select {
 		border-bottom:1px solid $lightgray;
 		padding:0.5em;
 		height:48px;
+		width:260px;
 		a {
 			color:$black;
 		}
@@ -414,3 +415,12 @@ select {
 		border:1px solid $lightgray;
 	}
 }
+
+/*  media queries */
+
+@media only screen  and (min-width : 800px) {
+	body {
+		font-size:30px;
+	}
+}
+
