@@ -77,13 +77,23 @@ input {
 	font-family:$akz, Helvetica, sans-serif;
 	border:none;
 }
-svg {
+svg.stroke {
 	* {
 		transition: stroke 500ms;
 	}
 	&:hover {
 		* {
 			stroke: $black;
+		}
+	}
+}
+svg.fill {
+	path {
+		transition: fill 500ms;
+	}
+	&:hover {
+		path {
+			fill: $black;
 		}
 	}
 }
@@ -117,7 +127,7 @@ header {
 		top:16px;
 		right:16px;
 		img {
-			width:20px;
+			width:80px;
 		}
 	}
 }
@@ -128,10 +138,11 @@ header {
 }
 .msg {
 	display:inline-block;
-	position:absolute;
-	bottom:20px;
 	font-size:20px;
 	display:none;
+	img {
+		width:40px;
+	}
 }
 
 
@@ -421,6 +432,14 @@ select {
 @media only screen  and (min-width : 800px) {
 	body {
 		font-size:30px;
+	}
+	header {
+		min-height:52px;
+	}
+	#sidebar {
+		li {
+			height:52px;
+		}
 	}
 }
 

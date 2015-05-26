@@ -14,7 +14,7 @@ block content
 	div#main
 		header
 			a.menu
-				svg(width="22" height="22" viewBox="0 0 20 20")
+				svg(class="stroke" width="22" height="22" viewBox="0 0 20 20")
 					path(fill="none" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round" d="M17.2 7.6H1.1M17.2 1.2H1.1M17.2 14H1.1")
 		div.index
 			form(method="get", action="/search")
@@ -25,7 +25,8 @@ block content
 				input(type="submit", value="search")
 			if errormsg					
 				div.errormsg=errormsg
-			div.msg="Please wait while your search is performed."
+			div.msg
+				img(src="/images/loader.svg")
 
 	// ** javascript ** // 
 	script(type="text/javascript").

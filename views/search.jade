@@ -16,12 +16,12 @@ block content
 	div#main
 		header
 			a.menu
-				svg(width="22" height="22" viewBox="0 0 20 20")
+				svg(width="22" height="22" viewBox="0 0 20 20" class="stroke")
 					path(fill="none" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round" d="M17.2 7.6H1.1M17.2 1.2H1.1M17.2 14H1.1")
 			div.paths.fadein
 				a.path(id="p0")
 			a.plus.fadein
-				svg(width="20" height="20" viewBox="0 0 20 20")
+				svg(width="20" height="20" viewBox="0 0 20 20" class="stroke")
 					g(fill="none")
 					path(d="M9.6 1v17.1M18.1 9.6H1" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round")
 	
@@ -57,11 +57,8 @@ block content
 
 					if index == 0
 						a.toggle.adjust-button
-							svg(width="20" height="20" viewBox="0 0 20 20")
-								path(fill="none" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round" d="M18.1 9.6H2")
-								path(fill="#fff" d="M7.6 9.6c0 1.3 1.1 2.4 2.4 2.4 1.3 0 2.4-1.1 2.4-2.4 0-1.3-1.1-2.4-2.4-2.4-1.3 0-2.4 1.1-2.4 2.4")
-								circle(fill="none" stroke="#C7C8CA" stroke-width="1.15" cx="10" cy="9.6" r="2.4")
-
+							svg(class="fill" width="20" height="20" viewBox="0 0 15.2 14.6")
+								path(fill="#C7C8CA" d="M12.2 1.4l1.5 1.4s-1 1.5-.5 2.3c.4.8 1.9 1.1 1.9 1.1v2s-1.5.2-1.9 1.2c-.4 1 .5 2.3.5 2.3l-1.4 1.4s-1.2-.9-2.3-.5c-1.1.4-1.3 1.9-1.3 1.9H6.6s-.1-1.4-1.1-1.9-2.6.5-2.6.5l-1.4-1.4s1-1.3.5-2.3c-.4-.9-2-1.1-2-1.1v-2s2.1-.5 2.1-1.4-.6-2.1-.6-2.1L3 1.4s1.3.8 2.4.5C6.2 1.6 6.6 0 6.6 0h2.1S9 1.6 10 2c1 .3 2.2-.6 2.2-.6m-4.6 9.8c2.2 0 4-1.7 4-3.9 0-2.1-1.8-3.9-4-3.9s-4 1.7-4 3.9c-.1 2.1 1.7 3.9 4 3.9")
 					else if index < Object.keys(path).length - 1
 						span.toggle
 							a.dots=" •  •"

@@ -351,10 +351,15 @@ input {
   font-family: AkzidenzGroteskBE-Md, Helvetica, sans-serif;
   border: none; }
 
-svg * {
+svg.stroke * {
   transition: stroke 500ms; }
-svg:hover * {
+svg.stroke:hover * {
   stroke: black; }
+
+svg.fill path {
+  transition: fill 500ms; }
+svg.fill:hover path {
+  fill: black; }
 
 a:hover {
   cursor: pointer;
@@ -382,17 +387,17 @@ header {
     top: 16px;
     right: 16px; }
     header .plus img {
-      width: 20px; }
+      width: 80px; }
 
 .errormsg {
   margin-top: 1em; }
 
 .msg {
   display: inline-block;
-  position: absolute;
-  bottom: 20px;
   font-size: 20px;
   display: none; }
+  .msg img {
+    width: 40px; }
 
 select {
   margin: 1em; }
@@ -625,4 +630,8 @@ select {
 /*  media queries */
 @media only screen and (min-width: 800px) {
   body {
-    font-size: 30px; } }
+    font-size: 30px; }
+  header {
+    min-height: 52px; }
+  #sidebar li {
+    height: 52px; } }
