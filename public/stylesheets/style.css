@@ -301,6 +301,9 @@ body {
   width: 100%;
   overflow-x: hidden; }
 
+pre {
+  font-size: 12px; }
+
 a {
   color: #c6c8ca;
   text-decoration: none;

@@ -6,10 +6,14 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     routes = require('./routes/index'),
     wordnet = require('wordnet'),
-    //memwatch = require('memwatch'),
+    NodeCache = require( "node-cache" )
     chain = require('./chain');
 
 var app = express();
+
+
+// cache stuff
+var appCache = new NodeCache( { stdTTL: 100, checkperiod: 120 } );
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -35,37 +39,84 @@ app.get('/', function(req, res) {
   res.render('index');
 });
 
-app.post('/search', function(req, res) {
-  chain.makeChain(req.body.start, req.body.end, req.body.nodelimit, req.body.synonymlevel, function(err, data) {
-    if (err) {
-      res.render('index', {
-        errormsg: err
-      });
-    } else {
-      res.render('search', {
-        nodelimit: req.body.nodelimit,
-        synonymlevel: req.body.synonymlevel,
-        start:data.path[0].node,
-        end:data.path[data.path.length - 1].node,
-        title: data.path[0].node + " - " + data.path[data.path.length - 1].node,
-        path: data.path
-      });
-    }
-  });
+app.get('/search', function(req, res) {
+  var cacheString = req.query.start + req.query.end + req.query.nodelimit + req.query.synonymlevel;
+  var cachedSearch = appCache.get(cacheString);
+  if (cachedSearch == undefined) {
+    chain.makeChain(req.query.start, req.query.end, req.query.nodelimit, req.query.synonymlevel, function(err, data) {
+      if (err) {
+        appCache.set(cacheString, {
+          err: err
+        });
+        res.render('index', {
+          errormsg: err
+        });
+      } else {
+        appCache.set( cacheString, {
+          data:data,
+          nodelimit: req.query.nodelimit,
+          synonymlevel: req.query.synonymlevel
+        });
+        res.render('search', {
+          nodelimit: req.query.nodelimit,
+          synonymlevel: req.query.synonymlevel,
+          start:data.path[0].node,
+          end:data.path[data.path.length - 1].node,
+          title: data.path[0].node + " - " + data.path[data.path.length - 1].node,
+          path: data.path
+        });
+      }
+    });
+  } else if (cachedSearch.err != undefined) {
+    res.render('index', {
+      errormsg: cachedSearch.err
+    });
+  }
+  else {
+    res.render('search', {
+      nodelimit: cachedSearch.nodelimit,
+      synonymlevel: cachedSearch.synonymlevel,
+      start: cachedSearch.data.path[0].node,
+      end: cachedSearch.data.path[cachedSearch.data.path.length - 1].node,
+      title: cachedSearch.data.path[0].node + " - " + cachedSearch.data.path[cachedSearch.data.path.length - 1].node,
+      path: cachedSearch.data.path
+    });
+  }
+  
 });
 
 app.get('/search/modified', function(req, res) {
-  chain.makeChain(req.query.start, req.query.end, req.query.nodelimit, req.query.synonymlevel, function(err, data) {
-    if (err) {
-      res.json({
-        errormsg: err
-      });
-    } else {
-      res.json({
-        path: data.path
-      });
-    }
-  });
+  var cacheString = req.query.start + req.query.end + req.query.nodelimit + req.query.synonymlevel;
+  var cacheSearch = appCache.get(cacheString);
+  if (cacheSearch == undefined) {
+    chain.makeChain(req.query.start, req.query.end, req.query.nodelimit, req.query.synonymlevel, function(err, data) {
+      if (err) {
+        appCache.set(cacheString, {
+          err: err
+        });
+        res.json({
+          errormsg: err
+        });
+      } else {
+        appCache.set(cacheString, {
+          data: data,
+          nodelimit: req.query.nodelimit,
+          synonymlevel: req.query.synonymlevel
+        });
+        res.json({
+          path: data.path
+        });
+      }
+    });
+  } else if (cacheSearch.err != undefined) {
+    res.json({
+      errormsg: cacheSearch.err
+    });
+  } else {
+    res.json({
+      path: cacheSearch.data.path
+    });
+  }
 });
 
 

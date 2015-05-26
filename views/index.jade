@@ -17,7 +17,7 @@ block content
 				svg(width="22" height="22" viewBox="0 0 20 20")
 					path(fill="none" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round" d="M17.2 7.6H1.1M17.2 1.2H1.1M17.2 14H1.1")
 		div.index
-			form(method="post", action="/search")
+			form(method="get", action="/search")
 				input(type="text",  name="start")
 				input(type="text",  name="end")
 				input(type="hidden",value="10",name="nodelimit")
