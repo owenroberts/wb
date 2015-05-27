@@ -374,18 +374,19 @@ header {
     position: absolute;
     top: 16px;
     left: 16px; }
-  header .paths {
+  header .path-dots {
     text-align: center; }
-    header .paths .path {
+    header .path-dots .path-dot {
       display: inline-block;
       margin: 0 4px;
-      font-size: 18px; }
-    header .paths .path:before {
+      font-size: 24px; }
+    header .path-dots .path-dot:before {
       content: "\2022"; }
   header .plus {
     position: absolute;
     top: 16px;
-    right: 16px; }
+    right: 16px;
+    transition: transform 500ms; }
     header .plus img {
       width: 80px; }
 
@@ -428,27 +429,35 @@ select {
     #sidebar li a {
       color: black; }
 
-#adjust {
+#paths {
+  position: relative; }
+  #paths .path {
+    position: absolute; }
+
+.adjust {
   padding: 16px;
   position: absolute;
   border-bottom: 1px solid #f1f1f2;
   border-right: 1px solid #f1f1f2;
   height: 100%;
-  width: 260px; }
-  #adjust hr {
+  width: 260px;
+  top: 0;
+  left: 0;
+  z-index: -1; }
+  .adjust hr {
     margin: 0.5em 0; }
-  #adjust span {
+  .adjust span {
     color: #c6c8ca; }
-  #adjust input {
+  .adjust input {
     background: none;
     margin: 0;
     padding: 1em 0; }
-  #adjust input[type=range] {
+  .adjust input[type=range] {
     -webkit-appearance: none;
     width: 100%;
     overflow: hidden;
     border-radius: 8px; }
-  #adjust input[type=range]::-webkit-slider-thumb {
+  .adjust input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
     background: #6a75ff;
     width: 10px;
@@ -459,15 +468,15 @@ select {
     position: relative;
     cursor: -webkit-grab;
     cursor: -moz-grab; }
-    #adjust input[type=range]::-webkit-slider-thumb:active {
+    .adjust input[type=range]::-webkit-slider-thumb:active {
       cursor: -webkit-grabbing;
       cursor: -moz-grabbing; }
-  #adjust input[type=range]::-webkit-slider-runnable-track {
+  .adjust input[type=range]::-webkit-slider-runnable-track {
     height: 3px;
     background: #f1f1f2;
     border: none;
     border-radius: 3px; }
-  #adjust input[type=range]::-webkit-slider-thumb:before {
+  .adjust input[type=range]::-webkit-slider-thumb:before {
     content: "-";
     font-style: 0;
     line-height: 0;
@@ -477,7 +486,7 @@ select {
     top: 4px;
     bottom: 3px;
     background: #6a75ff; }
-  #adjust input[type=range]::-webkit-slider-thumb:after {
+  .adjust input[type=range]::-webkit-slider-thumb:after {
     content: "";
     position: absolute;
     left: -4px;
@@ -487,36 +496,38 @@ select {
     background: #6a75ff;
     border-radius: 50%;
     z-index: 10; }
-  #adjust input[type=range]:focus {
+  .adjust input[type=range]:focus {
     outline: none; }
-  #adjust input[type=range]:active input[type=submit] {
+  .adjust input[type=range]:active input[type=submit] {
     color: #6a75ff; }
-  #adjust input[type="submit"] {
+  .adjust input[type="submit"] {
     font-size: 1em;
     text-align: center;
     width: 100%;
     cursor: pointer;
     transition: color 500ms; }
-  #adjust label {
+  .adjust label {
     font-size: 16px;
     display: block;
     line-height: 1.4em;
     margin: 1em 0; }
-  #adjust .numbers {
+  .adjust .numbers {
     font-size: 12px;
     text-align: center; }
-    #adjust .numbers .num {
+    .adjust .numbers .num {
       display: inline-block;
       width: 6.6%; }
 
 /*  */
-#nodes {
+.nodes {
   position: relative;
   width: 100%;
   padding: 0.5em 0;
   transition: top 500ms;
   top: 0px;
-  margin-left: 16px; }
+  background-color: white;
+  min-width: 260px;
+  min-height: 500px; }
 
 .node-dad {
   position: relative;

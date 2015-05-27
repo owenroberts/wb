@@ -73,6 +73,7 @@ app.get('/search', function(req, res) {
     });
   }
   else {
+    console.log('cached');
     res.render('search', {
       nodelimit: cachedSearch.nodelimit,
       synonymlevel: cachedSearch.synonymlevel,

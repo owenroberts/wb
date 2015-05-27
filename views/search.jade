@@ -18,93 +18,187 @@ block content
 			a.menu
 				svg(width="22" height="22" viewBox="0 0 20 20" class="stroke")
 					path(fill="none" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round" d="M17.2 7.6H1.1M17.2 1.2H1.1M17.2 14H1.1")
-			div.paths.fadein
-				a.path(id="p0")
+			div.path-dots.fadein
+				a.path-dot(id="p-0")
+				a.path-dot(id="p-1")
 			a.plus.fadein
 				svg(width="20" height="20" viewBox="0 0 20 20" class="stroke")
 					g(fill="none")
 					path(d="M9.6 1v17.1M18.1 9.6H1" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round")
-	
-		div#adjust
-			div="path adjustments"
-			hr
-			form(method="post", action="/search")
-				input(type="hidden",name="start",value=start)
-				input(type="hidden",name="end", value=end)
+		div#paths
+			- var pathIndex = -1
+			while pathIndex < 1
+				- pathIndex++
+				div.path(id="path-"+pathIndex)
 
-				label(style="color:black")="path length: "
-					span="select how many words to use in a path."
-				input(type="range",min=1,max=15,value=nodelimit,id="nodelimit",name="nodelimit")
-				div.numbers.nodelim
-					- var n = 1
-					while n < 16
-						span.num= n++
+					div.adjust
+						div="path adjustments"
+						hr
+						form(method="post", action="/search")
+							input(type="hidden",name="start",value=start)
+							input(type="hidden",name="end", value=end)
 
-				hr
-				label(style="color:black")="path depth: "
-					span="select the maximum number of synonyms to search for each word in a path."
-				input(type="range",min=1,max=15,value=synonymlevel,id="synonymlevel",name="synonymlevel")
-				div.numbers.synlev
-					- var n = 1
-					while n < 16
-						span.num= n++
+							label(style="color:black")="path length: "
+								span="select how many words to use in a path."
+							input(type="range",min=1,max=15,value=nodelimit,id="nodelimit",name="nodelimit")
+							div.numbers.nodelim
+								- var n = 1
+								while n < 16
+									span.num= n++
 
-				hr
-				input(type="submit", value="apply adjustment")
-		div#nodes
-			each node, index in Object.keys(path)
-				div.node-dad
+							hr
+							label(style="color:black")="path depth: "
+								span="select the maximum number of synonyms to search for each word in a path."
+							input(type="range",min=1,max=15,value=synonymlevel,id="synonymlevel",name="synonymlevel")
+							div.numbers.synlev
+								- var n = 1
+								while n < 16
+									span.num= n++
 
-					if index == 0
-						a.toggle.adjust-button
-							svg(class="fill" width="20" height="20" viewBox="0 0 15.2 14.6")
-								path(fill="#C7C8CA" d="M12.2 1.4l1.5 1.4s-1 1.5-.5 2.3c.4.8 1.9 1.1 1.9 1.1v2s-1.5.2-1.9 1.2c-.4 1 .5 2.3.5 2.3l-1.4 1.4s-1.2-.9-2.3-.5c-1.1.4-1.3 1.9-1.3 1.9H6.6s-.1-1.4-1.1-1.9-2.6.5-2.6.5l-1.4-1.4s1-1.3.5-2.3c-.4-.9-2-1.1-2-1.1v-2s2.1-.5 2.1-1.4-.6-2.1-.6-2.1L3 1.4s1.3.8 2.4.5C6.2 1.6 6.6 0 6.6 0h2.1S9 1.6 10 2c1 .3 2.2-.6 2.2-.6m-4.6 9.8c2.2 0 4-1.7 4-3.9 0-2.1-1.8-3.9-4-3.9s-4 1.7-4 3.9c-.1 2.1 1.7 3.9 4 3.9")
-					else if index < Object.keys(path).length - 1
-						span.toggle
-							a.dots=" •  •"
-					else 
-						a.toggle
+							hr
+							input(type="submit", value="apply adjustment")
+					div.nodes
+						each node, index in Object.keys(path)
+							div.node-dad
 
-					div.node=path[node].node
-						div.node-btn.noded
-					
-					if index != 0
-						if path[index - 1].synonyms
-							each synonym in path[index - 1].synonyms
-								if synonym != path[index].node
-									div.synonym=synonym
-										div.node-btn
+								if index == 0
+									a.toggle.adjust-button
+										svg(class="fill" width="20" height="20" viewBox="0 0 15.2 14.6")
+											path(fill="#C7C8CA" d="M12.2 1.4l1.5 1.4s-1 1.5-.5 2.3c.4.8 1.9 1.1 1.9 1.1v2s-1.5.2-1.9 1.2c-.4 1 .5 2.3.5 2.3l-1.4 1.4s-1.2-.9-2.3-.5c-1.1.4-1.3 1.9-1.3 1.9H6.6s-.1-1.4-1.1-1.9-2.6.5-2.6.5l-1.4-1.4s1-1.3.5-2.3c-.4-.9-2-1.1-2-1.1v-2s2.1-.5 2.1-1.4-.6-2.1-.6-2.1L3 1.4s1.3.8 2.4.5C6.2 1.6 6.6 0 6.6 0h2.1S9 1.6 10 2c1 .3 2.2-.6 2.2-.6m-4.6 9.8c2.2 0 4-1.7 4-3.9 0-2.1-1.8-3.9-4-3.9s-4 1.7-4 3.9c-.1 2.1 1.7 3.9 4 3.9")
+								else if index < Object.keys(path).length - 1
+									span.toggle
+										a.dots=" •  •"
+								else 
+									a.toggle
+
+								div.node=path[node].node
+									div.node-btn.noded
+								
+								if index != 0
+									if path[index - 1].synonyms
+										each synonym in path[index - 1].synonyms
+											if synonym != path[index].node
+												div.synonym=synonym
+													div.node-btn
 
 									
 	// javascript // 
 	script(type='text/javascript').
 
+		
+		// ** mobile scrolling stuff ** //
 		document.ontouchmove = function(e) {e.preventDefault()};
-		$('#nodes').on('touchmove', function(event){
+		$('.nodes').on('touchmove', function(event){
 			event.stopPropagation();
 		});
-		$('#adjust').on('touchmove', function(event){
+		$('.adjust').on('touchmove', function(event){
 			event.stopPropagation();
 		});
 
-		$('#nodes').animate({
-			"margin-left":"16px"
-		}, 900, function() {
-			$('.toggle').animate({width:"24px"}, 900, function() {
-				var nodes = $('.node-dad');
-				for (var i = 0; i < nodes.length; i++) {
-					var showNode = function(num) {
-						setTimeout( function() {
-							$(nodes[num]).fadeIn();
-						}, num*400);
-					}(i);
-				}
+
+		// ** blogal variables ** //
+		var w = window.innerWidth;
+		var pathNum = #{pathIndex};
+		var currentPathNum = 0;
+
+
+		// ** animate nodes (or not) ** //
+		if (pathNum == 0) {
+			$('.path:first-child .nodes').animate({
+			"padding-left":"16px"
+			}, 900, function() {
+				$('.toggle').animate({width:"24px"}, 900, function() {
+					var nodes = $('.node-dad');
+					for (var i = 0; i < nodes.length; i++) {
+						var showNode = function(num) {
+							setTimeout( function() {
+								$(nodes[num]).fadeIn();
+							}, num*400);
+						}(i);
+					}
+				});
 			});
-		});
+			$('.path:gt(1) .nodes').css({
+				'padding-left':'16px'
+			});
+			$('.path:gt(1) .toggle').css({width:'24px'});
+			$('.path:gt(1) .node-dad').css({display:'block'});
+		} else {
+			$('.nodes').css({'padding-left':'16px'});
+			$('.toggle').css({width:'24px'});
+			$('.node-dad').css({display:'block'});
+		}
+		
+
+
+
+		// ** fade in ui ** //
 		$('.fadein').animate({
 			opacity: 1
 		}, 900);
 
+
+		// ** position paths ** //
+		var paths = $('.path');
+		for (var i = 0; i < paths.length; i++) {
+			$(paths[i]).css({left:i*w});
+		}
+
+		// ** animate paths ** //
+		$('.path-dot').on('click', function() {
+			var index = $(this).index();
+			$('#paths').animate({
+				left: -w * index
+			}, 500);
+		});
+
+		$( "#main" ).on( "swipeleft", function() {
+			if (currentPathNum < pathNum) {
+				currentPathNum++;
+				$('#paths').animate({
+					left: -currentPathNum * w
+				}, 500);
+			}
+		});
+
+		$( "#main" ).on( "swiperight", function() {
+			if (currentPathNum > 0) {
+				currentPathNum--;
+				var offset = $('#paths').css('left');
+				offset = offset.replace('px', '');
+				$('#paths').animate({
+					left: +offset + w
+				}, 500);
+			}
+		});
+
+		// ** plus button for new paths ** //
+		function getNewPath() {
+			$(this).css({transform:"rotate(90deg)"})
+		}
+		$('.plus').on('click', getNewPath);
+
+
+		// ** set up adjust menu(s) and clicking ** //
+		var adjust = false;
+		var adjustOffset = 260;
+		function adjustMenu() {
+			if (!adjust) {
+				$('.nodes').animate({
+					'left': adjustOffset
+				}, 500);
+				adjust = true;
+			} else {
+				$('.nodes').animate({
+					'left': 0
+				}, 500);
+				adjust = false;
+			}
+		}
+		$('.adjust-button').on('click', adjustMenu);
+
+
+		// ** radio button switching of synonyms ** //
 		var undrag = function(elem) {
 			elem.removeClass('selected');
 			elem.removeClass('draggable');
@@ -158,30 +252,8 @@ block content
 		});
 
 		
-		var adjust = false;
-		var adjustOffset = 260;
-		$('#adjust').css('left', -adjustOffset);
-		function adjustMenu() {
-			if (!adjust) {
-				$('#nodes').animate({
-					'left': adjustOffset
-				}, 500);
-				$('#adjust').animate({
-					'left': 0
-				}, 500);
-				adjust = true;
-			} else {
-				$('#nodes').animate({
-					'left': 0
-				}, 500);
-				$('#adjust').animate({
-					'left': -adjustOffset
-				}, 500);
-				adjust = false;
-			}
-		}
-		$('.adjust-button').on('click', adjustMenu);
-
+		
+		// ** adjust menu animations ** //
 		$('input[type="range"]').on('change', function() {
 			$('#adjust input[type="submit"]').css({
 				'color':'#6a75ff'
@@ -192,6 +264,14 @@ block content
 		});
 		$('.nodelim').children(':nth-child('+#{nodelimit}+')').css({color:"black"});
 		$('.synlev').children(':nth-child('+#{synonymlevel}+')').css({color:"black"});
+
+		$('input[value="Enter"]').on('click', function(e) {
+			$('.adjust').slideUp();
+			for (var i = 1; i < nodes.length - 1; i++) 
+				$(nodes[i]).fadeOut();
+			var ldr = $('<img>').attr({'class':'ldr', 'src':'/images/ldr.gif'});
+			$(nodes[0]).after(ldr);
+		});
 
 		// ** sidebar menu ** //
 		var menu = false;
@@ -217,14 +297,8 @@ block content
 		}
 		$('.menu').on('click', openMenu);
 
-		$('input[value="Enter"]').on('click', function(e) {
-			$('.adjust').slideUp();
-			for (var i = 1; i < nodes.length - 1; i++) 
-				$(nodes[i]).fadeOut();
-			var ldr = $('<img>').attr({'class':'ldr', 'src':'/images/ldr.gif'});
-			$(nodes[0]).after(ldr);
-		});
-
+		
+		// ** modify chain ** //
 		function modifyChain() {
 			$('.noded').removeClass('noded');
 			$(this).addClass('noded'); 

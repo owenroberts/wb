@@ -2,13 +2,13 @@
 
 $akz: AkzidenzGroteskBE-Md;
 
-
 $lightgray: #f1f1f2;
 $gray: #c6c8ca;
 $black: black;
 $white: white;
 $lightblue:#f7f9ff;
 $blue: #6a75ff;
+
 * {
 	box-sizing:border-box;
 }
@@ -111,14 +111,14 @@ header {
 		top:16px;
 		left:16px;
 	}
-	.paths {
+	.path-dots {
 		text-align:center;
-		.path {
+		.path-dot {
 			display:inline-block;
 			margin:0 4px;
-			font-size:18px;
+			font-size:24px;
 		}
-		.path:before {
+		.path-dot:before {
 			content:"\2022";
 		}
 	}
@@ -126,6 +126,7 @@ header {
 		position:absolute;
 		top:16px;
 		right:16px;
+		transition: transform 500ms;
 		img {
 			width:80px;
 		}
@@ -185,13 +186,23 @@ select {
 	}
 }
 
-#adjust {
+#paths {
+	position: relative;
+	.path {
+		position:absolute;
+	}
+}
+
+.adjust {
 	padding:16px;
 	position:absolute;
 	border-bottom:1px solid $lightgray;
 	border-right:1px solid $lightgray;
 	height:100%;
 	width:260px;
+	top:0;
+	left:0;
+	z-index:-1;
 	hr {
 		margin:0.5em 0;
 	}
@@ -286,13 +297,15 @@ select {
 
 /*  */
 
-#nodes {
+.nodes {
 	position: relative;
 	width:100%;
 	padding: 0.5em 0;
 	transition:top 500ms;
 	top:0px;
-	margin-left:16px;
+	background-color: $white;
+	min-width:260px;
+	min-height:500px;
 }
 .node-dad {
 	position: relative;
