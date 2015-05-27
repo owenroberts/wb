@@ -52,18 +52,17 @@ app.get('/search', function(req, res) {
           errormsg: err
         });
       } else {
-        appCache.set( cacheString, {
-          data:data,
-          nodelimit: req.query.nodelimit,
-          synonymlevel: req.query.synonymlevel
-        });
-        res.render('search', {
+        console.log(data);
+        var result = {
+          path: data.path,
           nodelimit: req.query.nodelimit,
           synonymlevel: req.query.synonymlevel,
-          start:data.path[0].node,
-          end:data.path[data.path.length - 1].node,
-          title: data.path[0].node + " - " + data.path[data.path.length - 1].node,
-          path: data.path
+          start: data.path[0].node,
+          end: data.path[data.path.length - 1].node,
+        };
+        appCache.set( cacheString, result);
+        res.render('search', {
+          data: [result]
         });
       }
     });
@@ -75,15 +74,9 @@ app.get('/search', function(req, res) {
   else {
     console.log('cached');
     res.render('search', {
-      nodelimit: cachedSearch.nodelimit,
-      synonymlevel: cachedSearch.synonymlevel,
-      start: cachedSearch.data.path[0].node,
-      end: cachedSearch.data.path[cachedSearch.data.path.length - 1].node,
-      title: cachedSearch.data.path[0].node + " - " + cachedSearch.data.path[cachedSearch.data.path.length - 1].node,
-      path: cachedSearch.data.path
+       data: [cachedSearch]
     });
   }
-  
 });
 
 app.get('/search/modified', function(req, res) {
@@ -118,6 +111,10 @@ app.get('/search/modified', function(req, res) {
       path: cacheSearch.data.path
     });
   }
+});
+
+app.get('/search/new', function(req, res) {
+
 });
 
 
