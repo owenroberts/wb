@@ -16,7 +16,8 @@
     "node-sass": "0.9.0",
     "commander":"2.7.1",
     "wordnet":"0.1.2",
-    "thesaurus":"0.0.0"
+    "thesaurus":"0.0.0",
+    "node-cache":"2.2.0"
   },
   "repository": {
     "type": "git",
