@@ -106,6 +106,7 @@ header {
 	padding-top:16px;
 	min-height:48px;
 	border-bottom:1px solid $lightgray;
+	background-color: $white;
 	.menu {
 		position:absolute;
 		top:16px;
@@ -168,6 +169,8 @@ select {
 	overflow-x: hidden;
 	overflow-y: auto;
 	-webkit-overflow-scrolling: touch;
+	background-color: $white;
+	z-index:-3;
 }
 
 #sidebar {
@@ -203,6 +206,7 @@ select {
 	top:0;
 	left:0;
 	z-index:-1;
+	background-color:white;
 	hr {
 		margin:0.5em 0;
 	}

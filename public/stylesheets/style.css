@@ -369,7 +369,8 @@ header {
   padding: 0 16px;
   padding-top: 16px;
   min-height: 48px;
-  border-bottom: 1px solid #f1f1f2; }
+  border-bottom: 1px solid #f1f1f2;
+  background-color: white; }
   header .menu {
     position: absolute;
     top: 16px;
@@ -414,7 +415,9 @@ select {
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch; }
+  -webkit-overflow-scrolling: touch;
+  background-color: white;
+  z-index: -3; }
 
 #sidebar {
   position: absolute;
@@ -443,7 +446,8 @@ select {
   width: 260px;
   top: 0;
   left: 0;
-  z-index: -1; }
+  z-index: -1;
+  background-color: white; }
   .adjust hr {
     margin: 0.5em 0; }
   .adjust span {

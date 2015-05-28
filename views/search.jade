@@ -11,8 +11,6 @@ block content
 				a(href="#")="how it works"
 			li
 				a(href="#")="feedback"
-
-
 	div#main
 		header
 			a.menu
@@ -21,9 +19,15 @@ block content
 			div.path-dots.fadein
 				- var pathIndex = 0
 				for result, index in data
-					- pathIndex++
 					a.path-dot(id="p-"+index)
+					- pathIndex = index
 			a.plus.fadein
+				form(id="makeNewPath", method="get", action="/new")
+					input(type="hidden",name="start",value=data[0].start)
+					input(type="hidden",name="end", value=data[0].end)
+					for result, index in data
+						input(type="hidden", name="oldpath", value=result.cname)
+
 				svg(width="20" height="20" viewBox="0 0 20 20" class="stroke")
 					g(fill="none")
 					path(d="M9.6 1v17.1M18.1 9.6H1" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round")
@@ -93,15 +97,13 @@ block content
 			event.stopPropagation();
 		});
 
-
 		// ** blogal variables ** //
 		var w = window.innerWidth;
 		var pathNum = #{pathIndex};
-		var currentPathNum = 1;
-
+		var currentPathNum = pathNum;
 
 		// ** animate nodes (or not) ** //
-		if (pathNum == 1) {
+		if (pathNum < 1) {
 			$('.path:first-child .nodes').animate({
 			"padding-left":"16px"
 			}, 900, function() {
@@ -125,10 +127,15 @@ block content
 			$('.nodes').css({'padding-left':'16px'});
 			$('.toggle').css({width:'24px'});
 			$('.node-dad').css({display:'block'});
+			$('.plus').css({transform:"rotate(45deg)"});
+			setTimeout(function() {
+				$('.plus').css({transform:"rotate(90deg)"});
+			}, 500);
+			$('.path-dot:nth-child('+(currentPathNum+1)+')').css({color:'black'});
+			$('#paths').animate({
+					left: -currentPathNum * w
+			}, 500);
 		}
-		
-
-
 
 		// ** fade in ui ** //
 		$('.fadein').animate({
@@ -142,8 +149,11 @@ block content
 			$(paths[i]).css({left:i*w});
 		}
 
-		// ** animate paths ** //
+		// ** animate path switching  ** //
 		$('.path-dot').on('click', function() {
+			$('.path-dot').css({color:'lightgray'});
+			currentPathNum = $(this).index();
+			$('.path-dot:nth-child('+(currentPathNum+1)+')').css({color:'black'});
 			var index = $(this).index();
 			$('#paths').animate({
 				left: -w * index
@@ -153,6 +163,8 @@ block content
 		$( "#main" ).on( "swipeleft", function() {
 			if (currentPathNum < pathNum) {
 				currentPathNum++;
+				$('.path-dot').css({color:'lightgray'});
+				$('.path-dot:nth-child('+(currentPathNum+1)+')').css({color:'black'});
 				$('#paths').animate({
 					left: -currentPathNum * w
 				}, 500);
@@ -162,6 +174,8 @@ block content
 		$( "#main" ).on( "swiperight", function() {
 			if (currentPathNum > 0) {
 				currentPathNum--;
+				$('.path-dot').css({color:'lightgray'});
+				$('.path-dot:nth-child('+(currentPathNum+1)+')').css({color:'black'});
 				var offset = $('#paths').css('left');
 				offset = offset.replace('px', '');
 				$('#paths').animate({
@@ -172,7 +186,8 @@ block content
 
 		// ** plus button for new paths ** //
 		function getNewPath() {
-			$(this).css({transform:"rotate(90deg)"});
+			$(this).css({transform:"rotate(45deg)"});
+			$('#makeNewPath').submit();
 		}
 		$('.plus').on('click', getNewPath);
 
@@ -294,7 +309,6 @@ block content
 			}
 		}
 		$('.menu').on('click', openMenu);
-
 		
 		// ** modify chain ** //
 		function modifyChain() {
