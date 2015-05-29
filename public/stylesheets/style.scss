@@ -350,33 +350,26 @@ select {
 		font-size:18px;
 		transition: transform 500ms;
 	}
+	.inner-nodes {
+		display:inline-block;
+		position:relative;
+		width:600px;
+	}
 	.node {
 		color:$black;
 		display:inline-block;
 		position:relative;
 		padding-right:24px;
-	}
-	.node-btn{
-  		background-image: url('/images/radio.png');
-  		position: absolute;
-  		width: 12px;
-  		height: 12px;
-  		left: -16px;
-  		top: 9px;
-  		background-repeat: no-repeat;
-  		display: none;
-  		cursor:pointer;
-  		&.noded {
-  			background-position:-12px;
-  		}
+		width:300px;
 	}
 
 	.synonym {
-		display:none;
-		transition:display 300ms;
-		color:$gray;
+		opacity:0;
+		display:inline-block;
+		color:$black;
 		padding-right:24px;
 		position:relative;
+		width:300px;
 	}
 }
 .ldr {

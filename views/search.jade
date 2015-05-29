@@ -72,16 +72,18 @@ block content
 								else 
 									a.toggle
 
-								div.node=node.node
-									div.node-btn.noded
+								div.inner-nodes
+									div.node=node.node
+									if index != 0
+										if result.path[index - 1].synonyms
+											- var s = 0
+											- var c = 0
+											while s < 1
+												- c++
+												if result.path[index - 1].synonyms[c] != result.path[index].node
+													- s++
+													div.synonym=result.path[index - 1].synonyms[c]
 								
-								if index != 0
-									if result.path[index - 1].synonyms
-										each synonym in result.path[index - 1].synonyms
-											if synonym != result.path[index].node
-												div.synonym=synonym
-													div.node-btn
-							
 
 									
 	// javascript // 
@@ -211,60 +213,7 @@ block content
 		$('.adjust-button').on('click', adjustMenu);
 
 
-		// ** radio button switching of synonyms ** //
-		var undrag = function(elem) {
-			elem.removeClass('selected');
-			elem.removeClass('draggable');
-			elem.draggable('destroy');
-			elem.css({
-					top:0,
-					left:0
-				});
-			elem.find('.dots').css({transform:"rotate(0deg)"});
-			elem.find('.node-btn').fadeOut();
-		}
 
-		var prevSelected;
-		$('body').on('click', '.dots', function() {
-			var parent = $(this).parent().parent();
-			if (parent.hasClass('selected')) {
-				undrag(parent);
-				prevSelected = undefined;
-			} else {
-				if (prevSelected) {
-					undrag(prevSelected);
-				}
-				$(this).css({transform:"rotate(-90deg)"});
-				parent.addClass('selected');
-				parent.addClass('draggable');
-				parent.find('.node-btn').fadeIn(500);
-				prevSelected = parent;
-				var c = parent.children();
-				var w = 0;
-				for (var i = 0; i < c.length; i++) {
-					w += $(c[i]).width();
-					w += 24; // approx padding
-				}
-				var leftContain = -w + window.innerWidth;
-				if (leftContain > 0 ) {
-					leftContain = 32;
-				}
-				parent.css({width:w});
-				parent.draggable({
-					scroll:false,
-					axis: 'x',
-					containment: [leftContain, 0, 32, 0]
-				});
-			}
-		});
-
-		$('.draggable' ).draggable({
-			scroll:false,
-			axis: "x",
-			containment:[-1000,0,32,0],
-		});
-
-		
 		
 		// ** adjust menu animations ** //
 		$('input[type="range"]').on('change', function() {
@@ -309,29 +258,31 @@ block content
 			}
 		}
 		$('.menu').on('click', openMenu);
+
+
+
+		// ** swipe left on node-dad ** //
+		$( 'body' ).on( "swipeleft", ".node-dad", function() {
+			if ($(this).index() > 0) {
+				$(this).find('.inner-nodes').animate({
+					left:'-300px'
+				}, 500);
+				$(this).find('.synonym').animate({
+					opacity:1
+				}, 1000);
+			}
+			console.log(this);
+			modifyChain(this);
+		});
 		
 		// ** modify chain ** //
-		function modifyChain() {
-			$('.noded').removeClass('noded');
-			$(this).addClass('noded'); 
+		function modifyChain(elem) {
+			var parent = $(elem);
+			var synonym = parent.find('.synonym')[0].innerText;
 
-			var parent = $(this).parent();
-			var synonym = parent[0].innerText;
-			var nodeparent = parent.parent();
-			var node = nodeparent.find('.node');
-			var word = node[0].innerText;
+			var nodes = $('.node-dad:gt('+parent.index()+')');
 
-			parent.siblings().animate({
-				opacity: 0
-			}, 500);
-			parent.css({color:'black'});
-			parent.find('.node-btn').fadeOut();
-			$(nodeparent[0]).css({'border-color':'transparent'});
-			$(nodeparent[0]).animate({
-				left: -parent.offset().left + 72 + 'px'
-			}, 1000);
-
-			var nodes = $('.node-dad:gt('+nodeparent.index()+')');
+			var waitTime = nodes.length * 300;
 
 			for (var i = 0; i < nodes.length - 1; i++) {
 				var n = i;
@@ -340,27 +291,24 @@ block content
 				});
 			}
 
-			$.ajax({
+			setTimeout(function() {
+				$.ajax({
 				url: '/search/modified',
 				type: 'get',
 				dataType:'json',
 				data: {
 					start: synonym,
-					//end: "#{end}",
-					//synonymlevel: #{synonymlevel},
-					//nodelimit: #{nodelimit} - nodeparent.index()		
+					end: "#{data[0].end}",
+					synonymlevel: 10,
+					nodelimit: 10 - parent.index()		
 				},
 				success: function(data) {
 					
 					if (data.errormsg) {
 						alert(data.errormsg + "\n\nClick okay to refresh the original results.");
-						document.location.reload(true);
-					}
-
-					else {
-						undrag($('.selected'));
-						nodeparent.remove();
-						prevSelected = null;
+						//document.location.reload(true);
+					} else {
+						parent.remove();
 						for (var i = 0; i < data.path.length - 1; i ++) {
 							var newnodedad = $('<div>')
 								.addClass('node-dad');
@@ -372,34 +320,29 @@ block content
 								.text(' •  •');
 							newtoggle.append(newdots);
 							
+							var inners = $('<div>')
+								.addClass('inner-nodes');
+
 							var newnode = $('<div>')
 								.addClass('node')
 								.text(data.path[i].node);
-							var newnodebtn = $('<div>')
-								.addClass('node-btn');
 
-							newnode.append(newnodebtn);
 							newnodedad.append(newtoggle);
-							newnodedad.append(newnode);
-							
-							for (var h = 0; h < data.path[i].synonyms.length; h++) {
-								var newsynnode = $('<div>')
-									.addClass('synonym')
-									.text(data.path[i].synonyms[h]);
-								var synnodebtn = $('<div>')
-									.addClass('node-btn');
-								newsynnode.append(synnodebtn);
-								newnodedad.append(newsynnode);
-							}
+							inners.append(newnode);
+	
+							var newsynnode = $('<div>')
+								.addClass('synonym')
+								.text(data.path[i].synonyms[1]);
+							inners.append(newsynnode);
+							newnodedad.append(inners);
 							newnodedad.insertBefore('.node-dad:last-child()');
 
-							newnodedad.fadeIn(i * 800 + 800);
+							newnodedad.fadeIn(i * 1200);
 						}
 					}
 				}
 			});
-
+			}, waitTime);
 		}
-		$('body').on('click', '.node-btn', modifyChain);
 
 		if ("#{errmsg}") alert("#{errmsg}");
