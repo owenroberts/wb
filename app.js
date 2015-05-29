@@ -13,7 +13,7 @@ var app = express();
 
 
 // cache stuff
-var appCache = new NodeCache( { stdTTL: 600, checkperiod: 601 } );
+var appCache = new NodeCache();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -40,7 +40,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/search', function(req, res) {
-  var cacheString = req.query.start + req.query.end + req.query.nodelimit + req.query.synonymlevel;
+  var cacheString = req.query.start + req.query.nodelimit + req.query.end + req.query.synonymlevel;
   var cachedSearch = appCache.get(cacheString);
   if (cachedSearch == undefined) {
     chain.makeChain(req.query.start, req.query.end, req.query.nodelimit, req.query.synonymlevel, function(err, data) {
@@ -79,7 +79,7 @@ app.get('/search', function(req, res) {
 });
 
 app.get('/search/modified', function(req, res) {
-  var cacheString = req.query.start + req.query.end + req.query.nodelimit + req.query.synonymlevel;
+  var cacheString = req.query.start + req.query.nodelimit + req.query.end  + req.query.synonymlevel;
   var cacheSearch = appCache.get(cacheString);
   if (cacheSearch == undefined) {
     chain.makeChain(req.query.start, req.query.end, req.query.nodelimit, req.query.synonymlevel, function(err, data) {
@@ -117,6 +117,9 @@ var getRandRange = function(min, max) {
 }
 
 app.get('/new', function(req, res) {
+
+
+
   var allPaths = [];
   if (req.query.oldpath instanceof Array) {
     for (var i = 0; i < req.query.oldpath.length; i++) {
@@ -129,7 +132,7 @@ app.get('/new', function(req, res) {
   var nodelimit = getRandRange(3,20);
   var synonymlevel = getRandRange(3,20);
 
-  var cacheString = req.query.start + req.query.end + nodelimit + synonymlevel;
+  var cacheString = req.query.start + nodelimit + req.query.end  + synonymlevel;
   var cachedSearch = appCache.get(cacheString);
 
   if (cachedSearch == undefined) {
@@ -151,7 +154,6 @@ app.get('/new', function(req, res) {
         };
         appCache.set( cacheString, result);
         allPaths.push(result);
-        console.log(allPaths);
         res.render('search', {
           data: allPaths
         });
@@ -163,6 +165,7 @@ app.get('/new', function(req, res) {
     });
   }
   else {
+    console.log("cached")
     allPaths.push(cachedSearch);
       res.render('search', {
         data: allPaths
