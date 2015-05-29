@@ -162,29 +162,7 @@ block content
 			}, 500);
 		});
 
-		$( "#main" ).on( "swipeleft", function() {
-			if (currentPathNum < pathNum) {
-				currentPathNum++;
-				$('.path-dot').css({color:'lightgray'});
-				$('.path-dot:nth-child('+(currentPathNum+1)+')').css({color:'black'});
-				$('#paths').animate({
-					left: -currentPathNum * w
-				}, 500);
-			}
-		});
-
-		$( "#main" ).on( "swiperight", function() {
-			if (currentPathNum > 0) {
-				currentPathNum--;
-				$('.path-dot').css({color:'lightgray'});
-				$('.path-dot:nth-child('+(currentPathNum+1)+')').css({color:'black'});
-				var offset = $('#paths').css('left');
-				offset = offset.replace('px', '');
-				$('#paths').animate({
-					left: +offset + w
-				}, 500);
-			}
-		});
+		
 
 		// ** plus button for new paths ** //
 		function getNewPath() {
@@ -273,6 +251,30 @@ block content
 			}
 			console.log(this);
 			modifyChain(this);
+		});
+
+		$( "#main" ).on( "swipeleft", function() {
+			if (currentPathNum < pathNum) {
+				currentPathNum++;
+				$('.path-dot').css({color:'lightgray'});
+				$('.path-dot:nth-child('+(currentPathNum+1)+')').css({color:'black'});
+				$('#paths').animate({
+					left: -currentPathNum * w
+				}, 500);
+			}
+		});
+
+		$( "#main" ).on( "swiperight", function() {
+			if (currentPathNum > 0) {
+				currentPathNum--;
+				$('.path-dot').css({color:'lightgray'});
+				$('.path-dot:nth-child('+(currentPathNum+1)+')').css({color:'black'});
+				var offset = $('#paths').css('left');
+				offset = offset.replace('px', '');
+				$('#paths').animate({
+					left: +offset + w
+				}, 500);
+			}
 		});
 		
 		// ** modify chain ** //

@@ -319,6 +319,7 @@ select {
 	margin:0.2em 0;
 	border-bottom: 	1px solid transparent;
 	border-top: 	1px solid transparent;
+	width:700px;
 	&.selected {
 		border-bottom: 1px solid $lightgray;
 		border-top: 1px solid $lightgray;

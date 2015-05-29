@@ -540,7 +540,8 @@ select {
   padding: 0.2em 0;
   margin: 0.2em 0;
   border-bottom: 1px solid transparent;
-  border-top: 1px solid transparent; }
+  border-top: 1px solid transparent;
+  width: 700px; }
   .node-dad.selected {
     border-bottom: 1px solid #f1f1f2;
     border-top: 1px solid #f1f1f2;
