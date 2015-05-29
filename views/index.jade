@@ -1,8 +1,9 @@
 extends layout
 block content
-
 	div#sidebar
 		ul
+			li
+				a(href="/")="new search"
 			li
 				a(href="#")="about synopath"
 			li
@@ -64,3 +65,5 @@ block content
 			}
 		}
 		$('.menu').on('click', openMenu);
+
+		if ("#{errmsg}") alert("#{errmsg}");

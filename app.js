@@ -36,44 +36,74 @@ app.use(
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res) {
-  res.render('index');
+  res.render('index', {
+    errmsg: req.query.err
+  });
 });
 
 app.get('/search', function(req, res) {
-  var cacheString = req.query.start + req.query.nodelimit + req.query.end + req.query.synonymlevel;
+
+  var everypath = [];
+
+  if (req.query.oldpath) {
+    if (req.query.oldpath instanceof Array) {
+      for (var i = 0; i < req.query.oldpath.length; i++) {
+        everypath.push(appCache.get(req.query.oldpath[i]));
+      } 
+    } else {
+      everypath.push(appCache.get(req.query.oldpath));
+    }
+    var nodelimit = getRandRange(3,20);
+    var synonymlevel = getRandRange(3,20);
+    
+  } else {
+    var nodelimit = req.query.nodelimit;
+    var synonymlevel = req.query.synonymlevel;
+  }
+
+  var cacheString = req.query.start + nodelimit + req.query.end  + synonymlevel;
+
   var cachedSearch = appCache.get(cacheString);
+  
   if (cachedSearch == undefined) {
-    chain.makeChain(req.query.start, req.query.end, req.query.nodelimit, req.query.synonymlevel, function(err, data) {
+    chain.makeChain(req.query.start, req.query.end, nodelimit, synonymlevel, function(err, data) {
       if (err) {
+        console.log(err);
         appCache.set(cacheString, {
           err: err
         });
-        res.render('index', {
-          errormsg: err
-        });
+        if (req.get('Referrer').indexOf('?') === -1){
+          res.redirect(req.get('Referrer')+'?err='+err);
+        } else {
+          res.redirect(req.get('Referrer')+'&err='+err); 
+        }
       } else {
-        var result = {
+        var newpath = {
           path: data.path,
-          nodelimit: req.query.nodelimit,
-          synonymlevel: req.query.synonymlevel,
+          nodelimit: nodelimit,
+          synonymlevel: synonymlevel,
           start: data.path[0].node,
           end: data.path[data.path.length - 1].node,
           cname: cacheString
         };
-        appCache.set( cacheString, result);
+        appCache.set( cacheString, newpath);
         res.render('search', {
-          data: [result]
+          data: everypath.concat(newpath),
+          errmsg: req.query.err
         });
       }
     });
   } else if (cachedSearch.err != undefined) {
-    res.render('index', {
-      errormsg: cachedSearch.err
-    });
+    if (req.get('Referrer').indexOf('?') === -1){
+      res.redirect(req.get('Referrer') + '?err=' + err);
+    } else {
+      res.redirect(req.get('Referrer') + '&err=' + err); 
+    }
   }
   else {
     res.render('search', {
-       data: [cachedSearch]
+       data: everypath.concat(cachedSearch),
+       errmsg: req.query.err
     });
   }
 });
@@ -112,14 +142,7 @@ app.get('/search/modified', function(req, res) {
   }
 });
 
-var getRandRange = function(min, max) {
-  return Math.floor(Math.random() * (max -min + 1)) + min;
-}
-
 app.get('/new', function(req, res) {
-
-
-
   var allPaths = [];
   if (req.query.oldpath instanceof Array) {
     for (var i = 0; i < req.query.oldpath.length; i++) {
@@ -128,7 +151,6 @@ app.get('/new', function(req, res) {
   } else {
     allPaths.push(appCache.get(req.query.oldpath));
   }
-
   var nodelimit = getRandRange(3,20);
   var synonymlevel = getRandRange(3,20);
 
@@ -173,6 +195,19 @@ app.get('/new', function(req, res) {
   }
 });
 
+var getRandRange = function(min, max) {
+  return Math.floor(Math.random() * (max -min + 1)) + min;
+}
+
+function objToString (obj) {
+    var str = '';
+    for (var p in obj) {
+        if (obj.hasOwnProperty(p)) {
+            str += p + '::' + obj[p] + '\n';
+        }
+    }
+    return str;
+}
 
 
 var server = app.listen(3000, function() {

@@ -22,7 +22,7 @@ block content
 					a.path-dot(id="p-"+index)
 					- pathIndex = index
 			a.plus.fadein
-				form(id="makeNewPath", method="get", action="/new")
+				form(id="makeNewPath", method="get", action="/search")
 					input(type="hidden",name="start",value=data[0].start)
 					input(type="hidden",name="end", value=data[0].end)
 					for result, index in data
@@ -401,3 +401,5 @@ block content
 
 		}
 		$('body').on('click', '.node-btn', modifyChain);
+
+		if ("#{errmsg}") alert("#{errmsg}");

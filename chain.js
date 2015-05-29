@@ -69,7 +69,7 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
         if (nodelimit == 20 && synonymlevel == 20) 
           callback("This search has exceeded the capacity of the algorithm.  Please try a new search.");
         else
-          callback("This search was not able to be performed with the current parameters.  Try adjusting the node limit or synonym level.");
+          callback("This search was not able to be performed with the current parameters.");
       }
     }
   }
