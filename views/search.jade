@@ -1,16 +1,13 @@
 extends layout
 block content
 
-	div#sidebar
+	div#hamburger
 		ul
 			li
-				a(href="/")="new search"
+				a(href="/")="New Search"
 			li
-				a(href="#")="about synopath"
-			li
-				a(href="#")="how it works"
-			li
-				a(href="#")="feedback"
+				a(href="#")="About SynoPath"
+
 	div#main
 		header
 			a.menu
@@ -218,18 +215,6 @@ block content
 
 
 
-		
-		// ** adjust menu animations ** //
-		$('input[type="range"]').on('change', function() {
-			$('#adjust input[type="submit"]').css({
-				'color':'#6a75ff'
-			});
-			var e = $(this);
-			e.next().children().css({color:"#c6c8ca"})
-			e.next().children(':nth-child('+e[0].value+')').css({color:"black"});
-		});
-		//$('.nodelim').children(':nth-child('+#{nodelimit}+')').css({color:"black"});
-		//$('.synlev').children(':nth-child('+#{synonymlevel}+')').css({color:"black"});
 
 		$('input[value="Enter"]').on('click', function(e) {
 			$('.adjust').slideUp();
@@ -239,29 +224,13 @@ block content
 			$(nodes[0]).after(ldr);
 		});
 
-		// ** sidebar menu ** //
-		var menu = false;
-		$('#sidebar').css('left', -adjustOffset);
-		function openMenu() {
-			if (!menu) {
-				$('#main').animate({
-					'left': adjustOffset
-				}, 500);
-				$('#sidebar').animate({
-					'left': 0
-				}, 500);
-				menu = true;
-			} else {
-				$('#main').animate({
-					'left': 0
-				}, 500);
-				$('#sidebar').animate({
-					'left': -adjustOffset
-				}, 500);
-				menu = false;
-			}
-		}
-		$('.menu').on('click', openMenu);
+		// ** hamburger menu ** //
+		$('.menu').on('click', function() {
+			$('#hamburger').fadeIn(500);
+		});
+		$('#hamburger').on('click', function() {
+			$(this).fadeOut();
+		});
 
 
 

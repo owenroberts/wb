@@ -71,7 +71,6 @@ app.get('/search', function(req, res) {
   if (cachedSearch == undefined) {
     chain.makeChain(req.query.start, req.query.end, nodelimit, synonymlevel, function(err, data) {
       if (err) {
-        console.log(err);
         appCache.set(cacheString, {
           err: err
         });

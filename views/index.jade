@@ -6,16 +6,12 @@ block content
 			div.errormsg
 			div.ok
 				a="OK"
-	div#sidebar
+	div#hamburger
 		ul
 			li
-				a(href="/")="new search"
+				a(href="/")="New Search"
 			li
-				a(href="#")="about synopath"
-			li
-				a(href="#")="how it works"
-			li
-				a(href="#")="feedback"
+				a(href="#")="About SynoPath"
 
 
 	div#main
@@ -37,38 +33,20 @@ block content
 	script(type="text/javascript").
 
 		$('input[value="search"]').on('click', function() {
-			$('.msg').fadeIn().css("display","inline-block");;
-			$('.errormsg').fadeOut();
-			$(this).fadeOut();
+			$('.ldr').fadeIn().css("display","inline-block");;
+			$(this).fadeOut(10);
 			$('input[type="text"]').animate({
 				"background-color":"transparent"
 			}, 500);
 		});
 		
-		// ** sidebar menu ** //
-		var menu = false;
-		var sidebarOffset = $('#sidebar').width();
-		$('#sidebar').css('left', -sidebarOffset);
-		function openMenu() {
-			if (!menu) {
-				$('#main').animate({
-					'left': sidebarOffset
-				}, 500);
-				$('#sidebar').animate({
-					'left': 0
-				}, 500);
-				menu = true;
-			} else {
-				$('#main').animate({
-					'left': 0
-				}, 500);
-				$('#sidebar').animate({
-					'left': -sidebarOffset
-				}, 500);
-				menu = false;
-			}
-		}
-		$('.menu').on('click', openMenu);
+		$('.menu').on('click', function() {
+			$('#hamburger').fadeIn(500);
+		});
+		$('#hamburger').on('click', function() {
+			$(this).fadeOut();
+		});
+
 		function reportError(errmsg) {
 			$('.error').fadeIn();
 			$('.errormsg').text("Note: " + errmsg);
