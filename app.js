@@ -36,8 +36,11 @@ app.use(
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res) {
+  var err;
+  if (req.query.err instanceof Array) err = req.query.err[req.query.err.length - 1];
+  else err = req.query.err;
   res.render('index', {
-    errmsg: req.query.err
+    errmsg: err
   });
 });
 

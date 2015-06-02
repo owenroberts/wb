@@ -1,5 +1,11 @@
 extends layout
 block content
+	div.error
+		div.msg
+			div.sorry= "We couldn't find a path. Sorry about that!"
+			div.errormsg
+			div.ok
+				a="OK"
 	div#sidebar
 		ul
 			li
@@ -24,9 +30,7 @@ block content
 				input(type="hidden",value="10",name="nodelimit")
 				input(type="hidden",value="10",name="synonymlevel")
 				input(type="submit", value="search")
-			if errormsg					
-				div.errormsg=errormsg
-			div.msg
+			div.ldr
 				img(src="/images/loader.svg")
 
 	// ** javascript ** // 
@@ -65,5 +69,12 @@ block content
 			}
 		}
 		$('.menu').on('click', openMenu);
-
-		if ("#{errmsg}") alert("#{errmsg}");
+		function reportError(errmsg) {
+			$('.error').fadeIn();
+			$('.errormsg').text("Note: " + errmsg);
+			$('.ok').on('click', function() {
+				$('.error').fadeOut();
+			});
+			location.hash = "";
+		}
+		if ("#{errmsg}") reportError("#{errmsg}");
