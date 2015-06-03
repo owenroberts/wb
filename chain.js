@@ -13,7 +13,7 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
   
   var data = {};
 
-  var findSynonyms = function(word, path, runagain) {
+  var buildPath = function(word, path, runagain) {
     
     var wordPath = path;
     allsynomyms.push(word);
@@ -51,44 +51,28 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
     }
   }
 
-  function shortestPath() {
-    console.log("shortest");
-    if (allpaths.length > 0) {
-      data.path = allpaths[0];
-      data.path.push({
-        node:end
-      });
-      callback(null, data);
-    } else {
-      if (nodenumber < nodelimit) {
-        nodenumber++;
-        allsynomyms = [start];
-        findSynonyms(start, [], true);
-        shortestPath();
-      } else {
-        if (nodelimit == 20 && synonymlevel == 20) 
-          callback("This search has exceeded the capacity of the algorithm.  Please try a new search.");
-        else
-          callback("This search was not able to be performed with the current parameters.");
-      }
-    }
-  }
 
 
   if (reg.test(start) && reg.test(end)) {
     if (start != end) {
       if (thesaurus.find(start).length > 0) {
         if (thesaurus.find(end).length > 0) {
-          
-          findSynonyms(start, [], true);
+          buildPath(start, [], true);
           if (allpaths.length > 0) {
             data.path = allpaths[0];
-            data.path.push({
-              node:end
-            });
             callback(null, data);
           } else {
-            shortestPath();
+            console.log("shortest " + nodenumber);
+            if (nodenumber < nodelimit) {
+              nodenumber++;
+              allsynomyms = [start];
+              buildPath(start, [], true);
+            } else {
+              if (nodelimit == 20 && synonymlevel == 20)
+                callback("This search has exceeded the capacity of the algorithm.  Please try a new search.");
+              else
+                callback("This search was not able to be performed with the current parameters.");
+            }
           }
         } else {
           callback("The second word was not found.");
