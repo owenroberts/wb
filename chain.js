@@ -51,6 +51,25 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
     }
   }
 
+  function getShortestPath() {
+    console.log("shortest " + nodenumber);
+    if (allpaths.length > 0) {
+      data.path = allpaths[0];
+      callback(null, data);
+    } else {
+      if (nodenumber < nodelimit) {
+        nodenumber++;
+        allsynomyms = [start];
+        buildPath(start, [], true);
+        shortestPath();
+      } else {
+        if (nodelimit == 20 && synonymlevel == 20) 
+          callback("This search has exceeded the capacity of the algorithm.  Please try a new search.");
+        else
+          callback("This search was not able to be performed with the current parameters.");
+      }
+    }
+  }
 
 
   if (reg.test(start) && reg.test(end)) {
@@ -58,22 +77,7 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
       if (thesaurus.find(start).length > 0) {
         if (thesaurus.find(end).length > 0) {
           buildPath(start, [], true);
-          if (allpaths.length > 0) {
-            data.path = allpaths[0];
-            callback(null, data);
-          } else {
-            console.log("shortest " + nodenumber);
-            if (nodenumber < nodelimit) {
-              nodenumber++;
-              allsynomyms = [start];
-              buildPath(start, [], true);
-            } else {
-              if (nodelimit == 20 && synonymlevel == 20)
-                callback("This search has exceeded the capacity of the algorithm.  Please try a new search.");
-              else
-                callback("This search was not able to be performed with the current parameters.");
-            }
-          }
+          getShortestPath();
         } else {
           callback("The second word was not found.");
         }
