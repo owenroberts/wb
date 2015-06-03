@@ -381,6 +381,7 @@ select {
 		width:0px;
 		position:relative;
 		top:6px;
+		text-align:center;
 		img {
 			width:24px;
 			vertical-align:middle;
@@ -389,7 +390,7 @@ select {
 	.dots {
 		display:inline-block;
 		margin:0 2px;
-		font-size:18px;
+		font-size:20px;
 		transition: transform 500ms;
 	}
 	.inner-nodes {

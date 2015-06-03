@@ -591,14 +591,15 @@ select {
     overflow: hidden;
     width: 0px;
     position: relative;
-    top: 6px; }
+    top: 6px;
+    text-align: center; }
     .node-dad .toggle img {
       width: 24px;
       vertical-align: middle; }
   .node-dad .dots {
     display: inline-block;
     margin: 0 2px;
-    font-size: 18px;
+    font-size: 20px;
     transition: transform 500ms; }
   .node-dad .inner-nodes {
     display: inline-block;
