@@ -416,7 +416,8 @@ header {
       font-weight: 600;
       padding: 1em; }
     .error .msg .ok {
-      padding: 0.5em; }
+      padding: 0.5em;
+      cursor: pointer; }
       .error .msg .ok a {
         color: #6a75ff; }
 
@@ -459,11 +460,13 @@ select {
   #hamburger li {
     border-radius: 8px;
     background-color: white;
-    padding: 0.5em;
     width: 300px;
     margin: 0.5em auto; }
     #hamburger li a {
-      color: #6a75ff; }
+      padding: 0.5em;
+      color: #6a75ff;
+      display: inline-block;
+      width: 100%; }
 
 #paths {
   position: relative; }
@@ -569,22 +572,26 @@ select {
 .node-dad {
   position: relative;
   display: none;
-  transition: background 300ms;
   padding: 0.2em 0;
-  margin: 0.2em 0;
-  border-bottom: 1px solid transparent;
-  border-top: 1px solid transparent;
-  width: 700px; }
-  .node-dad.selected {
-    border-bottom: 1px solid #f1f1f2;
-    border-top: 1px solid #f1f1f2;
+  margin: 0.2em 0; }
+  .node-dad:hover {
     cursor: -webkit-grab;
     cursor: -moz-grab; }
-    .node-dad.selected:active {
+    .node-dad:hover:active {
       cursor: -webkit-grabbing;
       cursor: -moz-grabbing; }
-    .node-dad.selected .synonym {
+    .node-dad:hover .alternate {
       display: inline-block; }
+  .node-dad:first-child, .node-dad:last-child {
+    padding: 0.25em 0;
+    margin-left: 38px;
+    display: block;
+    font-weight: 600;
+    cursor: default; }
+    .node-dad:first-child .node, .node-dad:last-child .node {
+      color: black; }
+    .node-dad:first-child:hover, .node-dad:last-child:hover {
+      background: none; }
   .node-dad .toggle {
     margin-right: 16px;
     display: inline-block;
@@ -603,21 +610,15 @@ select {
     transition: transform 500ms; }
   .node-dad .inner-nodes {
     display: inline-block;
-    position: relative;
-    width: 600px; }
+    position: relative; }
   .node-dad .node {
     color: black;
     display: inline-block;
     position: relative;
     padding-right: 24px;
     width: 300px; }
-  .node-dad .synonym {
-    opacity: 0;
-    display: inline-block;
-    color: black;
-    padding-right: 24px;
-    position: relative;
-    width: 300px; }
+  .node-dad .alternate {
+    opacity: 0; }
 
 .ldr {
   width: 12px; }
@@ -647,15 +648,6 @@ select {
     padding: 0.25em;
     border: none;
     font-family: AkzidenzGroteskBE-Md, Helvetica, sans-serif; }
-
-.node-dad:first-child, .node-dad:last-child {
-  padding: 0.25em 0;
-  display: block;
-  font-weight: 600; }
-  .node-dad:first-child .node, .node-dad:last-child .node {
-    color: black; }
-  .node-dad:first-child:hover, .node-dad:last-child:hover {
-    background: none; }
 
 .filter {
   position: absolute;

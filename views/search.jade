@@ -1,6 +1,10 @@
 extends layout
 block content
-
+	div.error
+		div.msg
+			div.errormsg
+			div.ok
+				a="OK"
 	div#hamburger
 		ul
 			li
@@ -32,23 +36,23 @@ block content
 			for result, index in data
 				div.path(id="path-"+index)
 					div.nodes
+
+						div.node-dad=result.start
+							span.toggle
+
 						each node, index in result.path
 							div.node-dad
 								span.toggle
-									if index < result.path.length - 1
-										a.dots="•"
-
+									a.dots="•"
 								div.inner-nodes
 									div.node=node.node
-									if index != 0
-										if result.path[index - 1].synonyms
-											- var s = 0
-											- var c = 0
-											while s < 1
-												- c++
-												if result.path[index - 1].synonyms[c] != result.path[index].node
-													- s++
-													div.synonym=result.path[index - 1].synonyms[c]
+									if node.alternates
+										for alt in node.alternates
+											if alt != node.node
+												div.node.alternate=alt
+
+						div.node-dad=result.end
+							span.toggle
 								
 
 									
@@ -57,7 +61,15 @@ block content
 
 		$(document).ready( function() {
 
-			
+		function reportError(errmsg) {
+			$('.error').fadeIn();
+			$('.errormsg').text("Note: " + errmsg);
+			$('.ok').on('click', function() {
+				$('.error').fadeOut();
+			});
+			location.hash = "";
+		}
+		if ("#{errmsg}") reportError("#{errmsg}");
 		
 		// ** mobile scrolling stuff ** //
 		//document.ontouchmove = function(e) {e.preventDefault()};
@@ -79,7 +91,7 @@ block content
 			$('.path:first-child .nodes').animate({
 			"padding-left":"16px"
 			}, 900, function() {
-				$('.toggle').animate({width:"24px"}, 900, function() {
+				$('.toggle').animate({width:"26px"}, 900, function() {
 					var nodes = $('.node-dad');
 					for (var i = 0; i < nodes.length; i++) {
 						var showNode = function(num) {
@@ -97,7 +109,7 @@ block content
 			$('.path:gt(1) .node-dad').css({display:'block'});
 		} else {
 			$('.nodes').css({'padding-left':'16px'});
-			$('.toggle').css({width:'24px'});
+			$('.toggle').css({width:'26px'});
 			$('.node-dad').css({display:'block'});
 			$('.plus').css({transform:"rotate(45deg)"});
 			setTimeout(function() {
@@ -132,7 +144,7 @@ block content
 			}, 500);
 		});
 
-		$( "#main" ).on( "swipeleft", function() {
+		$( "header" ).on( "swipeleft", function() {
 			if (currentPathNum < pathNum) {
 				currentPathNum++;
 				$('.path-dot').css({color:'lightgray'});
@@ -143,7 +155,7 @@ block content
 			}
 		});
 
-		$( "#main" ).on( "swiperight", function() {
+		$( "header" ).on( "swiperight", function() {
 			if (currentPathNum > 0) {
 				currentPathNum--;
 				$('.path-dot').css({color:'lightgray'});
@@ -172,57 +184,112 @@ block content
 			$(this).fadeOut();
 		});
 
-
-
-		// ** swipe left on node-dad ** //
-		$( 'body' ).on( "swipeleft", ".node-dad", function() {
-			if ($(this).index() > 0) {
-				$(this).find('.inner-nodes').animate({
-					left:'-300px'
-				}, 500);
-				$(this).find('.synonym').animate({
-					opacity:1
-				}, 1000);
+		// ** inner nodes ** //
+		var nodedads = $('.node-dad');
+		for (var i = 1; i < nodedads.length - 1; i++) {
+			var inner = $(this).find('.inner-nodes');
+			var innerwidth = 0;
+			var nodes = $(inner).find('.node');
+			for (var h = 0; h < nodes.length; h++) {
+				innerwidth += $(nodes[i]).width();
 			}
-			console.log(this);
-			modifyChain(this);
+			$(inner).css({width:innerwidth});
+			$(nodedads[i]).css({width:innerwidth + 48});
+		}
+
+
+		// ** swipe left on nodes ** //
+		$( 'body' ).on( "swipeleft", ".node", function() {
+			var alt = $(this).next();
+			if (alt[0]) {
+				var parent = $(this).parent();
+				var alt = $(this).next();
+				$(this).animate({
+					opacity: 0
+				}, 500);
+				$(alt).animate({
+					opacity: 1
+				}, 500);
+				$(parent).animate({
+					left: "-=300"
+				}, 500);
+				modifyChain($(parent).parent(), $(alt)[0].innerText);
+			} else {
+				reportError('This is the last alternative synonym.');
+			}
+			
+		});
+
+		// ** swipe right on nodes ** //
+		$( 'body' ).on( "swiperight", ".node", function() {
+			var alt = $(this).prev();
+			console.log(alt[0]);
+			if (alt[0]) {
+				var parent = $(this).parent();
+				var alt = $(this).prev();
+				$(this).animate({
+					opacity: 0
+				}, 500);
+				$(alt).animate({
+					opacity: 1
+				}, 500);
+				$(parent).animate({
+					left: "+=300"
+				}, 500);
+				modifyChain($(parent).parent(), $(alt)[0].innerText);
+			} else {
+				reportError('This is the first alternative synonym.');
+			}
+			
 		});
 		
 		// ** modify chain ** //
-		function modifyChain(elem) {
-			var parent = $(elem);
-			var synonym = parent.find('.synonym')[0].innerText;
+		function modifyChain(elem, alt) {
+			$(elem).find('.dots').html('<img src="/images/loader.svg" />');
+			
+			var pathIndex = $(elem).parent().parent().index();
+			var pathParent = $(elem).parent().parent().attr('id');
+			var nodes = $('#' + pathParent + ' .node-dad:gt('+elem.index()+')');
 
-			var nodes = $('.node-dad:gt('+parent.index()+')');
+			$(nodes).animate({
+				opacity: 0.3
+			}, 300);
 
-			var waitTime = nodes.length * 300;
 
-			for (var i = 0; i < nodes.length - 1; i++) {
-				var n = i;
-				$(nodes[i]).fadeOut((nodes.length - i) * 300, function(n) {
-					this.remove();
-				});
-			}
-
-			setTimeout(function() {
-				$.ajax({
+			$.ajax({
 				url: '/search/modified',
 				type: 'get',
 				dataType:'json',
 				data: {
-					start: synonym,
+					start: alt,
 					end: "#{data[0].end}",
 					synonymlevel: 10,
-					nodelimit: 10 - parent.index()		
+					nodelimit: 10 - elem.index()		
 				},
 				success: function(data) {
 					
 					if (data.errormsg) {
-						alert(data.errormsg + "\n\nClick okay to refresh the original results.");
-						//document.location.reload(true);
+						reportError(data.errormsg);
+						$(nodes).animate({
+							opacity: 1
+						}, 300);
+						$(elem).find('.dots').html('•');
+
 					} else {
-						parent.remove();
-						for (var i = 0; i < data.path.length - 1; i ++) {
+						$(nodes).animate({
+							opacity: 1
+						}, 300);
+
+						var waitTime = nodes.length * 300;
+
+						for (var i = 0; i < nodes.length - 1; i++) {
+							var n = i;
+							$(nodes[i]).fadeOut((nodes.length - i) * 300, function(n) {
+								this.remove();
+							});
+						}
+
+						for (var i = 0; i < data.path.length; i ++) {
 							var newnodedad = $('<div>')
 								.addClass('node-dad');
 							var newtoggle = $('<span>')
@@ -230,7 +297,7 @@ block content
 								.css({width:'24px'});
 							var newdots = $('<a>')
 								.addClass('dots')
-								.text(' •  •');
+								.text('•');
 							newtoggle.append(newdots);
 							
 							var inners = $('<div>')
@@ -242,20 +309,26 @@ block content
 
 							newnodedad.append(newtoggle);
 							inners.append(newnode);
-	
-							var newsynnode = $('<div>')
-								.addClass('synonym')
-								.text(data.path[i].synonyms[1]);
-							inners.append(newsynnode);
+							for (var h = 0; h < data.path[i].alternates.length; h++) {
+								if (data.path[i].alternates[h] != data.path[i].node) {
+									var newsynnode = $('<div>')
+										.addClass('node')
+										.addClass('alternate')
+										.text(data.path[i].alternates[h]);
+										inners.append(newsynnode);
+								}
+							}
+							
 							newnodedad.append(inners);
-							newnodedad.insertBefore('.node-dad:last-child()');
-
-							newnodedad.fadeIn(i * 1200);
+							newnodedad.insertBefore('#' + pathParent + ' .node-dad:last-child()');
+							newnodedad.delay(i * 500 + waitTime + 500).fadeIn(500);
+							setTimeout(function() {
+								$(elem).find('.dots').html('•');
+							}, waitTime);
 						}
 					}
 				}
 			});
-			}, waitTime);
 		}
 
 		if ("#{errmsg}") alert("#{errmsg}");

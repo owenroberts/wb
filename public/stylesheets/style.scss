@@ -168,6 +168,7 @@ header {
 				color: $blue;	
 			}
 			padding:0.5em;
+			cursor:pointer;
 		}
 	}
 	
@@ -221,11 +222,14 @@ select {
 	li {
 		border-radius: 8px;
 		background-color: $white;
-		padding:0.5em;
+		
 		width:300px;
 		margin: 0.5em auto;
 		a {
+			padding:0.5em;
 			color:$blue;
+			display:inline-block;
+			width:100%;
 		}
 	}
 }
@@ -355,23 +359,30 @@ select {
 .node-dad {
 	position: relative;
 	display:none;
-	transition:background 300ms;
 	padding:0.2em 0;
 	margin:0.2em 0;
-	border-bottom: 	1px solid transparent;
-	border-top: 	1px solid transparent;
-	width:700px;
-	&.selected {
-		border-bottom: 1px solid $lightgray;
-		border-top: 1px solid $lightgray;
+	&:hover {
 		cursor: -webkit-grab; 
 		cursor: -moz-grab;
 		&:active {
 			cursor: -webkit-grabbing; 
 			cursor: -moz-grabbing;
 		}
-		& .synonym {
+		& .alternate {
 			display:inline-block;
+		}
+	}
+	&:first-child, &:last-child {
+		padding:0.25em 0;
+		margin-left: 38px;
+		display:block;
+		font-weight:600;
+		cursor:default;
+		.node { 
+			color:$black;
+		}
+		&:hover {
+			background:none;
 		}
 	}
 	.toggle {
@@ -396,7 +407,6 @@ select {
 	.inner-nodes {
 		display:inline-block;
 		position:relative;
-		width:600px;
 	}
 	.node {
 		color:$black;
@@ -405,14 +415,8 @@ select {
 		padding-right:24px;
 		width:300px;
 	}
-
-	.synonym {
+	.alternate {
 		opacity:0;
-		display:inline-block;
-		color:$black;
-		padding-right:24px;
-		position:relative;
-		width:300px;
 	}
 }
 .ldr {
@@ -449,17 +453,7 @@ select {
 	}
 }
 
-.node-dad:first-child, .node-dad:last-child {
-	padding:0.25em 0;
-	display:block;
-	font-weight:600;
-	.node { 
-		color:$black;
-	}
-	&:hover {
-		background:none;
-	}
-}
+
 
 .filter {
 	position:absolute;

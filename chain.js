@@ -44,18 +44,28 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
       } else {
         if (runagain && wordPath.length < nodenumber) {
           var newpath = wordPath.slice(0);
-          findSynonyms(synonyms[i], newpath, true);
+          buildPath(synonyms[i], newpath, true);
         } else {
         }
       }
     }
   }
 
+  function sendData(newpath) {
+    var finalpath = [];
+    for (var i = 1; i < newpath.length; i++) {
+      finalpath[i - 1] = {};
+      finalpath[i - 1].node = newpath[i].node;
+      finalpath[i - 1].alternates = newpath[i-1].synonyms;
+    }
+    data.path = finalpath;
+    callback(null, data);
+  }
+
   function getShortestPath() {
     console.log("shortest " + nodenumber);
     if (allpaths.length > 0) {
-      data.path = allpaths[0];
-      callback(null, data);
+      sendData(allpaths[0]);
     } else {
       if (nodenumber < nodelimit) {
         nodenumber++;

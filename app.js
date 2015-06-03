@@ -80,12 +80,13 @@ app.get('/search', function(req, res) {
           res.redirect(req.get('Referrer')+'&err='+err); 
         }
       } else {
+        
         var newpath = {
           path: data.path,
           nodelimit: nodelimit,
           synonymlevel: synonymlevel,
-          start: data.path[0].node,
-          end: data.path[data.path.length - 1].node,
+          start: req.query.start,
+          end: req.query.end,
           cname: cacheString
         };
         appCache.set( cacheString, newpath);
