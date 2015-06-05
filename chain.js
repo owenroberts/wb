@@ -7,7 +7,7 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
 
   var allsynomyms = [start];
   var allpaths = [];
-  var nodelimit = limit;
+  var nodelimit = 20;
   var nodenumber = limit;
   var synonymlevel = level;
   
@@ -59,6 +59,7 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
       finalpath[i - 1].alternates = newpath[i-1].synonyms;
     }
     data.path = finalpath;
+    data.nodelimit = nodenumber;
     callback(null, data);
   }
 
@@ -67,11 +68,12 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
     if (allpaths.length > 0) {
       sendData(allpaths[0]);
     } else {
+      console.log("nodenumber " + nodenumber + " nodelimit " + nodelimit);
       if (nodenumber < nodelimit) {
         nodenumber++;
         allsynomyms = [start];
         buildPath(start, [], true);
-        shortestPath();
+        getShortestPath();
       } else {
         if (nodelimit == 20 && synonymlevel == 20) 
           callback("This search has exceeded the capacity of the algorithm.  Please try a new search.");

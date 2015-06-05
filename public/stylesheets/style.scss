@@ -131,7 +131,7 @@ header {
 		position:absolute;
 		top:16px;
 		right:16px;
-		transition: transform 500ms;
+		transition: transform 1s;
 		img {
 			width:80px;
 		}
@@ -174,7 +174,6 @@ header {
 	
 }
 .ldr {
-	display:inline-block;
 	font-size:20px;
 	display:none;
 	img {
@@ -208,7 +207,7 @@ select {
 	z-index:-3;
 }
 
-#hamburger {
+#hamburger, #newpath {
 	display:none;
 	position:fixed;
 	top:0;
@@ -230,6 +229,10 @@ select {
 			color:$blue;
 			display:inline-block;
 			width:100%;
+			position:relative;
+		}
+		.ldr {
+			padding:0.5em;
 		}
 	}
 }
@@ -419,9 +422,7 @@ select {
 		opacity:0;
 	}
 }
-.ldr {
-	width:12px;
-}
+
 #modified-search {
 	position: fixed;
 	top: 0;

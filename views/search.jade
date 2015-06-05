@@ -11,6 +11,15 @@ block content
 				a(href="/")="New Search"
 			li
 				a(href="#")="About SynoPath"
+	div#newpath
+		ul
+			li
+				a(id="shortest" class="new" href="#")="Find Shortest Path"
+			li
+				a(id="longer" class="new" href="#")="Find Longer Path"
+			li
+				div.ldr
+					img(src="/images/loader.svg")
 
 	div#main
 		header
@@ -23,12 +32,6 @@ block content
 					a.path-dot(id="p-"+index)
 					- pathIndex = index
 			a.plus.fadein
-				form(id="makeNewPath", method="get", action="/search")
-					input(type="hidden",name="start",value=data[0].start)
-					input(type="hidden",name="end", value=data[0].end)
-					for result, index in data
-						input(type="hidden", name="oldpath", value=result.cname)
-
 				svg(width="20" height="20" viewBox="0 0 20 20" class="stroke")
 					g(fill="none")
 					path(d="M9.6 1v17.1M18.1 9.6H1" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round")
@@ -36,10 +39,8 @@ block content
 			for result, index in data
 				div.path(id="path-"+index)
 					div.nodes
-
 						div.node-dad=result.start
 							span.toggle
-
 						each node, index in result.path
 							div.node-dad
 								span.toggle
@@ -85,6 +86,8 @@ block content
 		var w = window.innerWidth;
 		var pathNum = #{pathIndex};
 		var currentPathNum = pathNum;
+		var data = !{JSON.stringify(data)};
+		console.log(data);
 
 		// ** animate nodes (or not) ** //
 		if (pathNum < 1) {
@@ -169,11 +172,70 @@ block content
 		});
 
 		// ** plus button for new paths ** //
-		function getNewPath() {
-			$(this).css({transform:"rotate(45deg)"});
-			$('#makeNewPath').submit();
+		function getNewPath(ev) {
+			ev.stopPropagation();
+			$('.ldr').fadeIn();
+
+			var nodelimit;
+			var synonymlevel;
+
+			if ($(this).attr('id') == "shortest") {
+				nodelimit = 1;
+				synonymlevel = 10;
+			} else {
+				nodelimit = +data[currentPathNum].nodelimit + 1;
+				synonymlevel = 10;
+			}
+
+			var form = $('<form>')
+				.attr({
+					"method":"get",
+					"action":"/search",
+					"id":"newpath"
+				});
+			var startElement = $("<input>")
+				.attr({
+					"name":"start",
+					"value": data[currentPathNum].start
+				});
+			form.append(startElement);
+			var endElement = $("<input>")
+				.attr({
+					"name":"end",
+					"value": data[currentPathNum].end
+				});
+			form.append(endElement);
+			var nodeElement = $("<input>")
+				.attr({
+					"name":"nodelimit",
+					"value": nodelimit
+				});
+			form.append(nodeElement);
+			var synElement = $("<input>")
+				.attr({
+					"name":"synonymlevel",
+					"value": synonymlevel
+				});
+			form.append(synElement);
+			for (var i = 0; i < data.length; i++){
+				var pathElement = $("<input>")
+					.attr({
+						"name":"oldpath",
+						"value": data[i].cname
+					});
+				form.append(pathElement);
+			}
+			console.log($(form));
+			form.submit();			
 		}
-		$('.plus').on('click', getNewPath);
+
+		$('.new').on('click', getNewPath);
+		$('.plus').on('click', function() {
+			$('#newpath').fadeIn();
+		});
+		$('#newpath').on('click', function() {
+			$(this).fadeOut();
+		});
 
 
 		// ** hamburger menu ** //
@@ -330,7 +392,4 @@ block content
 				}
 			});
 		}
-
-		if ("#{errmsg}") alert("#{errmsg}");
-
 		});
