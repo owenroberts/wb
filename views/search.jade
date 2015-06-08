@@ -2,6 +2,7 @@ extends layout
 block content
 	div.error
 		div.msg
+			div.sorry= "We couldn't find a path."
 			div.errormsg
 			div.ok
 				a="OK"
@@ -64,11 +65,10 @@ block content
 
 		function reportError(errmsg) {
 			$('.error').fadeIn();
-			$('.errormsg').text("Note: " + errmsg);
+			$('.errormsg').html(errmsg);
 			$('.ok').on('click', function() {
 				$('.error').fadeOut();
 			});
-			location.hash = "";
 		}
 		if ("#{errmsg}") reportError("#{errmsg}");
 		
@@ -86,8 +86,7 @@ block content
 		var w = window.innerWidth;
 		var pathNum = #{pathIndex};
 		var currentPathNum = pathNum;
-		var data = !{JSON.stringify(data)};
-		console.log(data);
+		var pathData = !{JSON.stringify(data)};
 
 		// ** animate nodes (or not) ** //
 		if (pathNum < 1) {
@@ -183,7 +182,7 @@ block content
 				nodelimit = 1;
 				synonymlevel = 10;
 			} else {
-				nodelimit = +data[currentPathNum].nodelimit + 1;
+				nodelimit = +pathData[currentPathNum].nodelimit + 1;
 				synonymlevel = 10;
 			}
 
@@ -196,13 +195,13 @@ block content
 			var startElement = $("<input>")
 				.attr({
 					"name":"start",
-					"value": data[currentPathNum].start
+					"value": pathData[currentPathNum].start
 				});
 			form.append(startElement);
 			var endElement = $("<input>")
 				.attr({
 					"name":"end",
-					"value": data[currentPathNum].end
+					"value": pathData[currentPathNum].end
 				});
 			form.append(endElement);
 			var nodeElement = $("<input>")
@@ -221,7 +220,7 @@ block content
 				var pathElement = $("<input>")
 					.attr({
 						"name":"oldpath",
-						"value": data[i].cname
+						"value": pathData[i].cname
 					});
 				form.append(pathElement);
 			}
@@ -324,14 +323,17 @@ block content
 				dataType:'json',
 				data: {
 					start: alt,
-					end: "#{data[0].end}",
+					end: pathData[currentPathNum].end,
 					synonymlevel: 10,
 					nodelimit: 10 - elem.index()		
 				},
 				success: function(data) {
+
 					
 					if (data.errormsg) {
-						reportError(data.errormsg);
+						var err = '"' + alt + '" is related to "' + pathData[currentPathNum].start + '," but we couldn\'t find a path that connects it to "' + pathData[currentPathNum].end + '." <br><br> You can either swipe back to the previous word or try another one.';
+						console.log(err);
+						reportError(err);
 						$(nodes).animate({
 							opacity: 1
 						}, 300);

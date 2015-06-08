@@ -64,11 +64,11 @@ var makeChain = function(startWord, endWord, limit, level, callback) {
   }
 
   function getShortestPath() {
-    console.log("shortest " + nodenumber);
+    console.log("nodenumber " + nodenumber);
     if (allpaths.length > 0) {
       sendData(allpaths[0]);
     } else {
-      console.log("nodenumber " + nodenumber + " nodelimit " + nodelimit);
+      console.log("else nodelimit " + nodelimit);
       if (nodenumber < nodelimit) {
         nodenumber++;
         allsynomyms = [start];
