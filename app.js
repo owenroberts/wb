@@ -63,7 +63,7 @@ app.get('/search', function(req, res) {
   var cachedSearch = appCache.get(cacheString);
   
   if (cachedSearch == undefined) {
-    chain.makeChain(req.query.start, req.query.end, req.query.nodelimit, req.query.synonymlevel, function(err, data) {
+    chain.makeChain(req.query.start, req.query.end, req.query.nodelimit, req.query.synonymlevel, [req.query.start], function(err, data) {
       if (err) {
         console.log(err);
         appCache.set(cacheString, {
@@ -112,7 +112,7 @@ app.get('/search/modified', function(req, res) {
   var cacheString = req.query.start + req.query.nodelimit + req.query.end  + req.query.synonymlevel;
   var cacheSearch = appCache.get(cacheString);
   if (cacheSearch == undefined) {
-    chain.makeChain(req.query.start, req.query.end, req.query.nodelimit, req.query.synonymlevel, function(err, data) {
+    chain.makeChain(req.query.start, req.query.end, req.query.nodelimit, req.query.synonymlevel, req.query.allsynonyms, function(err, data) {
       if (err) {
         appCache.set(cacheString, {
           err: err

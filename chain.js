@@ -1,15 +1,15 @@
 var thesaurus = require("thesaurus");
 
-var makeChain = function(startWord, endWord, limit, level, callback) {
-  var start = startWord.toLowerCase();
-  var end = endWord.toLowerCase();
+var makeChain = function(_start, _end, _limit, _level, _synonyms, callback) {
+  var start = _start.toLowerCase();
+  var end = _end.toLowerCase();
   var reg = /^[a-z]+$/;
 
-  var allsynomyms = [start];
+  var allsynomyms = _synonyms;
   var allpaths = [];
   var nodelimit = 20;
-  var nodenumber = limit;
-  var synonymlevel = level;
+  var nodenumber = _limit;
+  var synonymlevel = _level;
   
   var data = {};
 

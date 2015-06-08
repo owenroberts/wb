@@ -71,22 +71,13 @@ block content
 			});
 		}
 		if ("#{errmsg}") reportError("#{errmsg}");
-		
-		// ** mobile scrolling stuff ** //
-		//document.ontouchmove = function(e) {e.preventDefault()};
-		//- $('.nodes').on('touchmove', function(event){
-		//- 	event.stopPropagation();
-		//- });
-
-		//- $('.adjust').on('touchmove', function(event){
-		//- 	event.stopPropagation();
-		//- });
 
 		// ** blogal variables ** //
 		var w = window.innerWidth;
 		var pathNum = #{pathIndex};
 		var currentPathNum = pathNum;
 		var pathData = !{JSON.stringify(data)};
+		console.log(pathData);
 
 		// ** animate nodes (or not) ** //
 		if (pathNum < 1) {
@@ -308,7 +299,7 @@ block content
 		function modifyChain(elem, alt) {
 			$(elem).find('.dots').html('<img src="/images/loader.svg" />');
 			
-			var pathIndex = $(elem).parent().parent().index();
+			var pathIndex = $(elem).index();
 			var pathParent = $(elem).parent().parent().attr('id');
 			var nodes = $('#' + pathParent + ' .node-dad:gt('+elem.index()+')');
 
@@ -316,6 +307,11 @@ block content
 				opacity: 0.3
 			}, 300);
 
+			var allsynonyms = [pathData[currentPathNum].start];
+
+			for (var i = 0; i < pathIndex; i++) {
+				allsynonyms = allsynonyms.concat(pathData[currentPathNum].path[i].alternates);
+			}
 
 			$.ajax({
 				url: '/search/modified',
@@ -325,7 +321,8 @@ block content
 					start: alt,
 					end: pathData[currentPathNum].end,
 					synonymlevel: 10,
-					nodelimit: 10 - elem.index()		
+					nodelimit: 10 - elem.index(),
+					allsynonyms: allsynonyms
 				},
 				success: function(data) {
 
