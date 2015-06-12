@@ -59,6 +59,7 @@ app.get('/search', function(req, res) {
   }
 
   var cacheString = req.query.start + req.query.nodelimit + req.query.end  + req.query.synonymlevel;
+  cacheString.replace(/ /g, ""); // gets rid of any spaces that might throw error, probably better way to do this
 
   var cachedSearch = appCache.get(cacheString);
   
