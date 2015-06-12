@@ -128,7 +128,6 @@ header {
 }
 .path-dots {
 	text-align:center;
-	border-bottom:1px solid $lightgray;
 	position:relative;
 	.path-dot {
 		display:inline-block;
@@ -138,6 +137,9 @@ header {
 	.path-dot:before {
 		content:"\2022";
 	}
+}
+.pathdotcontainer {
+	border-bottom:1px solid $lightgray;
 }
 .slidedown {
 	display:none;

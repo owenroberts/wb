@@ -27,26 +27,28 @@ block content
 			a.menu
 				svg(width="22" height="22" viewBox="0 0 20 20" class="stroke")
 					path(fill="none" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round" d="M17.2 7.6H1.1M17.2 1.2H1.1M17.2 14H1.1")
+			if data.length < 2
+				div.path-dots.fadein
+					a.path-dot
 			a.plus.fadein
 				svg(width="20" height="20" viewBox="0 0 20 20" class="stroke")
 					g(fill="none")
 					path(d="M9.6 1v17.1M18.1 9.6H1" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round")
-			if data.length < 2
-				div.path-dots.fadein
 											
-		- var pathIndex = 0
-		div.path-dots.slidedown
-			a.leftarrow= "<"
-			a.rightarrow=  ">"
-			div.dots
-				for result, index in data
-					a.path-dot(id="p-"+index)
-					- pathIndex = index			
+		if data.length > 1
+			div.path-dots.slidedown.pathdotcontainer
+				a.leftarrow= "<"
+				a.rightarrow=  ">"
+				div.dots
+					for result, index in data
+						a.path-dot(id="p-"+index)
+						
 			
 		div#paths
 			
-
+			- var pathIndex = 0
 			for result, index in data
+				- pathIndex = index		
 				div.path(id="path-"+index)
 					div.nodes
 						div.node-dad=result.start
@@ -173,7 +175,7 @@ block content
 				}, 500);
 			}
 		};
-		
+
 		$( ".path-dots" ).on( "swiperight", prevPath);
 		$('.leftarrow').on('click', prevPath);
 
