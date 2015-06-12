@@ -116,17 +116,6 @@ header {
 		top:16px;
 		left:16px;
 	}
-	.path-dots {
-		text-align:center;
-		.path-dot {
-			display:inline-block;
-			margin:0 4px;
-			font-size:24px;
-		}
-		.path-dot:before {
-			content:"\2022";
-		}
-	}
 	.plus {
 		position:absolute;
 		top:16px;
@@ -136,6 +125,30 @@ header {
 			width:80px;
 		}
 	}
+}
+.path-dots {
+	text-align:center;
+	border-bottom:1px solid $lightgray;
+	position:relative;
+	.path-dot {
+		display:inline-block;
+		margin:0 4px;
+		font-size:24px;
+	}
+	.path-dot:before {
+		content:"\2022";
+	}
+}
+.slidedown {
+	display:none;
+}
+.leftarrow {
+	position:absolute;
+	left:10%;
+}
+.rightarrow {
+	position:absolute;
+	right:10%;
 }
 
 

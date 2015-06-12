@@ -377,14 +377,6 @@ header {
     position: absolute;
     top: 16px;
     left: 16px; }
-  header .path-dots {
-    text-align: center; }
-    header .path-dots .path-dot {
-      display: inline-block;
-      margin: 0 4px;
-      font-size: 24px; }
-    header .path-dots .path-dot:before {
-      content: "\2022"; }
   header .plus {
     position: absolute;
     top: 16px;
@@ -392,6 +384,28 @@ header {
     transition: transform 1s; }
     header .plus img {
       width: 80px; }
+
+.path-dots {
+  text-align: center;
+  border-bottom: 1px solid #f1f1f2;
+  position: relative; }
+  .path-dots .path-dot {
+    display: inline-block;
+    margin: 0 4px;
+    font-size: 24px; }
+  .path-dots .path-dot:before {
+    content: "\2022"; }
+
+.slidedown {
+  display: none; }
+
+.leftarrow {
+  position: absolute;
+  left: 10%; }
+
+.rightarrow {
+  position: absolute;
+  right: 10%; }
 
 .error {
   display: none;

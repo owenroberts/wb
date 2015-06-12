@@ -27,16 +27,25 @@ block content
 			a.menu
 				svg(width="22" height="22" viewBox="0 0 20 20" class="stroke")
 					path(fill="none" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round" d="M17.2 7.6H1.1M17.2 1.2H1.1M17.2 14H1.1")
-			div.path-dots.fadein
-				- var pathIndex = 0
-				for result, index in data
-					a.path-dot(id="p-"+index)
-					- pathIndex = index
 			a.plus.fadein
 				svg(width="20" height="20" viewBox="0 0 20 20" class="stroke")
 					g(fill="none")
 					path(d="M9.6 1v17.1M18.1 9.6H1" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round")
+			if data.length < 2
+				div.path-dots.fadein
+											
+		- var pathIndex = 0
+		div.path-dots.slidedown
+			a.leftarrow= "<"
+			a.rightarrow=  ">"
+			div.dots
+				for result, index in data
+					a.path-dot(id="p-"+index)
+					- pathIndex = index			
+			
 		div#paths
+			
+
 			for result, index in data
 				div.path(id="path-"+index)
 					div.nodes
@@ -118,6 +127,7 @@ block content
 		$('.fadein').animate({
 			opacity: 1
 		}, 900);
+		$('.slidedown').slideDown(500);
 
 
 		// ** position paths ** //
@@ -137,7 +147,7 @@ block content
 			}, 500);
 		});
 
-		$( "header" ).on( "swipeleft", function() {
+		var nextPath = function() {
 			if (currentPathNum < pathNum) {
 				currentPathNum++;
 				$('.path-dot').css({color:'lightgray'});
@@ -146,9 +156,12 @@ block content
 					left: -currentPathNum * w
 				}, 500);
 			}
-		});
+		};
 
-		$( "header" ).on( "swiperight", function() {
+		$( ".path-dots" ).on( "swipeleft", nextPath);
+		$('.rightarrow').on('click', nextPath);
+
+		var prevPath = function() {
 			if (currentPathNum > 0) {
 				currentPathNum--;
 				$('.path-dot').css({color:'lightgray'});
@@ -159,7 +172,10 @@ block content
 					left: +offset + w
 				}, 500);
 			}
-		});
+		};
+		
+		$( ".path-dots" ).on( "swiperight", prevPath);
+		$('.leftarrow').on('click', prevPath);
 
 		// ** plus button for new paths ** //
 		function getNewPath(ev) {
@@ -215,7 +231,6 @@ block content
 					});
 				form.append(pathElement);
 			}
-			console.log($(form));
 			form.submit();			
 		}
 
@@ -330,13 +345,10 @@ block content
 					allsynonyms: allsynonyms
 				},
 				success: function(data) {
-
-					console.log("done");
 					
 					
 					if (data.errormsg) {
 						var err = '"' + alt + '" is related to "' + pathData[currentPathNum].start + '," but we couldn\'t find a path that connects it to "' + pathData[currentPathNum].end + '." <br><br> You can either swipe back to the previous word or try another one.';
-						console.log(err);
 						reportError(err);
 						$(nodes).animate({
 							opacity: 1
