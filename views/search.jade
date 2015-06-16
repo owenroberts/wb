@@ -238,7 +238,7 @@ block content
 
 		$('.new').on('click', getNewPath);
 		$('.plus').on('click', function() {
-			$('#newpath').fadeIn();
+			if (!modified) $('#newpath').fadeIn();
 		});
 		$('#newpath').on('click', function() {
 			$(this).fadeOut();

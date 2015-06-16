@@ -64,9 +64,12 @@ app.get('/search', function(req, res) {
   var cachedSearch = appCache.get(cacheString);
   
   if (cachedSearch == undefined) {
+  
     chain.makeChain(req.query.start, req.query.end, req.query.nodelimit, req.query.synonymlevel, [req.query.start], function(err, data) {
       if (err) {
         console.log(err);
+        var cacheString = req.query.start + req.query.nodelimit + req.query.end  + req.query.synonymlevel;
+
         appCache.set(cacheString, {
           err: err
         });
@@ -95,7 +98,7 @@ app.get('/search', function(req, res) {
       }
     });
   } else if (cachedSearch.err != undefined) {
-    console.log(err);
+    console.log(cachedSearch.err);
     if (req.get('Referrer').indexOf('?') === -1){
       res.redirect(req.get('Referrer') + '?err=' + cachedSearch.err);
     } else {
