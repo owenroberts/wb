@@ -24,12 +24,13 @@ block content
 
 	div#main
 		header
-			a.menu
-				svg(width="22" height="22" viewBox="0 0 20 20" class="stroke")
-					path(fill="none" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round" d="M17.2 7.6H1.1M17.2 1.2H1.1M17.2 14H1.1")
+			
 			if data.length < 2
 				div.path-dots.fadein
 					a.path-dot
+			a.menu
+				svg(width="22" height="22" viewBox="0 0 20 20" class="stroke")
+					path(fill="none" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round" d="M17.2 7.6H1.1M17.2 1.2H1.1M17.2 14H1.1")
 			a.plus.fadein
 				svg(width="20" height="20" viewBox="0 0 20 20" class="stroke")
 					g(fill="none")

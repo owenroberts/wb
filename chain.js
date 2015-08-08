@@ -5,7 +5,7 @@ var makeChain = function(_start, _end, _limit, _level, _synonyms, callback) {
   var end = _end.toLowerCase();
   var reg = /^[a-z]+$/;
 
-  var allsynomyms = _synonyms;
+  var allsynonyms = _synonyms;
   var allpaths = [];
   var nodelimit = 20;
   var nodenumber = _limit;
@@ -16,16 +16,16 @@ var makeChain = function(_start, _end, _limit, _level, _synonyms, callback) {
   var buildPath = function(word, path, runagain) {
     
     var wordPath = path;
-    allsynomyms.push(word);
+    allsynonyms.push(word);
     var tmp = thesaurus.find(word);
     var synonyms = [];
     for (var i = 0; i < tmp.length; i++) {
       if (reg.test(tmp[i]) 
-        && allsynomyms.indexOf(tmp[i]) == -1 
-        && allsynomyms.indexOf(tmp[i]+"s") == -1
+        && allsynonyms.indexOf(tmp[i]) == -1 
+        && allsynonyms.indexOf(tmp[i]+"s") == -1
         && synonyms.length < 10 ) {
         synonyms.push(tmp[i]);
-        allsynomyms.push(tmp[i]);
+        allsynonyms.push(tmp[i]);
       }
     }
 
@@ -68,10 +68,10 @@ var makeChain = function(_start, _end, _limit, _level, _synonyms, callback) {
     if (allpaths.length > 0) {
       sendData(allpaths[0]);
     } else {
-      console.log("else nodelimit " + nodelimit);
+      console.log("nodelimit " + nodelimit);
       if (nodenumber < nodelimit) {
         nodenumber++;
-        allsynomyms = [start];
+        allsynonyms = _synonyms;
         buildPath(start, [], true);
         getShortestPath();
       } else {

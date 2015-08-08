@@ -69,7 +69,6 @@ app.get('/search', function(req, res) {
       if (err) {
         console.log(err);
         var cacheString = req.query.start + req.query.nodelimit + req.query.end  + req.query.synonymlevel;
-
         appCache.set(cacheString, {
           err: err
         });
