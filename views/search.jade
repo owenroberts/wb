@@ -85,24 +85,31 @@ block content
 		if ("#{errmsg}") reportError("#{errmsg}");
 
 		// ** blogal variables ** //
+		var debug = true;
+		var fadeDur = debug ? 0 : 500;
+
 		var w = window.innerWidth;
 		var pathNum = #{pathIndex};
 		var currentPathNum = pathNum;
 		var pathData = !{JSON.stringify(data)};
+		
+		//-  wtf  is this
 		var modified = false;
 
+		
+
 		// ** animate nodes (or not) ** //
-		if (pathNum < 1) {
+		if (pathNum < 1 && !debug) {
 			$('.path:first-child .nodes').animate({
 			"padding-left":"16px"
-			}, 900, function() {
-				$('.toggle').animate({width:"26px"}, 900, function() {
+			}, fadeDur*2, function() {
+				$('.toggle').animate({width:"26px"}, fadeDur*2, function() {
 					var nodes = $('.node-dad');
 					for (var i = 0; i < nodes.length; i++) {
 						var showNode = function(num) {
 							setTimeout( function() {
 								$(nodes[num]).fadeIn();
-							}, num*400);
+							}, num*fadeDur);
 						}(i);
 					}
 				});
@@ -119,18 +126,18 @@ block content
 			$('.plus').css({transform:"rotate(45deg)"});
 			setTimeout(function() {
 				$('.plus').css({transform:"rotate(90deg)"});
-			}, 500);
+			}, fadeDur);
 			$('.path-dot:nth-child('+(currentPathNum+1)+')').css({color:'black'});
 			$('#paths').animate({
 					left: -currentPathNum * w
-			}, 500);
+			}, fadeDur);
 		}
 
 		// ** fade in ui ** //
 		$('.fadein').animate({
 			opacity: 1
-		}, 900);
-		$('.slidedown').slideDown(500);
+		}, fadeDur*2);
+		$('.slidedown').slideDown(fadeDur);
 
 
 		// ** position paths ** //
@@ -147,7 +154,7 @@ block content
 			var index = $(this).index();
 			$('#paths').animate({
 				left: -w * index
-			}, 500);
+			}, fadeDur);
 		});
 
 		var nextPath = function() {
@@ -157,7 +164,7 @@ block content
 				$('.path-dot:nth-child('+(currentPathNum+1)+')').css({color:'black'});
 				$('#paths').animate({
 					left: -currentPathNum * w
-				}, 500);
+				}, fadeDur);
 			}
 		};
 
@@ -173,7 +180,7 @@ block content
 				offset = offset.replace('px', '');
 				$('#paths').animate({
 					left: +offset + w
-				}, 500);
+				}, fadeDur);
 			}
 		};
 
@@ -182,6 +189,7 @@ block content
 
 		// ** plus button for new paths ** //
 		function getNewPath(ev) {
+
 			ev.stopPropagation();
 			$('.ldr').fadeIn();
 
@@ -248,7 +256,7 @@ block content
 
 		// ** hamburger menu ** //
 		$('.menu').on('click', function() {
-			$('#hamburger').fadeIn(500);
+			$('#hamburger').fadeIn(fadeDur);
 		});
 		$('#hamburger').on('click', function() {
 			$(this).fadeOut();
@@ -269,33 +277,31 @@ block content
 
 
 		// ** swipe left on nodes ** //
+		//-  taking about "modified" bool here, not sure what it should do
 		$( 'body' ).on( "swipeleft", ".node", function() {
-			if (!modified) {
-				modified = true;
+			var alt = $(this).next();
+			if (alt[0]) {
+				var parent = $(this).parent();
 				var alt = $(this).next();
-				if (alt[0]) {
-					var parent = $(this).parent();
-					var alt = $(this).next();
-					$(this).animate({
-						opacity: 0
-					}, 500);
-					$(alt).animate({
-						opacity: 1
-					}, 500);
-					$(parent).animate({
-						left: "-=300"
-					}, 500);
-					modifyChain($(parent).parent(), $(alt)[0].innerText);
-				} else {
-					reportError('This is the last alternative synonym.');
-				}
-			}
-			
+				$(this).animate({
+					opacity: 0
+				}, fadeDur);
+				$(alt).animate({
+					opacity: 1
+				}, fadeDur);
+				$(parent).animate({
+					left: "-=300"
+				}, fadeDur);
+				modifyChain($(parent).parent(), $(alt)[0].innerText);
+			} else {
+				reportError('This is the last alternative synonym.');
+			}			
 		});
 
 		// ** swipe right on nodes ** //
 		$( 'body' ).on( "swiperight", ".node", function() {
 			if (!modified) {
+				console.log("swiperight");
 				modified = true;
 				var alt = $(this).prev();
 				if (alt[0]) {
@@ -303,13 +309,13 @@ block content
 					var alt = $(this).prev();
 					$(this).animate({
 						opacity: 0
-					}, 500);
+					}, fadeDur);
 					$(alt).animate({
 						opacity: 1
-					}, 500);
+					}, fadeDur);
 					$(parent).animate({
 						left: "+=300"
-					}, 500);
+					}, fadeDur);
 					modifyChain($(parent).parent(), $(alt)[0].innerText);
 				} else {
 					reportError('This is the first alternative synonym.');
@@ -328,7 +334,7 @@ block content
 
 			$(nodes).animate({
 				opacity: 0.3
-			}, 300);
+			}, fadeDur/2);
 
 			var allsynonyms = [pathData[currentPathNum].start];
 
@@ -355,7 +361,7 @@ block content
 						reportError(err);
 						$(nodes).animate({
 							opacity: 1
-						}, 300, function() {
+						}, fadeDur/2, function() {
 							modified = false;
 						});
 						$(elem).find('.dots').html('•');
@@ -363,13 +369,13 @@ block content
 					} else {
 						$(nodes).animate({
 							opacity: 1
-						}, 300);
+						}, fadeDur/2);
 
-						var waitTime = nodes.length * 300;
+						var waitTime = nodes.length * fadeDur/2;
 
 						for (var i = 0; i < nodes.length - 1; i++) {
 							var n = i;
-							$(nodes[i]).fadeOut((nodes.length - i) * 300, function(n) {
+							$(nodes[i]).fadeOut((nodes.length - i) * fadeDur/2, function(n) {
 								this.remove();
 							});
 						}
@@ -406,7 +412,7 @@ block content
 							
 							newnodedad.append(inners);
 							newnodedad.insertBefore('#' + pathParent + ' .node-dad:last-child()');
-							newnodedad.delay(i * 500 + waitTime + 500).fadeIn(500);
+							newnodedad.delay(i * fadeDur/2 + waitTime + fadeDur/2).fadeIn(fadeDur);
 							setTimeout(function() {
 								$(elem).find('.dots').html('•');
 								modified = false;

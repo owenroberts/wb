@@ -344,7 +344,7 @@ input:focus {
     background: none;
     color: #c6c8ca;
     padding: 0;
-    font-weight: 100;
+    /* font-weight:100; */
     text-align: left; }
     .index input[type="submit"]:hover {
       color: #6a75ff; }
