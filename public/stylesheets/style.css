@@ -376,7 +376,8 @@ header {
   header .menu {
     position: absolute;
     top: 16px;
-    left: 16px; }
+    left: 16px;
+    z-index: 1; }
   header .plus {
     position: absolute;
     top: 16px;
@@ -662,7 +663,7 @@ select {
     font-size: 20px;
     padding: 0.25em;
     border: none;
-    font-family: AkzidenzGroteskBE-Md, Helvetica, sans-serif; }
+    font-family: Helvetica, sans-serif; }
 
 .filter {
   position: absolute;
