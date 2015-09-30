@@ -83,24 +83,27 @@ var makeChain = function(_start, _end, _limit, _level, _synonyms, callback) {
     }
   }
 
-
-  if (reg.test(start) && reg.test(end)) {
-    if (start != end) {
-      if (thesaurus.find(start).length > 0) {
-        if (thesaurus.find(end).length > 0) {
-          buildPath(start, [], true);
-          getShortestPath();
+  if (start && end) {
+    if (reg.test(start) && reg.test(end)) {
+      if (start != end) {
+        if (thesaurus.find(start).length > 0) {
+          if (thesaurus.find(end).length > 0) {
+            buildPath(start, [], true);
+            getShortestPath();
+          } else {
+            callback("The second word was not found.");
+          }
         } else {
-          callback("The second word was not found.");
+          callback("The first word was not found.");
         }
       } else {
-        callback("The first word was not found.");
+        callback("Please enter different words.")
       }
     } else {
-      callback("Please enter different words.")
+      callback("Please enter single words with no spaces or dashes.");
     }
   } else {
-    callback("Please input single words with no spaces or dashes.");
+    callback("Please enter two search words.");
   }
 
 }

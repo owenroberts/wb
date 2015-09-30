@@ -21,8 +21,8 @@ block content
 					path(fill="none" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round" d="M17.2 7.6H1.1M17.2 1.2H1.1M17.2 14H1.1")
 		div.index
 			form(method="get", action="/search")
-				input(type="text",  name="start")
-				input(type="text",  name="end")
+				input(type="text",  name="start", class="query")
+				input(type="text",  name="end"  , class="query")
 				input(type="hidden",value="10",name="nodelimit")
 				input(type="hidden",value="10",name="synonymlevel")
 				input(type="submit", value="search")
@@ -32,16 +32,26 @@ block content
 	// ** javascript ** // 
 	script(type="text/javascript").
 
+		var fadeDur = 500;
+		var termsEntered = [false, false];
+
 		$('input[value="search"]').on('click', function() {
 			$('.ldr').fadeIn().css("display","inline-block");;
 			$(this).fadeOut(10);
 			$('input[type="text"]').animate({
 				"background-color":"transparent"
-			}, 500);
+			}, fadeDur);
 		});
+
+		$('.query').on('change keyup paste', function() {
+			termsEntered[$(this).index()] = true;
+			if (termsEntered[0] && termsEntered[1]) {
+				$('input[value="search"]').css({color: '#6a75ff'});
+			}
+		})
 		
 		$('.menu').on('click', function() {
-			$('#hamburger').fadeIn(500);
+			$('#hamburger').fadeIn(fadeDur);
 		});
 		$('#hamburger').on('click', function() {
 			$(this).fadeOut();
@@ -49,7 +59,7 @@ block content
 
 		function reportError(errmsg) {
 			$('.error').fadeIn();
-			$('.errormsg').text("Note: " + errmsg);
+			$('.errormsg').text("Hint: " + errmsg);
 			$('.ok').on('click', function() {
 				$('.error').fadeOut();
 			});

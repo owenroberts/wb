@@ -1,7 +1,3 @@
-priority
-- after "no more synonyms in that direction" message all functionality breaks?? also maybe after failing to find shortest
-
-
 path
 - replace "no more synonyms in that direction" with jiggle
 - paths should be carousel, but with the order preserved
