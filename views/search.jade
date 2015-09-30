@@ -24,10 +24,6 @@ block content
 
 	div#main
 		header
-			
-			if data.length < 2
-				div.path-dots.fadein
-					a.path-dot
 			a.menu
 				svg(width="22" height="22" viewBox="0 0 20 20" class="stroke")
 					path(fill="none" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round" d="M17.2 7.6H1.1M17.2 1.2H1.1M17.2 14H1.1")
@@ -46,18 +42,16 @@ block content
 						
 			
 		div#paths
-			
 			- var pathIndex = 0
 			for result, index in data
 				- pathIndex = index		
 				div.path(id="path-"+index)
 					div.nodes
 						div.node-dad=result.start
-							span.toggle
 						each node, index in result.path
 							div.node-dad
-								span.toggle
-									a.dots="•"
+								div.arrow 
+									img(src="/images/arrow.svg")
 								div.inner-nodes
 									div.node=node.node
 									if node.alternates
@@ -85,7 +79,7 @@ block content
 		if ("#{errmsg}") reportError("#{errmsg}");
 
 		// ** blogal variables ** //
-		var debug = true;
+		var debug = false;
 		var fadeDur = debug ? 50 : 500;
 
 		var w = window.innerWidth;
@@ -99,19 +93,15 @@ block content
 
 		// ** animate nodes (or not) ** //
 		if (pathNum < 1) {
-			$('.path:first-child .nodes').animate({
-			"padding-left":"16px"
-			}, fadeDur*2, function() {
-				$('.toggle').animate({width:"26px"}, fadeDur*2, function() {
-					var nodes = $('.node-dad');
-					for (var i = 0; i < nodes.length; i++) {
-						var showNode = function(num) {
-							setTimeout( function() {
-								$(nodes[num]).fadeIn();
-							}, num*fadeDur);
-						}(i);
-					}
-				});
+			$('.path:first-child .nodes').each( function() {
+				var nodes = $('.node-dad');
+				for (var i = 0; i < nodes.length; i++) {
+					var showNode = function(num) {
+						setTimeout( function() {
+							$(nodes[num]).fadeIn(fadeDur).find('.arrow').delay(fadeDur).fadeOut(fadeDur);
+						}, num*fadeDur);
+					}(i);
+				}
 			});
 			$('.path:gt(1) .nodes').css({
 				'padding-left':'16px'

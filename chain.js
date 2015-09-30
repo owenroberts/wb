@@ -76,9 +76,9 @@ var makeChain = function(_start, _end, _limit, _level, _synonyms, callback) {
         getShortestPath();
       } else {
         if (nodelimit == 20 && synonymlevel == 20) 
-          callback("This search has exceeded the capacity of the algorithm.  Please try a new search.");
+          callback("Your search has exceeded the capacity of the algorithm.  Please try a new search.");
         else
-          callback("This search was not able to be performed with the current parameters.");
+          callback("Your search was not able to be performed with the current parameters.");
       }
     }
   }

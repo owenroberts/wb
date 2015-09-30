@@ -379,6 +379,7 @@ select {
 	display:none;
 	padding:0.2em 0;
 	margin:0.2em 0;
+	margin-left: 30px;
 	&:hover {
 		cursor: -webkit-grab; 
 		cursor: -moz-grab;
@@ -392,7 +393,6 @@ select {
 	}
 	&:first-child, &:last-child {
 		padding:0.25em 0;
-		margin-left: 38px;
 		display:block;
 		font-weight:600;
 		cursor:default;
@@ -403,24 +403,18 @@ select {
 			background:none;
 		}
 	}
-	.toggle {
-		margin-right:16px;
+	.arrow {
 		display:inline-block;
 		overflow:hidden;
-		width:0px;
-		position:relative;
-		top:6px;
+		width:24px;
+		position:absolute;
+		top:0;
+		left:300px;
 		text-align:center;
 		img {
 			width:24px;
 			vertical-align:middle;
 		}
-	}
-	.dots {
-		display:inline-block;
-		margin:0 2px;
-		font-size:20px;
-		transition: transform 500ms;
 	}
 	.inner-nodes {
 		display:inline-block;

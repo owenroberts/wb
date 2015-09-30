@@ -592,7 +592,8 @@ select {
   position: relative;
   display: none;
   padding: 0.2em 0;
-  margin: 0.2em 0; }
+  margin: 0.2em 0;
+  margin-left: 30px; }
   .node-dad:hover {
     cursor: -webkit-grab;
     cursor: -moz-grab; }
@@ -603,7 +604,6 @@ select {
       display: inline-block; }
   .node-dad:first-child, .node-dad:last-child {
     padding: 0.25em 0;
-    margin-left: 38px;
     display: block;
     font-weight: 600;
     cursor: default; }
@@ -611,22 +611,17 @@ select {
       color: black; }
     .node-dad:first-child:hover, .node-dad:last-child:hover {
       background: none; }
-  .node-dad .toggle {
-    margin-right: 16px;
+  .node-dad .arrow {
     display: inline-block;
     overflow: hidden;
-    width: 0px;
-    position: relative;
-    top: 6px;
+    width: 24px;
+    position: absolute;
+    top: 0;
+    left: 300px;
     text-align: center; }
-    .node-dad .toggle img {
+    .node-dad .arrow img {
       width: 24px;
       vertical-align: middle; }
-  .node-dad .dots {
-    display: inline-block;
-    margin: 0 2px;
-    font-size: 20px;
-    transition: transform 500ms; }
   .node-dad .inner-nodes {
     display: inline-block;
     position: relative; }
