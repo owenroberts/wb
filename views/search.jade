@@ -86,12 +86,13 @@ block content
 
 		// ** blogal variables ** //
 		var debug = true;
-		var fadeDur = debug ? 0 : 500;
+		var fadeDur = debug ? 50 : 500;
 
 		var w = window.innerWidth;
 		var pathNum = #{pathIndex};
 		var currentPathNum = pathNum;
 		var pathData = !{JSON.stringify(data)};
+		var noTouching = false;
 		
 		//-  wtf  is this
 		var modified = false;
@@ -99,7 +100,7 @@ block content
 		
 
 		// ** animate nodes (or not) ** //
-		if (pathNum < 1 && !debug) {
+		if (pathNum < 1) {
 			$('.path:first-child .nodes').animate({
 			"padding-left":"16px"
 			}, fadeDur*2, function() {
@@ -278,51 +279,31 @@ block content
 
 		// ** swipe left on nodes ** //
 		//-  taking about "modified" bool here, not sure what it should do
-		$( 'body' ).on( "swipeleft", ".node", function() {
-			var alt = $(this).next();
+		$( 'body' ).on( "swipeleft", ".node", function(ev) {
+			animateNodes(this, 1, "-=300");	
+		});
+		$( 'body' ).on( "swiperight", ".node", function(ev) {
+			animateNodes(this, 0, "+=300");	
+		});
+
+		function animateNodes(elem, dir, animProp) {
+			var alt = dir ? $(elem).next() : $(elem).prev();
 			if (alt[0]) {
-				var parent = $(this).parent();
-				var alt = $(this).next();
-				$(this).animate({
+				var parent = $(elem).parent();
+				$(elem).animate({
 					opacity: 0
 				}, fadeDur);
 				$(alt).animate({
 					opacity: 1
 				}, fadeDur);
 				$(parent).animate({
-					left: "-=300"
+					left: animProp
 				}, fadeDur);
 				modifyChain($(parent).parent(), $(alt)[0].innerText);
 			} else {
 				reportError('This is the last alternative synonym.');
-			}			
-		});
-
-		// ** swipe right on nodes ** //
-		$( 'body' ).on( "swiperight", ".node", function() {
-			if (!modified) {
-				console.log("swiperight");
-				modified = true;
-				var alt = $(this).prev();
-				if (alt[0]) {
-					var parent = $(this).parent();
-					var alt = $(this).prev();
-					$(this).animate({
-						opacity: 0
-					}, fadeDur);
-					$(alt).animate({
-						opacity: 1
-					}, fadeDur);
-					$(parent).animate({
-						left: "+=300"
-					}, fadeDur);
-					modifyChain($(parent).parent(), $(alt)[0].innerText);
-				} else {
-					reportError('This is the first alternative synonym.');
-				}
-			}
-			
-		});
+			}	
+		}	
 		
 		// ** modify chain ** //
 		function modifyChain(elem, alt) {
