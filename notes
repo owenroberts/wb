@@ -1,0 +1,30 @@
+to do 5.26.2015
+
+
+priority
+- after "no more synonyms in that direction" message all functionality breaks?? also maybe after failing to find shortest path
+- replace "no more synonyms in that direction" with jiggle
+- paths should be carousel, but with the order preserved
+- don't repeat paths for longer path button
+- save swiped out subpaths
+- show at least one cycle of loading dots on home screen
+- after fails to find shortest path, don't need to reload animation
+- after shortest path is clicked, option should be grayed out in new path menu
+- random new path generation button
+- get rid of ui in safari mobile
+- desktop - hover to see left/right arrow for swapping
+
+
+idk!!!
+- add mongo db
+- subpath indexing
+
+
+later
+- browser resize (maybe use css for animation)
+- chain.js -- is it word?/does it have synonyms?
+- this is unclear, should go over with joel
+- update styles when browser is resized
+- cache modified paths?
+- node number goes to negative/0 when modified chain is longer than original nodelimit, not sure this needs to be fixed
+
