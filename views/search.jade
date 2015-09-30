@@ -93,9 +93,7 @@ block content
 		var currentPathNum = pathNum;
 		var pathData = !{JSON.stringify(data)};
 		var noTouching = false;
-		
-		//-  wtf  is this
-		var modified = false;
+
 
 		
 
@@ -279,29 +277,25 @@ block content
 
 		// ** swipe left on nodes ** //
 		//-  taking about "modified" bool here, not sure what it should do
-		$( 'body' ).on( "swipeleft", ".node", function(ev) {
-			animateNodes(this, 1, "-=300");	
+		$( 'body' ).on( "swipeleft", ".node", function() {
+			if (!noTouching) animateNodes(this, 1, "-=300");	
 		});
-		$( 'body' ).on( "swiperight", ".node", function(ev) {
-			animateNodes(this, 0, "+=300");	
+		$( 'body' ).on( "swiperight", ".node", function() {
+			if (!noTouching) animateNodes(this, 0, "+=300");	
 		});
 
 		function animateNodes(elem, dir, animProp) {
+			noTouching = true;
 			var alt = dir ? $(elem).next() : $(elem).prev();
 			if (alt[0]) {
 				var parent = $(elem).parent();
-				$(elem).animate({
-					opacity: 0
-				}, fadeDur);
-				$(alt).animate({
-					opacity: 1
-				}, fadeDur);
-				$(parent).animate({
-					left: animProp
-				}, fadeDur);
+				$(elem).animate({ opacity: 0 }, fadeDur);
+				$(alt).animate({  opacity: 1 }, fadeDur);
+				$(parent).animate({ left: animProp }, fadeDur);
 				modifyChain($(parent).parent(), $(alt)[0].innerText);
 			} else {
 				reportError('This is the last alternative synonym.');
+				noTouching = false;
 			}	
 		}	
 		
@@ -346,6 +340,7 @@ block content
 							modified = false;
 						});
 						$(elem).find('.dots').html('•');
+						noTouching = false;
 
 					} else {
 						$(nodes).animate({
@@ -353,6 +348,9 @@ block content
 						}, fadeDur/2);
 
 						var waitTime = nodes.length * fadeDur/2;
+						setTimeout(function() {
+								noTouching = false;
+						}, waitTime + fadeDur);
 
 						for (var i = 0; i < nodes.length - 1; i++) {
 							var n = i;
@@ -396,10 +394,11 @@ block content
 							newnodedad.delay(i * fadeDur/2 + waitTime + fadeDur/2).fadeIn(fadeDur);
 							setTimeout(function() {
 								$(elem).find('.dots').html('•');
-								modified = false;
+								
 							}, waitTime);
 						}
 					}
+					
 				}
 			});
 		}
