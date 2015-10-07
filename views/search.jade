@@ -80,7 +80,7 @@ block content
 
 		// ** blogal variables ** //
 		var debug = false;
-		var fadeDur = debug ? 50 : 500;
+		var fadeDur = debug ? 10 : 500;
 
 		var w = window.innerWidth;
 		var pathNum = #{pathIndex};
@@ -103,30 +103,27 @@ block content
 					}(i);
 				}
 			});
-			$('.path:gt(1) .nodes').css({
-				'padding-left':'16px'
-			});
-			$('.path:gt(1) .toggle').css({width:'24px'});
 			$('.path:gt(1) .node-dad').css({display:'block'});
 		} else {
-			$('.nodes').css({'padding-left':'16px'});
-			$('.toggle').css({width:'26px'});
+			$('.arrow').css({display:'none'});
 			$('.node-dad').css({display:'block'});
 			$('.plus').css({transform:"rotate(45deg)"});
 			setTimeout(function() {
 				$('.plus').css({transform:"rotate(90deg)"});
 			}, fadeDur);
 			$('.path-dot:nth-child('+(currentPathNum+1)+')').css({color:'black'});
-			$('#paths').animate({
+			$('.path-dots').slideDown(fadeDur, function() {
+				$('#paths').animate({
 					left: -currentPathNum * w
-			}, fadeDur);
+				}, fadeDur);
+			});	
 		}
 
 		// ** fade in ui ** //
 		$('.fadein').animate({
 			opacity: 1
 		}, fadeDur*2);
-		$('.slidedown').slideDown(fadeDur);
+		
 
 
 		// ** position paths ** //
@@ -236,7 +233,7 @@ block content
 
 		$('.new').on('click', getNewPath);
 		$('.plus').on('click', function() {
-			if (!modified) $('#newpath').fadeIn();
+			if (!noTouching) $('#newpath').fadeIn();
 		});
 		$('#newpath').on('click', function() {
 			$(this).fadeOut();
@@ -276,13 +273,22 @@ block content
 
 		function animateNodes(elem, dir, animProp) {
 			noTouching = true;
+
+			var parent = $(elem).parent();
+			var grandparent = $(parent).parent();
+
+			var ldrimg = $('<img>');
+			$(ldrimg).attr("src", "/images/loader.svg");
+			$(ldrimg).addClass('ldrimg');
+			$(ldrimg).css({width:"24px", position:"absolute", left:"-28px", marginTop:"12px"});
+			$(grandparent).prepend(ldrimg);
+			
 			var alt = dir ? $(elem).next() : $(elem).prev();
 			if (alt[0]) {
-				var parent = $(elem).parent();
 				$(elem).animate({ opacity: 0 }, fadeDur);
 				$(alt).animate({  opacity: 1 }, fadeDur);
 				$(parent).animate({ left: animProp }, fadeDur);
-				modifyChain($(parent).parent(), $(alt)[0].innerText);
+				modifyChain($(grandparent), $(alt)[0].innerText);
 			} else {
 				reportError('This is the last alternative synonym.');
 				noTouching = false;
@@ -320,6 +326,7 @@ block content
 				},
 				success: function(data) {
 					
+
 					
 					if (data.errormsg) {
 						var err = '"' + alt + '" is related to "' + pathData[currentPathNum].start + '," but we couldn\'t find a path that connects it to "' + pathData[currentPathNum].end + '." <br><br> You can either swipe back to the previous word or try another one.';
@@ -331,6 +338,7 @@ block content
 						});
 						$(elem).find('.dots').html('•');
 						noTouching = false;
+						$('.ldrimg').remove();
 
 					} else {
 						$(nodes).animate({
@@ -352,13 +360,6 @@ block content
 						for (var i = 0; i < data.path.length; i ++) {
 							var newnodedad = $('<div>')
 								.addClass('node-dad');
-							var newtoggle = $('<span>')
-								.addClass('toggle')
-								.css({width:'24px'});
-							var newdots = $('<a>')
-								.addClass('dots')
-								.text('•');
-							newtoggle.append(newdots);
 							
 							var inners = $('<div>')
 								.addClass('inner-nodes');
@@ -367,7 +368,6 @@ block content
 								.addClass('node')
 								.text(data.path[i].node);
 
-							newnodedad.append(newtoggle);
 							inners.append(newnode);
 							for (var h = 0; h < data.path[i].alternates.length; h++) {
 								if (data.path[i].alternates[h] != data.path[i].node) {
@@ -383,8 +383,7 @@ block content
 							newnodedad.insertBefore('#' + pathParent + ' .node-dad:last-child()');
 							newnodedad.delay(i * fadeDur/2 + waitTime + fadeDur/2).fadeIn(fadeDur);
 							setTimeout(function() {
-								$(elem).find('.dots').html('•');
-								
+								$('.ldrimg').remove();
 							}, waitTime);
 						}
 					}

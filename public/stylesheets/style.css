@@ -370,7 +370,7 @@ a:hover {
 header {
   padding: 0 16px;
   padding-top: 16px;
-  min-height: 48px;
+  min-height: 54px;
   border-bottom: 1px solid #f1f1f2;
   background-color: white; }
   header .menu {
@@ -388,7 +388,9 @@ header {
 
 .path-dots {
   text-align: center;
-  position: relative; }
+  position: relative;
+  height: 68px;
+  line-height: 2.5em; }
   .path-dots .path-dot {
     display: inline-block;
     margin: 0 4px;
@@ -402,12 +404,15 @@ header {
 .slidedown {
   display: none; }
 
-.leftarrow {
+.leftarrow, .rightarrow {
   position: absolute;
+  font-size: 29px;
+  font-weight: 100; }
+
+.leftarrow {
   left: 10%; }
 
 .rightarrow {
-  position: absolute;
   right: 10%; }
 
 .error {
@@ -593,7 +598,7 @@ select {
   display: none;
   padding: 0.2em 0;
   margin: 0.2em 0;
-  margin-left: 30px; }
+  margin-left: 40px; }
   .node-dad:hover {
     cursor: -webkit-grab;
     cursor: -moz-grab; }
@@ -611,13 +616,15 @@ select {
       color: black; }
     .node-dad:first-child:hover, .node-dad:last-child:hover {
       background: none; }
+  .node-dad .ldr {
+    position: absolute; }
   .node-dad .arrow {
     display: inline-block;
     overflow: hidden;
     width: 24px;
     position: absolute;
     top: 0;
-    left: 300px;
+    left: 250px;
     text-align: center; }
     .node-dad .arrow img {
       width: 24px;
