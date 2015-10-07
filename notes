@@ -1,9 +1,7 @@
 path
-- replace "no more synonyms in that direction" with jiggle
 - paths should be carousel, but with the order preserved
 - don't repeat paths for longer path button
 - save swiped out subpaths
-- show at least one cycle of loading dots on home screen
 - after fails to find shortest path, don't need to reload animation
 - after shortest path is clicked, option should be grayed out in new path menu
 - random new path generation button
@@ -17,6 +15,7 @@ idk!!!
 
 
 later
+- show at least one cycle of loading dots on home screen
 - browser resize (maybe use css for animation)
 - chain.js -- is it word?/does it have synonyms?
 - this is unclear, should go over with joel
