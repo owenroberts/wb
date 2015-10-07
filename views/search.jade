@@ -290,8 +290,12 @@ block content
 				$(parent).animate({ left: animProp }, fadeDur);
 				modifyChain($(grandparent), $(alt)[0].innerText);
 			} else {
-				reportError('This is the last alternative synonym.');
+				$(elem).addClass('animated shake');
+				setTimeout(function() {
+					$(elem).removeClass('animated-half shake');
+				}, fadeDur);
 				noTouching = false;
+				$('.ldrimg').remove();
 			}	
 		}	
 		
