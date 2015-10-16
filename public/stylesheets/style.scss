@@ -132,6 +132,13 @@ header {
 	position:relative;
 	height: 68px;
 	line-height: 2.5em;
+	position:fixed;
+	bottom:0;
+	left:0;
+	right:0;
+	z-index:1;
+	background: $white;
+	border-top: 1px solid $lightgray;
 	.path-dot {
 		display:inline-block;
 		margin:0 4px;
@@ -222,6 +229,7 @@ select {
 	-webkit-overflow-scrolling: touch;
 	background-color: $white;
 	z-index:-3;
+	margin-bottom:68px;
 }
 
 #hamburger, #newpath {

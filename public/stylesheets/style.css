@@ -2998,7 +2998,14 @@ header {
   text-align: center;
   position: relative;
   height: 68px;
-  line-height: 2.5em; }
+  line-height: 2.5em;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  background: white;
+  border-top: 1px solid #f1f1f2; }
   .path-dots .path-dot {
     display: inline-block;
     margin: 0 4px;
@@ -3073,7 +3080,8 @@ select {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   background-color: white;
-  z-index: -3; }
+  z-index: -3;
+  margin-bottom: 68px; }
 
 #hamburger, #newpath {
   display: none;
