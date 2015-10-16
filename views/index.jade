@@ -16,7 +16,7 @@ block content
 
 	div#main
 		header
-			a.menu
+			div.menu
 				svg(class="stroke" width="22" height="22" viewBox="0 0 20 20")
 					path(fill="none" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round" d="M17.2 7.6H1.1M17.2 1.2H1.1M17.2 14H1.1")
 		div.index
@@ -34,6 +34,11 @@ block content
 
 		var fadeDur = 500;
 		var termsEntered = [false, false];
+
+		$('a').on('click', function(ev) {
+			ev.preventDefault();
+			window.location = this.href;
+		});
 
 		$('input[value="search"]').on('click', function() {
 			$('.ldr').fadeIn().css("display","inline-block");;
