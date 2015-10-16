@@ -89,8 +89,6 @@ block content
 		var noTouching = false;
 
 
-		
-
 		// ** animate nodes (or not) ** //
 		if (pathNum < 1) {
 			$('.path:first-child .nodes').each( function() {
@@ -280,7 +278,7 @@ block content
 			var ldrimg = $('<img>');
 			$(ldrimg).attr("src", "/images/loader.svg");
 			$(ldrimg).addClass('ldrimg');
-			$(ldrimg).css({width:"24px", position:"absolute", left:"-28px", marginTop:"12px"});
+			$(ldrimg).css({width:"24px", position:"absolute", left:"260px", marginTop:"12px"});
 			$(grandparent).prepend(ldrimg);
 			
 			var alt = dir ? $(elem).next() : $(elem).prev();
