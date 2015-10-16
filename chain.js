@@ -64,11 +64,11 @@ var makeChain = function(_start, _end, _limit, _level, _synonyms, callback) {
   }
 
   function getShortestPath() {
-    console.log("nodenumber " + nodenumber);
+    //console.log("nodenumber " + nodenumber);
     if (allpaths.length > 0) {
       sendData(allpaths[0]);
     } else {
-      console.log("nodelimit " + nodelimit);
+      //console.log("nodelimit " + nodelimit);
       if (nodenumber < nodelimit) {
         nodenumber++;
         allsynonyms = _synonyms;

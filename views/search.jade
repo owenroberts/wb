@@ -12,15 +12,11 @@ block content
 				a(href="/")="New Search"
 			li
 				a(href="#")="About SynoPath"
+
 	div#newpath
 		ul
 			li
-				a(id="shortest" class="new" href="#")="Find Shortest Path"
-			li
-				a(id="longer" class="new" href="#")="Find Longer Path"
-			li
-				div.ldr
-					img(src="/images/loader.svg")
+				img(src="/images/loader.svg" width="60px" style="margin:1em;")
 
 	div#main
 		header
@@ -78,8 +74,10 @@ block content
 		}
 		if ("#{errmsg}") reportError("#{errmsg}");
 
+
+
 		// ** blogal variables ** //
-		var debug = false;
+		var debug = true;
 		var fadeDur = debug ? 10 : 500;
 
 		var w = window.innerWidth;
@@ -171,72 +169,82 @@ block content
 		$( ".path-dots" ).on( "swiperight", prevPath);
 		$('.leftarrow').on('click', prevPath);
 
+		function getRandomInt(min, max) {
+			return Math.floor(Math.random()* ( max - min + 1) + min);
+		}
+
+		var nodeLimitArray = [];
+		for (var i = 0; i < +pathData.length; i++) {
+			nodeLimitArray.push(+pathData[i].nodelimit);
+		}
+		console.log(nodeLimitArray);
+
 		// ** plus button for new paths ** //
 		function getNewPath(ev) {
 
 			ev.stopPropagation();
-			$('.ldr').fadeIn();
+			$('.ldr').fadeIn(fadeDur);
+			$('#newpath').fadeIn(fadeDur);
 
 			var nodelimit;
-			var synonymlevel;
+			if (nodeLimitArray.length < 15) {
 
-			if ($(this).attr('id') == "shortest") {
-				nodelimit = 1;
-				synonymlevel = 10;
-			} else {
-				nodelimit = +pathData[currentPathNum].nodelimit + 1;
-				synonymlevel = 10;
-			}
+				do {
+					nodelimit = getRandomInt(2,20);
+					console.log(nodelimit);
+				} while (nodeLimitArray.indexOf(nodelimit) != -1);
 
-			var form = $('<form>')
-				.attr({
-					"method":"get",
-					"action":"/search",
-					"id":"newpath"
-				});
-			var startElement = $("<input>")
-				.attr({
-					"name":"start",
-					"value": pathData[currentPathNum].start
-				});
-			form.append(startElement);
-			var endElement = $("<input>")
-				.attr({
-					"name":"end",
-					"value": pathData[currentPathNum].end
-				});
-			form.append(endElement);
-			var nodeElement = $("<input>")
-				.attr({
-					"name":"nodelimit",
-					"value": nodelimit
-				});
-			form.append(nodeElement);
-			var synElement = $("<input>")
-				.attr({
-					"name":"synonymlevel",
-					"value": synonymlevel
-				});
-			form.append(synElement);
-			for (var i = 0; i < pathData.length; i++){
-				var pathElement = $("<input>")
+				var synonymlevel = 10;  // should synonym level be randomized?
+
+				var form = $('<form>')
 					.attr({
-						"name":"oldpath",
-						"value": pathData[i].cname
+						"method":"get",
+						"action":"/search",
+						"id":"newpath"
 					});
-				form.append(pathElement);
+				var startElement = $("<input>")
+					.attr({
+						"name":"start",
+						"value": pathData[currentPathNum].start
+					});
+				form.append(startElement);
+				var endElement = $("<input>")
+					.attr({
+						"name":"end",
+						"value": pathData[currentPathNum].end
+					});
+				form.append(endElement);
+				var nodeElement = $("<input>")
+					.attr({
+						"name":"nodelimit",
+						"value": nodelimit
+					});
+				form.append(nodeElement);
+				var synElement = $("<input>")
+					.attr({
+						"name":"synonymlevel",
+						"value": synonymlevel
+					});
+				form.append(synElement);
+				for (var i = 0; i < pathData.length; i++){
+					var pathElement = $("<input>")
+						.attr({
+							"name":"oldpath",
+							"value": pathData[i].cname
+						});
+					form.append(pathElement);
+				}
+				form.submit();
+
+			} else {
+				$('#newpath').fadeOut(fadeDur/2);
+				reportError('You have reached the maximum number of paths.');
 			}
-			form.submit();			
+			
+						
 		}
-
-		$('.new').on('click', getNewPath);
-		$('.plus').on('click', function() {
-			if (!noTouching) $('#newpath').fadeIn();
-		});
-		$('#newpath').on('click', function() {
-			$(this).fadeOut();
-		});
-
+		$('.plus').on('click',  getNewPath);
+		
 
 		// ** hamburger menu ** //
 		$('.menu').on('click', function() {
