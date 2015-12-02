@@ -5,7 +5,7 @@ block content
 			div.sorry= "We couldn't find a path."
 			div.errormsg
 			div.ok
-				a="OK"
+				div="OK"
 	div#hamburger
 		ul
 			li
@@ -49,10 +49,11 @@ block content
 								div.arrow 
 									img(src="/images/arrow.svg")
 								div.inner-nodes
-									div.node=node.node
 									if node.alternates
 										for alt in node.alternates
-											if alt != node.node
+											if alt == node.node
+												div.node.thenode=alt
+											else
 												div.node.alternate=alt
 
 						div.node-dad=result.end
@@ -84,7 +85,7 @@ block content
 
 
 		// ** blogal variables ** //
-		var debug = false;
+		var debug = true;
 		var fadeDur = debug ? 10 : 500;
 
 		var w = window.innerWidth;
@@ -121,6 +122,15 @@ block content
 				}, fadeDur);
 			});	
 		}
+
+		// ** move nodes to "thenode" //
+
+		$('.inner-nodes').each( function() {
+			var i = $(this).find('.thenode').index();
+			$(this).animate({
+				left: -300 * i
+			}, fadeDur);
+		});
 
 		// ** fade in ui ** //
 		$('.fadein').animate({
