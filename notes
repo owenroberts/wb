@@ -1,5 +1,4 @@
 path
-- paths should be carousel, but with the order preserved
 - don't repeat paths for longer path button
 - save swiped out subpaths
 - after fails to find shortest path, don't need to reload animation
