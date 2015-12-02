@@ -23,7 +23,7 @@ body {
 pre {
 	font-size:12px;
 }
-a {
+a, .leftarrow, .rightarrow {
 	color:$gray;
 	text-decoration:none;
 	transition: color 500ms;
@@ -70,7 +70,7 @@ input:focus {
 		background:none;
 		color:$gray;
 		padding:0;
-		font-weight:100;
+		font-weight:400;
 		&:hover {
 			color:$blue;
 		}

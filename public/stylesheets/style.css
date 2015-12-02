@@ -2912,11 +2912,11 @@ body {
 pre {
   font-size: 12px; }
 
-a {
+a, .leftarrow, .rightarrow {
   color: #c6c8ca;
   text-decoration: none;
   transition: color 500ms; }
-  a:hover {
+  a:hover, .leftarrow:hover, .rightarrow:hover {
     color: #f1f1f2; }
 
 ul, li {
@@ -2952,7 +2952,7 @@ input:focus {
     background: none;
     color: #c6c8ca;
     padding: 0;
-    font-weight: 100;
+    font-weight: 400;
     text-align: left; }
     .index input[type="submit"]:hover {
       color: #6a75ff; }

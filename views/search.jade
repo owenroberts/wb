@@ -30,8 +30,8 @@ block content
 											
 		if data.length > 1
 			div.path-dots.slidedown.pathdotcontainer
-				a.leftarrow= "<"
-				a.rightarrow=  ">"
+				div.leftarrow= "<"
+				div.rightarrow=  ">"
 				div.dots
 					for result, index in data
 						a.path-dot(id="p-"+index)
@@ -161,6 +161,7 @@ block content
 		$('.rightarrow').on('click', nextPath);
 
 		var prevPath = function() {
+			console.log("prevPath");
 			if (currentPathNum > 0) {
 				currentPathNum--;
 				$('.path-dot').css({color:'lightgray'});
