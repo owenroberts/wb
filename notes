@@ -1,5 +1,6 @@
 path
-- don't repeat paths for longer path button
+- don't repeat paths for plus path button
+- don't give errors for plus path button
 - save swiped out subpaths
 - after fails to find shortest path, don't need to reload animation
 - after shortest path is clicked, option should be grayed out in new path menu

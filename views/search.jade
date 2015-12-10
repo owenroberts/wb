@@ -200,7 +200,6 @@ block content
 		function getNewPath(ev) {
 
 			ev.stopPropagation();
-			$('.ldr').fadeIn(fadeDur);
 			$('#newpath').fadeIn(fadeDur);
 
 			var nodelimit;
@@ -250,7 +249,9 @@ block content
 						});
 					form.append(pathElement);
 				}
-				form.submit();
+				setTimeout(function() {
+					form.submit();
+				}, 500);
 
 			} else {
 				$('#newpath').fadeOut(fadeDur/2);
