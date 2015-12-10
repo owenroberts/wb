@@ -46,8 +46,6 @@ block content
 						div.node-dad=result.start
 						each node, index in result.path
 							div.node-dad
-								div.arrow 
-									img(src="/images/arrow.svg")
 								div.inner-nodes
 									if node.alternates
 										for alt in node.alternates
@@ -102,7 +100,7 @@ block content
 				for (var i = 0; i < nodes.length; i++) {
 					var showNode = function(num) {
 						setTimeout( function() {
-							$(nodes[num]).fadeIn(fadeDur).find('.arrow').delay(fadeDur).fadeOut(fadeDur);
+							$(nodes[num]).fadeIn(fadeDur);
 						}, num*fadeDur);
 					}(i);
 				}
