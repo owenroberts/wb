@@ -67,11 +67,13 @@ app.get('/search', function(req, res) {
   
     chain.makeChain(req.query.start, req.query.end, req.query.nodelimit, req.query.synonymlevel, [req.query.start], function(err, data) {
       if (err) {
-        console.log(err);
         var cacheString = req.query.start + req.query.nodelimit + req.query.end  + req.query.synonymlevel;
         appCache.set(cacheString, {
           err: err
         });
+        if (everypath.length > 0) err = "This randomly generated path was unable to be performed by the algorithm.  Please try the add path button again.";
+        console.log(req.get('Referrer').split("&err")[0]);
+        // why is this the same either way??
         if (req.get('Referrer').indexOf('?') === -1){
           res.redirect(req.get('Referrer')+'?err='+err);
         } else {
@@ -97,7 +99,7 @@ app.get('/search', function(req, res) {
       }
     });
   } else if (cachedSearch.err != undefined) {
-    console.log(cachedSearch.err);
+    // same thing wtf
     if (req.get('Referrer').indexOf('?') === -1){
       res.redirect(req.get('Referrer') + '?err=' + cachedSearch.err);
     } else {

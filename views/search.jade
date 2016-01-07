@@ -75,6 +75,7 @@ block content
 			$('.error').fadeIn();
 			$('.errormsg').html(errmsg);
 			$('.ok').on('click', function() {
+				console.log(location.href);
 				$('.error').fadeOut();
 			});
 		}
@@ -83,7 +84,7 @@ block content
 
 
 		// ** blogal variables ** //
-		var debug = false;
+		var debug = true;
 		var fadeDur = debug ? 10 : 500;
 
 		var w = window.innerWidth;
@@ -169,7 +170,6 @@ block content
 		$('.rightarrow').on('click', nextPath);
 
 		var prevPath = function() {
-			console.log("prevPath");
 			if (currentPathNum > 0) {
 				currentPathNum--;
 				$('.path-dot').css({color:'lightgray'});
@@ -206,7 +206,7 @@ block content
 				do {
 					nodelimit = getRandomInt(2,20);
 				} while (nodeLimitArray.indexOf(nodelimit) != -1);
-
+				nodelimit = 0;
 				var synonymlevel = 10;  // should synonym level be randomized?
 
 				var form = $('<form>')
