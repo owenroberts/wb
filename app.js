@@ -72,15 +72,10 @@ app.get('/search', function(req, res) {
           err: err
         });
         if (everypath.length > 0) err = "This randomly generated path was unable to be performed by the algorithm.  Please try the add path button again.";
-        console.log(req.get('Referrer').split("&err")[0]);
-        // why is this the same either way??
-        if (req.get('Referrer').indexOf('?') === -1){
-          res.redirect(req.get('Referrer')+'?err='+err);
-        } else {
-          res.redirect(req.get('Referrer')+'&err='+err); 
-        }
-      } else {
-        
+        var ref = req.get('Referrer').split("&err")[0]; // splits off old errors
+        res.redirect(ref+'&err='+err); 
+      
+      } else {  
         var cacheString = req.query.start + data.nodelimit + req.query.end  + req.query.synonymlevel;
 
         var newpath = {
@@ -91,7 +86,7 @@ app.get('/search', function(req, res) {
           end: req.query.end,
           cname: cacheString
         };
-        appCache.set( cacheString, newpath);
+        appCache.set(cacheString, newpath);
         res.render('search', {
           data: everypath.concat(newpath),
           errmsg: req.query.err
@@ -99,16 +94,50 @@ app.get('/search', function(req, res) {
       }
     });
   } else if (cachedSearch.err != undefined) {
-    // same thing wtf
-    if (req.get('Referrer').indexOf('?') === -1){
-      res.redirect(req.get('Referrer') + '?err=' + cachedSearch.err);
-    } else {
-      res.redirect(req.get('Referrer') + '&err=' + cachedSearch.err); 
-    }
+    
+    res.redirect(req.get('Referrer') + '&err=' + cachedSearch.err); 
   } else {
     res.render('search', {
       data: everypath.concat(cachedSearch),
       errmsg: req.query.err
+    });
+  }
+});
+
+app.get('/search/add', function(req, res) {
+  var cacheString = req.query.start + req.query.nodelimit + req.query.end  + req.query.synonymlevel;
+  var numPaths = req.query.numPaths;
+  console.log("numPaths: " + numPaths);
+  var cacheSearch = appCache.get(cacheString);
+  if (cacheSearch == undefined) {
+    chain.makeChain(req.query.start, req.query.end, req.query.nodelimit, req.query.synonymlevel, [req.query.start], function(err, data) {
+      if (err) {
+        console.log("error:" + err);
+        appCache.set(cacheString, {
+          err: err
+        });
+        res.json({
+          errormsg: err
+        });
+      } else {
+        console.log("data: " + data);
+        appCache.set(cacheString, {
+          data: data,
+          nodelimit: req.query.nodelimit,
+          synonymlevel: req.query.synonymlevel
+        });
+        res.json({
+          path: data.path
+        });
+      }
+    });
+  } else if (cacheSearch.err != undefined) {
+    res.json({
+      errormsg: cacheSearch.err
+    });
+  } else {
+    res.json({
+      path: cacheSearch.data.path
     });
   }
 });

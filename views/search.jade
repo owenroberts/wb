@@ -28,13 +28,13 @@ block content
 					g(fill="none")
 					path(d="M9.6 1v17.1M18.1 9.6H1" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round")
 											
-		if data.length > 1
-			div.path-dots.slidedown.pathdotcontainer
-				div.leftarrow= "<"
-				div.rightarrow=  ">"
-				div.dots
-					for result, index in data
-						a.path-dot(id="p-"+index)
+
+		div.path-dots.slidedown.pathdotcontainer
+			div.leftarrow= "<"
+			div.rightarrow=  ">"
+			div.dots
+				for result, index in data
+					a.path-dot(id="p-"+index)
 						
 			
 		div#paths
@@ -55,7 +55,6 @@ block content
 												div.node.alternate=alt
 
 						div.node-dad=result.end
-							span.toggle
 								
 
 									
@@ -84,7 +83,7 @@ block content
 
 
 		// ** blogal variables ** //
-		var debug = true;
+		var debug = false;
 		var fadeDur = debug ? 10 : 500;
 
 		var w = window.innerWidth;
@@ -108,7 +107,6 @@ block content
 			});
 			$('.path:gt(1) .node-dad').css({display:'block'});
 		} else {
-			$('.arrow').css({display:'none'});
 			$('.node-dad').css({display:'block'});
 			$('.plus').css({transform:"rotate(45deg)"});
 			setTimeout(function() {
@@ -123,7 +121,6 @@ block content
 		}
 
 		// ** move nodes to "thenode" //
-
 		$('.inner-nodes').each( function() {
 			var i = $(this).find('.thenode').index();
 			$(this).animate({
@@ -131,18 +128,24 @@ block content
 			}, fadeDur);
 		});
 
+		// ** inner nodes ** //
+		var nodedads = $('.node-dad');
+		for (var i = 1; i < nodedads.length - 1; i++) {
+			var inner = $(this).find('.inner-nodes');
+			var innerwidth = 0;
+			var nodes = $(inner).find('.node');
+			for (var h = 0; h < nodes.length; h++) {
+				innerwidth += $(nodes[i]).width();
+			}
+			$(inner).css({width:innerwidth});
+			$(nodedads[i]).css({width:innerwidth + 48});
+		}
+
 		// ** fade in ui ** //
 		$('.fadein').animate({
 			opacity: 1
 		}, fadeDur*2);
 		
-
-
-		// ** position paths ** //
-		var paths = $('.path');
-		for (var i = 0; i < paths.length; i++) {
-			$(paths[i]).css({left:i*w});
-		}
 
 		// ** animate path switching  ** //
 		$('.path-dot').on('click', function() {
@@ -201,62 +204,107 @@ block content
 			$('#newpath').fadeIn(fadeDur);
 
 			var nodelimit;
-			if (nodeLimitArray.length < 15) {
+			if (nodeLimitArray.length < 10) {
 
 				do {
 					nodelimit = getRandomInt(2,20);
 				} while (nodeLimitArray.indexOf(nodelimit) != -1);
-				nodelimit = 0;
+				
+				//nodelimit = 0; // intentionally breaking it
+				
 				var synonymlevel = 10;  // should synonym level be randomized?
 
-				var form = $('<form>')
-					.attr({
-						"method":"get",
-						"action":"/search",
-						"id":"newpath"
-					});
-				var startElement = $("<input>")
-					.attr({
-						"name":"start",
-						"value": pathData[currentPathNum].start
-					});
-				form.append(startElement);
-				var endElement = $("<input>")
-					.attr({
-						"name":"end",
-						"value": pathData[currentPathNum].end
-					});
-				form.append(endElement);
-				var nodeElement = $("<input>")
-					.attr({
-						"name":"nodelimit",
-						"value": nodelimit
-					});
-				form.append(nodeElement);
-				var synElement = $("<input>")
-					.attr({
-						"name":"synonymlevel",
-						"value": synonymlevel
-					});
-				form.append(synElement);
-				for (var i = 0; i < pathData.length; i++){
-					var pathElement = $("<input>")
-						.attr({
-							"name":"oldpath",
-							"value": pathData[i].cname
-						});
-					form.append(pathElement);
-				}
-				setTimeout(function() {
-					form.submit();
-				}, 500);
+				$.ajax({
+					url: '/search/add',
+					type: 'get',
+					dataType:'json',
+					data: {
+						start: pathData[currentPathNum].start,
+						end: pathData[currentPathNum].end,
+						synonymlevel: synonymlevel,
+						nodelimit: nodelimit,
+						numPaths: pathData.length
+					},
+					success: function(data) {
+						console.log(data);
+						$('#newpath').fadeOut(fadeDur);
+
+						if (data.errormsg) reportError(data.errormsg);
+						else {
+							$('.plus').css({transform:"rotate(90deg)"});
+							currentPathNum++;
+							pathNum++;
+							var newdot = $('<div>')
+								.attr({id:"p-"+currentPathNum})
+								.addClass('path-dot');
+							$('.dots').append(newdot);
+
+							var newpath = $('<div>')
+								.attr({id:"path-"+currentPathNum})
+								.addClass('path')
+								.css({left:currentPathNum*w});
+							var newnodes = $('<div>')
+								.addClass('nodes');
+							newpath.append(newnodes);
+							var startnodedad = $('<div>')
+								.addClass('node-dad')
+								.text(pathData[0].start);
+							newnodes.append(startnodedad);
+							for (var i = 0; i < data.path.length; i++) {
+								var node = data.path[i];
+								var anewnodedad = $('<div>')
+									.addClass('node-dad');
+								var innerwidth = 0;
+								newnodes.append(anewnodedad);
+								var innernodes = $('<div>')
+									.addClass('inner-nodes');
+								anewnodedad.append(innernodes);
+								if (node.alternates) {
+									for (var h = 0; h < node.alternates.length; h++) {
+										innerwidth += w;
+										var alt = node.alternates[h];
+										if (alt == node.node) {
+											var thenode = $('<div>')
+												.addClass('node thenode')
+												.text(alt);
+										} else {
+											var thenode = $('<div>')
+												.addClass('node alternate')
+												.text(alt);
+										}
+										innernodes.append(thenode);
+									}
+								}
+								innernodes.css({width:innerwidth});
+								anewnodedad.css({width:innerwidth + 48});
+							}
+							var endnodedad = $('<div>')
+								.addClass('node-dad')
+								.text(pathData[0].end);
+							newnodes.append(endnodedad);
+							$('#paths').append(newpath);
+							newpath.find('.node-dad').css({display:'block'});
+							newpath.find('.inner-nodes').each( function() {
+								var i = $(this).find('.thenode').index();
+								$(this).animate({
+									left: -300 * i
+								}, fadeDur);
+							});
+
+							$('.path-dot:nth-child('+(currentPathNum+1)+')').css({color:'black'});
+							$('.path-dots').slideDown(fadeDur, function() {
+								$('#paths').animate({
+									left: -currentPathNum * w
+								}, fadeDur);
+							});
+						}
+					}
+				});
 
 			} else {
 				$('#newpath').fadeOut(fadeDur/2);
 				reportError('You have reached the maximum number of paths.');
-			}
-			
-						
+			}				
 		}
 		$('.plus').on('click',  getNewPath);
 		
@@ -269,18 +317,7 @@ block content
 			$(this).fadeOut();
 		});
 
-		// ** inner nodes ** //
-		var nodedads = $('.node-dad');
-		for (var i = 1; i < nodedads.length - 1; i++) {
-			var inner = $(this).find('.inner-nodes');
-			var innerwidth = 0;
-			var nodes = $(inner).find('.node');
-			for (var h = 0; h < nodes.length; h++) {
-				innerwidth += $(nodes[i]).width();
-			}
-			$(inner).css({width:innerwidth});
-			$(nodedads[i]).css({width:innerwidth + 48});
-		}
+		
 
 
 		// ** swipe left on nodes ** //
@@ -350,9 +387,7 @@ block content
 					allsynonyms: allsynonyms
 				},
 				success: function(data) {
-					
 
-					
 					if (data.errormsg) {
 						var err = '"' + alt + '" is related to "' + pathData[currentPathNum].start + '," but we couldn\'t find a path that connects it to "' + pathData[currentPathNum].end + '." <br><br> You can either swipe back to the previous word or try another one.';
 						reportError(err);
