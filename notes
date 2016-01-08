@@ -1,11 +1,9 @@
 path
-- fix errors stacking up in URL
-	- different error when original search vs plus sign
+- lower case letters when caching
 - don't give errors for plus path button
 - don't repeat paths for plus path button
 - save swiped out subpaths
 - desktop - hover to see left/right arrow for swapping
-- lower case letters when caching
 
 
 idk!!!

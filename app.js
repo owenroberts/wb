@@ -60,9 +60,10 @@ app.get('/search', function(req, res) {
 
   var cacheString = req.query.start + req.query.nodelimit + req.query.end  + req.query.synonymlevel;
   cacheString.replace(/ /g, ""); // gets rid of any spaces that might throw error, probably better way to do this
+  cacheString = cacheString.toLowerCase();
 
   var cachedSearch = appCache.get(cacheString);
-  
+
   if (cachedSearch == undefined) {
   
     chain.makeChain(req.query.start, req.query.end, req.query.nodelimit, req.query.synonymlevel, [req.query.start], function(err, data) {
@@ -71,13 +72,13 @@ app.get('/search', function(req, res) {
         appCache.set(cacheString, {
           err: err
         });
-        if (everypath.length > 0) err = "This randomly generated path was unable to be performed by the algorithm.  Please try the add path button again.";
-        var ref = req.get('Referrer').split("&err")[0]; // splits off old errors
-        res.redirect(ref+'&err='+err); 
-      
+        if (req.get('Referrer').indexOf('?') === -1){
+          res.redirect(req.get('Referrer')+'?err='+err);
+        } else {
+          res.redirect(req.get('Referrer')+'&err='+err); 
+        }
       } else {  
         var cacheString = req.query.start + data.nodelimit + req.query.end  + req.query.synonymlevel;
-
         var newpath = {
           path: data.path,
           nodelimit: data.nodelimit,
@@ -94,8 +95,12 @@ app.get('/search', function(req, res) {
       }
     });
   } else if (cachedSearch.err != undefined) {
-    
-    res.redirect(req.get('Referrer') + '&err=' + cachedSearch.err); 
+    // same thing wtf
+    if (req.get('Referrer').indexOf('?') === -1){
+      res.redirect(req.get('Referrer') + '?err=' + cachedSearch.err);
+    } else {
+      res.redirect(req.get('Referrer') + '&err=' + cachedSearch.err); 
+    }
   } else {
     res.render('search', {
       data: everypath.concat(cachedSearch),
@@ -105,7 +110,8 @@ app.get('/search', function(req, res) {
 });
 
 app.get('/search/add', function(req, res) {
-  var cacheString = req.query.start + req.query.nodelimit + req.query.end  + req.query.synonymlevel;  
+  var cacheString = req.query.start + req.query.nodelimit + req.query.end  + req.query.synonymlevel;
+  cacheString = cacheString.toLowerCase();
   var cacheSearch = appCache.get(cacheString);
   if (cacheSearch == undefined) {
     chain.makeChain(req.query.start, req.query.end, req.query.nodelimit, req.query.synonymlevel, [req.query.start], function(err, data) {
@@ -142,6 +148,7 @@ app.get('/search/add', function(req, res) {
 
 app.get('/search/modified', function(req, res) {
   var cacheString = req.query.start + req.query.nodelimit + req.query.end  + req.query.synonymlevel;
+  cacheString = cacheString.toLowerCase();
   var cacheSearch = appCache.get(cacheString);
   if (cacheSearch == undefined) {
     chain.makeChain(req.query.start, req.query.end, req.query.nodelimit, req.query.synonymlevel, req.query.allsynonyms, function(err, data) {
