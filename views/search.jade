@@ -23,7 +23,7 @@ block content
 			div.menu
 				svg(width="22" height="22" viewBox="0 0 20 20" class="stroke")
 					path(fill="none" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round" d="M17.2 7.6H1.1M17.2 1.2H1.1M17.2 14H1.1")
-			div.plus.fadein
+			div.plus
 				svg(width="20" height="20" viewBox="0 0 20 20" class="stroke")
 					g(fill="none")
 					path(d="M9.6 1v17.1M18.1 9.6H1" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round")
@@ -33,28 +33,24 @@ block content
 			div.leftarrow= "<"
 			div.rightarrow=  ">"
 			div.dots
-				for result, index in data
-					a.path-dot(id="p-"+index)
+				a.path-dot(id="p-0")
 						
 			
-		div#paths
-			- var pathIndex = 0
-			for result, index in data
-				- pathIndex = index		
-				div.path(id="path-"+index)
-					div.nodes
-						div.node-dad=result.start
-						each node, index in result.path
-							div.node-dad
-								div.inner-nodes
-									if node.alternates
-										for alt in node.alternates
-											if alt == node.node
-												div.node.thenode=alt
-											else
-												div.node.alternate=alt
+		div#paths		
+			div.path(id="path-0")
+				div.nodes
+					div.node-dad=data[0].start
+					each node, index in data[0].path
+						div.node-dad
+							div.inner-nodes
+								if node.alternates
+									for alt in node.alternates
+										if alt == node.node
+											div.node.thenode=alt
+										else
+											div.node.alternate=alt
 
-						div.node-dad=result.end
+					div.node-dad=data[0].end
 								
 
 									
@@ -69,6 +65,9 @@ block content
 			window.location = this.href;
 		});
 
+		function getRandomInt(min, max) {
+			return Math.floor(Math.random()* ( max - min + 1) + min);
+		}
 
 		function reportError(errmsg) {
 			$('.error').fadeIn();
@@ -80,45 +79,40 @@ block content
 		}
 		if ("#{errmsg}") reportError("#{errmsg}");
 
-
-
 		// ** blogal variables ** //
 		var debug = false;
 		var fadeDur = debug ? 10 : 500;
 
 		var w = window.innerWidth;
-		var pathNum = #{pathIndex};
+		var pathNum = 0;
 		var currentPathNum = pathNum;
 		var pathData = !{JSON.stringify(data)};
+		var start = pathData[currentPathNum].start;
+		var end = pathData[currentPathNum].end;
+		var nodeLimitArray = [+pathData[currentPathNum].nodelimit];
+
 		var noTouching = false;
 
+		// ** hamburger menu ** //
+		$('.menu').on('click', function() {
+			$('#hamburger').fadeIn(fadeDur);
+		});
+		$('#hamburger').on('click', function() {
+			$(this).fadeOut();
+		});
 
-		// ** animate nodes (or not) ** //
-		if (pathNum < 1) {
-			$('.path:first-child .nodes').each( function() {
-				var nodes = $('.node-dad');
-				for (var i = 0; i < nodes.length; i++) {
-					var showNode = function(num) {
-						setTimeout( function() {
-							$(nodes[num]).fadeIn(fadeDur);
-						}, num*fadeDur);
-					}(i);
-				}
-			});
-			$('.path:gt(1) .node-dad').css({display:'block'});
-		} else {
-			$('.node-dad').css({display:'block'});
-			$('.plus').css({transform:"rotate(45deg)"});
-			setTimeout(function() {
-				$('.plus').css({transform:"rotate(90deg)"});
-			}, fadeDur);
-			$('.path-dot:nth-child('+(currentPathNum+1)+')').css({color:'black'});
-			$('.path-dots').slideDown(fadeDur, function() {
-				$('#paths').animate({
-					left: -currentPathNum * w
-				}, fadeDur);
-			});	
-		}
+		// ** animate nodes on load ** //
+		$('.path:first-child .nodes').each( function() {
+			var nodes = $('.node-dad');
+			for (var i = 0; i < nodes.length; i++) {
+				var showNode = function(num) {
+					setTimeout( function() {
+						$(nodes[num]).fadeIn(fadeDur);
+					}, num*fadeDur);
+				}(i);
+			}
+		});
+		$('.path:gt(1) .node-dad').css({display:'block'});
 
 		// ** move nodes to "thenode" //
 		$('.inner-nodes').each( function() {
@@ -128,7 +122,7 @@ block content
 			}, fadeDur);
 		});
 
-		// ** inner nodes ** //
+		// ** inner nodes, matching container width ** //
 		var nodedads = $('.node-dad');
 		for (var i = 1; i < nodedads.length - 1; i++) {
 			var inner = $(this).find('.inner-nodes');
@@ -157,51 +151,14 @@ block content
 				left: -w * index
 			}, fadeDur);
 		});
-
-		var nextPath = function() {
-			if (currentPathNum < pathNum) {
-				currentPathNum++;
-				$('.path-dot').css({color:'lightgray'});
-				$('.path-dot:nth-child('+(currentPathNum+1)+')').css({color:'black'});
-				$('#paths').animate({
-					left: -currentPathNum * w
-				}, fadeDur);
-			}
-		};
-
-		$( ".path-dots" ).on( "swipeleft", nextPath);
-		$('.rightarrow').on('click', nextPath);
-
-		var prevPath = function() {
-			if (currentPathNum > 0) {
-				currentPathNum--;
-				$('.path-dot').css({color:'lightgray'});
-				$('.path-dot:nth-child('+(currentPathNum+1)+')').css({color:'black'});
-				var offset = $('#paths').css('left');
-				offset = offset.replace('px', '');
-				$('#paths').animate({
-					left: +offset + w
-				}, fadeDur);
-			}
-		};
-
-		$( ".path-dots" ).on( "swiperight", prevPath);
-		$('.leftarrow').on('click', prevPath);
-
-		function getRandomInt(min, max) {
-			return Math.floor(Math.random()* ( max - min + 1) + min);
-		}
-
-		var nodeLimitArray = [];
-		for (var i = 0; i < +pathData.length; i++) {
-			nodeLimitArray.push(+pathData[i].nodelimit);
-		}
+		
 
 		// ** plus button for new paths ** //
 		function getNewPath(ev) {
 
 			ev.stopPropagation();
 			$('#newpath').fadeIn(fadeDur);
+			$('.plus').removeClass('rotate');
 
 			var nodelimit;
 			if (nodeLimitArray.length < 10) {
@@ -210,7 +167,7 @@ block content
 					nodelimit = getRandomInt(2,20);
 				} while (nodeLimitArray.indexOf(nodelimit) != -1);
 				
-				//nodelimit = 0; // intentionally breaking it
+				nodelimit = 0; // intentionally breaking it
 				
 				var synonymlevel = 10;  // should synonym level be randomized?
 
@@ -219,11 +176,11 @@ block content
 					type: 'get',
 					dataType:'json',
 					data: {
-						start: pathData[currentPathNum].start,
-						end: pathData[currentPathNum].end,
+						start: start,
+						end: end,
 						synonymlevel: synonymlevel,
 						nodelimit: nodelimit,
-						numPaths: pathData.length
+						numPaths: pathNum
 					},
 					success: function(data) {
 						console.log(data);
@@ -231,13 +188,16 @@ block content
 
 						if (data.errormsg) reportError(data.errormsg);
 						else {
-							$('.plus').css({transform:"rotate(90deg)"});
+							$('.plus').addClass('rotate');
 							currentPathNum++;
 							pathNum++;
 							var newdot = $('<div>')
 								.attr({id:"p-"+currentPathNum})
 								.addClass('path-dot');
 							$('.dots').append(newdot);
+							$('.path-dot').css({color:'lightgray'});
+							newdot.css({color:'black'});
+							
 
 							var newpath = $('<div>')
 								.attr({id:"path-"+currentPathNum})
@@ -283,7 +243,19 @@ block content
 								.text(pathData[0].end);
 							newnodes.append(endnodedad);
 							$('#paths').append(newpath);
-							newpath.find('.node-dad').css({display:'block'});
+							console.log(newpath.find('.nodes'));
+							newpath.find('.nodes').each( function() {
+								var nodes = $(this).find('.node-dad');
+								for (var i = 0; i < nodes.length; i++) {
+									var showNode = function(num) {
+										setTimeout( function() {
+											$(nodes[num]).fadeIn(fadeDur);
+										}, num*fadeDur);
+									}(i);
+								}
+							});
+
+
 							newpath.find('.inner-nodes').each( function() {
 								var i = $(this).find('.thenode').index();
 								$(this).animate({
@@ -309,13 +281,36 @@ block content
 		$('.plus').on('click',  getNewPath);
 		
 
-		// ** hamburger menu ** //
-		$('.menu').on('click', function() {
-			$('#hamburger').fadeIn(fadeDur);
-		});
-		$('#hamburger').on('click', function() {
-			$(this).fadeOut();
-		});
+
+
+		var nextPath = function() {
+			if (currentPathNum < pathNum) {
+				currentPathNum++;
+				$('.path-dot').css({color:'lightgray'});
+				$('.path-dot:nth-child('+(currentPathNum+1)+')').css({color:'black'});
+				$('#paths').animate({
+					left: -currentPathNum * w
+				}, fadeDur);
+			}
+		};
+
+		var prevPath = function() {
+			if (currentPathNum > 0) {
+				currentPathNum--;
+				$('.path-dot').css({color:'lightgray'});
+				$('.path-dot:nth-child('+(currentPathNum+1)+')').css({color:'black'});
+				var offset = $('#paths').css('left');
+				offset = offset.replace('px', '');
+				$('#paths').animate({
+					left: +offset + w
+				}, fadeDur);
+			}
+		};
+
+		$( ".path-dots" ).on( "swipeleft", nextPath);
+		$('.rightarrow').on('click', nextPath);
+		$( ".path-dots" ).on( "swiperight", prevPath);
+		$('.leftarrow').on('click', prevPath);
 
 		
 
@@ -369,7 +364,7 @@ block content
 				opacity: 0.3
 			}, fadeDur/2);
 
-			var allsynonyms = [pathData[currentPathNum].start];
+			var allsynonyms = [start];
 
 			for (var i = 0; i < pathIndex; i++) {
 				allsynonyms = allsynonyms.concat(pathData[currentPathNum].path[i].alternates);
@@ -381,7 +376,7 @@ block content
 				dataType:'json',
 				data: {
 					start: alt,
-					end: pathData[currentPathNum].end,
+					end: end,
 					synonymlevel: 10,
 					nodelimit: 10 - elem.index(),
 					allsynonyms: allsynonyms
@@ -389,7 +384,7 @@ block content
 				success: function(data) {
 
 					if (data.errormsg) {
-						var err = '"' + alt + '" is related to "' + pathData[currentPathNum].start + '," but we couldn\'t find a path that connects it to "' + pathData[currentPathNum].end + '." <br><br> You can either swipe back to the previous word or try another one.';
+						var err = '"' + alt + '" is related to "' + start + '," but we couldn\'t find a path that connects it to "' + end + '." <br><br> You can either swipe back to the previous word or try another one.';
 						reportError(err);
 						$(nodes).animate({
 							opacity: 1

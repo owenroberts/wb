@@ -2989,10 +2989,31 @@ header {
   header .plus {
     position: absolute;
     top: 16px;
-    right: 16px;
-    transition: transform 1s; }
+    right: 16px; }
     header .plus img {
       width: 80px; }
+
+.rotate {
+  -webkit-animation: roll 2s 1;
+  animation: roll 3s 1; }
+
+@-webkit-keyframes roll {
+  0% {
+    -webkit-transform: rotate(0);
+    transform: rotate(0); }
+
+  100% {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg); } }
+
+@keyframes roll {
+  0% {
+    -webkit-transform: rotate(0);
+    transform: rotate(0); }
+
+  100% {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg); } }
 
 .path-dots {
   text-align: center;
