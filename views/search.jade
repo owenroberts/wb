@@ -34,8 +34,7 @@ block content
 			div.rightarrow=  ">"
 			div.dots
 				a.path-dot(id="p-0")
-						
-			
+
 		div#paths		
 			div.path(id="path-0")
 				div.nodes
@@ -183,7 +182,6 @@ block content
 						numPaths: pathNum
 					},
 					success: function(data) {
-						console.log(data);
 						$('#newpath').fadeOut(fadeDur);
 
 						if (data.errormsg) reportError(data.errormsg);

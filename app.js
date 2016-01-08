@@ -105,9 +105,7 @@ app.get('/search', function(req, res) {
 });
 
 app.get('/search/add', function(req, res) {
-  var cacheString = req.query.start + req.query.nodelimit + req.query.end  + req.query.synonymlevel;
-  var numPaths = req.query.numPaths;
-  console.log("numPaths: " + numPaths);
+  var cacheString = req.query.start + req.query.nodelimit + req.query.end  + req.query.synonymlevel;  
   var cacheSearch = appCache.get(cacheString);
   if (cacheSearch == undefined) {
     chain.makeChain(req.query.start, req.query.end, req.query.nodelimit, req.query.synonymlevel, [req.query.start], function(err, data) {
@@ -117,7 +115,7 @@ app.get('/search/add', function(req, res) {
           err: err
         });
         res.json({
-          errormsg: err
+          errormsg: "This randomly generated path was unable to be performed by the algorithm.  Please try the add path button again."
         });
       } else {
         console.log("data: " + data);
@@ -133,7 +131,7 @@ app.get('/search/add', function(req, res) {
     });
   } else if (cacheSearch.err != undefined) {
     res.json({
-      errormsg: cacheSearch.err
+      errormsg: "This randomly generated path was unable to be performed by the algorithm.  Please try the add path button again."
     });
   } else {
     res.json({
