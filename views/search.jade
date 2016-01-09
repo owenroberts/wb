@@ -38,8 +38,8 @@ block content
 		div#paths		
 			div.path(id="path-0")
 				div.nodes
-					div.node-dad=data[0].start
-					each node, index in data[0].path
+					div.node-dad=data.start
+					each node, index in data.path
 						div.node-dad
 							div.inner-nodes
 								if node.alternates
@@ -49,7 +49,7 @@ block content
 										else
 											div.node.alternate=alt
 
-					div.node-dad=data[0].end
+					div.node-dad=data.end
 								
 
 									
@@ -86,9 +86,9 @@ block content
 		var pathNum = 0;
 		var currentPathNum = pathNum;
 		var pathData = !{JSON.stringify(data)};
-		var start = pathData[currentPathNum].start;
-		var end = pathData[currentPathNum].end;
-		var nodeLimitArray = [+pathData[currentPathNum].nodelimit];
+		var start = pathData.start;
+		var end = pathData.end;
+		var nodeLimitArray = [+pathData.nodelimit];
 
 		var noTouching = false;
 
@@ -206,7 +206,7 @@ block content
 							newpath.append(newnodes);
 							var startnodedad = $('<div>')
 								.addClass('node-dad')
-								.text(pathData[0].start);
+								.text(start);
 							newnodes.append(startnodedad);
 							for (var i = 0; i < data.path.length; i++) {
 								var node = data.path[i];
@@ -238,7 +238,7 @@ block content
 							}
 							var endnodedad = $('<div>')
 								.addClass('node-dad')
-								.text(pathData[0].end);
+								.text(end);
 							newnodes.append(endnodedad);
 							$('#paths').append(newpath);
 							console.log(newpath.find('.nodes'));
@@ -365,7 +365,7 @@ block content
 			var allsynonyms = [start];
 
 			for (var i = 0; i < pathIndex; i++) {
-				allsynonyms = allsynonyms.concat(pathData[currentPathNum].path[i].alternates);
+				allsynonyms = allsynonyms.concat(pathData.path[i].alternates);
 			}
 
 			$.ajax({

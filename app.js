@@ -46,18 +46,6 @@ app.get('/', function(req, res) {
 
 app.get('/search', function(req, res) {
 
-  var everypath = [];
-
-  if (req.query.oldpath) {
-    if (req.query.oldpath instanceof Array) {
-      for (var i = 0; i < req.query.oldpath.length; i++) {
-        everypath.push(appCache.get(req.query.oldpath[i]));
-      } 
-    } else {
-      everypath.push(appCache.get(req.query.oldpath));
-    }
-  }
-
   var cacheString = req.query.start + req.query.nodelimit + req.query.end  + req.query.synonymlevel;
   cacheString.replace(/ /g, ""); // gets rid of any spaces that might throw error, probably better way to do this
   cacheString = cacheString.toLowerCase();
@@ -89,13 +77,12 @@ app.get('/search', function(req, res) {
         };
         appCache.set(cacheString, newpath);
         res.render('search', {
-          data: everypath.concat(newpath),
+          data: newpath,
           errmsg: req.query.err
         });
       }
     });
   } else if (cachedSearch.err != undefined) {
-    // same thing wtf
     if (req.get('Referrer').indexOf('?') === -1){
       res.redirect(req.get('Referrer') + '?err=' + cachedSearch.err);
     } else {
@@ -103,7 +90,7 @@ app.get('/search', function(req, res) {
     }
   } else {
     res.render('search', {
-      data: everypath.concat(cachedSearch),
+      data: cachedSearch,
       errmsg: req.query.err
     });
   }
