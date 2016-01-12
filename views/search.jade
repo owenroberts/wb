@@ -79,7 +79,7 @@ block content
 		if ("#{errmsg}") reportError("#{errmsg}");
 
 		// ** blogal variables ** //
-		var debug = false;
+		var debug = true;
 		var fadeDur = debug ? 10 : 500;
 
 		var w = window.innerWidth;
@@ -88,7 +88,7 @@ block content
 		var pathData = !{JSON.stringify(data)};
 		var start = pathData.start;
 		var end = pathData.end;
-		var nodeLimitArray = [+pathData.nodelimit];
+		var nodelimitArray = [+pathData.nodelimit];
 
 		var noTouching = false;
 
@@ -160,13 +160,13 @@ block content
 			$('.plus').removeClass('rotate');
 
 			var nodelimit;
-			if (nodeLimitArray.length < 10) {
+			if (pathNum < 10) {
 
 				do {
 					nodelimit = getRandomInt(2,20);
-				} while (nodeLimitArray.indexOf(nodelimit) != -1);
-				
-				//nodelimit = 0; // intentionally breaking it
+				} while (nodelimitArray.indexOf(nodelimit) != -1);
+				nodelimitArray.push(nodelimit);
+				//nodelimit = 0; // break it for testing
 				
 				var synonymlevel = 10;  // should synonym level be randomized?
 
@@ -178,14 +178,18 @@ block content
 						start: start,
 						end: end,
 						synonymlevel: synonymlevel,
-						nodelimit: nodelimit,
-						numPaths: pathNum
+						nodelimit: nodelimit
 					},
 					success: function(data) {
 						$('#newpath').fadeOut(fadeDur);
 
-						if (data.errormsg) reportError(data.errormsg);
-						else {
+						if (data.errormsg) {
+							if (nodelimitArray < 19) {
+								getNewPath();
+							} else {
+								reportError("The algorithm is not able to generate more results based on the current parameters.");
+							}
+						} else {
 							$('.plus').addClass('rotate');
 							currentPathNum++;
 							pathNum++;
@@ -270,7 +274,6 @@ block content
 						}
 					}
 				});
-
 			} else {
 				$('#newpath').fadeOut(fadeDur/2);
 				reportError('You have reached the maximum number of paths.');

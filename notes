@@ -1,15 +1,11 @@
 path
-- lower case letters when caching
 - don't give errors for plus path button
 - don't repeat paths for plus path button
 - save swiped out subpaths
-- desktop - hover to see left/right arrow for swapping
-
 
 idk!!!
 - add mongo db
 - subpath indexing
-
 
 later
 - show at least one cycle of loading dots on home screen
@@ -19,4 +15,3 @@ later
 - update styles when browser is resized
 - cache modified paths?
 - node number goes to negative/0 when modified chain is longer than original nodelimit, not sure this needs to be fixed
-

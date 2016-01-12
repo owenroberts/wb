@@ -19,6 +19,7 @@ body {
     margin:0;
     width:100%;
     overflow-x:hidden;
+    
 }
 pre {
 	font-size:12px;
@@ -526,6 +527,8 @@ select {
 
 /*  media queries */
 
+
+/* desktop */
 @media only screen  and (min-width : 800px) {
 	body {
 		font-size:30px;
@@ -538,5 +541,12 @@ select {
 			height:52px;
 		}
 	}
+}
+
+/*  phone  */
+@media screen and (max-device-width: 480px){
+  body{
+    -webkit-text-size-adjust: none;
+  }
 }
 
