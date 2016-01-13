@@ -48,6 +48,8 @@ block content
 											div.node.thenode=alt
 										else
 											div.node.alternate=alt
+								else
+									div.node.thenode=node.node
 
 					div.node-dad=data.end
 								
@@ -365,10 +367,13 @@ block content
 			}, fadeDur/2);
 
 			var allsynonyms = [start];
+			console.log(pathData);
 
 			for (var i = 0; i < pathIndex; i++) {
 				allsynonyms = allsynonyms.concat(pathData.path[i].alternates);
+				console.log(pathData.path[i].alternates);
 			}
+			console.log(pathIndex);
 
 			$.ajax({
 				url: '/search/modified',
