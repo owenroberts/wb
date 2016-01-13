@@ -33,7 +33,7 @@ block content
 			div.leftarrow= "<"
 			div.rightarrow=  ">"
 			div.dots
-				a.path-dot(id="p-0")
+				div.path-dot(id="p-0")
 
 		div#paths		
 			div.path(id="path-0")
@@ -72,7 +72,6 @@ block content
 			$('.error').fadeIn();
 			$('.errormsg').html(errmsg);
 			$('.ok').on('click', function() {
-				console.log(location.href);
 				$('.error').fadeOut();
 			});
 		}
@@ -138,18 +137,6 @@ block content
 		$('.fadein').animate({
 			opacity: 1
 		}, fadeDur*2);
-		
-
-		// ** animate path switching  ** //
-		$('.path-dot').on('click', function() {
-			$('.path-dot').css({color:'lightgray'});
-			currentPathNum = $(this).index();
-			$('.path-dot:nth-child('+(currentPathNum+1)+')').css({color:'black'});
-			var index = $(this).index();
-			$('#paths').animate({
-				left: -w * index
-			}, fadeDur);
-		});
 		
 
 		// ** plus button for new paths ** //
@@ -245,7 +232,6 @@ block content
 								.text(end);
 							newnodes.append(endnodedad);
 							$('#paths').append(newpath);
-							console.log(newpath.find('.nodes'));
 							newpath.find('.nodes').each( function() {
 								var nodes = $(this).find('.node-dad');
 								for (var i = 0; i < nodes.length; i++) {
@@ -265,7 +251,9 @@ block content
 								}, fadeDur);
 							});
 
-							$('.path-dot:nth-child('+(currentPathNum+1)+')').css({color:'black'});
+							$('.path-dot:nth-child('+(currentPathNum+1)+')')
+								.css({color:'black'})
+								.on('click', switchPath);
 							$('.path-dots').slideDown(fadeDur, function() {
 								$('#paths').animate({
 									left: -currentPathNum * w
@@ -282,6 +270,16 @@ block content
 		$('.plus').on('click',  getNewPath);
 		
 
+		// ** animate path switching  ** //
+		var switchPath = function() {
+			$('.path-dot').css({color:'lightgray'});
+			currentPathNum = $(this).index();
+			$('.path-dot:nth-child('+(currentPathNum+1)+')').css({color:'black'});
+			var index = $(this).index();
+			$('#paths').animate({
+				left: -w * index
+			}, fadeDur);
+		};
 
 
 		var nextPath = function() {
@@ -308,6 +306,7 @@ block content
 			}
 		};
 
+		$('.path-dot').on('click', switchPath);
 		$( ".path-dots" ).on( "swipeleft", nextPath);
 		$('.rightarrow').on('click', nextPath);
 		$( ".path-dots" ).on( "swiperight", prevPath);
