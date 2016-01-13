@@ -2988,7 +2988,7 @@ header {
     z-index: 1; }
   header .plus {
     position: absolute;
-    top: 16px;
+    top: 12px;
     right: 16px; }
     header .plus img {
       width: 80px; }

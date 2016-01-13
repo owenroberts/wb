@@ -90,6 +90,7 @@ block content
 		var start = pathData.start;
 		var end = pathData.end;
 		var nodelimitArray = [+pathData.nodelimit];
+		var nomorepaths = false;
 
 		var noTouching = false;
 
@@ -139,14 +140,21 @@ block content
 		$('.fadein').animate({
 			opacity: 1
 		}, fadeDur*2);
-		
+
+		function getNewPath(ev) {
+			ev.stopPropagation();
+			if (!nomorepaths) {
+				$('#newpath').fadeIn(fadeDur);
+				$('.plus').removeClass('rotate');
+				makeNewPath();
+			} else {
+				console.log("idk");
+				reportError("The algorithm is not able to generate more results based on the current parameters.");
+			}
+		}
 
 		// ** plus button for new paths ** //
-		function getNewPath(ev) {
-
-			ev.stopPropagation();
-			$('#newpath').fadeIn(fadeDur);
-			$('.plus').removeClass('rotate');
+		function makeNewPath() {
 
 			var nodelimit;
 			if (pathNum < 10) {
@@ -154,8 +162,9 @@ block content
 				do {
 					nodelimit = getRandomInt(2,20);
 				} while (nodelimitArray.indexOf(nodelimit) != -1);
+				//nodelimit = 2; // break it for testing
 				nodelimitArray.push(nodelimit);
-				//nodelimit = 0; // break it for testing
+				
 				
 				var synonymlevel = 10;  // should synonym level be randomized?
 
@@ -173,9 +182,10 @@ block content
 						$('#newpath').fadeOut(fadeDur);
 
 						if (data.errormsg) {
-							if (nodelimitArray < 19) {
-								getNewPath();
+							if (nodelimitArray.length < 9) {
+								makeNewPath();
 							} else {
+								nomorepaths = true;
 								reportError("The algorithm is not able to generate more results based on the current parameters.");
 							}
 						} else {
