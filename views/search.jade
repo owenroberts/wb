@@ -357,23 +357,21 @@ block content
 		// ** modify chain ** //
 		function modifyChain(elem, alt) {
 			$(elem).find('.dots').html('<img src="/images/loader.svg" />');
-			
+
 			var pathIndex = $(elem).index();
 			var pathParent = $(elem).parent().parent().attr('id');
 			var nodes = $('#' + pathParent + ' .node-dad:gt('+elem.index()+')');
+			var node = $(elem).find('.thenode').text();
 
 			$(nodes).animate({
 				opacity: 0.3
 			}, fadeDur/2);
 
 			var allsynonyms = [start];
-			console.log(pathData);
 
 			for (var i = 0; i < pathIndex; i++) {
 				allsynonyms = allsynonyms.concat(pathData.path[i].alternates);
-				console.log(pathData.path[i].alternates);
 			}
-			console.log(pathIndex);
 
 			$.ajax({
 				url: '/search/modified',
@@ -389,17 +387,11 @@ block content
 				success: function(data) {
 
 					if (data.errormsg) {
-						var err = '"' + alt + '" is related to "' + start + '," but we couldn\'t find a path that connects it to "' + end + '." <br><br> You can either swipe back to the previous word or try another one.';
+						var err = '"' + alt + '" is related to "' + node + '," but we couldn\'t find a path that connects it to "' + end + '." <br><br> You can either swipe back to the previous word or try another one.';
 						reportError(err);
-						$(nodes).animate({
-							opacity: 1
-						}, fadeDur/2, function() {
-							modified = false;
-						});
 						$(elem).find('.dots').html('•');
 						noTouching = false;
 						$('.ldrimg').remove();
-
 					} else {
 						$(nodes).animate({
 							opacity: 1
@@ -438,14 +430,13 @@ block content
 										inners.append(newsynnode);
 								}
 							}
-							
 							newnodedad.append(inners);
 							newnodedad.insertBefore('#' + pathParent + ' .node-dad:last-child()');
 							newnodedad.delay(i * fadeDur/2 + waitTime + fadeDur/2).fadeIn(fadeDur);
-							setTimeout(function() {
-								$('.ldrimg').remove();
-							}, waitTime);
 						}
+						setTimeout(function() {
+							$('.ldrimg').remove();
+						}, waitTime);
 					}
 					
 				}
