@@ -77,7 +77,6 @@ block content
 				$('.error').fadeOut();
 			});
 		}
-		if ("#{errmsg}") reportError("#{errmsg}");
 
 		// ** blogal variables ** //
 		var debug = false;
@@ -87,6 +86,8 @@ block content
 		var pathNum = 0;
 		var currentPathNum = pathNum;
 		var pathData = !{JSON.stringify(data)};
+		console.log(pathData);
+		if (pathData.error) reportError(pathData.error);
 		var start = pathData.start;
 		var end = pathData.end;
 		var nodelimitArray = [+pathData.nodelimit];
@@ -148,7 +149,6 @@ block content
 				$('.plus').removeClass('rotate');
 				makeNewPath();
 			} else {
-				console.log("idk");
 				reportError("The algorithm is not able to generate more results based on the current parameters.");
 			}
 		}
