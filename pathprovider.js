@@ -5,8 +5,17 @@ var mongodb = require('mongodb')
 	,	Server = require('mongodb').Server;
 
 PathProvider = function(uri) {
+
+	var that = this;
+  	mongodb.MongoClient.connect(uri, { server: { auto_reconnect: true } }, function (error, database) {
+    	if (error) console.log(error);
+    	that.db = database;
+  	});
+
+  	/*
 	this.db = new Db('synopaths', new Server('localhost', 27017, {safe:false}, {auto_reconnect:true}, {}));
 	this.db.open(function(){});
+	*/
 }
 
 PathProvider.prototype.save = function(path, callback) {

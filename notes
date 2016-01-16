@@ -1,5 +1,16 @@
-path
+errors 
+- "counterfeit" is related to "counterfeit"
 - spaces in new paths wtf
+
+new stuff
+- hamburger is just home
+- index page synonym level adjustment
+- modified paths run through each synonymlevel 1-20
+- image? noun project
+- def - w error bubble
+- modified path strikethrough
+- try inbox style swiping
+- try animating lines into place
 
 idk!!!
 - add mongo db
@@ -13,3 +24,4 @@ later
 - update styles when browser is resized
 - cache modified paths?
 - node number goes to negative/0 when modified chain is longer than original nodelimit, not sure this needs to be fixed
+- https://thenounproject.com/
