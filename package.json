@@ -20,7 +20,8 @@
     "commander":"2.7.1",
     "wordnet":"0.1.2",
     "thesaurus":"0.0.0",
-    "node-cache":"3.0.0"
+    "node-cache":"3.0.0",
+    "mongodb":"2.1.4"
   },
   "repository": {
     "type": "git",

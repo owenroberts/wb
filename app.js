@@ -91,15 +91,12 @@ app.get('/search', function(req, res) {
             }
         });
     } else if (cacheSearch.error) {
-        pathprovider.addSearchTime(queryString, function(err) { console.log(err) } );
         if (req.get('Referrer').indexOf('?') === -1){
             res.redirect(req.get('Referrer') + '?err=' + cacheSearch.err);
         } else {
             res.redirect(req.get('Referrer') + '&err=' + cacheSearch.err); 
         }
     } else {
-        console.log('wtf ' + queryString);
-        pathprovider.addSearchTime(queryString, function(err) { console.log(err) } );
         res.render('search', { data: cacheSearch });
     }
 });
