@@ -5,17 +5,16 @@ var mongodb = require('mongodb')
 	,	Server = require('mongodb').Server;
 
 PathProvider = function(uri) {
-
-	var that = this;
-  	mongodb.MongoClient.connect(uri, { server: { auto_reconnect: true } }, function (error, database) {
-    	if (error) console.log(error);
-    	that.db = database;
-  	});
-
-  	/*
-	this.db = new Db('synopaths', new Server('localhost', 27017, {safe:false}, {auto_reconnect:true}, {}));
-	this.db.open(function(){});
-	*/
+	if (uri == "localhost") {
+		this.db = new Db('synopaths', new Server('localhost', 27017, {safe:false}, {auto_reconnect:true}, {}));
+		this.db.open(function(){});
+	} else {
+		var that = this;
+  		mongodb.MongoClient.connect(uri, { server: { auto_reconnect: true } }, function (error, database) {
+    		if (error) console.log(error);
+    		that.db = database;
+  		});
+	}
 }
 
 PathProvider.prototype.save = function(path, callback) {
@@ -31,7 +30,7 @@ PathProvider.prototype.save = function(path, callback) {
 				} else {
 					path_collection.update(
 						{ queryString:path.queryString }, 
-						{ $push: { searches: new Date() } }
+						{ $push: { searches: path.searches } }
 					);
 				}
 			});
@@ -51,13 +50,13 @@ PathProvider.prototype.get = function(queryString, callback) {
 	});
 };
 
-PathProvider.prototype.addSearchTime = function(queryString, callback) {
+PathProvider.prototype.addSearchTime = function(query, callback) {
 	this.getCollection( function(err, path_collection) {
 		if (err) callback(err);
 		else {
 			path_collection.update(
-				{ queryString:queryString },
-				{ $push: { searches: new Date() } }
+				{ queryString:query.queryString },
+				{ $push: { searches: query.searches[0] } }
 			);
 		}
 	});

@@ -41,144 +41,79 @@ app.get('/', function(req, res) {
     });
 });
 
-var getQueryString = function(query) {
-    var string = query.start + query.nodelimit + query.end + query.synonymlevel;
-    string.replace(/ /g, ""); // gets rid of any spaces that might throw error, probably better way to do this
-    string = string.toLowerCase();
-    return string;
-}
-
 app.get('/search', function(req, res) {
-    var queryString = getQueryString(req.query);
-    var cacheSearch = cache.get(queryString);
-    if (cacheSearch == undefined) {
-        pathprovider.get(queryString, function(err, result) {
-            if (err) console.log(err);
-            else {
-                if (result == null) {
-                    chain.makeChain(req.query.start, req.query.end, req.query.nodelimit, req.query.synonymlevel, [req.query.start], function(err, data) {
-                        if (err) {
-                            var path = {
-                                queryString: queryString,
-                                error: err,
-                                searches: [new Date()]
-                            };  
-                            pathprovider.save(path, function(err) { console.log(err); });
-                            cache.set(queryString, path);
-                            if (req.get('Referrer').indexOf('?') === -1) res.redirect(req.get('Referrer')+'?err='+err);
-                            else res.redirect(req.get('Referrer')+'&err='+err);     
-                        } else {
-                            var path = {
-                                queryString: queryString,
-                                path: data.path,
-                                nodelimit: data.nodelimit,
-                                synonymlevel: req.query.synonymlevel,
-                                start: req.query.start,
-                                end: req.query.end,
-                                searches: [new Date()]
-                            };
-                            pathprovider.save(path, function(err) { console.log(err); });
-                            cache.set(queryString, path);
-                            res.render('search', { data: path });
-                        }
-                    });
-                } else {
-
-                    pathprovider.addSearchTime(queryString, function(err) { console.log(err) } );
-                    cache.set(queryString, result);
-                    res.render('search', { data: result });
-                }
-            }
-        });
-    } else if (cacheSearch.error) {
-        if (req.get('Referrer').indexOf('?') === -1){
-            res.redirect(req.get('Referrer') + '?err=' + cacheSearch.err);
-        } else {
-            res.redirect(req.get('Referrer') + '&err=' + cacheSearch.err); 
-        }
-    } else {
-        res.render('search', { data: cacheSearch });
-    }
+    getPath(req, function(result) {
+        if (result.error) {
+            if (req.get('Referrer').indexOf('?') === -1) 
+                res.redirect(req.get('Referrer')+'?err='+result.error);
+             else 
+                res.redirect(req.get('Referrer')+'&err='+result.error);
+        } else res.render('search', { data: result });
+    });
 });
 
 app.get('/search/add', function(req, res) {
-    var queryString = getQueryString(req.query);
-    var cacheSearch = cache.get(queryString);
-
-    if (cacheSearch == undefined) {
-        pathprovider.get(queryString, function(err, result) {
-            if (err) console.log(err);
-            else {
-                if (result == null) {
-                    chain.makeChain(req.query.start, req.query.end, req.query.nodelimit, req.query.synonymlevel, [req.query.start], function(err, data) {
-                        if (err) {
-                            var path = {
-                                queryString: queryString,
-                                error: err,
-                                searches: [new Date()]
-                            };  
-                            pathprovider.save(path, function(err) { console.log(err); });
-                            cache.set(queryString, path);
-                            res.json({
-                                errormsg: "This randomly generated path was unable to be performed by the algorithm.  Please try the add path button again."
-                            });
-                        } else {
-                            var path = {
-                                queryString: queryString,
-                                path: data.path,
-                                nodelimit: data.nodelimit,
-                                synonymlevel: req.query.synonymlevel,
-                                start: req.query.start,
-                                end: req.query.end,
-                                searches: [new Date()]
-                            };
-                            pathprovider.save(path, function(err) { console.log(err); });
-                            cache.set(queryString, path);
-                            res.json({  path: path.path });
-                        }
-                    });
-                } else {
-                    pathprovider.addSearchTime(queryString, function(err) { console.log(err) } );
-                    cache.set(queryString, result);
-                    res.render('search', { path: result.path });
-                }
-
-            }
-        });
-    } else if (cacheSearch.error) {
-        res.json({
-            errormsg: "This randomly generated path was unable to be performed by the algorithm.  Please try the add path button again."
-        });
-    } else {
-        res.json({ path: cacheSearch.data.path });
-    }
+    getPath(req, function(result) {
+        if (result.error)
+            res.json({
+                errormsg: "This randomly generated path was unable to be performed by the algorithm.  Please try the add path button again."
+            });
+        else res.json({ data: result });
+    });
 });
 
 app.get('/search/modified', function(req, res) {
-    var queryString = getQueryString(req.query);
-    var cacheSearch = cache.get(queryString);
-    if (cacheSearch == undefined) {
-        chain.makeChain(req.query.start, req.query.end, req.query.nodelimit, req.query.synonymlevel, req.query.allsynonyms, function(err, data) {
-            if (err) {
-                cache.set(queryString, { error: err });
-                res.json({ errormsg: err });
-            } else {
-                cache.set(queryString, {
-                    queryString: queryString,
-                    path: data,
-                    nodelimit: req.query.nodelimit,
-                    synonymlevel: req.query.synonymlevel
-                });
-                res.json({ path: data.path });
-            }
-        });
-    } else if (cacheSearch.error != undefined) {
-        res.json({ errormsg: cacheSearch.error });
-    } else {
-        res.json({ path: cacheSearch.path });
-    }
+    getPath(req, function(result) {
+        if (result.error) res.json({ errormsg: result.error });
+        else res.json({ data: result });
+    });
 });
 
+var getPath = function(request, callback) {
+    var allsynonyms;
+    if (request.query.allsynonyms) allsynonyms = request.query.allsynonyms;
+    else allsynonyms = [request.query.start];
+    console.log("allsynonyms: " + allsynonyms);
+    var string = request.query.start + request.query.nodelimit + request.query.end + request.query.synonymlevel;
+    string.replace(/ /g, ""); // gets rid of any spaces that might throw error, probably better way to do this
+    string = string.toLowerCase();
+    var query = {
+        queryString: string,
+        start: request.query.start,
+        end: request.query.end,
+        nodelimit: request.query.nodelimit,
+        synonymlevel: request.query.synonymlevel,
+        searches: [{ip:request.connection.remoteAddress, date: new Date()}]
+    };
+    var cacheSearch = cache.get(query.queryString);
+    if (cacheSearch == undefined) {
+        pathprovider.get(query.queryString, function(err, result) {
+            if (err) console.log(err);
+            else {
+                if (result == null) {
+                    chain.makeChain(query, allsynonyms, function(err, data) {
+                        if (err) {
+                            query.error = err;
+                            pathprovider.save(query, function(err) { console.log(err); });
+                            cache.set(query.queryString, query);
+                        } else {
+                            query.path = data.path;
+                            pathprovider.save(query, function(err) { console.log(err); });
+                            cache.set(query.queryString, query);
+                        }
+                        callback(query);
+                    });
+                } else {
+                    pathprovider.addSearchTime(query, function(err) { console.log(err) } );
+                    cache.set(query.queryString, result);
+                    callback(result);
+                }
+            }
+        });
+    } else {
+        callback(cacheSearch);
+    }
+};
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random()* ( max - min + 1) + min);

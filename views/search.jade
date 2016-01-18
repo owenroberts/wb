@@ -86,7 +86,7 @@ block content
 		var pathNum = 0;
 		var currentPathNum = pathNum;
 		var pathData = !{JSON.stringify(data)};
-		console.log(pathData);
+		//console.log(pathData);
 		if (pathData.error) reportError(pathData.error);
 		var start = pathData.start;
 		var end = pathData.end;
@@ -178,10 +178,9 @@ block content
 						synonymlevel: synonymlevel,
 						nodelimit: nodelimit
 					},
-					success: function(data) {
+					success: function(obj) {
 						$('#newpath').fadeOut(fadeDur);
-
-						if (data.errormsg) {
+						if (obj.errormsg) {
 							if (nodelimitArray.length < 9) {
 								makeNewPath();
 							} else {
@@ -189,6 +188,7 @@ block content
 								reportError("The algorithm is not able to generate more results based on the current parameters.");
 							}
 						} else {
+							var data = obj.data;
 							$('.plus').addClass('rotate');
 							currentPathNum++;
 							pathNum++;
@@ -198,7 +198,6 @@ block content
 							$('.dots').append(newdot);
 							$('.path-dot').css({color:'lightgray'});
 							newdot.css({color:'black'});
-							
 
 							var newpath = $('<div>')
 								.attr({id:"path-"+currentPathNum})
@@ -263,14 +262,14 @@ block content
 								}, fadeDur);
 							});
 
-							$('.path-dot:nth-child('+(currentPathNum+1)+')')
-								.css({color:'black'})
-								.on('click', switchPath);
+							
 							$('.path-dots').slideDown(fadeDur, function() {
 								$('#paths').animate({
 									left: -currentPathNum * w
 								}, fadeDur);
 							});
+
+							setPathDots(true);
 						}
 					}
 				});
@@ -283,7 +282,7 @@ block content
 		
 
 		// ** animate path switching  ** //
-		var setPaths = function(next) {
+		var setPathDots = function(next) {
 			$('.path-dot').css({color:'lightgray'});
 			$('.path-dot:nth-child('+(currentPathNum+1)+')').css({color:'black'});
 			if (next) setZIndex();
@@ -303,20 +302,20 @@ block content
 			var n = false;
 			if (currentPathNum < $(this).index()) n = true;
 			currentPathNum = $(this).index();
-			setPaths(n);
+			setPathDots(n);
 		};
 
 		var nextPath = function() {
 			if (currentPathNum < pathNum) {
 				currentPathNum++;
-				setPaths(true);
+				setPathDots(true);
 			}
 		};
 
 		var prevPath = function() {
 			if (currentPathNum > 0) {
 				currentPathNum--;
-				setPaths(false);
+				setPathDots(false);
 			}
 		};
 
@@ -396,15 +395,15 @@ block content
 					nodelimit: 10 - elem.index(),
 					allsynonyms: allsynonyms
 				},
-				success: function(data) {
-
-					if (data.errormsg) {
+				success: function(obj) {
+					if (obj.errormsg) {
 						var err = '"' + alt + '" is related to "' + node + '," but we couldn\'t find a path that connects it to "' + end + '." <br><br> You can either swipe back to the previous word or try another one.';
 						reportError(err);
 						$(elem).find('.dots').html('•');
 						noTouching = false;
 						$('.ldrimg').remove();
 					} else {
+						var data = obj.data;
 						$(nodes).animate({
 							opacity: 1
 						}, fadeDur/2);

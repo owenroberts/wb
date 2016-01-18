@@ -1,15 +1,15 @@
 var thesaurus = require("thesaurus");
 
-var makeChain = function(_start, _end, _limit, _level, _synonyms, callback) {
-  var start = _start.toLowerCase();
-  var end = _end.toLowerCase();
+var makeChain = function(query, _synonyms, callback) {
+  var start = query.start.toLowerCase();
+  var end = query.end.toLowerCase();
   var reg = /^[a-z]+$/;
 
   var allsynonyms = _synonyms;
   var allpaths = [];
   var nodelimit = 20;
-  var nodenumber = _limit;
-  var synonymlevel = _level;
+  var nodenumber = query.nodelimit;
+  var synonymlevel = query.synonymlevel;
   
   var data = {};
 
