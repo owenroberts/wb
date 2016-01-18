@@ -6,19 +6,12 @@ block content
 			div.errormsg
 			div.ok
 				div="OK"
-	div#hamburger
-		ul
-			li
-				a(href="/")="New Search"
-			li
-				a(href="#")="About SynoPath"
-
-
 	div#main
 		header
 			div.menu
-				svg(class="stroke" width="22" height="22" viewBox="0 0 20 20")
-					path(fill="none" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round" d="M17.2 7.6H1.1M17.2 1.2H1.1M17.2 14H1.1")
+				a(href="/")
+					svg(class="stroke" width="22" height="22" viewBox="0 0 20 20")
+						path(fill="none" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round" d="M17.2 7.6H1.1M17.2 1.2H1.1M17.2 14H1.1")
 		div.index
 			form(method="get", action="/search")
 				input(type="text",  name="start", class="query")
@@ -54,13 +47,6 @@ block content
 				$('input[value="search"]').css({color: '#6a75ff'});
 			}
 		})
-		
-		$('.menu').on('click', function() {
-			$('#hamburger').fadeIn(fadeDur);
-		});
-		$('#hamburger').on('click', function() {
-			$(this).fadeOut();
-		});
 
 		function reportError(errmsg) {
 			$('.error').fadeIn();

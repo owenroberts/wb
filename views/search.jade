@@ -6,12 +6,6 @@ block content
 			div.errormsg
 			div.ok
 				div="OK"
-	div#hamburger
-		ul
-			li
-				a(href="/")="New Search"
-			li
-				a(href="#")="About SynoPath"
 
 	div#newpath
 		ul
@@ -21,8 +15,9 @@ block content
 	div#main
 		header
 			div.menu
-				svg(width="22" height="22" viewBox="0 0 20 20" class="stroke")
-					path(fill="none" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round" d="M17.2 7.6H1.1M17.2 1.2H1.1M17.2 14H1.1")
+				a(href="/")
+					svg(width="22" height="22" viewBox="0 0 20 20" class="stroke")
+						path(fill="none" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round" d="M17.2 7.6H1.1M17.2 1.2H1.1M17.2 14H1.1")
 			div.plus
 				svg(width="20" height="20" viewBox="0 0 20 20" class="stroke")
 					g(fill="none")
@@ -95,13 +90,6 @@ block content
 
 		var noTouching = false;
 
-		// ** hamburger menu ** //
-		$('.menu').on('click', function() {
-			$('#hamburger').fadeIn(fadeDur);
-		});
-		$('#hamburger').on('click', function() {
-			$(this).fadeOut();
-		});
 
 		// ** animate nodes on load ** //
 		$('.path:first-child .nodes').each( function() {
