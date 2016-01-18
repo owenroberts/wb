@@ -73,7 +73,6 @@ var getPath = function(request, callback) {
     var allsynonyms;
     if (request.query.allsynonyms) allsynonyms = request.query.allsynonyms;
     else allsynonyms = [request.query.start];
-    console.log("allsynonyms: " + allsynonyms);
     var string = request.query.start + request.query.nodelimit + request.query.end + request.query.synonymlevel;
     string.replace(/ /g, ""); // gets rid of any spaces that might throw error, probably better way to do this
     string = string.toLowerCase();
@@ -92,15 +91,10 @@ var getPath = function(request, callback) {
             else {
                 if (result == null) {
                     chain.makeChain(query, allsynonyms, function(err, data) {
-                        if (err) {
-                            query.error = err;
-                            pathprovider.save(query, function(err) { console.log(err); });
-                            cache.set(query.queryString, query);
-                        } else {
-                            query.path = data.path;
-                            pathprovider.save(query, function(err) { console.log(err); });
-                            cache.set(query.queryString, query);
-                        }
+                        if (err) query.error = err;
+                        else query.path = data.path;
+                        pathprovider.save(query, function(err) { console.log(err); });
+                        cache.set(query.queryString, query);
                         callback(query);
                     });
                 } else {
