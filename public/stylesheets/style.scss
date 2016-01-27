@@ -195,7 +195,7 @@ header {
 }
 
 
-.error {
+.error, .definition {
 	display:none;
 	position:fixed;
 	top:0;
@@ -211,17 +211,20 @@ header {
 		background-color: $white;
 		width:300px;
 		margin:25% auto;
-		.errormsg {
-			border-bottom: 1px solid $black;
+		.errormsg, .word, .pos, .def {	
 			padding:1em;
 		}
-		.sorry {
+		.pos {
+			font-style: italic;
+		}
+		.sorry, .word {
 			font-weight:600;
 			padding:1em;
 		}
 		.ok {
 			color: $blue;
 			padding:0.5em;
+			border-top: 1px solid $black;
 			cursor:pointer;
 		}
 	}

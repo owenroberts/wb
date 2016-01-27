@@ -7,7 +7,8 @@ var express = require('express')
     ,   wordnet = require('wordnet')
     ,   NodeCache = require( "node-cache")
     ,   PathProvider = require('./pathprovider').PathProvider
-    ,   chain = require('./chain');
+    ,   chain = require('./chain')
+    ,   def = require('./def');
 
 var app = express();
 var cache = new NodeCache();
@@ -67,6 +68,13 @@ app.get('/search/modified', function(req, res) {
         if (result.error) res.json({ errormsg: result.error });
         else res.json({ data: result });
     });
+});
+
+app.get('/def', function(req, res){
+    def.getDef(req.query.word, req.query.syn, function(err, result) {
+        if (err) res.json({ errormsg: err });
+        else res.json({ data: result });
+    })
 });
 
 var getPath = function(request, callback) {
