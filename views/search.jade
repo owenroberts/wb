@@ -387,7 +387,7 @@ block content
 					if (obj.errormsg) {
 						var err = '"' + alt + '" is related to "' + node + '," but we couldn\'t find a path that connects it to "' + end + '." <br><br> You can either swipe back to the previous word or try another one.';
 						reportError(err);
-						$(elem).find('.dots').html('•');
+						$('.node:contains("'+alt+'")').addClass('mod-error');
 						noTouching = false;
 						$('.ldrimg').remove();
 					} else {

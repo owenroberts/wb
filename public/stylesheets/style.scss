@@ -1,7 +1,7 @@
-@import 'fonts';
+/* @import 'fonts'; */
 @import 'animate';
 
-$akz: AkzidenzGroteskBE-Md;
+/* $akz: AkzidenzGroteskBE-Md; */
 
 $lightgray: #f1f1f2;
 $gray: #c6c8ca;
@@ -467,6 +467,9 @@ select {
 		position:relative;
 		padding-right:24px;
 		width:300px;
+	}
+	.mod-error {
+		color: $gray;
 	}
 	.alternate {
 		opacity:0;

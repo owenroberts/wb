@@ -4,13 +4,13 @@ errors
 - mongo thing
 
 new stuff
-- hamburger is just home
 - index page synonym level adjustment
 - modified paths run through each synonymlevel 1-20
 - def - w error bubble
 - modified path strikethrough
 - try inbox style swiping
 - try animating lines into place
+- no error report when reswiping on mod-error node
 
 idk!!!
 - add mongo db

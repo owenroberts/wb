@@ -1,5 +1,8 @@
+style.css.map
 *DS_Store
 doc/*
 node_modules/
 node_modules/*
 syn-app/*
+npm-debug.log
+.sass-cache/
