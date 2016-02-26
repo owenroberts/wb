@@ -2,7 +2,7 @@ extends layout
 block content
 	div.error
 		div.msg
-			div.sorry= "We couldn't find a path."
+			div.sorry
 			div.errormsg
 			div.ok
 				div="OK"
@@ -32,8 +32,10 @@ block content
 											
 
 		div.path-dots.slidedown.pathdotcontainer
-			div.leftarrow= "<"
-			div.rightarrow=  ">"
+			div.leftarrow
+				img(src="/images/left-arrow.svg")
+			div.rightarrow
+				img(src="/images/right-arrow.svg")
 			div.dots
 				div.path-dot(id="p-0")
 
@@ -72,9 +74,10 @@ block content
 			return Math.floor(Math.random()* ( max - min + 1) + min);
 		}
 
-		function reportError(errmsg) {
+		function reportError(err, option) {
 			$('.error').fadeIn();
-			$('.errormsg').html(errmsg);
+			$('.sorry').html(err);
+			$('.errormsg').html(option);
 			$('.error .ok').on('click', function() {
 				$('.error').fadeOut();
 			});
@@ -126,7 +129,7 @@ block content
 			var innerwidth = 0;
 			var nodes = $(inner).find('.node');
 			for (var h = 0; h < nodes.length; h++) {
-				innerwidth += $(nodes[i]).width();
+				innerwidth += $(nodes[h]).innerWidth();
 			}
 			$(inner).css({width:innerwidth});
 			$(nodedads[i]).css({width:innerwidth + 48});
@@ -392,8 +395,9 @@ block content
 				},
 				success: function(obj) {
 					if (obj.errormsg) {
-						var err = '"' + alt + '" is related to "' + node + '," but we couldn\'t find a path that connects it to "' + end + '." <br><br> You can either swipe back to the previous word or try another one.';
-						reportError(err);
+						var err = 'We couldn\'t find a path between "' + alt + '" and "' + end + '".';
+						var option = "Try swiping back to the previous synonym, or forward to the next.";
+						reportError(err, option);
 						$('.node:contains("'+alt+'")').addClass('mod-error');
 						noTouching = false;
 						$('.ldrimg').remove();
