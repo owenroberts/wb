@@ -6,13 +6,6 @@ block content
 			div.errormsg
 			div.ok
 				div="OK"
-	div.definition
-		div.msg
-			div.word
-			div.pos
-			div.def
-			div.ok
-				div="OK"
 
 	div#newpath
 		ul
@@ -452,55 +445,5 @@ block content
 				}
 			});
 		}
-
-		function showDef(word) {
-			$('.definition').fadeIn();
-			$('.definition .word').html(word);
-			$('.definition .pos').html("Retrieving definition");
-		}
-
-		function loadDef(def) {
-			if (def.errormsg) {
-				$('.definition .pos').html(def.errormsg);
-				$('.definition .def').html("");
-			} else {
-				$('.definition .pos').html(def.data.pos);
-				$('.definition .def').html(def.data.def);
-			}
-			$('.definition .ok').on('click', function() {
-				$('.definition').fadeOut();
-			});
-		}
-
-		/* look up word definitions*/
-		var getDefinition = function(elem) {
-			var word = elem.target.innerText;
-			showDef(word);
-			var syn;
-			if (pathData.path[0].node == word) syn = pathData.start;
-			else {
-				for (var i = 0; i < pathData.path.length; i++) {
-					if (pathData.path[i].node == word) {
-						syn = pathData.path[i-1].node;
-						break;
-					}
-				}
-			}
-			$.ajax({
-				url: '/def',
-				type: 'get',
-				dataType:'json',
-				data: {
-					word:word,
-					syn: syn
-				},
-				success: function(obj) {
-					loadDef(obj);
-				}
-			});
-		}
-
-		$('.node').on('click', getDefinition);
-
 
 		});
