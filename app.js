@@ -74,7 +74,7 @@ app.get('/def', function(req, res){
     def.getDef(req.query.word, req.query.syn, function(err, result) {
         if (err) res.json({ errormsg: err });
         else res.json({ data: result });
-    })
+    });
 });
 
 var getPath = function(request, callback) {

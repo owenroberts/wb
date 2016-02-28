@@ -28,13 +28,13 @@ wordnet.lookup(word, function(err, definitions) {
 
         function printWord(definition) {
 
-            //console.log(definition.meta.synsetType);
-            //console.log(definition.meta);
-      
+
+            console.log(definition.meta);
+
             for (var i = 0; i < definition.meta.words.length; i++) {
                 if (definition.meta.words[i].word == syn) {
-                    console.log(definition.meta.synsetType);
-                    console.log(definition.glossary);
+                    //console.log(definition.meta.synsetType);
+                    //console.log(definition.glossary);
                     //break;
                 }
             }
@@ -46,8 +46,8 @@ wordnet.lookup(word, function(err, definitions) {
 
                 for (var w = 0; w < pointer.data.meta.words.length; w++) {
                     if (pointer.data.meta.words[w].word == syn) {
-                        console.log(definition.meta.synsetType);
-                        console.log(definition.glossary);
+                        //console.log(definition.meta.synsetType);
+                        //console.log(definition.glossary);
                         //break;
                     }
                 }

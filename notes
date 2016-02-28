@@ -1,28 +1,20 @@
 errors 
 - "counterfeit" is related to "counterfeit"
-- spaces in new paths wtf
 - mongo thing
 
 new stuff
 - index page synonym level adjustment
 - modified paths run through each synonymlevel 1-20
 - def - w error bubble
-- modified path strikethrough
 - try inbox style swiping
-- try animating lines into place
-- no error report when reswiping on mod-error node
+- should be no error report when reswiping on mod-error node
 
-idk!!!
-- add mongo db
-- subpath indexing
 
 later
 - image? noun project
 - show at least one cycle of loading dots on home screen
 - browser resize (maybe use css for animation)
 - chain.js -- is it word?/does it have synonyms?
-- this is unclear, should go over with joel
-- update styles when browser is resized
-- cache modified paths?
+	- this is unclear, should go over with joel
 - node number goes to negative/0 when modified chain is longer than original nodelimit, not sure this needs to be fixed
 - https://thenounproject.com/
