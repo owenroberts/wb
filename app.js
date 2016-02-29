@@ -43,7 +43,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/search', function(req, res) {
-    getPath(req, function(result) {
+     getPath(req, function(result) {
         if (result.error) {
             if (req.get('Referrer').indexOf('?') === -1) 
                 res.redirect(req.get('Referrer')+'?err='+result.error);
