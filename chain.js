@@ -5,7 +5,6 @@ var makeChain = function(query, _synonyms, callback) {
   var end = query.end.toLowerCase();
   var reg = /^[a-z]+$/;
 
-  var allsynonyms = _synonyms;
   var allpaths = [];
   var nodelimit = 20;
   var nodenumber = query.nodelimit;
@@ -13,19 +12,22 @@ var makeChain = function(query, _synonyms, callback) {
   
   var data = {};
 
-  var buildPath = function(word, path, runagain) {
+  var attempts = 0;
+
+  var buildPath = function(word, path, runagain, _allsyns) {
     
     var wordPath = path;
-    allsynonyms.push(word);
+    var allsyns = _allsyns;
+    allsyns.push(word);
     var tmp = thesaurus.find(word);
     var synonyms = [];
     for (var i = 0; i < tmp.length; i++) {
       if (reg.test(tmp[i]) 
-        && allsynonyms.indexOf(tmp[i]) == -1 
-        && allsynonyms.indexOf(tmp[i]+"s") == -1
+        && allsyns.indexOf(tmp[i]) == -1 
+        && allsyns.indexOf(tmp[i]+"s") == -1
         && synonyms.length < 10 ) {
         synonyms.push(tmp[i]);
-        allsynonyms.push(tmp[i]);
+        allsyns.push(tmp[i]);
       }
     }
 
@@ -41,11 +43,13 @@ var makeChain = function(query, _synonyms, callback) {
     for (var i = 0; i < synonyms.length; i++) {
       if (synonyms[i] == end) {
         allpaths.push(wordPath);
-      } else {
+      } else if (allpaths < 1) {
         if (runagain && wordPath.length < nodenumber) {
           var newpath = wordPath.slice(0);
-          buildPath(synonyms[i], newpath, true);
+          buildPath(synonyms[i], newpath, true, allsyns);
         } else {
+          //attempts++;
+          //console.log("attempts " + attempts);
         }
       }
     }
@@ -64,15 +68,12 @@ var makeChain = function(query, _synonyms, callback) {
   }
 
   function getShortestPath() {
-    //console.log("nodenumber " + nodenumber);
     if (allpaths.length > 0) {
       sendData(allpaths[0]);
     } else {
-      //console.log("nodelimit " + nodelimit);
       if (nodenumber < nodelimit) {
         nodenumber++;
-        allsynonyms = _synonyms;
-        buildPath(start, [], true);
+        buildPath(start, [], true, [start]);
         getShortestPath();
       } else {
         if (nodelimit == 20 && synonymlevel == 20) 
@@ -88,7 +89,7 @@ var makeChain = function(query, _synonyms, callback) {
       if (start != end) {
         if (thesaurus.find(start).length > 0) {
           if (thesaurus.find(end).length > 0) {
-            buildPath(start, [], true);
+            buildPath(start, [], true, [start]);
             getShortestPath();
           } else {
             callback("The second word was not found.");
