@@ -388,6 +388,7 @@ select { margin:1em; }
 		display:block;
 		font-weight:600;
 		cursor:default;
+		text-transform: lowercase;
 		.node {  color:$black; }
 		&:hover { background:none; }
 	}

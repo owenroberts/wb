@@ -337,7 +337,7 @@ block content
 			var ldrimg = $('<img>');
 			$(ldrimg).attr("src", "/images/loader.svg")
 				.addClass('ldrimg')
-				.css({width:"24px", position:"absolute", left:"260px", marginTop:"12px"});
+				.css({width:"24px", position:"fixed", right:"16px", marginTop:"12px"});
 			$(grandparent).prepend(ldrimg);
 			
 			var alt = dir ? $(elem).next() : $(elem).prev();
@@ -358,7 +358,6 @@ block content
 		
 		// ** modify chain ** //
 		function modifyChain(elem, alt) {
-			$(elem).find('.dots').html('<img src="/images/loader.svg" />');
 
 			var pathIndex = $(elem).index();
 			var pathParent = $(elem).parent().parent().attr('id');
