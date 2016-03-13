@@ -2196,9 +2196,6 @@ a, .leftarrow, .rightarrow {
   transition: color 500ms; }
   a:hover, .leftarrow:hover, .rightarrow:hover {
     color: #f1f1f2; }
-  a img, .leftarrow img, .rightarrow img {
-    width: 16px; }
-
 ul, li {
   padding: 0;
   margin: 0;
@@ -2266,12 +2263,22 @@ header {
     top: 16px;
     left: 16px;
     z-index: 1; }
+<<<<<<< HEAD
+=======
+  header .share {
+    position: absolute;
+    top: -4px;
+    left: 34px; }
+>>>>>>> share
   header .plus {
     position: absolute;
     top: 12px;
     right: 16px; }
+<<<<<<< HEAD
     header .plus img {
       width: 80px; }
+=======
+>>>>>>> share
 
 .rotate {
   -webkit-animation: roll 2s 1;
@@ -2306,7 +2313,12 @@ header {
   .path-dots .path-dot {
     display: inline-block;
     margin: 0 4px;
+<<<<<<< HEAD
     font-size: 24px; }
+=======
+    font-size: 24px;
+    transition: color 300ms; }
+>>>>>>> share
   .path-dots .path-dot:before {
     content: "\2022"; }
 
@@ -2327,7 +2339,11 @@ header {
 .rightarrow {
   right: 10%; }
 
+<<<<<<< HEAD
 .error, .definition {
+=======
+.error, .definition, .sharemenu {
+>>>>>>> share
   display: none;
   position: fixed;
   top: 0;
@@ -2338,12 +2354,17 @@ header {
   z-index: 99;
   font-size: 20px;
   line-height: 1.45; }
+<<<<<<< HEAD
   .error .msg, .definition .msg {
+=======
+  .error .msg, .definition .msg, .sharemenu .msg {
+>>>>>>> share
     border-radius: 10px;
     background-color: white;
     width: 300px;
     margin: 25% auto;
     padding: 1.25em 1em 1em 1em; }
+<<<<<<< HEAD
     .error .msg .word, .definition .msg .word {
       text-transform: capitalize; }
     .error .msg .pos, .definition .msg .pos {
@@ -2355,11 +2376,29 @@ header {
     .error .msg .sorry, .definition .msg .sorry {
       margin-bottom: 1em; }
     .error .msg .ok, .definition .msg .ok {
+=======
+    .error .msg .word, .definition .msg .word, .sharemenu .msg .word {
+      text-transform: capitalize; }
+    .error .msg .pos, .definition .msg .pos, .sharemenu .msg .pos {
+      margin-bottom: 1em; }
+      .error .msg .pos::after, .definition .msg .pos::after, .sharemenu .msg .pos::after {
+        content: "."; }
+    .error .msg .sorry, .error .msg .word, .definition .msg .sorry, .definition .msg .word, .sharemenu .msg .sorry, .sharemenu .msg .word {
+      font-weight: 600; }
+    .error .msg .sorry, .definition .msg .sorry, .sharemenu .msg .sorry {
+      margin-bottom: 1em; }
+    .error .msg .ok, .definition .msg .ok, .sharemenu .msg .ok {
+>>>>>>> share
       color: #6a75ff;
       margin-top: 1.25em;
       /* border-top: 1px solid $black; */
       cursor: pointer;
       text-align: center; }
+<<<<<<< HEAD
+=======
+    .error .msg .sh, .definition .msg .sh, .sharemenu .msg .sh {
+      color: #6a75ff; }
+>>>>>>> share
 
 .ldr {
   font-size: 20px;
@@ -2400,6 +2439,10 @@ select {
   #hamburger li, #newpath li {
     border-radius: 8px;
     background-color: white;
+<<<<<<< HEAD
+=======
+    padding: 12px 0;
+>>>>>>> share
     width: 300px;
     margin: 0.5em auto; }
     #hamburger li a, #newpath li a {
@@ -2606,7 +2649,94 @@ select {
 .newsearch a {
   padding: 0.5em;
   border: 1px solid #f1f1f2; }
+<<<<<<< HEAD
+=======
 
+#dOne {
+  animation-iteration-count: infinite;
+  animation-duration: 1.6s;
+  animation-name: fadeOne; }
+
+#dTwo {
+  animation-iteration-count: infinite;
+  animation-duration: 1.6s;
+  animation-name: fadeTwo; }
+
+#dThree {
+  animation-iteration-count: infinite;
+  animation-duration: 1.6s;
+  animation-name: fadeThree; }
+>>>>>>> share
+
+@keyframes fadeOne {
+  0% {
+    opacity: 0.6; }
+  10% {
+    opacity: 0.8; }
+  20% {
+    opacity: 1.0; }
+  30% {
+    opacity: 0.8; }
+  40% {
+    opacity: 0.6; }
+  50% {
+    opacity: 0.4; }
+  60% {
+    opacity: 0.2; }
+  70% {
+    opacity: 0.1; }
+  80% {
+    opacity: 0.1; }
+  90% {
+    opacity: 0.2; }
+  100% {
+    opacity: 0.4; } }
+@keyframes fadeTwo {
+  0% {
+    opacity: 0.1; }
+  10% {
+    opacity: 0.2; }
+  20% {
+    opacity: 0.4; }
+  30% {
+    opacity: 0.6; }
+  40% {
+    opacity: 0.8; }
+  50% {
+    opacity: 1.0; }
+  60% {
+    opacity: 0.8; }
+  70% {
+    opacity: 0.6; }
+  80% {
+    opacity: 0.4; }
+  90% {
+    opacity: 0.2; }
+  100% {
+    opacity: 0.1; } }
+@keyframes fadeThree {
+  0% {
+    opacity: 0.1; }
+  10% {
+    opacity: 0.1; }
+  20% {
+    opacity: 0.1; }
+  30% {
+    opacity: 0.2; }
+  40% {
+    opacity: 0.4; }
+  50% {
+    opacity: 0.6; }
+  60% {
+    opacity: 0.8; }
+  70% {
+    opacity: 1.0; }
+  80% {
+    opacity: 0.8; }
+  90% {
+    opacity: 0.4; }
+  100% {
+    opacity: 0.2; } }
 /*  media queries */
 /* desktop */
 @media only screen and (min-width: 800px) {
