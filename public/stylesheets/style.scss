@@ -23,7 +23,6 @@ a, .leftarrow, .rightarrow {
 	text-decoration:none;
 	transition: color 500ms;
 	&:hover { color:$lightgray; }
-	img { width:16px; }
 }
 ul, li {
 	padding:0;
@@ -97,11 +96,15 @@ header {
 		left:16px;
 		z-index:1;
 	}
+	.share {
+		position:absolute;
+		top:-4px;
+		left:34px;
+	}
 	.plus {
 		position:absolute;
 		top:12px;
 		right:16px;
-		img { width:80px; }
 	}
 }
 
@@ -148,6 +151,7 @@ header {
 		display:inline-block;
 		margin:0 4px;
 		font-size:24px;
+		transition: color 300ms;
 	}
 	.path-dot:before { content:"\2022"; }
 }
@@ -162,7 +166,7 @@ header {
 .rightarrow { right:10%; }
 
 
-.error, .definition {
+.error, .definition, .sharemenu {
 	display:none;
 	position:fixed;
 	top:0;
@@ -192,6 +196,9 @@ header {
 			/* border-top: 1px solid $black; */
 			cursor:pointer;
 			text-align: center;
+		}
+		.sh {
+			color: $blue;
 		}
 	}
 	
@@ -235,7 +242,7 @@ select { margin:1em; }
 	li {
 		border-radius: 8px;
 		background-color: $white;
-		
+		padding:12px 0;
 		width:300px;
 		margin: 0.5em auto;
 		a {
@@ -388,6 +395,7 @@ select { margin:1em; }
 		display:block;
 		font-weight:600;
 		cursor:default;
+		text-transform: lowercase;
 		.node {  color:$black; }
 		&:hover { background:none; }
 	}
@@ -470,6 +478,62 @@ select { margin:1em; }
 		padding:0.5em;
 		border:1px solid $lightgray;
 	}
+}
+
+#dOne  {
+	animation-iteration-count: infinite;
+  	animation-duration: 1.6s;
+  	animation-name: fadeOne;
+}
+#dTwo {
+	animation-iteration-count: infinite;
+  	animation-duration: 1.6s;
+  	animation-name: fadeTwo;
+}
+#dThree {
+	animation-iteration-count: infinite;
+  	animation-duration: 1.6s;
+  	animation-name: fadeThree;
+}
+
+@keyframes fadeOne {
+ 	0% 		{ opacity: 0.6; }
+ 	10%		{ opacity: 0.8; }
+ 	20% 	{ opacity: 1.0; }
+ 	30% 	{ opacity: 0.8; }
+ 	40% 	{ opacity: 0.6; }
+ 	50% 	{ opacity: 0.4; }
+ 	60% 	{ opacity: 0.2; }
+ 	70% 	{ opacity: 0.1; }
+ 	80% 	{ opacity: 0.1; }
+ 	90% 	{ opacity: 0.2; }
+  	100% 	{ opacity: 0.4; }
+}
+@keyframes fadeTwo {
+ 	0% 		{ opacity: 0.1; }
+ 	10%		{ opacity: 0.2; }
+ 	20% 	{ opacity: 0.4; }
+ 	30% 	{ opacity: 0.6; }
+ 	40% 	{ opacity: 0.8; }
+ 	50% 	{ opacity: 1.0; }
+ 	60% 	{ opacity: 0.8; }
+ 	70% 	{ opacity: 0.6; }
+ 	80% 	{ opacity: 0.4; }
+ 	90% 	{ opacity: 0.2; }
+  	100% 	{ opacity: 0.1; }
+}
+@keyframes fadeThree {
+ 	0% 		{ opacity: 0.1; }
+ 	10%		{ opacity: 0.1; }
+ 	20% 	{ opacity: 0.1; }
+ 	30% 	{ opacity: 0.2; }
+ 	40% 	{ opacity: 0.4; }
+ 	50% 	{ opacity: 0.6; }
+ 	60% 	{ opacity: 0.8; }
+ 	70% 	{ opacity: 1.0; }
+ 	80% 	{ opacity: 0.8; }
+ 	90% 	{ opacity: 0.4; }
+  	100% 	{ opacity: 0.2; }
 }
 
 /*  media queries */
