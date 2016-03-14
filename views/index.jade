@@ -13,7 +13,7 @@ block content
 					svg(class="stroke" width="22" height="22" viewBox="0 0 20 20")
 						path(fill="none" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round" d="M17.2 7.6H1.1M17.2 1.2H1.1M17.2 14H1.1")
 		div.index
-			form(method="get", action="/search")
+			form(method="get", action="/search", id="search")
 				input(type="text",  name="s", class="query")
 				input(type="text",  name="e"  , class="query")
 				input(type="hidden",value="10",name="nl")
@@ -24,6 +24,7 @@ block content
 					path(id="dOne" fill="#black" d="M0,2c0,1.1,0.9,2,2,2c1.1,0,2-0.9,2-2S3.1,0,2,0C0.9,0,0,0.9,0,2")
 					path(id="dTwo" fill="#black" d="M7,2c0,1.1,0.9,2,2,2c1.1,0,2-0.9,2-2s-0.9-2-2-2C7.9,0,7,0.9,7,2" opacity="0")
 					path(id="dThree" fill="black" d="M14.1,2c0,1.1,0.9,2,2,2c1.1,0,2-0.9,2-2s-0.9-2-2-2C15,0,14.1,0.9,14.1,2" opacity="0")
+
 	// ** javascript ** // 
 	script(type="text/javascript").
 
@@ -35,12 +36,15 @@ block content
 			window.location = this.href;
 		});
 
-		$('input[value="search"]').on('click', function() {
-			$('.ldr').fadeIn().css("display","inline-block");;
+		$('input[value="search"]').on('click', function(ev) {
+			ev.preventDefault();
+			$('.ldr').fadeIn().css("display","inline-block");
 			$(this).fadeOut(10);
+			$("#search").submit();
 			$('input[type="text"]').animate({
 				"background-color":"transparent"
 			}, fadeDur);
+
 		});
 
 		$('.query').on('change keyup paste', function() {
