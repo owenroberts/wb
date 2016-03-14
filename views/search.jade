@@ -158,17 +158,31 @@ block content
 		});
 		$('.sh').on('click', function() {
 			var wh = this.className.split(" ")[1];
+			var b = "SynoMapp: " + start + " ... " + end;
+			var c = encodeURIComponent(location.href);
 			switch (wh) {
 				case "email":
-					var b = "SynoMapp: " + start + " ... " + end;
-					var c = location.href;
 					window.location.href = "mailto:?body=" + b + " -- " + c + "&subject= + b";
 				break;
 				case "tw":
-					var b = "Link to SynoMapp: " + start + " ... " + end;
-					var c = encodeURIComponent(location.href);
-					console.log(c);
 					window.location = "https://twitter.com/intent/tweet?text=" + b + " " + c;
+				break;
+				case "fb":
+					window.location = "http://www.facebook.com/sharer.php?u=" + b + " " + c;
+				break;
+				case "copy":
+					try {
+						var copyDiv = $("<textarea>")
+							.attr({id:"copy"})
+							.html(location.href);
+						$('.sharemenu').append(copyDiv);
+						copyDiv.select();
+						var successful = document.execCommand('copy');
+						var m = successful ? 'successful' : 'unsuccessful';
+						console.log('Copying text command was ' + m);
+					} catch (err) {
+						console.log('Oops, unable to copy');
+					}
 				break;
 			}
 		});
