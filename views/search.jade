@@ -103,7 +103,6 @@ block content
 		var currentPathNum = pathNum;
 		var pathData = !{JSON.stringify(data)};
 		qstrings.push(pathData.queryString);
-		console.log(qstrings);
 		//console.log(pathData);
 		if (pathData.error) reportError(pathData.error);
 		var start = pathData.start;
@@ -157,8 +156,6 @@ block content
 		// ** share stuff **
 		$('.share').on('click', function() {
 			$('.sharemenu').fadeIn(fadeDur);
-			console.log(pathData);
-			console.log(pathNum);
 		});
 		$('.sharemenu').on('click', function() {
 			$(this).fadeOut(fadeDur);
@@ -339,11 +336,17 @@ block content
 		}
 
 		var switchPath = function() {
+			console.log($(this));
+			console.log($(this).index());
 			var n = false;
 			if (currentPathNum < $(this).index()) n = true;
 			currentPathNum = $(this).index();
 			setPathDots(n);
 		};
+
+		$("*").on("click", function() {
+			console.log(this);
+		});
 
 		var nextPath = function() {
 			if (currentPathNum < pathNum) {
