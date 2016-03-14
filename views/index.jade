@@ -14,10 +14,10 @@ block content
 						path(fill="none" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round" d="M17.2 7.6H1.1M17.2 1.2H1.1M17.2 14H1.1")
 		div.index
 			form(method="get", action="/search")
-				input(type="text",  name="start", class="query")
-				input(type="text",  name="end"  , class="query")
-				input(type="hidden",value="10",name="nodelimit")
-				input(type="hidden",value="10",name="synonymlevel")
+				input(type="text",  name="s", class="query")
+				input(type="text",  name="e"  , class="query")
+				input(type="hidden",value="10",name="nl")
+				input(type="hidden",value="10",name="sl")
 				input(type="submit", value="search")
 			div.ldr
 				svg(x="0px" y="0px" width="30" viewBox="0 0 18.1 4")

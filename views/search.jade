@@ -8,11 +8,13 @@ block content
 				div="OK"
 
 	div.sharemenu
-		div.msg= "Share SynoMapp: " + data.start + " ... " + data.end 
+		div.msg
+			p="Share SynoMapp:"
+			p=data.start + "..." + data.end 
 			div.sh.email="Email"
 			div.sh.fb="Facebook"
 			div.sh.tw="Twitter"
-			div.sh.copy="Copy link"
+			//- div.sh.copy="Copy link"
 
 	div#newpath
 		ul
@@ -97,8 +99,11 @@ block content
 
 		var w = window.innerWidth;
 		var pathNum = 0;
+		var qstrings = [];
 		var currentPathNum = pathNum;
 		var pathData = !{JSON.stringify(data)};
+		qstrings.push(pathData.queryString);
+		console.log(qstrings);
 		//console.log(pathData);
 		if (pathData.error) reportError(pathData.error);
 		var start = pathData.start;
@@ -152,6 +157,8 @@ block content
 		// ** share stuff **
 		$('.share').on('click', function() {
 			$('.sharemenu').fadeIn(fadeDur);
+			console.log(pathData);
+			console.log(pathNum);
 		});
 		$('.sharemenu').on('click', function() {
 			$(this).fadeOut(fadeDur);
@@ -159,7 +166,8 @@ block content
 		$('.sh').on('click', function() {
 			var wh = this.className.split(" ")[1];
 			var b = "SynoMapp: " + start + " ... " + end;
-			var c = encodeURIComponent(location.href);
+			var l = location.href.split("?")[0] + "?s=" + start + "&e=" + end + "&nl=" + qstrings[pathNum].split(start)[1].split(end)[0] + "&sl=" + qstrings[pathNum].split(start)[1].split(end)[1];
+			var c = encodeURIComponent(l);
 			switch (wh) {
 				case "email":
 					window.location.href = "mailto:?body=" + b + " -- " + c + "&subject= + b";
@@ -169,20 +177,6 @@ block content
 				break;
 				case "fb":
 					window.location = "http://www.facebook.com/sharer.php?u=" + b + " " + c;
-				break;
-				case "copy":
-					try {
-						var copyDiv = $("<textarea>")
-							.attr({id:"copy"})
-							.html(location.href);
-						$('.sharemenu').append(copyDiv);
-						copyDiv.select();
-						var successful = document.execCommand('copy');
-						var m = successful ? 'successful' : 'unsuccessful';
-						console.log('Copying text command was ' + m);
-					} catch (err) {
-						console.log('Oops, unable to copy');
-					}
 				break;
 			}
 		});
@@ -211,18 +205,18 @@ block content
 				//nodelimit = 2; // break it for testing
 				nodelimitArray.push(nodelimit);
 				
-				
 				var synonymlevel = 10;  // should synonym level be randomized?
+				qstrings.push(start+nodelimit+end+synonymlevel);
 
 				$.ajax({
 					url: '/search/add',
 					type: 'get',
 					dataType:'json',
 					data: {
-						start: start,
-						end: end,
-						synonymlevel: synonymlevel,
-						nodelimit: nodelimit
+						s: start,
+						e: end,
+						sl: synonymlevel,
+						nl: nodelimit
 					},
 					success: function(obj) {
 						$('#newpath').fadeOut(fadeDur);
@@ -434,11 +428,11 @@ block content
 				type: 'get',
 				dataType:'json',
 				data: {
-					start: alt,
-					end: end,
-					synonymlevel: 10,
-					nodelimit: 10 - elem.index(),
-					allsynonyms: allsynonyms
+					s: alt,
+					e: end,
+					sl: 10,
+					nl: 10 - elem.index(),
+					as: allsynonyms
 				},
 				success: function(obj) {
 					if (obj.errormsg) {

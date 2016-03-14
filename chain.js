@@ -48,8 +48,8 @@ var makeChain = function(query, _synonyms, callback) {
           var newpath = wordPath.slice(0);
           buildPath(synonyms[i], newpath, true, allsyns);
         } else {
-          attempts++;
-          console.log("attempts " + attempts);
+          //attempts++;
+          //console.log("attempts " + attempts);
         }
       }
     }

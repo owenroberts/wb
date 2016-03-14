@@ -79,17 +79,17 @@ app.get('/def', function(req, res){
 
 var getPath = function(request, callback) {
     var allsynonyms;
-    if (request.query.allsynonyms) allsynonyms = request.query.allsynonyms;
-    else allsynonyms = [request.query.start];
-    var string = request.query.start + request.query.nodelimit + request.query.end + request.query.synonymlevel;
+    if (request.query.allsynonyms) allsynonyms = request.query.as;
+    else allsynonyms = [request.query.s];
+    var string = request.query.s + request.query.nl + request.query.e + request.query.sl;
     string.replace(/ /g, ""); // gets rid of any spaces that might throw error, probably better way to do this
     string = string.toLowerCase();
     var query = {
         queryString: string,
-        start: request.query.start,
-        end: request.query.end,
-        nodelimit: request.query.nodelimit,
-        synonymlevel: request.query.synonymlevel,
+        start: request.query.s,
+        end: request.query.e,
+        nodelimit: request.query.nl,
+        synonymlevel: request.query.sl,
         searches: [{ip:request.connection.remoteAddress, date: new Date()}]
     };
     var cacheSearch = cache.get(query.queryString);

@@ -99,7 +99,7 @@ header {
 	.share {
 		position:absolute;
 		top:-4px;
-		left:34px;
+		left:50px;
 	}
 	.plus {
 		position:absolute;
@@ -197,9 +197,9 @@ header {
 			cursor:pointer;
 			text-align: center;
 		}
-		.sh {
-			color: $blue;
-		}
+		.sh { color: $blue; 
+			margin: 0.5em 0; }
+		p { margin: 0.2em 0; }
 	}
 	
 }
