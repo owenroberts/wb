@@ -344,10 +344,6 @@ block content
 			setPathDots(n);
 		};
 
-		$("*").on("click", function() {
-			console.log(this);
-		});
-
 		var nextPath = function() {
 			if (currentPathNum < pathNum) {
 				currentPathNum++;
@@ -389,7 +385,7 @@ block content
 			var ldrimg = $('<img>');
 			$(ldrimg).attr("src", "/images/loader.svg")
 				.addClass('ldrimg')
-				.css({width:"24px", position:"fixed", right:"16px", marginTop:"12px"});
+				.css({width:"24px", position:"absolute", left: (window.innerWidth - 60)+ "px", marginTop:"12px"});
 			$(grandparent).prepend(ldrimg);
 			
 			var alt = dir ? $(elem).next() : $(elem).prev();
@@ -444,7 +440,7 @@ block content
 						reportError(err, option);
 						$('.node:contains("'+alt+'")').addClass('mod-error');
 						noTouching = false;
-						$('.ldrimg').remove();
+						//$('.ldrimg').remove();
 					} else {
 						var data = obj.data;
 						$(nodes).animate({
@@ -489,7 +485,7 @@ block content
 							newnodedad.delay(i * fadeDur/2 + waitTime + fadeDur/2).fadeIn(fadeDur);
 						}
 						setTimeout(function() {
-							$('.ldrimg').remove();
+							//$('.ldrimg').remove();
 						}, waitTime);
 					}
 					
