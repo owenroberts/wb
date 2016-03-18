@@ -70,13 +70,6 @@ app.get('/search/modified', function(req, res) {
     });
 });
 
-app.get('/def', function(req, res){
-    def.getDef(req.query.word, req.query.syn, function(err, result) {
-        if (err) res.json({ errormsg: err });
-        else res.json({ data: result });
-    });
-});
-
 var getPath = function(request, callback) {
     var allsynonyms;
     if (request.query.allsynonyms) allsynonyms = request.query.as;
@@ -90,7 +83,7 @@ var getPath = function(request, callback) {
         end: request.query.e,
         nodelimit: request.query.nl,
         synonymlevel: request.query.sl,
-        searches: [{ip:request.connection.remoteAddress, date: new Date()}]
+        searches: [{loc:"def", date: new Date()}]
     };
     var cacheSearch = cache.get(query.queryString);
     if (cacheSearch == undefined) {
