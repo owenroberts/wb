@@ -2,7 +2,8 @@ var mongodb = require('mongodb')
 	,	MongoClient = require('mongodb').MongoClient
 	,	Db = require('mongodb').Db
 	,	Connection = require('mongodb').Connection
-	,	Server = require('mongodb').Server;
+	,	Server = require('mongodb').Server
+	;
 
 PathProvider = function(uri) {
 	if (uri == "localhost") {

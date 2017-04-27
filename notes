@@ -19,3 +19,5 @@ later
 	- this is unclear, should go over with joel
 - node number goes to negative/0 when modified chain is longer than original nodelimit, not sure this needs to be fixed
 - https://thenounproject.com/
+
+- https://github.com/fluhus/wordnet-to-json
