@@ -1,14 +1,14 @@
 var express = require('express')
-    ,   path = require('path')
-    ,   favicon = require('serve-favicon')
-    ,   logger = require('morgan')
-    ,   bodyParser = require('body-parser')
-    ,   wordnet = require('wordnet')
-    ,   NodeCache = require( "node-cache")
-    ,   PathProvider = require('./pathprovider').PathProvider
-    ,   chain = require('./chain')
-    ,   def = require('./def')
-    ;
+	,	path = require('path')
+	,	favicon = require('serve-favicon')
+	,	logger = require('morgan')
+	,	bodyParser = require('body-parser')
+	,	wordnet = require('wordnet')
+	,	NodeCache = require( "node-cache")
+	,	PathProvider = require('./pathprovider').PathProvider
+	,	chain = require('./chain')
+	,	def = require('./def')
+	;
 
 var app = express();
 var cache = new NodeCache();
@@ -26,36 +26,37 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res) {
-	console.log(req.query.errmsg);
-    var err;
-    if (req.query.err instanceof Array) 
-    	err = req.query.err[req.query.err.length - 1];
-    else err = req.query.err;
-    res.render('index', {
-        errmsg: err
-    });
+	var err;
+	if (req.query.err instanceof Array) 
+		err = req.query.err[req.query.err.length - 1];
+	else err = req.query.err;
+	res.render('index', {
+		errmsg: err
+	});
 });
 
 app.get('/search', function(req, res) {
-    getPath(req, function(result) {
-    	//console.log(result);
-    	
-        if (result.error) {
-        	// why am i checking the referrer here?
-            // if (req.get('Referrer').indexOf('?') === -1) {
-            //     res.redirect(req.get('Referrer')+'?err='+result.error);
-            // } else {
-            //     res.redirect(req.get('Referrer')+'&err='+result.error);
-            // }
-            console.log(result.error);
-            res.redirect(req.get('/', {
-            	errormsg: result.error
-            }));
-        } else {
-        	console.log("else??");
-        	//res.render('search', { data: result });
-        }
-    });
+	getPath(req, function(result) {		
+		if (result.error) {
+			// why am i checking the referrer here?
+			// bringing it back to update node v
+
+			if (req.get('Referrer').indexOf('?') === -1) {
+				res.redirect(req.get('Referrer')+'?err='+result.error);
+			} else {
+				res.redirect(req.get('Referrer')+'&err='+result.error);
+			}
+			
+			// idk???
+			// console.log(result.error);
+			// res.redirect(req.get('/', {
+			// 	errormsg: result.error
+			// }));
+		} else {
+			//console.log("else??");
+			res.render('search', { data: result });
+		}
+	});
 });
 
 app.get('/search/add', function(req, res) {
