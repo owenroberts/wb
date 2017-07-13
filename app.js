@@ -1,5 +1,4 @@
 var express = require('express')
-   /* ,   sass = require('node-sass')*/
     ,   path = require('path')
     ,   favicon = require('serve-favicon')
     ,   logger = require('morgan')
@@ -8,7 +7,8 @@ var express = require('express')
     ,   NodeCache = require( "node-cache")
     ,   PathProvider = require('./pathprovider').PathProvider
     ,   chain = require('./chain')
-    ,   def = require('./def');
+    ,   def = require('./def')
+    ;
 
 var app = express();
 var cache = new NodeCache();
@@ -23,19 +23,13 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-/*app.use(
-    sass.middleware({
-        src: __dirname + '/public', //where the sass files are 
-        dest: __dirname + '/public', //where css should go
-        debug: true // obvious
-    })
-);*/
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res) {
+	console.log(req.query.errmsg);
     var err;
-    if (req.query.err instanceof Array) err = req.query.err[req.query.err.length - 1];
+    if (req.query.err instanceof Array) 
+    	err = req.query.err[req.query.err.length - 1];
     else err = req.query.err;
     res.render('index', {
         errmsg: err
@@ -43,13 +37,24 @@ app.get('/', function(req, res) {
 });
 
 app.get('/search', function(req, res) {
-     getPath(req, function(result) {
+    getPath(req, function(result) {
+    	//console.log(result);
+    	
         if (result.error) {
-            if (req.get('Referrer').indexOf('?') === -1) 
-                res.redirect(req.get('Referrer')+'?err='+result.error);
-             else 
-                res.redirect(req.get('Referrer')+'&err='+result.error);
-        } else res.render('search', { data: result });
+        	// why am i checking the referrer here?
+            // if (req.get('Referrer').indexOf('?') === -1) {
+            //     res.redirect(req.get('Referrer')+'?err='+result.error);
+            // } else {
+            //     res.redirect(req.get('Referrer')+'&err='+result.error);
+            // }
+            console.log(result.error);
+            res.redirect(req.get('/', {
+            	errormsg: result.error
+            }));
+        } else {
+        	console.log("else??");
+        	//res.render('search', { data: result });
+        }
     });
 });
 
