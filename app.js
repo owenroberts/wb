@@ -36,7 +36,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/search', function(req, res) {
-	getPath(req, function(result) {		
+	getChain(req, function(result) {		
 		if (result.error) {
 			// why am i checking the referrer here?
 			// bringing it back to update node v
@@ -60,7 +60,7 @@ app.get('/search', function(req, res) {
 });
 
 app.get('/search/add', function(req, res) {
-    getPath(req, function(result) {
+    getChain(req, function(result) {
         if (result.error)
             res.json({
                 errormsg: "This randomly generated path was unable to be performed by the algorithm.  Please try the add path button again."
@@ -70,16 +70,18 @@ app.get('/search/add', function(req, res) {
 });
 
 app.get('/search/modified', function(req, res) {
-    getPath(req, function(result) {
+    getChain(req, function(result) {
         if (result.error) res.json({ errormsg: result.error });
         else res.json({ data: result });
     });
 });
 
-var getPath = function(request, callback) {
+function getChain(request, callback) {
     var allsynonyms;
-    if (request.query.allsynonyms) allsynonyms = request.query.as;
-    else allsynonyms = [request.query.s];
+    if (request.query.allsynonyms) 
+        allsynonyms = request.query.as;
+    else 
+        allsynonyms = [request.query.s];
     var string = request.query.s + request.query.nl + request.query.e + request.query.sl;
     string.replace(/ /g, ""); // gets rid of any spaces that might throw error, probably better way to do this
     string = string.toLowerCase();
@@ -99,7 +101,7 @@ var getPath = function(request, callback) {
                 if (result == null) {
                     chain.makeChain(query, allsynonyms, function(err, data) {
                         if (err) query.error = err;
-                        else query.path = data.path;
+                        else query.path = data.chain;
                         pathprovider.save(query, function(err) { console.log(err); });
                         cache.set(query.queryString, query);
                         callback(query);

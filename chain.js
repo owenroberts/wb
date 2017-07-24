@@ -1,114 +1,90 @@
 var thesaurus = require("thesaurus");
 
-var makeChain = function(query, _synonyms, callback) {
-	var start = query.start.toLowerCase();
-	var end = query.end.toLowerCase();
+var makeChain = function(query, allSynonyms, callback) {
+	var startWord = query.start.toLowerCase();
+	var endWord = query.end.toLowerCase();
 	var reg = /^[a-z]+$/;
 
-	var allpaths = [];
-	var nodelimit = 20;
-	var nodenumber = +query.nodelimit;
-	var synonymlevel = +query.synonymlevel;
+	const nodeNumberLimit = 20; // no chains more than this number of nodes
+	var currentNodeNumber = +query.nodelimit; // try to get under this first
+	const synonymLevel = +query.synonymlevel;
+	var foundChain = false;
 	
-	var data = {};
-
-	var attempts = 0;
-
-	var buildPath = function(word, path, runagain, _allsyns) {
-		
-		var wordPath = path;
-		var allsyns = _allsyns;
-		allsyns.push(word);
-		var tmp = thesaurus.find(word);
+	function buildChain(chain, allSynsCopy) {
+		var index = chain.length - 1;
+		allSynsCopy.push(chain[index].word);
+		var tempSyns = thesaurus.find(chain[index].word);
 		var synonyms = [];
-		for (var i = 0; i < tmp.length; i++) {
-			if (reg.test(tmp[i]) 
-				&& allsyns.indexOf(tmp[i]) == -1 
-				&& allsyns.indexOf(tmp[i]+"s") == -1
+		for (var i = 0; i < tempSyns.length; i++) {
+			if (reg.test(tempSyns[i]) 
+				&& allSynsCopy.indexOf(tempSyns[i]) == -1 
+				&& allSynsCopy.indexOf(tempSyns[i]+"s") == -1
 				&& synonyms.length < 10 ) {
-				synonyms.push(tmp[i]);
-				allsyns.push(tmp[i]);
+				synonyms.push({
+					word:tempSyns[i]
+				});
+				allSynsCopy.push(tempSyns[i]);
 			}
 		}
 
-		if (synonyms.length > synonymlevel) {
-			synonyms.splice(synonymlevel, synonyms.length - synonymlevel);
-		}
-
-		wordPath.push({
-			node:word,
-			synonyms:synonyms
-		});
+		chain[index].synonyms = synonyms;
 
 		for (var i = 0; i < synonyms.length; i++) {
-			if (synonyms[i] == end) {
-			  allpaths.push(wordPath);
-			} else if (allpaths < 1) {
-				// console.log(wordPath.length, nodenumber);
-				if (runagain && wordPath.length < nodenumber) {
-					var newpath = wordPath.slice(0);
-					buildPath(synonyms[i], newpath, true, allsyns);
-				} else {
-					attempts++;
-					// console.log("attempts " + attempts);
-					if (attempts >= 10000) {
-						callback("Youre search has exceeded the capacity of the algorithm.  Please try a new search.");
-					}
+			if (synonyms[i].word == endWord) {
+			 	chain.push(synonyms[i]);
+			 	foundChain = true;
+			 	sendData(chain);
+			} else  {
+				if (chain.length < currentNodeNumber && !foundChain) {
+					var newChain = chain.slice(0);
+					newChain.push(synonyms[i]);
+					buildChain(newChain, allSynsCopy.slice(0));
 				}
 			}
 		}
 	}
 
-	function sendData(newpath) {
-		var finalpath = [];
-		for (var i = 1; i < newpath.length; i++) {
-			finalpath[i - 1] = {};
-			finalpath[i - 1].node = newpath[i].node;
-			finalpath[i - 1].alternates = newpath[i-1].synonyms;
+	function sendData(chain) {
+		var data = {};
+		var result = [];
+		for (let i = 1; i < chain.length - 1; i++) {
+			result[i - 1] = {};
+			result[i - 1].node = chain[i].word;
+			result[i - 1].alternates = []
+			for (let j = 0; j < chain[i-1].synonyms.length; j++)
+				result[i - 1].alternates.push( chain[i-1].synonyms[j].word );
 		}
-		data.path = finalpath;
-		data.nodelimit = nodenumber;
+		data.chain = result;
+		data.nodelimit = currentNodeNumber;
 		callback(null, data);
 	}
 
-	function getShortestPath() {
-		if (allpaths.length > 0) {
-			sendData(allpaths[0]);
-		} else {
-			if (nodenumber < nodelimit) {
-				nodenumber++;
-				buildPath(start, [], true, [start]);
-				getShortestPath();
-			} else {
-				if (nodelimit == 20 && synonymlevel == 20) 
-					callback("Your search has exceeded the capacity of the algorithm.  Please try a new search.");
-				else
-					callback("Your search was not able to be performed with the current parameters.");
+	function getShortestChain() {
+		if (currentNodeNumber < nodeNumberLimit) {
+			currentNodeNumber++;
+			if (!foundChain) {
+				buildChain([{word:startWord, weight:0}], allSynonyms.slice(0));
+				getShortestChain();
 			}
+		} else {
+			callback("Your search was not able to be performed with the current parameters.");
 		}
 	}
 
-	if (start && end) {
-		if (reg.test(start) && reg.test(end)) {
-			if (start != end) {
-				if (thesaurus.find(start).length > 0) {
-					if (thesaurus.find(end).length > 0) {
-						buildPath(start, [], true, [start]);
-						getShortestPath();
-					} else {
-						callback("The second word was not found.");
-					}
-				} else {
-					callback("The first word was not found.");
-				}
-			} else {
-				callback("Please enter different words.");
-			}
-		} else {
-			callback("Please enter single words with no spaces or dashes.");
-		}
-	} else {
+	if (!startWord || !endWord) {
 		callback("Please enter two search words.");
+	} else if (!reg.test(startWord) || !reg.test(endWord)) {
+		callback("Please enter single words with no spaces or dashes.");
+	} else if (startWord == endWord) {
+		callback("Please enter different words.")
+	} else if (thesaurus.find(startWord).length == 0) {
+		callback("The first word was not found.");
+	} else if (thesaurus.find(endWord).length == 0) {
+		callback("The second word was not found.");
+	} else {
+		buildChain([{word:startWord}], allSynonyms.slice(0));
+		getShortestChain();
 	}
+
 }
 exports.makeChain = makeChain;

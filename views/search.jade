@@ -1,5 +1,6 @@
 extends layout
 block content
+
 	div.error
 		div.msg
 			div.sorry
@@ -100,7 +101,6 @@ block content
 		var currentPathNum = pathNum;
 		var pathData = !{JSON.stringify(data)};
 		qstrings.push(pathData.queryString);
-		//console.log(pathData);
 		if (pathData.error) reportError(pathData.error);
 		var start = pathData.start;
 		var end = pathData.end;
