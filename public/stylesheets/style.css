@@ -429,7 +429,11 @@ select {
     cursor: default;
     text-transform: lowercase; }
     .node-dad:first-child .node, .node-dad:last-child .node {
-      color: black; }
+      color: black;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      tap-highlight-color: transparent; }
     .node-dad:first-child:hover, .node-dad:last-child:hover {
       background: none; }
   .node-dad .ldr {

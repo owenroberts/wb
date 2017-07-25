@@ -399,7 +399,13 @@ select { margin:1em; }
 		font-weight:600;
 		cursor:default;
 		text-transform: lowercase;
-		.node {  color:$black; }
+		.node {  
+			color:$black; 
+			-webkit-user-select: none;
+			user-select: none;
+			-webkit-tap-highlight-color: rgba(0,0,0,0);
+			tap-highlight-color: rgba(0,0,0,0);
+		}
 		&:hover { background:none; }
 	}
 	.ldr { position:absolute; }
