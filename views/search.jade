@@ -156,7 +156,7 @@ block content
 		$('body').on('dblclick','.node', function(e) { loadDef(e) });
 		$('body').on('taphold','.node', function(e) { loadDef(e) });
 		
-		function loadDef() {
+		function loadDef(e) {
 			e.preventDefault();
 			let word = this.innerHTML;
 			$.ajax({
