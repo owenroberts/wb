@@ -433,7 +433,9 @@ select {
       -webkit-user-select: none;
       user-select: none;
       -webkit-tap-highlight-color: transparent;
-      tap-highlight-color: transparent; }
+      tap-highlight-color: transparent;
+      -webkit-touch-callout: none !important;
+      touch-callout: none !important; }
     .node-dad:first-child:hover, .node-dad:last-child:hover {
       background: none; }
   .node-dad .ldr {

@@ -153,10 +153,11 @@ block content
 		const parts = { "n":"noun", "v":"verb", "a":"adjective", "s":"adjective", "r":"adverb" }
 
 		/* load definitions */
-		$('body').on('dblclick','.node', loadDef);
-		$('body').on('taphold','.node', loadDef);
+		$('body').on('dblclick','.node', function(e) { loadDef(e) });
+		$('body').on('taphold','.node', function(e) { loadDef(e) });
 		
 		function loadDef() {
+			e.preventDefault();
 			let word = this.innerHTML;
 			$.ajax({
 				url: '/def',
