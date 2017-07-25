@@ -50,7 +50,7 @@ block content
 		div#paths		
 			div.path(id="path-0")
 				div.nodes
-					div.node-dad=data.start
+					div.node-dad.node=data.start
 					each node, index in data.path
 						div.node-dad
 							div.inner-nodes
@@ -149,6 +149,35 @@ block content
 			opacity: 1
 		}, fadeDur*2);
 
+		// http://wordnet.princeton.edu/wordnet/man/wndb.5WN.html#sect3
+		const parts = { "n":"noun", "v":"verb", "a":"adjective", "s":"adjective", "r":"adverb" }
+
+		/* load definitions */
+		$('body').on('dblclick','.node', loadDef);
+		$('body').on('taphold','.node', loadDef);
+		
+		function loadDef() {
+			let word = this.innerHTML;
+			$.ajax({
+				url: '/def',
+				type: 'get',
+				dataType:'json',
+				data: {
+					word: word
+				},
+				success: function(result) {
+					var msg = "";
+					for (let i = 0; i < result.data.length; i++) {
+						msg += parts[result.data[i].pos];
+						msg += '<br>';
+						msg += result.data[i].def;
+						msg += '<br><br>';
+					}
+					reportError(word, msg);
+				},
+			});
+		}
+
 
 		// ** share stuff **
 		$('.share').on('click', function() {
@@ -189,10 +218,8 @@ block content
 
 		// ** plus button for new paths ** //
 		function makeNewPath() {
-
 			var nodelimit;
 			if (pathNum < 10) {
-
 				do {
 					nodelimit = getRandomInt(2,20);
 				} while (nodelimitArray.indexOf(nodelimit) != -1);

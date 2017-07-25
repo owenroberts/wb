@@ -227,7 +227,9 @@ header {
     background-color: white;
     width: 300px;
     margin: 25% auto;
-    padding: 1.25em 1em 1em 1em; }
+    padding: 1.25em 1em 1em 1em;
+    max-height: 50%;
+    overflow-y: scroll; }
     .error .msg .word, .definition .msg .word, .sharemenu .msg .word {
       text-transform: capitalize; }
     .error .msg .pos, .definition .msg .pos, .sharemenu .msg .pos {

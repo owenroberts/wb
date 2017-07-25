@@ -184,6 +184,8 @@ header {
 		width:300px;
 		margin:25% auto;
 		padding:1.25em 1em 1em 1em;
+		max-height:50%;
+		overflow-y: scroll;
 		.word { text-transform: capitalize; }
 		.pos {
 			margin-bottom:1em;
