@@ -85,7 +85,8 @@ app.get('/def', function(req,res) {
 
 function getChain(request, callback) {
     var allsynonyms;
-    if (request.query.allsynonyms) 
+    console.log(request.query.as);
+    if (request.query.as) 
         allsynonyms = request.query.as;
     else 
         allsynonyms = [request.query.s];
@@ -106,6 +107,7 @@ function getChain(request, callback) {
             if (err) console.log(err);
             else {
                 if (result == null) {
+                    console.log(allsynonyms);
                     chain.makeChain(query, allsynonyms, function(err, data) {
                         if (err) query.error = err;
                         else query.path = data.chain;
