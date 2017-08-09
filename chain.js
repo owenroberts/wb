@@ -9,6 +9,8 @@ var makeChain = function(query, allSynonyms, callback) {
 	var currentNodeNumber = +query.nodelimit; // try to get under this first
 	const synonymLevel = +query.synonymlevel;
 	var foundChain = false;
+
+	var attempts = 0;
 	
 	function buildChain(chain, allSynsCopy) {
 		var index = chain.length - 1;
@@ -35,6 +37,7 @@ var makeChain = function(query, allSynonyms, callback) {
 			 	foundChain = true;
 			 	sendData(chain);
 			} else  {
+				attempts++;
 				if (chain.length < currentNodeNumber && !foundChain) {
 					var newChain = chain.slice(0);
 					newChain.push(synonyms[i]);
