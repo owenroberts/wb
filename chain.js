@@ -36,9 +36,14 @@ var makeChain = function(query, allSynonyms, callback) {
 			 	chain.push(synonyms[i]);
 			 	foundChain = true;
 			 	sendData(chain);
-			} else  {
+			} else if (!foundChain){
 				attempts++;
-				if (chain.length < currentNodeNumber && !foundChain) {
+				// 200000 attempts seems like a lot but how many will this break?
+				if (attempts > 200000) {
+					callback("Your search was not able to be performed with the current parameters.");
+					foundChain = true;
+				}
+				if (chain.length < currentNodeNumber) {
 					var newChain = chain.slice(0);
 					newChain.push(synonyms[i]);
 					buildChain(newChain, allSynsCopy.slice(0));
