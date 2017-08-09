@@ -8,6 +8,7 @@ var express = require('express')
 	,	PathProvider = require('./pathprovider').PathProvider
 	,	chain = require('./chain')
 	,	def = require('./def')
+	,	url = require('url')
 	;
 
 var app = express();
@@ -27,6 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res) {
 	var err;
+	console.log(req.query.err);
 	if (req.query.err instanceof Array) 
 		err = req.query.err[req.query.err.length - 1];
 	else err = req.query.err;
@@ -38,22 +40,13 @@ app.get('/', function(req, res) {
 app.get('/search', function(req, res) {
 	getChain(req, function(result) {		
 		if (result.error) {
-			// why am i checking the referrer here?
-			// bringing it back to update node v
-
-			if (req.get('Referrer').indexOf('?') === -1) {
-				res.redirect(req.get('Referrer')+'?err='+result.error);
-			} else {
-				res.redirect(req.get('Referrer')+'&err='+result.error);
-			}
-			
-			// idk???
-			// console.log(result.error);
-			// res.redirect(req.get('/', {
-			// 	errormsg: result.error
-			// }));
+			res.redirect(url.format({
+				pathname: req.get('Referrer'),
+				query: {
+					"err":result.error
+				}
+			}));
 		} else {
-			//console.log("else??");
 			res.render('search', { data: result });
 		}
 	});
