@@ -275,7 +275,7 @@ select {
   -webkit-overflow-scrolling: touch;
   background-color: white;
   z-index: -3;
-  margin-bottom: 128px; }
+  /* margin-bottom:128px; */ }
 
 #hamburger, #newpath {
   display: none;
