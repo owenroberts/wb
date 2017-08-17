@@ -21,3 +21,13 @@ later
 - https://thenounproject.com/
 
 - https://github.com/fluhus/wordnet-to-json
+
+8.17.2017
+- questions for joel meeting
+	- is two way algorithm okay to move forward?
+	- how to interact with definitions
+	- data/analytics stuff, getting all chains
+	- modified path sections served in wrong context...
+
+- can't take error messages out of url 
+

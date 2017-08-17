@@ -86,8 +86,10 @@ block content
 			$('.error').fadeIn();
 			$('.sorry').html(err);
 			$('.errormsg').html(option);
+			$('body').css({overflow:"hidden"});
 			$('.error .ok').on('click', function() {
 				$('.error').fadeOut();
+				$('body').css({overflow:"auto"});
 			});
 		}
 
@@ -387,9 +389,6 @@ block content
 		$('.rightarrow').on('click', nextPath);
 		$( ".path-dots" ).on( "swiperight", prevPath);
 		$('.leftarrow').on('click', prevPath);
-
-		
-
 
 		// ** swipe left on nodes ** //
 		//-  taking about "modified" bool here, not sure what it should do
