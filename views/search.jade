@@ -84,6 +84,7 @@ block content
 
 		function reportError(err, option) {
 			$('.error').fadeIn();
+			// scroll to top
 			$('.sorry').html(err);
 			$('.errormsg').html(option);
 			$('body').css({overflow:"hidden"});
@@ -102,6 +103,7 @@ block content
 		var qstrings = [];
 		var currentPathNum = pathNum;
 		var pathData = !{JSON.stringify(data)};
+		console.log(pathData);
 		qstrings.push(pathData.queryString);
 		if (pathData.error) reportError(pathData.error);
 		var start = pathData.start;
@@ -160,12 +162,30 @@ block content
 		
 		function loadDef(e, word) {
 			e.preventDefault();
+			var parent;
+			var synonym;
+			if (word == end) {
+				parent = e.currentTarget;
+			} else if (word == start) {
+				synonym = null;
+			} else {
+				parent = e.currentTarget.parentNode.parentNode;
+			}
+			var i = $(parent).index();			
+			if (i == 1) {
+				synonym = start;
+			} else {
+				var prev = parent.previousSibling;
+				synonym = $(prev).find('.thenode').text();
+			}
+			console.log(synonym);
 			$.ajax({
 				url: '/def',
 				type: 'get',
 				dataType:'json',
 				data: {
-					word: word
+					word: word,
+					synonym: synonym
 				},
 				success: function(result) {
 					var msg = "";
