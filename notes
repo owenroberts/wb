@@ -25,9 +25,10 @@ later
 8.17.2017
 - questions for joel meeting
 	- is two way algorithm okay to move forward?
-	- how to interact with definitions
+	- how to interact with definitions - mobile single tap
 	- data/analytics stuff, getting all chains
 	- modified path sections served in wrong context...
+		- add to document as extra path
 
 - can't take error messages out of url 
 
