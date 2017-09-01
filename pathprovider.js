@@ -51,13 +51,14 @@ PathProvider.prototype.get = function(queryString, callback) {
 	});
 };
 
-PathProvider.prototype.addSearchTime = function(query, callback) {
+PathProvider.prototype.addSearchTime = function(queryString, callback) {
 	this.getCollection( function(err, path_collection) {
 		if (err) callback(err);
 		else {
+			var seach = {loc:"tk", date: new Date()};
 			path_collection.update(
-				{ queryString:query.queryString },
-				{ $push: { searches: query.searches[0] } }
+				{ queryString:queryString },
+				{ $push: { searches: search } }
 			);
 		}
 	});

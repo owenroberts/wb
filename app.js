@@ -28,7 +28,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res) {
 	var err;
-	console.log(req.query.err);
 	if (req.query.err instanceof Array) 
 		err = req.query.err[req.query.err.length - 1];
 	else err = req.query.err;
@@ -38,10 +37,10 @@ app.get('/', function(req, res) {
 });
 
 app.get('/search', function(req, res) {
-	getChain(req, function(result) {		
+	loadChain(req, function(result) {
 		if (result.error) {
 			res.redirect(url.format({
-				pathname: req.get('Referrer'),
+				pathname: req.get('Referrer').split("?")[0],
 				query: {
 					"err":result.error
 				}
@@ -53,7 +52,7 @@ app.get('/search', function(req, res) {
 });
 
 app.get('/search/add', function(req, res) {
-	getChain(req, function(result) {
+	loadChain(req, function(result) {
 		if (result.error)
 			res.json({
 				errormsg: "This randomly generated path was unable to be performed by the algorithm.  Please try the add path button again."
@@ -63,7 +62,8 @@ app.get('/search/add', function(req, res) {
 });
 
 app.get('/search/modified', function(req, res) {
-	getChain(req, function(result) {
+	// save sub chains here
+	makeChain(req, function(result) {
 		if (result.error) res.json({ errormsg: result.error });
 		else res.json({ data: result });
 	});
@@ -76,38 +76,18 @@ app.get('/def', function(req,res) {
 	})
 });
 
-function getChain(request, callback) {
-	var allsynonyms;
-	if (request.query.as) 
-		allsynonyms = request.query.as;
-	else 
-		allsynonyms = [request.query.s];
-	var string = request.query.s + request.query.nl + request.query.e + request.query.sl;
-	string = string.toLowerCase().replace(/ /g, "");
-	var query = {
-		queryString: string,
-		start: request.query.s.replace(/ /g, ""),
-		end: request.query.e.replace(/ /g, ""),
-		nodelimit: request.query.nl,
-		synonymlevel: request.query.sl,
-		searches: [{loc:"def", date: new Date()}]
-	};
-	var cacheSearch = cache.get(query.queryString);
+function loadChain(request, callback) {
+	var queryString = makeQueryString(request);
+	var cacheSearch = cache.get(queryString);
 	if (cacheSearch == undefined) {
-		pathprovider.get(query.queryString, function(err, result) {
+		pathprovider.get(queryString, function(err, result) {
 			if (err) console.log(err);
 			else {
 				if (result == null) {
-					chain.makeChain(query, allsynonyms, function(err, data) {
-					    if (err) query.error = err;
-					    else query.path = data.chain;
-					    pathprovider.save(query, function(err) { console.log(err); });
-					    cache.set(query.queryString, query);
-					    callback(query);
-					});
+					makeChain(request, callback);
 				} else {
-				 	pathprovider.addSearchTime(query, function(err) { console.log(err) } );
-				 	cache.set(query.queryString, result);
+				 	pathprovider.addSearchTime(queryString, function(err) { console.log(err) } );
+				 	cache.set(queryString, result);
 				 	callback(result);
 				}
 			}
@@ -115,7 +95,36 @@ function getChain(request, callback) {
 	} else {
 		callback(cacheSearch);
 	}
-};
+}
+
+function makeChain(request, callback) {
+	var allsynonyms;
+	if (request.query.as) 
+		allsynonyms = request.query.as;
+	else 
+		allsynonyms = [request.query.s];
+	var query = {
+		queryString: makeQueryString(request),
+		start: request.query.s.replace(/ /g, ""),
+		end: request.query.e.replace(/ /g, ""),
+		nodelimit: request.query.nl,
+		synonymlevel: request.query.sl,
+		searches: [{loc:"tk", date: new Date()}]
+	};
+	chain.makeChain(query, allsynonyms, function(err, data) {
+		if (err) query.error = err;
+		else query.path = data.chain;
+		pathprovider.save(query, function(err) { console.log(err); });
+		cache.set(query.queryString, query);
+		callback(query);
+	});
+}
+
+function makeQueryString(request) {
+	var string = request.query.s + request.query.nl + request.query.e + request.query.sl;
+	string = string.toLowerCase().replace(/ /g, "");
+	return string;
+}
 
 function getRandomInt(min, max) {
 	return Math.floor(Math.random()* ( max - min + 1) + min);

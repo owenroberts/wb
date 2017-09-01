@@ -35,3 +35,4 @@ later
 9.1.2017
 - can't always reverse engineer synonyms because some hypernyms dont' have their hyponym as synonym
 - going to serve all results if no matches
+- related to sub chains - need to separate loadChain and makeChain so we can distinguish between them, need to use some kind of indexing to make this easier

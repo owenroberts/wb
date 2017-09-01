@@ -1,6 +1,6 @@
 extends layout
 block content
-	div.error
+	div#error
 		div.msg
 			div.sorry= "We couldn't find a path. Sorry about that!"
 			div.errormsg
@@ -61,13 +61,18 @@ block content
 			if (termsEntered[0] && termsEntered[1]) {
 				$('input[value="search"]').css({color: '#6a75ff'});
 			}
-		})
+		});
+
+		console.log("#{errmsg}")
 
 		function reportError(errmsg) {
-			$('.error').fadeIn();
+			$('#error').fadeIn();
 			$('.errormsg').text("Hint: " + errmsg);
 			$('.ok').on('click', function() {
-				$('.error').fadeOut();
+				$('#error').fadeOut();
+			});
+			$('#error').on('click', function() {
+				$('#error').fadeOut();
 			});
 			location.hash = "";
 		}
