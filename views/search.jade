@@ -1,12 +1,12 @@
 extends layout
 block content
 
-	div.error
+	div#error
 		div.msg
 			div.sorry
 			div.errormsg
 			div.ok
-				div="OK"
+				div="Ok"
 
 	div.sharemenu
 		div.msg
@@ -83,13 +83,17 @@ block content
 		}
 
 		function reportError(err, option) {
-			$('.error').fadeIn();
-			// scroll to top
+			$('#error').fadeIn();
+			$('#error .msg').scrollTop(0);
 			$('.sorry').html(err);
 			$('.errormsg').html(option);
 			$('body').css({overflow:"hidden"});
-			$('.error .ok').on('click', function() {
-				$('.error').fadeOut();
+			$('#error .ok').on('click', function() {
+				$('#error').fadeOut();
+				$('body').css({overflow:"auto"});
+			});
+			$('#error').on('click', function() {
+				$('#error').fadeOut();
 				$('body').css({overflow:"auto"});
 			});
 		}
@@ -103,7 +107,6 @@ block content
 		var qstrings = [];
 		var currentPathNum = pathNum;
 		var pathData = !{JSON.stringify(data)};
-		console.log(pathData);
 		qstrings.push(pathData.queryString);
 		if (pathData.error) reportError(pathData.error);
 		var start = pathData.start;
@@ -178,7 +181,7 @@ block content
 				var prev = parent.previousSibling;
 				synonym = $(prev).find('.thenode').text();
 			}
-			console.log(synonym);
+			
 			$.ajax({
 				url: '/def',
 				type: 'get',
@@ -190,6 +193,7 @@ block content
 				success: function(result) {
 					var msg = "";
 					for (let i = 0; i < result.data.length; i++) {
+						console.log(result.data[i].synonyms)
 						msg += parts[result.data[i].pos];
 						msg += '<br>';
 						msg += result.data[i].def;

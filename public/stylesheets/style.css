@@ -211,7 +211,7 @@ header {
 .rightarrow {
   right: 10%; }
 
-.error, .definition, .sharemenu {
+#error, .definition, .sharemenu {
   display: none;
   position: fixed;
   top: 0;
@@ -222,7 +222,7 @@ header {
   z-index: 99;
   font-size: 20px;
   line-height: 1.45; }
-  .error .msg, .definition .msg, .sharemenu .msg {
+  #error .msg, .definition .msg, .sharemenu .msg {
     border-radius: 10px;
     background-color: white;
     width: 300px;
@@ -230,26 +230,26 @@ header {
     padding: 1.25em 1em 1em 1em;
     max-height: 50%;
     overflow-y: scroll; }
-    .error .msg .word, .definition .msg .word, .sharemenu .msg .word {
+    #error .msg .word, .definition .msg .word, .sharemenu .msg .word {
       text-transform: capitalize; }
-    .error .msg .pos, .definition .msg .pos, .sharemenu .msg .pos {
+    #error .msg .pos, .definition .msg .pos, .sharemenu .msg .pos {
       margin-bottom: 1em; }
-      .error .msg .pos::after, .definition .msg .pos::after, .sharemenu .msg .pos::after {
+      #error .msg .pos::after, .definition .msg .pos::after, .sharemenu .msg .pos::after {
         content: "."; }
-    .error .msg .sorry, .error .msg .word, .definition .msg .sorry, .definition .msg .word, .sharemenu .msg .sorry, .sharemenu .msg .word {
+    #error .msg .sorry, #error .msg .word, .definition .msg .sorry, .definition .msg .word, .sharemenu .msg .sorry, .sharemenu .msg .word {
       font-weight: 600; }
-    .error .msg .sorry, .definition .msg .sorry, .sharemenu .msg .sorry {
+    #error .msg .sorry, .definition .msg .sorry, .sharemenu .msg .sorry {
       margin-bottom: 1em; }
-    .error .msg .ok, .definition .msg .ok, .sharemenu .msg .ok {
+    #error .msg .ok, .definition .msg .ok, .sharemenu .msg .ok {
       color: #6a75ff;
       margin-top: 1.25em;
       /* border-top: 1px solid $black; */
       cursor: pointer;
       text-align: center; }
-    .error .msg .sh, .definition .msg .sh, .sharemenu .msg .sh {
+    #error .msg .sh, .definition .msg .sh, .sharemenu .msg .sh {
       color: #6a75ff;
       margin: 0.5em 0; }
-    .error .msg p, .definition .msg p, .sharemenu .msg p {
+    #error .msg p, .definition .msg p, .sharemenu .msg p {
       margin: 0.2em 0; }
 
 .ldr {

@@ -32,3 +32,6 @@ later
 
 - can't take error messages out of url 
 
+9.1.2017
+- can't always reverse engineer synonyms because some hypernyms dont' have their hyponym as synonym
+- going to serve all results if no matches

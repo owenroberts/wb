@@ -70,7 +70,7 @@ app.get('/search/modified', function(req, res) {
 });
 
 app.get('/def', function(req,res) {
-	def.getDef(req.query.word, function(err, result) {
+	def.getDef(req.query.word, req.query.synonym, function(err, result) {
 		if (err) console.log(err);
 		else res.json({ data: result });
 	})
