@@ -20,7 +20,7 @@ block content
 	div#newpath
 		ul
 			li
-				img(src='/images/loader.svg')
+				img(src='/img/loader.svg')
 					
 	div#main
 		header
@@ -47,7 +47,7 @@ block content
 			div.dots
 				div.path-dot(id="p-0")
 
-		div#paths		
+		div#paths
 			div.path(id="path-0")
 				div.nodes
 					div.node-dad.node=data.start
@@ -68,75 +68,29 @@ block content
 
 									
 	// javascript // 
+	script(src="/js/search_helpers.js", type="text/javascript")
 	script(type='text/javascript').
 
 		$(document).ready( function() {
 
-
-		$('a').on('click', function(ev) {
-			ev.preventDefault();
-			window.location = this.href;
-		});
-
-		function getRandomInt(min, max) {
-			return Math.floor(Math.random()* ( max - min + 1) + min);
-		}
-
-		function reportError(err, option) {
-			$('#error').fadeIn();
-			$('#error .msg').scrollTop(0);
-			$('.sorry').html(err);
-			$('.errormsg').html(option);
-			$('body').css({overflow:"hidden"});
-			$('#error .ok').on('click', function() {
-				$('#error').fadeOut();
-				$('body').css({overflow:"auto"});
-			});
-			$('#error').on('click', function() {
-				$('#error').fadeOut();
-				$('body').css({overflow:"auto"});
-			});
-		}
-
 		// ** blogal variables ** //
-		var debug = false;
-		var fadeDur = debug ? 10 : 500;
+		const debug = false;
+		const fadeDur = debug ? 10 : 500;
 
 		var w = window.innerWidth;
 		var pathNum = 0;
 		var qstrings = [];
 		var currentPathNum = pathNum;
-		var pathData = !{JSON.stringify(data)};
+
+		const pathData = !{JSON.stringify(data)};
 		qstrings.push(pathData.queryString);
 		if (pathData.error) reportError(pathData.error);
-		var start = pathData.start;
-		var end = pathData.end;
+		const start = pathData.start;
+		const end = pathData.end;
 		var nodelimitArray = [+pathData.nodelimit];
-		var nomorepaths = false;
-
+		
+		var noMorePaths = false;
 		var noTouching = false;
-
-
-		// ** animate nodes on load ** //
-		$('.path:first-child .nodes').each( function() {
-			var nodes = $('.node-dad');
-			for (var i = 0; i < nodes.length; i++) {
-				var showNode = function(num) {
-					setTimeout( function() {
-						$(nodes[num]).fadeIn(fadeDur);
-					}, num*fadeDur);
-				}(i);
-			}
-		});
-		$('.path:gt(1) .node-dad').css({display:'block'});
-
-		// ** move nodes to "thenode" //
-		$('.inner-nodes').each( function() {
-			var i = $(this).find('.thenode').index();
-			$(this).animate({
-				left: -300 * i
-			}, fadeDur);
-		});
 
 		// ** inner nodes, matching container width ** //
 		var nodedads = $('.node-dad');
@@ -151,18 +105,7 @@ block content
 			$(nodedads[i]).css({width:innerwidth + 48});
 		}
 
-		// ** fade in ui ** //
-		$('.fadein').animate({
-			opacity: 1
-		}, fadeDur*2);
-
-		// http://wordnet.princeton.edu/wordnet/man/wndb.5WN.html#sect3
-		const parts = { "n":"noun", "v":"verb", "a":"adjective", "s":"adjective", "r":"adverb" }
-
-		/* load definitions */
-		$('body').on('dblclick','.node', function(e) { loadDef(e, this.innerHTML); });
-		$('body').on('tap','.node', function(e) { loadDef(e, this.innerHTML); });
-		
+		// ** get def ** 
 		function loadDef(e, word) {
 			e.preventDefault();
 			var parent;
@@ -193,7 +136,6 @@ block content
 				success: function(result) {
 					var msg = "";
 					for (let i = 0; i < result.data.length; i++) {
-						console.log(result.data[i].synonyms)
 						msg += parts[result.data[i].pos];
 						msg += '<br>';
 						msg += result.data[i].def;
@@ -203,6 +145,10 @@ block content
 				},
 			});
 		}
+
+		/* def events */
+		$('body').on('dblclick','.node', function(e) { loadDef(e, this.innerHTML); });
+		$('body').on('tap','.node', function(e) { loadDef(e, this.innerHTML); });
 
 
 		// ** share stuff **
@@ -233,7 +179,7 @@ block content
 		// ** new path stuff **
 		function getNewPath(ev) {
 			ev.stopPropagation();
-			if (!nomorepaths) {
+			if (!noMorePaths) {
 				$('#newpath').fadeIn(fadeDur);
 				$('.plus').removeClass('rotate');
 				makeNewPath();
@@ -271,7 +217,7 @@ block content
 							if (nodelimitArray.length < 9) {
 								makeNewPath();
 							} else {
-								nomorepaths = true;
+								noMorePaths = true;
 								reportError("The algorithm is not able to generate more results based on the current parameters.");
 							}
 						} else {
@@ -386,8 +332,6 @@ block content
 		}
 
 		var switchPath = function() {
-			console.log($(this));
-			console.log($(this).index());
 			var n = false;
 			if (currentPathNum < $(this).index()) n = true;
 			currentPathNum = $(this).index();
@@ -430,7 +374,7 @@ block content
 			var grandparent = $(parent).parent();
 
 			var ldrimg = $('<img>');
-			$(ldrimg).attr("src", "/images/loader.svg")
+			$(ldrimg).attr("src", "/img/loader.svg")
 				.addClass('ldrimg')
 				.css({width:"24px", position:"absolute", left: (window.innerWidth - 60)+ "px", marginTop:"12px"});
 			$(grandparent).prepend(ldrimg);
@@ -539,5 +483,4 @@ block content
 				}
 			});
 		}
-
 		});
