@@ -158,7 +158,7 @@ block content
 
 		/* load definitions */
 		$('body').on('dblclick','.node', function(e) { loadDef(e, this.innerHTML); });
-		$('body').on('taphold','.node', function(e) { loadDef(e, this.innerHTML); });
+		$('body').on('tap','.node', function(e) { loadDef(e, this.innerHTML); });
 		
 		function loadDef(e, word) {
 			e.preventDefault();
