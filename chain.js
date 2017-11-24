@@ -3,6 +3,7 @@ var thesaurus = require("thesaurus");
 var makeChain = function(query, allSynonyms, callback) {
 	var startWord = query.start.toLowerCase();
 	var endWord = query.end.toLowerCase();
+	console.log(startWord, endWord);
 	var reg = /^[a-z]+$/;
 
 	const nodeNumberLimit = 20; // no chains more than this number of nodes

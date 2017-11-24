@@ -121,8 +121,23 @@ function makeChain(request, callback) {
 }
 
 function makeQueryString(request) {
-	var string = request.query.s + request.query.nl + request.query.e + request.query.sl;
-	string = string.toLowerCase().replace(/ /g, "");
+	let startWord = request.query.s;
+	let endWord = request.query.e;
+	if (!startWord) {
+		let words = endWord.split(" ");
+		if (words[0].length > 0 && words[1].length > 0) {
+			startWord = words[0];
+			endWord = words[1];
+		}
+	} else if (!endWord) {
+		let words = startWord.split(" ");
+		if (words[0].length > 0 && words[1].length > 0) {
+			startWord = words[0];
+			endWord = words[1];
+		}
+	}
+	var string = startWord + request.query.nl + endWord + request.query.sl;
+	string = string.toLowerCase().replace(/ /g, ""); // remove spaces 
 	return string;
 }
 

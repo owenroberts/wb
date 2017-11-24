@@ -186,6 +186,16 @@ header {
 		padding:1.25em 1em 1em 1em;
 		max-height:50%;
 		overflow-y: scroll;
+		&::-webkit-scrollbar {
+   		 	width: 0.25em;
+		}
+		&::-webkit-scrollbar-thumb {
+		  background-color: $blue;
+		  border-radius:0.5em;
+		}
+		&::-webkit-scrollbar-corner {
+			
+		}
 		.word { text-transform: capitalize; }
 		.pos {
 			margin-bottom:1em;

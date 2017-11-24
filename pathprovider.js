@@ -55,7 +55,7 @@ PathProvider.prototype.addSearchTime = function(queryString, callback) {
 	this.getCollection( function(err, path_collection) {
 		if (err) callback(err);
 		else {
-			var seach = {loc:"tk", date: new Date()};
+			var search = {loc:"tk", date: new Date()};
 			path_collection.update(
 				{ queryString:queryString },
 				{ $push: { searches: search } }
@@ -66,7 +66,7 @@ PathProvider.prototype.addSearchTime = function(queryString, callback) {
 
 PathProvider.prototype.getCollection = function(callback) {
   this.db.collection('paths', function(err, book_collection) {
-    if(err) callback(err);
+    if (err) callback(err);
     else callback(null, book_collection);
   });
 };

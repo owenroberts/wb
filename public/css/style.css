@@ -230,6 +230,11 @@ header {
     padding: 1.25em 1em 1em 1em;
     max-height: 50%;
     overflow-y: scroll; }
+    #error .msg::-webkit-scrollbar, .definition .msg::-webkit-scrollbar, .sharemenu .msg::-webkit-scrollbar {
+      width: 0.25em; }
+    #error .msg::-webkit-scrollbar-thumb, .definition .msg::-webkit-scrollbar-thumb, .sharemenu .msg::-webkit-scrollbar-thumb {
+      background-color: #6a75ff;
+      border-radius: 0.5em; }
     #error .msg .word, .definition .msg .word, .sharemenu .msg .word {
       text-transform: capitalize; }
     #error .msg .pos, .definition .msg .pos, .sharemenu .msg .pos {
@@ -432,8 +437,8 @@ select {
       color: black;
       -webkit-user-select: none;
       user-select: none;
-      -webkit-tap-highlight-color: transparent;
-      tap-highlight-color: transparent;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+      tap-highlight-color: rgba(0, 0, 0, 0);
       -webkit-touch-callout: none !important;
       touch-callout: none !important; }
     .node-dad:first-child:hover, .node-dad:last-child:hover {
