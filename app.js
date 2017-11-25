@@ -37,12 +37,13 @@ app.get('/', function(req, res) {
 });
 
 app.get('/search', function(req, res) {
-	loadChain(req, function(result) {
+	/* loadChain for production, makeChain to skip db/cache */
+	makeChain(req, function(result) {
 		if (result.error) {
 			res.redirect(url.format({
 				pathname: req.get('Referrer').split("?")[0],
 				query: {
-					"err":result.error
+					"err": result.error
 				}
 			}));
 		} else {
@@ -112,8 +113,11 @@ function makeChain(request, callback) {
 		searches: [{loc:"tk", date: new Date()}]
 	};
 	chain.makeChain(query, allsynonyms, function(err, data) {
+		//console.log(data);
 		if (err) query.error = err;
-		else query.path = data.chain;
+		else query.path = data.chain; 
+		/* this is removing all the extra data for some reason? 
+			should combine search data with weighting data? */
 		pathprovider.save(query, function(err) { console.log(err); });
 		cache.set(query.queryString, query);
 		callback(query);

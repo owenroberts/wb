@@ -52,16 +52,17 @@ block content
 				div.nodes
 					div.node-dad=data.start
 					each node, index in data.path
+						p=index
 						div.node-dad
 							div.inner-nodes
-								if node.alternates
-									for alt in node.alternates
-										if alt == node.node
+								if node.synonyms
+									for alt in node.synonyms
+										if alt == node.word
 											div.node.thenode=alt
 										else
 											div.node.alternate=alt
 								else
-									div.node.thenode=node.node
+									div.node.thenode=node.word
 
 					div.node-dad=data.end
 								
