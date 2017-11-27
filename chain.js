@@ -1,22 +1,23 @@
-var thesaurus = require('thesaurus');
+const thesaurus = require('thesaurus');
+const _ = require('lodash');
 
 function makeChain(query, allSynonyms, callback) {
-	var startWord = query.start.toLowerCase();
-	var endWord = query.end.toLowerCase();
-	var reg = /^[a-z]+$/;
+	let startWord = query.start.toLowerCase();
+	let endWord = query.end.toLowerCase();
+	let reg = /^[a-z]+$/; /* eliminate words with non-alpha chars */
 
 	const nodeNumberLimit = 20; // no chains more than this number of nodes
-	var currentNodeNumber = query.nodelimit; // try to get under this first
-	var foundChain = false;
+	let currentNodeNumber = query.nodelimit; // try to get under this first
+	let foundChain = false;
 	const synonymLevel = query.synonymlevel;
 
-	var data = {};
-	var attemptedChains = [];
-	var attemptCount = 0;
+	let data = {};
+	let attemptedChains = [];
+	let attemptCount = 0;
 
 	function getSynonyms(word, allSynsCopy) {
-		var tempSyns = thesaurus.find(word);
-		var synonyms = [];
+		let tempSyns = thesaurus.find(word);
+		let synonyms = [];
 		for (let i = 0; i < tempSyns.length; i++) {
 			let syn = tempSyns[i];
 			if (reg.test(syn)
@@ -33,11 +34,12 @@ function makeChain(query, allSynonyms, callback) {
 	}
 
 	function buildChain(startChain, endChain, allSynsCopy) {
-		var startIndex = startChain.length-1;
-		var endIndex = endChain.length-1;
+		let startIndex = startChain.length - 1;
+		let endIndex = endChain.length - 1;
 		allSynsCopy.push(startChain[startIndex].word);
 		allSynsCopy.push(endChain[endIndex].word);
-		var allSynsCopyCopy = allSynsCopy.slice(0);
+		let allSynsCopyCopy =  _.cloneDeep(allSynsCopy); // allSynsCopy.slice(0);
+		//console.log(allSynsCopyCopy);
 		
 		if (startChain[startIndex].synonyms === undefined) {
 			startChain[startIndex].synonyms = getSynonyms(startChain[startIndex].word, allSynsCopyCopy);
@@ -54,11 +56,12 @@ function makeChain(query, allSynonyms, callback) {
 		}
 
 		for (let i = 0; i < startChain[startIndex].synonyms.length; i++) {
-			let startCopy = startChain.slice(0);
+			let startCopy =  _.cloneDeep(startChain); // startChain.slice(0);
 			let startSyn = startChain[startIndex].synonyms[i];
 			startCopy.push(startSyn);
 			for (let j = 0; j < endChain[endIndex].synonyms.length; j++) {
 				let endSyn = endChain[endIndex].synonyms[j];
+				attemptCount++; /* wrong place for attemp count? */
 				if (startSyn.word == endSyn.word && !foundChain) {
 					foundChain = true;
 					for (let h = endChain.length-1; h >= 0; h--) {
@@ -66,15 +69,12 @@ function makeChain(query, allSynonyms, callback) {
 					}
 					sendData(startCopy);
 				} else if (startChain.length + endChain.length < currentNodeNumber - 1 && !foundChain) {
-					let endCopy = endChain.slice(0);
+					let endCopy = _.cloneDeep(endChain); //endChain.slice(0);
 					endCopy.push(endSyn);
-					buildChain(startCopy, endCopy, allSynsCopy.slice(0));
-				} else if (startChain.length + endChain.length >= currentNodeNumber && !foundChain) {
-					attemptCount++;
+					buildChain(startCopy, endCopy, allSynsCopyCopy);
 				}
 			}
 		}
-		
 	}
 
 	function sendData(chain) {
@@ -87,7 +87,7 @@ function makeChain(query, allSynonyms, callback) {
 		data.nodelimit = currentNodeNumber;
 		data.synonymlevel = synonymLevel;
 		data.weight = weight;
-		data.attempts = attemptedChains;
+		//data.attempts = attemptedChains; // for data viz
 		data.count = attemptCount;
 		callback(null, data);
 	}
@@ -124,7 +124,9 @@ function makeChain(query, allSynonyms, callback) {
 			[{word:endWord, weight:0}], 
 			allSynonyms.slice(0)
 		);
-		getShortestChain();
+		getShortestChain(); 
+		/* should be called by build Chain at ending condition.... 
+			but this didn't work for some reason? */
 	}
 }
 
