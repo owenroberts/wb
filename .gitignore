@@ -5,5 +5,3 @@ node_modules/*
 syn-app/*
 npm-debug.log
 .sass-cache/
-synopath
-synopath.pub
