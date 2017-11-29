@@ -11,8 +11,7 @@ function makeChain(query, allSynonyms, callback) {
 	let foundChain = false;
 	const synonymLevel = query.synonymlevel;
 
-	let data = {};
-	let attemptedChains = [];
+	// let attemptedChains = []; // for data viz
 	let attemptCount = 0;
 
 	function getSynonyms(word, allSynsCopy) {
@@ -38,8 +37,7 @@ function makeChain(query, allSynonyms, callback) {
 		let endIndex = endChain.length - 1;
 		allSynsCopy.push(startChain[startIndex].word);
 		allSynsCopy.push(endChain[endIndex].word);
-		let allSynsCopyCopy =  _.cloneDeep(allSynsCopy); // allSynsCopy.slice(0);
-		//console.log(allSynsCopyCopy);
+		let allSynsCopyCopy = allSynsCopy.slice(0);
 		
 		if (startChain[startIndex].synonyms === undefined) {
 			startChain[startIndex].synonyms = getSynonyms(startChain[startIndex].word, allSynsCopyCopy);
@@ -56,7 +54,7 @@ function makeChain(query, allSynonyms, callback) {
 		}
 
 		for (let i = 0; i < startChain[startIndex].synonyms.length; i++) {
-			let startCopy =  _.cloneDeep(startChain); // startChain.slice(0);
+			let startCopy =  startChain.slice(0);
 			let startSyn = startChain[startIndex].synonyms[i];
 			startCopy.push(startSyn);
 			for (let j = 0; j < endChain[endIndex].synonyms.length; j++) {
@@ -69,7 +67,7 @@ function makeChain(query, allSynonyms, callback) {
 					}
 					sendData(startCopy);
 				} else if (startChain.length + endChain.length < currentNodeNumber - 1 && !foundChain) {
-					let endCopy = _.cloneDeep(endChain); //endChain.slice(0);
+					let endCopy = endChain.slice(0);
 					endCopy.push(endSyn);
 					buildChain(startCopy, endCopy, allSynsCopyCopy);
 				}
@@ -78,6 +76,7 @@ function makeChain(query, allSynonyms, callback) {
 	}
 
 	function sendData(chain) {
+		let data = {};
 		let weight = 0;
 		for (let i = 0; i < chain.length; i++) {
 			weight += chain[i].weight;
