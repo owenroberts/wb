@@ -112,10 +112,10 @@ function makeChain(request, callback) {
 		synonymlevel: request.query.sl,
 		searches: [{loc:"tk", date: new Date()}]
 	};
-	chain.makeChain(query, allsynonyms, function(err, data) {
+	chain.makeChain(query, allsynonyms, function(err, chain) {
 		//console.log(data);
 		if (err) query.error = err;
-		else query.path = data.chain; 
+		else query.chain = chain; 
 		/* this is removing all the extra data for some reason? 
 			should combine search data with weighting data? */
 		pathprovider.save(query, function(err) { console.log(err); });

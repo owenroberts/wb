@@ -1,18 +1,14 @@
 const thesaurus = require('thesaurus');
-const _ = require('lodash');
 
 function makeChain(query, allSynonyms, callback) {
-	let startWord = query.start.toLowerCase();
-	let endWord = query.end.toLowerCase();
-	let reg = /^[a-z]+$/; /* eliminate words with non-alpha chars */
+	const startWord = query.start.toLowerCase();
+	const endWord = query.end.toLowerCase();
+	const reg = /^[a-z]+$/; /* eliminate words with non-alpha chars */
 
 	const nodeNumberLimit = 20; // no chains more than this number of nodes
+	const synonymLevel = query.synonymlevel;
 	let currentNodeNumber = query.nodelimit; // try to get under this first
 	let foundChain = false;
-	const synonymLevel = query.synonymlevel;
-
-	// let attemptedChains = []; // for data viz
-	let attemptCount = 0;
 
 	function getSynonyms(word, allSynsCopy) {
 		let tempSyns = thesaurus.find(word);
@@ -24,33 +20,32 @@ function makeChain(query, allSynonyms, callback) {
 				&& allSynsCopy.indexOf(syn+"s") == -1
 				&& synonyms.length < 10) {
 				synonyms.push({
-					word: syn,
-					weight: i + 1
-				});
+					word: syn
+				}); // tried making this just array but it hurts performance ???? 
 			}
 		}
 		return synonyms;
 	}
 
-	function buildChain(startChain, endChain, allSynsCopy) {
+	function buildChain(startChain, endChain, allSyns) {
 		let startIndex = startChain.length - 1;
 		let endIndex = endChain.length - 1;
+		let allSynsCopy = allSyns.slice(0);
 		allSynsCopy.push(startChain[startIndex].word);
 		allSynsCopy.push(endChain[endIndex].word);
-		let allSynsCopyCopy = allSynsCopy.slice(0);
+		
 		
 		if (startChain[startIndex].synonyms === undefined) {
-			startChain[startIndex].synonyms = getSynonyms(startChain[startIndex].word, allSynsCopyCopy);
-			for (let i = 0; i < startChain[startIndex].synonyms.length; i++) {
-				allSynsCopy.push( startChain[startIndex].synonyms[i].word );
-			}
+			startChain[startIndex].synonyms = getSynonyms(startChain[startIndex].word, allSynsCopy);
 		}
-
 		if (endChain[endIndex].synonyms === undefined) {
-			endChain[endIndex].synonyms = getSynonyms(endChain[endIndex].word, allSynsCopyCopy);
-			for (let i = 0; i < endChain[endIndex].synonyms.length; i++) {
-				allSynsCopy.push( endChain[endIndex].synonyms[i].word );
-			}
+			endChain[endIndex].synonyms = getSynonyms(endChain[endIndex].word, allSynsCopy);
+		}
+		for (let i = 0; i < startChain[startIndex].synonyms.length; i++) {
+			allSynsCopy.push( startChain[startIndex].synonyms[i].word );
+		}
+		for (let i = 0; i < endChain[endIndex].synonyms.length; i++) {
+			allSynsCopy.push( endChain[endIndex].synonyms[i].word );
 		}
 
 		for (let i = 0; i < startChain[startIndex].synonyms.length; i++) {
@@ -59,36 +54,20 @@ function makeChain(query, allSynonyms, callback) {
 			startCopy.push(startSyn);
 			for (let j = 0; j < endChain[endIndex].synonyms.length; j++) {
 				let endSyn = endChain[endIndex].synonyms[j];
-				attemptCount++; /* wrong place for attemp count? */
+				// attemptCount++;
 				if (startSyn.word == endSyn.word && !foundChain) {
 					foundChain = true;
 					for (let h = endChain.length-1; h >= 0; h--) {
 						startCopy.push( endChain[h] );
 					}
-					sendData(startCopy);
+					callback(null, startCopy);
 				} else if (startChain.length + endChain.length < currentNodeNumber - 1 && !foundChain) {
 					let endCopy = endChain.slice(0);
 					endCopy.push(endSyn);
-					buildChain(startCopy, endCopy, allSynsCopyCopy);
+					buildChain(startCopy, endCopy, allSynsCopy);
 				}
 			}
 		}
-	}
-
-	function sendData(chain) {
-		let data = {};
-		let weight = 0;
-		for (let i = 0; i < chain.length; i++) {
-			weight += chain[i].weight;
-		}
-		data.avgWeight = weight/chain.length;
-		data.chain = chain;
-		data.nodelimit = currentNodeNumber;
-		data.synonymlevel = synonymLevel;
-		data.weight = weight;
-		//data.attempts = attemptedChains; // for data viz
-		data.count = attemptCount;
-		callback(null, data);
 	}
 
 	function getShortestChain() {
@@ -96,8 +75,8 @@ function makeChain(query, allSynonyms, callback) {
 			currentNodeNumber++;
 			if (!foundChain) {
 				buildChain(
-					[{word:startWord, weight:0}], 
-					[{word:endWord, weight:0}], 
+					[{word:startWord}], 
+					[{word:endWord}], 
 					allSynonyms.slice(0)
 				);
 				getShortestChain();
@@ -119,8 +98,8 @@ function makeChain(query, allSynonyms, callback) {
 		callback("The second word was not found.");
 	} else {
 		buildChain(
-			[{word:startWord, weight:0}], 
-			[{word:endWord, weight:0}], 
+			[{word:startWord}], 
+			[{word:endWord}], 
 			allSynonyms.slice(0)
 		);
 		getShortestChain(); 

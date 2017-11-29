@@ -3,19 +3,19 @@ $(document).ready( function() {
 	const debug = false;
 	const fadeDur = debug ? 10 : 500;
 
-	if (pathData.error) 
-		reportError(pathData.error);
+	if (data.error) 
+		reportError(data.error);
 
 	var w = window.innerWidth;
 	var pathNum = 0;
 	var qstrings = [];
 	var currentPathNum = pathNum;
 
-	qstrings.push(pathData.queryString);
-	if (pathData.error) reportError(pathData.error);
-	const start = pathData.start;
-	const end = pathData.end;
-	var nodelimitArray = [+pathData.nodelimit];
+	qstrings.push(data.queryString);
+	if (data.error) reportError(data.error);
+	const start = data.start;
+	const end = data.end;
+	var nodelimitArray = [+data.nodelimit];
 	
 	var noMorePaths = false;
 	var noTouching = false;
@@ -337,7 +337,7 @@ $(document).ready( function() {
 		var allsynonyms = [start];
 
 		for (var i = 0; i < pathIndex; i++) {
-			allsynonyms = allsynonyms.concat(pathData.path[i].alternates);
+			allsynonyms = allsynonyms.concat(data.chain[i].alternates);
 		}
 
 		$.ajax({
@@ -353,14 +353,14 @@ $(document).ready( function() {
 			},
 			success: function(obj) {
 				if (obj.errormsg) {
-					var err = 'We couldn\'t find a path between "' + alt + '" and "' + end + '".';
+					var err = 'We couldn\'t find a chain between "' + alt + '" and "' + end + '".';
 					var option = "Try swiping back to the previous synonym, or forward to the next.";
 					reportError(err, option);
 					$('.node:contains("'+alt+'")').addClass('mod-error');
 					noTouching = false;
 					$('.ldrimg').remove();
 				} else {
-					var data = obj.data;
+					var new_data = obj.data;
 					$(nodes).animate({
 						opacity: 1
 					}, fadeDur/2);
@@ -377,7 +377,7 @@ $(document).ready( function() {
 						});
 					}
 
-					for (var i = 0; i < data.path.length; i ++) {
+					for (var i = 0; i < new_data.chain.length; i ++) {
 						var newnodedad = $('<div>')
 							.addClass('node-dad');
 						
@@ -386,15 +386,15 @@ $(document).ready( function() {
 
 						var newnode = $('<div>')
 							.addClass('node')
-							.text(data.path[i].node);
+							.text(data.chain[i].node);
 
 						inners.append(newnode);
-						for (var h = 0; h < data.path[i].alternates.length; h++) {
-							if (data.path[i].alternates[h] != data.path[i].node) {
+						for (var h = 0; h < new_data.chain[i].alternates.length; h++) {
+							if (new_data.chain[i].alternates[h] != new_data.chain[i].node) {
 								var newsynnode = $('<div>')
 									.addClass('node')
 									.addClass('alternate')
-									.text(data.path[i].alternates[h]);
+									.text(new_data.chain[i].alternates[h]);
 									inners.append(newsynnode);
 							}
 						}
