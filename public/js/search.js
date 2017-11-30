@@ -1,82 +1,82 @@
 $(document).ready( function() {
+	
 	// ** blogal variables ** //
-	const debug = false;
-	const fadeDur = debug ? 10 : 500;
+	window.debug = false;
+	window.fadeDur = debug ? 10 : 500;
+	window.noMorePaths = false;
+	window.noTouching = false;
+
+	function reportError(err, option) {
+		$('#error').fadeIn();
+		$('#error .msg').scrollTop(0);
+		$('.sorry').html(err);
+		$('.errormsg').html(option);
+		$('body').css({overflow:"hidden"});
+		$('#error .ok').on('click', function() {
+			$('#error').fadeOut();
+			$('body').css({overflow:"auto"});
+		});
+		$('#error').on('click', function() {
+			$('#error').fadeOut();
+			$('body').css({overflow:"auto"});
+		});
+	}
 
 	if (data.error) 
 		reportError(data.error);
 
-	var w = window.innerWidth;
-	var pathNum = 0;
-	var qstrings = [];
-	var currentPathNum = pathNum;
-
+	let w = window.innerWidth;
+	let chainCount = 0;
+	let qstrings = [];
 	qstrings.push(data.queryString);
-	if (data.error) reportError(data.error);
+	let currentChainIndex = chainCount;
+
+	
 	const start = data.start;
 	const end = data.end;
-	var nodelimitArray = [+data.nodelimit];
+	let nodelimitArray = [+data.nodelimit];
 	
-	var noMorePaths = false;
-	var noTouching = false;
+	
 
 	// ** inner nodes, matching container width ** //
-	var nodedads = $('.node-dad');
+	const nodedads = $('.node-wrap');
 	for (var i = 1; i < nodedads.length - 1; i++) {
-		var inner = $(this).find('.inner-nodes');
-		var innerwidth = 0;
-		var nodes = $(inner).find('.node');
+		const dad = nodedads[i];
+		const inner = $(dad).find('.inner-nodes');
+		let innerWidth = 0;
+		const nodes = $(inner).find('.node');
 		for (var h = 0; h < nodes.length; h++) {
-			innerwidth += $(nodes[h]).innerWidth();
+			innerWidth += $(nodes[h]).innerWidth();
 		}
-		$(inner).css({width:innerwidth});
-		$(nodedads[i]).css({width:innerwidth + 48});
+		$(inner).css({width:innerWidth});
+		$(dad).css({width:innerWidth + 48});
 	}
 
-	// ** get def ** 
-	function loadDef(e, word) {
-		e.preventDefault();
-		var parent;
-		var synonym;
-		if (word == end) {
-			parent = e.currentTarget;
-		} else if (word == start) {
-			synonym = null;
-		} else {
-			parent = e.currentTarget.parentNode.parentNode;
-		}
-		var i = $(parent).index();			
-		if (i == 1) {
-			synonym = start;
-		} else {
-			var prev = parent.previousSibling;
-			synonym = $(prev).find('.thenode').text();
-		}
-		
-		$.ajax({
-			url: '/def',
-			type: 'get',
-			dataType:'json',
-			data: {
-				word: word,
-				synonym: synonym
-			},
-			success: function(result) {
-				var msg = "";
-				for (let i = 0; i < result.data.length; i++) {
-					msg += parts[result.data[i].pos];
-					msg += '<br>';
-					msg += result.data[i].def;
-					msg += '<br><br>';
-				}
-				reportError(word, msg);
-			},
-		});
-	}
+	// ** fade in ui ** //
+	$('.fadein').animate({
+		opacity: 1
+	}, fadeDur*2);
 
-	/* def events */
-	$('body').on('dblclick','.node', function(e) { loadDef(e, this.innerHTML); });
-	$('node').doubleTap(function(e) { loadDef(e, this.innerHTML); });
+	// ** move nodes to "thenode" //
+	$('.inner-nodes').each( function() {
+		var i = $(this).find('.thenode').index();
+		$(this).animate({
+			left: -300 * i
+		}, fadeDur);
+	});
+
+	// ** animate nodes on load ** //
+	$('.path:first-child .nodes').each( function() {
+		for (var i = 0; i < nodedads.length; i++) {
+			var showNode = function(num) {
+				setTimeout( function() {
+					$(nodedads[num]).fadeIn(fadeDur);
+				}, num*fadeDur);
+			}(i);
+		}
+	});
+	$('.path:gt(1) .node-dad').css({display:'block'});
+
 
 	// ** share stuff **
 	$('.share').on('click', function() {
@@ -88,7 +88,7 @@ $(document).ready( function() {
 	$('.sh').on('click', function() {
 		var wh = this.className.split(" ")[1];
 		var b = "SynoMapp: " + start + " ... " + end;
-		var l = location.href.split("?")[0] + "?s=" + start + "&e=" + end + "&nl=" + qstrings[pathNum].split(start)[1].split(end)[0] + "&sl=" + qstrings[pathNum].split(start)[1].split(end)[1];
+		var l = location.href.split("?")[0] + "?s=" + start + "&e=" + end + "&nl=" + qstrings[chainCount].split(start)[1].split(end)[0] + "&sl=" + qstrings[chainCount].split(start)[1].split(end)[1];
 		var c = encodeURIComponent(l);
 		switch (wh) {
 			case "email":
@@ -118,7 +118,7 @@ $(document).ready( function() {
 	// ** plus button for new paths ** //
 	function makeNewPath() {
 		var nodelimit;
-		if (pathNum < 10) {
+		if (chainCount < 10) {
 			do {
 				nodelimit = getRandomInt(2,20);
 			} while (nodelimitArray.indexOf(nodelimit) != -1);
@@ -150,30 +150,30 @@ $(document).ready( function() {
 					} else {
 						var data = obj.data;
 						$('.plus').addClass('rotate');
-						currentPathNum++;
-						pathNum++;
+						currentChainIndex++;
+						chainCount++;
 						var newdot = $('<div>')
-							.attr({id:"p-"+currentPathNum})
+							.attr({id:"p-"+currentChainIndex})
 							.addClass('path-dot');
 						$('.dots').append(newdot);
 						$('.path-dot').css({color:'lightgray'});
 						newdot.css({color:'black'});
 
 						var newpath = $('<div>')
-							.attr({id:"path-"+currentPathNum})
+							.attr({id:"path-"+currentChainIndex})
 							.addClass('path')
-							.css({left:currentPathNum*w});
+							.css({left:currentChainIndex*w});
 						var newnodes = $('<div>')
 							.addClass('nodes');
 						newpath.append(newnodes);
 						var startnodedad = $('<div>')
-							.addClass('node-dad')
+							.addClass('node-wrap')
 							.text(start);
 						newnodes.append(startnodedad);
 						for (var i = 0; i < data.path.length; i++) {
 							var node = data.path[i];
 							var anewnodedad = $('<div>')
-								.addClass('node-dad');
+								.addClass('node-wrap');
 							var innerwidth = 0;
 							newnodes.append(anewnodedad);
 							var innernodes = $('<div>')
@@ -199,12 +199,12 @@ $(document).ready( function() {
 							anewnodedad.css({width:innerwidth + 48});
 						}
 						var endnodedad = $('<div>')
-							.addClass('node-dad')
+							.addClass('node-wrap')
 							.text(end);
 						newnodes.append(endnodedad);
 						$('#paths').append(newpath);
 						newpath.find('.nodes').each( function() {
-							var nodes = $(this).find('.node-dad');
+							var nodes = $(this).find('.node-wrap');
 							for (var i = 0; i < nodes.length; i++) {
 								var showNode = function(num) {
 									setTimeout( function() {
@@ -225,7 +225,7 @@ $(document).ready( function() {
 						
 						$('.path-dots').slideDown(fadeDur, function() {
 							$('#paths').animate({
-								left: -currentPathNum * w
+								left: -currentChainIndex * w
 							}, fadeDur);
 						});
 
@@ -244,10 +244,10 @@ $(document).ready( function() {
 	// ** animate path switching  ** //
 	var setPathDots = function(next) {
 		$('.path-dot').css({color:'lightgray'});
-		$('.path-dot:nth-child('+(currentPathNum+1)+')').css({color:'black'});
+		$('.path-dot:nth-child('+(currentChainIndex+1)+')').css({color:'black'});
 		if (next) setZIndex();
 		$('#paths').animate({
-			left: -w * currentPathNum
+			left: -w * currentChainIndex
 		}, fadeDur, function() {
 			if (!next) setZIndex();
 		});	
@@ -255,26 +255,26 @@ $(document).ready( function() {
 	var setZIndex = function() {
 		var paths = $('#paths').children();
 		paths.css({zIndex:1});
-		$(paths[currentPathNum]).css({zIndex:9});
+		$(paths[currentChainIndex]).css({zIndex:9});
 	}
 
 	var switchPath = function() {
 		var n = false;
-		if (currentPathNum < $(this).index()) n = true;
-		currentPathNum = $(this).index();
+		if (currentChainIndex < $(this).index()) n = true;
+		currentChainIndex = $(this).index();
 		setPathDots(n);
 	};
 
 	var nextPath = function() {
-		if (currentPathNum < pathNum) {
-			currentPathNum++;
+		if (currentChainIndex < chainCount) {
+			currentChainIndex++;
 			setPathDots(true);
 		}
 	};
 
 	var prevPath = function() {
-		if (currentPathNum > 0) {
-			currentPathNum--;
+		if (currentChainIndex > 0) {
+			currentChainIndex--;
 			setPathDots(false);
 		}
 	};
@@ -284,130 +284,4 @@ $(document).ready( function() {
 	$('.rightarrow').on('click', nextPath);
 	$( ".path-dots" ).on( "swiperight", prevPath);
 	$('.leftarrow').on('click', prevPath);
-
-	// ** swipe left on nodes ** //
-	//-  taking about "modified" bool here, not sure what it should do
-	$( 'body' ).on( "swipeleft", ".node", function() {
-		if (!noTouching) animateNodes(this, 1, "-=300");	
-	});
-	$( 'body' ).on( "swiperight", ".node", function() {
-		if (!noTouching) animateNodes(this, 0, "+=300");	
-	});
-
-	function animateNodes(elem, dir, animProp) {
-		noTouching = true;
-
-		var parent = $(elem).parent();
-		var grandparent = $(parent).parent();
-
-		var ldrimg = $('<img>');
-		$(ldrimg).attr("src", "/img/loader.svg")
-			.addClass('ldrimg')
-			.css({width:"24px", position:"absolute", left: (window.innerWidth - 60)+ "px", marginTop:"12px"});
-		$(grandparent).prepend(ldrimg);
-		
-		var alt = dir ? $(elem).next() : $(elem).prev();
-		if (alt[0]) {
-			$(elem).animate({ opacity: 0 }, fadeDur);
-			$(alt).animate({  opacity: 1 }, fadeDur);
-			$(parent).animate({ left: animProp }, fadeDur);
-			modifyChain($(grandparent), $(alt)[0].innerText);
-		} else {
-			$(elem).addClass('animated shake');
-			setTimeout(function() {
-				$(elem).removeClass('animated-half shake');
-			}, fadeDur);
-			noTouching = false;
-			$('.ldrimg').remove();
-		}	
-	}	
-	
-	// ** modify chain ** //
-	function modifyChain(elem, alt) {
-
-		var pathIndex = $(elem).index();
-		var pathParent = $(elem).parent().parent().attr('id');
-		var nodes = $('#' + pathParent + ' .node-dad:gt('+elem.index()+')');
-		var node = $(elem).find('.thenode').text();
-
-		$(nodes).animate({
-			opacity: 0.3
-		}, fadeDur/2);
-
-		var allsynonyms = [start];
-
-		for (var i = 0; i < pathIndex; i++) {
-			allsynonyms = allsynonyms.concat(data.chain[i].alternates);
-		}
-
-		$.ajax({
-			url: '/search/modified',
-			type: 'get',
-			dataType:'json',
-			data: {
-				s: alt,
-				e: end,
-				sl: 10,
-				nl: 10 - elem.index(),
-				as: allsynonyms
-			},
-			success: function(obj) {
-				if (obj.errormsg) {
-					var err = 'We couldn\'t find a chain between "' + alt + '" and "' + end + '".';
-					var option = "Try swiping back to the previous synonym, or forward to the next.";
-					reportError(err, option);
-					$('.node:contains("'+alt+'")').addClass('mod-error');
-					noTouching = false;
-					$('.ldrimg').remove();
-				} else {
-					var new_data = obj.data;
-					$(nodes).animate({
-						opacity: 1
-					}, fadeDur/2);
-
-					var waitTime = nodes.length * fadeDur/2;
-					setTimeout(function() {
-							noTouching = false;
-					}, waitTime + fadeDur);
-
-					for (var i = 0; i < nodes.length - 1; i++) {
-						var n = i;
-						$(nodes[i]).fadeOut((nodes.length - i) * fadeDur/2, function(n) {
-							this.remove();
-						});
-					}
-
-					for (var i = 0; i < new_data.chain.length; i ++) {
-						var newnodedad = $('<div>')
-							.addClass('node-dad');
-						
-						var inners = $('<div>')
-							.addClass('inner-nodes');
-
-						var newnode = $('<div>')
-							.addClass('node')
-							.text(data.chain[i].node);
-
-						inners.append(newnode);
-						for (var h = 0; h < new_data.chain[i].alternates.length; h++) {
-							if (new_data.chain[i].alternates[h] != new_data.chain[i].node) {
-								var newsynnode = $('<div>')
-									.addClass('node')
-									.addClass('alternate')
-									.text(new_data.chain[i].alternates[h]);
-									inners.append(newsynnode);
-							}
-						}
-						newnodedad.append(inners);
-						newnodedad.insertBefore('#' + pathParent + ' .node-dad:last-child()');
-						newnodedad.delay(i * fadeDur/2 + waitTime + fadeDur/2).fadeIn(fadeDur);
-					}
-					setTimeout(function() {
-						$('.ldrimg').remove();
-					}, waitTime);
-				}
-				
-			}
-		});
-	}
 });

@@ -52,10 +52,11 @@ block content
 				div.nodes
 					each node, index in data.chain
 						if index == 0 || index == data.chain.length - 1
-							div.node-dad=node.word
+							div.node-wrap=node.word
 						else 
+							p= index + " " + (data.chain.length - 2)
 							- var dad = data.chain[index-1]
-							div.node-dad
+							div.node-wrap
 								div.inner-nodes
 									if dad.synonyms
 										for alt in dad.synonyms
@@ -66,12 +67,10 @@ block content
 									else
 										div.node.thenode=node.word
 
-								
-
-									
-	// javascript // 
 	script(src="/js/search_helpers.js", type="text/javascript")
 	script(type="text/javascript").
 		window.data = !{JSON.stringify(data)};
 		console.log(data)
 	script(src="/js/search.js" type='text/javascript')
+	script(src="/js/def.js" type='text/javascript')
+	script(src="/js/mod.js" type='text/javascript')
