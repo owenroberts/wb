@@ -1,12 +1,12 @@
 $(document).ready( function() {
 	
 	// ** blogal variables ** //
-	window.debug = false;
+	window.debug = true;
 	window.fadeDur = debug ? 10 : 500;
 	window.noMorePaths = false;
 	window.noTouching = false;
 
-	function reportError(err, option) {
+	window.reportError = function(err, option) {
 		$('#error').fadeIn();
 		$('#error .msg').scrollTop(0);
 		$('.sorry').html(err);
@@ -31,9 +31,6 @@ $(document).ready( function() {
 	qstrings.push(data.queryString);
 	let currentChainIndex = chainCount;
 
-	
-	const start = data.start;
-	const end = data.end;
 	let nodelimitArray = [+data.nodelimit];
 	
 	
@@ -87,8 +84,8 @@ $(document).ready( function() {
 	});
 	$('.sh').on('click', function() {
 		var wh = this.className.split(" ")[1];
-		var b = "SynoMapp: " + start + " ... " + end;
-		var l = location.href.split("?")[0] + "?s=" + start + "&e=" + end + "&nl=" + qstrings[chainCount].split(start)[1].split(end)[0] + "&sl=" + qstrings[chainCount].split(start)[1].split(end)[1];
+		var b = "SynoMapp: " + data.start + " ... " + data.end;
+		var l = location.href.split("?")[0] + "?s=" + data.start + "&e=" + data.end + "&nl=" + qstrings[chainCount].split(data.start)[1].split(data.end)[0] + "&sl=" + qstrings[chainCount].split(data.start)[1].split(data.end)[1];
 		var c = encodeURIComponent(l);
 		switch (wh) {
 			case "email":
@@ -126,15 +123,15 @@ $(document).ready( function() {
 			nodelimitArray.push(nodelimit);
 			
 			var synonymlevel = 10;  // should synonym level be randomized?
-			qstrings.push(start+nodelimit+end+synonymlevel);
+			qstrings.push(data.start + nodelimit + data.end + synonymlevel);
 
 			$.ajax({
 				url: '/search/add',
 				type: 'get',
 				dataType:'json',
 				data: {
-					s: start,
-					e: end,
+					s: data.start,
+					e: data.end,
 					sl: synonymlevel,
 					nl: nodelimit
 				},
@@ -168,7 +165,7 @@ $(document).ready( function() {
 						newpath.append(newnodes);
 						var startnodedad = $('<div>')
 							.addClass('node-wrap')
-							.text(start);
+							.text(data.start);
 						newnodes.append(startnodedad);
 						for (var i = 0; i < data.path.length; i++) {
 							var node = data.path[i];
@@ -200,7 +197,7 @@ $(document).ready( function() {
 						}
 						var endnodedad = $('<div>')
 							.addClass('node-wrap')
-							.text(end);
+							.text(data.end);
 						newnodes.append(endnodedad);
 						$('#paths').append(newpath);
 						newpath.find('.nodes').each( function() {

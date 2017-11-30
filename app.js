@@ -63,7 +63,8 @@ app.get('/search/add', function(req, res) {
 });
 
 app.get('/search/modified', function(req, res) {
-	// save sub chains here
+	// save sub chains here 
+	// or don't save subchains bc they might have synonyms problems .... 
 	makeChain(req, function(result) {
 		if (result.error) res.json({ errormsg: result.error });
 		else res.json({ data: result });

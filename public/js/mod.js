@@ -3,13 +3,13 @@ $(document).ready(function() {
 	// ** swipe left on nodes ** //
 	//-  taking about "modified" bool here, not sure what it should do
 	$( 'body' ).on( "swipeleft", ".node", function() {
-		if (!noTouching) animateNodes(this, 1, "-=300");	
+		if (!noTouching) chooseNode(this, 1, "-=300");	
 	});
 	$( 'body' ).on( "swiperight", ".node", function() {
-		if (!noTouching) animateNodes(this, 0, "+=300");	
+		if (!noTouching) chooseNode(this, 0, "+=300");	
 	});
 
-	function animateNodes(elem, dir, animProp) {
+	function chooseNode(elem, dir, animProp) {
 		noTouching = true;
 
 		var parent = $(elem).parent();
@@ -24,7 +24,7 @@ $(document).ready(function() {
 		var alt = dir ? $(elem).next() : $(elem).prev();
 		if (alt[0]) {
 			$(elem).animate({ opacity: 0 }, fadeDur);
-			$(alt).animate({  opacity: 1 }, fadeDur);
+			$(alt).animate({ opacity: 1 }, fadeDur);
 			$(parent).animate({ left: animProp }, fadeDur);
 			modifyChain($(grandparent), $(alt)[0].innerText);
 		} else {
@@ -94,28 +94,35 @@ $(document).ready(function() {
 						});
 					}
 
-					console.log(new_data.chain.length);
+					
 					for (var i = 1; i < new_data.chain.length - 1; i++) {
-						console.log(i, new_data.chain[i].word);
+						//console.log(i, new_data.chain[i].word);
 						var newnodedad = $('<div>')
 							.addClass('node-wrap');
+						newnodedad.css({width: 3000})
 						
 						var inners = $('<div>')
 							.addClass('inner-nodes');
 
-						
-						let alts = new_data.chain[i - 1].synonyms;
-						for (var h = 0; h < alts.length; h++) {
-							var newsynnode = $('<div>')
+						let index = i > new_data.chain.length/2 ? 1 : -1;
+						let alts;
+						if (new_data.chain[i + index].synonyms) {
+							alts = new_data.chain[i + index].synonyms;
+						}
+						let nodeOffset = -1;
+						for (let h = 0; h < alts.length; h++) {
+							let newsynnode = $('<div>')
 								.addClass('node')
-								.text(alts[h]);
-							if (alts.word != new_data.chain[i].word) {
-								newsynnode.addClass('alternate')
+								.text(alts[h].word);
+							if (alts[h].word != new_data.chain[i].word) {
+								newsynnode.addClass('alternate');
 							} else {
-								newsynnode.addClass('thenode')
+								newsynnode.addClass('thenode');
+								nodeOffset = h;
 							}
 							inners.append(newsynnode);
 						}
+						inners.css({left: -nodeOffset * 300});
 						newnodedad.append(inners);
 						newnodedad.insertBefore('#' + pathParent + ' .node-wrap:last-child()');
 						newnodedad.delay(i * fadeDur/2 + waitTime + fadeDur/2).fadeIn(fadeDur);

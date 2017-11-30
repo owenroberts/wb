@@ -4,16 +4,16 @@ $(document).ready(function() {
 		e.preventDefault();
 		var parent;
 		var synonym;
-		if (word == end) {
+		if (word == data.end) {
 			parent = e.currentTarget;
-		} else if (word == start) {
+		} else if (word == data.start) {
 			synonym = null;
 		} else {
 			parent = e.currentTarget.parentNode.parentNode;
 		}
 		var i = $(parent).index();			
 		if (i == 1) {
-			synonym = start;
+			synonym = data.start;
 		} else {
 			var prev = parent.previousSibling;
 			synonym = $(prev).find('.thenode').text();

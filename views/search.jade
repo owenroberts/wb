@@ -54,8 +54,7 @@ block content
 						if index == 0 || index == data.chain.length - 1
 							div.node-wrap=node.word
 						else 
-							p= index + " " + (data.chain.length - 2)
-							- var dad = data.chain[index-1]
+							- var dad = data.chain[index + (index > (data.chain.length)/2 ? 1 : -1)]
 							div.node-wrap
 								div.inner-nodes
 									if dad.synonyms
