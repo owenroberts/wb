@@ -94,9 +94,7 @@ $(document).ready(function() {
 						});
 					}
 
-					
 					for (var i = 1; i < new_data.chain.length - 1; i++) {
-						//console.log(i, new_data.chain[i].word);
 						var newnodedad = $('<div>')
 							.addClass('node-wrap');
 						newnodedad.css({width: 3000})
@@ -105,16 +103,13 @@ $(document).ready(function() {
 							.addClass('inner-nodes');
 
 						let index = i > new_data.chain.length/2 ? 1 : -1;
-						let alts;
-						if (new_data.chain[i + index].synonyms) {
-							alts = new_data.chain[i + index].synonyms;
-						}
+						let syns = new_data.chain[i + index].synonyms;
 						let nodeOffset = -1;
-						for (let h = 0; h < alts.length; h++) {
+						for (let h = 0; h < syns.length; h++) {
 							let newsynnode = $('<div>')
 								.addClass('node')
-								.text(alts[h].word);
-							if (alts[h].word != new_data.chain[i].word) {
+								.text(syns[h].word);
+							if (syns[h].word != new_data.chain[i].word) {
 								newsynnode.addClass('alternate');
 							} else {
 								newsynnode.addClass('thenode');
