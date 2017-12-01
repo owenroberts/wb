@@ -115,7 +115,8 @@ $(document).ready(function() {
 							.text(new_data.start);
 						newnodes.append(startnodedad);
 						
-						for (let i = 0; i < new_data.chain.length; i++) {
+						console.log(new_data.chain);
+						for (let i = 1; i < new_data.chain.length - 1; i++) {
 							const node = new_data.chain[i];
 							const anewnodedad = $('<div>')
 								.addClass('node-wrap');
@@ -125,7 +126,9 @@ $(document).ready(function() {
 								.addClass('inner-nodes');
 							anewnodedad.append(innernodes);
 
-							let index = i < new_data.chain.length/2 ? 1 : -1;
+							//console.log(i, (i > new_data.chain.length/2 ? 1 : -1))
+							let index = i > new_data.chain.length/2 ? 1 : -1;
+
 							let syns = new_data.chain[i + index].synonyms;
 							let nodeOffset = -1;
 							for (var h = 0; h < syns.length; h++) {
@@ -141,8 +144,7 @@ $(document).ready(function() {
 								}
 								innernodes.append(newsynnode);
 							}
-							inners.css({left: -nodeOffset * 300});
-							inners.css({left: -nodeOffset * 300});
+							innernodes.css({left: -nodeOffset * 300});
 							innernodes.css({width:innerwidth});
 							anewnodedad.css({width:innerwidth + 48});
 						}

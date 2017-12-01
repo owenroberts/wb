@@ -37,12 +37,13 @@ app.get('/', function(req, res) {
 });
 
 app.get('/search', function(req, res) {
-	loadChain(req, function(result) {
+	/* loadChain for production, makeChain to skip db/cache */
+	makeChain(req, function(result) {
 		if (result.error) {
 			res.redirect(url.format({
 				pathname: req.get('Referrer').split("?")[0],
 				query: {
-					"err":result.error
+					"err": result.error
 				}
 			}));
 		} else {
@@ -52,7 +53,8 @@ app.get('/search', function(req, res) {
 });
 
 app.get('/search/add', function(req, res) {
-	loadChain(req, function(result) {
+	/* loadChain for production, makeChain to skip db/cache */
+	makeChain(req, function(result) {
 		if (result.error)
 			res.json({
 				errormsg: "This randomly generated path was unable to be performed by the algorithm.  Please try the add path button again."
@@ -62,8 +64,8 @@ app.get('/search/add', function(req, res) {
 });
 
 app.get('/search/modified', function(req, res) {
-	// save sub chains here 
-	// or don't save subchains bc they might have synonyms problems .... 
+	/* don't load bc could have duplicate synonyms
+		maybe still save? */ 
 	makeChain(req, function(result) {
 		if (result.error) res.json({ errormsg: result.error });
 		else res.json({ data: result });
@@ -113,6 +115,7 @@ function makeChain(request, callback) {
 		searches: [{loc:"tk", date: new Date()}]
 	};
 	chain.makeChain(query, allsynonyms, function(err, chain) {
+		//console.log(data);
 		if (err) query.error = err;
 		else query.chain = chain; 
 		/* this is removing all the extra data for some reason? 
