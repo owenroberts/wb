@@ -413,27 +413,27 @@ select {
   min-width: 260px;
   min-height: 500px; }
 
-.node-dad {
+.node-wrap {
   position: relative;
   display: none;
   padding: 0.2em 0;
   margin: 0.2em 0;
   margin-left: 16px; }
-  .node-dad:hover {
+  .node-wrap:hover {
     cursor: -webkit-grab;
     cursor: -moz-grab; }
-    .node-dad:hover:active {
+    .node-wrap:hover:active {
       cursor: -webkit-grabbing;
       cursor: -moz-grabbing; }
-    .node-dad:hover .alternate {
+    .node-wrap:hover .alternate {
       display: inline-block; }
-  .node-dad:first-child, .node-dad:last-child {
+  .node-wrap:first-child, .node-wrap:last-child {
     padding: 0.25em 0;
     display: block;
     font-weight: 600;
     cursor: default;
     text-transform: lowercase; }
-    .node-dad:first-child .node, .node-dad:last-child .node {
+    .node-wrap:first-child .node, .node-wrap:last-child .node {
       color: black;
       -webkit-user-select: none;
       user-select: none;
@@ -441,11 +441,11 @@ select {
       tap-highlight-color: rgba(0, 0, 0, 0);
       -webkit-touch-callout: none !important;
       touch-callout: none !important; }
-    .node-dad:first-child:hover, .node-dad:last-child:hover {
+    .node-wrap:first-child:hover, .node-wrap:last-child:hover {
       background: none; }
-  .node-dad .ldr {
+  .node-wrap .ldr {
     position: absolute; }
-  .node-dad .arrow {
+  .node-wrap .arrow {
     display: inline-block;
     overflow: hidden;
     width: 24px;
@@ -453,21 +453,21 @@ select {
     top: 0;
     left: 250px;
     text-align: center; }
-    .node-dad .arrow img {
+    .node-wrap .arrow img {
       width: 24px;
       vertical-align: middle; }
-  .node-dad .inner-nodes {
+  .node-wrap .inner-nodes {
     display: inline-block;
     position: relative; }
-  .node-dad .node {
+  .node-wrap .node {
     color: black;
     display: inline-block;
     position: relative;
     padding-right: 24px;
     width: 300px; }
-  .node-dad .mod-error {
+  .node-wrap .mod-error {
     color: #C5C7C9; }
-  .node-dad .alternate {
+  .node-wrap .alternate {
     opacity: 0; }
 
 #modified-search {

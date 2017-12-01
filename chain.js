@@ -1,78 +1,83 @@
-var thesaurus = require("thesaurus");
+const thesaurus = require('thesaurus');
 
-var makeChain = function(query, allSynonyms, callback) {
-	var startWord = query.start.toLowerCase();
-	var endWord = query.end.toLowerCase();
-	console.log(startWord, endWord);
-	var reg = /^[a-z]+$/;
+function makeChain(query, allSynonyms, callback) {
+	const startWord = query.start.toLowerCase();
+	const endWord = query.end.toLowerCase();
+	const reg = /^[a-z]+$/; /* eliminate words with non-alpha chars */
 
 	const nodeNumberLimit = 20; // no chains more than this number of nodes
-	var currentNodeNumber = +query.nodelimit; // try to get under this first
-	const synonymLevel = +query.synonymlevel;
-	var foundChain = false;
+	const synonymLevel = query.synonymlevel;
+	let currentNodeNumber = query.nodelimit; // try to get under this first
+	let foundChain = false;
 
-	var attempts = 0;
-	
-	function buildChain(chain, allSynsCopy) {
-		var index = chain.length - 1;
-		allSynsCopy.push(chain[index].word);
-		var tempSyns = thesaurus.find(chain[index].word);
-		var synonyms = [];
-		for (var i = 0; i < tempSyns.length; i++) {
-			if (reg.test(tempSyns[i]) 
-				&& allSynsCopy.indexOf(tempSyns[i]) == -1 
-				&& allSynsCopy.indexOf(tempSyns[i]+"s") == -1
-				&& synonyms.length < 10 ) {
+	function getSynonyms(word, allSynsCopy) {
+		let tempSyns = thesaurus.find(word);
+		let synonyms = [];
+		for (let i = 0; i < tempSyns.length; i++) {
+			let syn = tempSyns[i];
+			if (reg.test(syn)
+				&& allSynsCopy.indexOf(syn) == -1
+				&& allSynsCopy.indexOf(syn+"s") == -1
+				&& synonyms.length < 10) {
 				synonyms.push({
-					word:tempSyns[i]
-				});
-				allSynsCopy.push(tempSyns[i]);
+					word: syn
+				}); // tried making this just array but it hurts performance ???? 
 			}
 		}
-
-		chain[index].synonyms = synonyms;
-
-		for (var i = 0; i < synonyms.length; i++) {
-			if (synonyms[i].word == endWord) {
-			 	chain.push(synonyms[i]);
-			 	foundChain = true;
-			 	sendData(chain);
-			} else if (!foundChain){
-				attempts++;
-				// 200000 attempts seems like a lot but how many will this break?
-				if (attempts > 200000) {
-					callback("Your search was not able to be performed with the current parameters.");
-					foundChain = true;
-				}
-				if (chain.length < currentNodeNumber) {
-					var newChain = chain.slice(0);
-					newChain.push(synonyms[i]);
-					buildChain(newChain, allSynsCopy.slice(0));
-				}
-			}
-		}
+		return synonyms;
 	}
 
-	function sendData(chain) {
-		var data = {};
-		var result = [];
-		for (let i = 1; i < chain.length - 1; i++) {
-			result[i - 1] = {};
-			result[i - 1].node = chain[i].word;
-			result[i - 1].alternates = []
-			for (let j = 0; j < chain[i-1].synonyms.length; j++)
-				result[i - 1].alternates.push( chain[i-1].synonyms[j].word );
+	function buildChain(startChain, endChain, allSyns) {
+		let startIndex = startChain.length - 1;
+		let endIndex = endChain.length - 1;
+		let allSynsCopy = allSyns.slice(0);
+		allSynsCopy.push(startChain[startIndex].word);
+		allSynsCopy.push(endChain[endIndex].word);
+		
+		if (startChain[startIndex].synonyms === undefined) {
+			startChain[startIndex].synonyms = getSynonyms(startChain[startIndex].word, allSynsCopy);
 		}
-		data.chain = result;
-		data.nodelimit = currentNodeNumber;
-		callback(null, data);
+		if (endChain[endIndex].synonyms === undefined) {
+			endChain[endIndex].synonyms = getSynonyms(endChain[endIndex].word, allSynsCopy);
+		}
+		for (let i = 0; i < startChain[startIndex].synonyms.length; i++) {
+			allSynsCopy.push( startChain[startIndex].synonyms[i].word );
+		}
+		for (let i = 0; i < endChain[endIndex].synonyms.length; i++) {
+			allSynsCopy.push( endChain[endIndex].synonyms[i].word );
+		}
+
+		for (let i = 0; i < startChain[startIndex].synonyms.length; i++) {
+			let startCopy =  startChain.slice(0);
+			let startSyn = startChain[startIndex].synonyms[i];
+			startCopy.push(startSyn);
+			for (let j = 0; j < endChain[endIndex].synonyms.length; j++) {
+				let endSyn = endChain[endIndex].synonyms[j];
+				// attemptCount++;
+				if (startSyn.word == endSyn.word && !foundChain) {
+					foundChain = true;
+					for (let h = endChain.length-1; h >= 0; h--) {
+						startCopy.push( endChain[h] );
+					}
+					callback(null, startCopy);
+				} else if (startChain.length + endChain.length < currentNodeNumber - 1 && !foundChain) {
+					let endCopy = endChain.slice(0);
+					endCopy.push(endSyn);
+					buildChain(startCopy, endCopy, allSynsCopy);
+				}
+			}
+		}
 	}
 
 	function getShortestChain() {
 		if (currentNodeNumber < nodeNumberLimit) {
 			currentNodeNumber++;
 			if (!foundChain) {
-				buildChain([{word:startWord, weight:0}], allSynonyms.slice(0));
+				buildChain(
+					[{word:startWord}], 
+					[{word:endWord}], 
+					allSynonyms.slice(0)
+				);
 				getShortestChain();
 			}
 		} else {
@@ -91,8 +96,14 @@ var makeChain = function(query, allSynonyms, callback) {
 	} else if (thesaurus.find(endWord).length == 0) {
 		callback("The second word was not found.");
 	} else {
-		buildChain([{word:startWord}], allSynonyms.slice(0));
-		getShortestChain();
+		buildChain(
+			[{word:startWord}], 
+			[{word:endWord}], 
+			allSynonyms.slice(0)
+		);
+		getShortestChain(); 
+		/* should be called by build Chain at ending condition.... 
+			but this didn't work for some reason? */
 	}
 
 }
