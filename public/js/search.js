@@ -85,13 +85,13 @@ $(document).ready( function() {
 		var c = encodeURIComponent(l);
 		switch (wh) {
 			case "email":
-				window.location.href = "mailto:?body=" + b + " -- " + c + "&subject= + b";
+				window.open("mailto:?body=" + b + " -- " + c + "&subject= + b", "_blank")
 			break;
 			case "tw":
-				window.location = "https://twitter.com/intent/tweet?text=" + b + " " + c;
+				window.open("https://twitter.com/intent/tweet?text=" + b + " " + c, "_blank");
 			break;
 			case "fb":
-				window.location = "http://www.facebook.com/sharer.php?u=" + b + " " + c;
+				window.open("http://www.facebook.com/sharer.php?u=" + b + " " + c, "_blank");
 			break;
 		}
 	});
