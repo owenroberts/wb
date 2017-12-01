@@ -128,11 +128,10 @@ $(document).ready(function() {
 
 							//console.log(i, (i > new_data.chain.length/2 ? 1 : -1))
 							let index = i > new_data.chain.length/2 ? 1 : -1;
-
 							let syns = new_data.chain[i + index].synonyms;
 							let nodeOffset = -1;
 							for (var h = 0; h < syns.length; h++) {
-								innerwidth += window.innerwidth;
+								innerwidth += window.innerWidth;
 								let newsynnode = $('<div>')
 									.addClass('node')
 									.text(syns[h].word);
@@ -145,6 +144,7 @@ $(document).ready(function() {
 								innernodes.append(newsynnode);
 							}
 							innernodes.css({left: -nodeOffset * 300});
+							console.log(innerwidth);
 							innernodes.css({width:innerwidth});
 							anewnodedad.css({width:innerwidth + 48});
 						}

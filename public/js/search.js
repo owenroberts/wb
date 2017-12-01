@@ -1,7 +1,7 @@
 $(document).ready( function() {
 	
 	// ** blogal variables ** //
-	window.debug = false;
+	window.debug = true;
 	window.fadeDur = debug ? 10 : 500;
 	window.noMorePaths = false;
 	window.noTouching = false;
