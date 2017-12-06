@@ -3,8 +3,8 @@ $(document).ready(function() {
 	function getNewPath(ev) {
 		ev.stopPropagation();
 		if (!noMorePaths) {
-			$('#newpath').fadeIn(fadeDur);
-			$('.plus').removeClass('rotate');
+			$('#newpathloader').fadeIn(fadeDur);
+			/* $('.plus').removeClass('rotate'); */
 			makeNewPath();
 		} else {
 			reportError("The algorithm is not able to generate more results based on the current parameters.");
@@ -80,7 +80,7 @@ $(document).ready(function() {
 					nl: nodelimit
 				},
 				success: function(obj) {
-					$('#newpath').fadeOut(fadeDur);
+					$('#newpathloader').fadeOut(fadeDur);
 					if (obj.errormsg) {
 						if (nodelimitArray.length < 9) {
 							makeNewPath();
@@ -90,7 +90,7 @@ $(document).ready(function() {
 						}
 					} else {
 						const new_data = obj.data;
-						$('.plus').addClass('rotate');
+						/* $('.plus').addClass('rotate'); */
 						currentChain++;
 						chainCount++;
 
@@ -115,7 +115,6 @@ $(document).ready(function() {
 							.text(new_data.start);
 						newnodes.append(startnodedad);
 						
-						console.log(new_data.chain);
 						for (let i = 1; i < new_data.chain.length - 1; i++) {
 							const node = new_data.chain[i];
 							const anewnodedad = $('<div>')
@@ -144,7 +143,6 @@ $(document).ready(function() {
 								innernodes.append(newsynnode);
 							}
 							innernodes.css({left: -nodeOffset * 300});
-							console.log(innerwidth);
 							innernodes.css({width:innerwidth});
 							anewnodedad.css({width:innerwidth + 48});
 						}

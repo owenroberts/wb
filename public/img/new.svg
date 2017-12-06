@@ -1,6 +1,7 @@
 <svg width="40" height="40" xmlns="http://www.w3.org/2000/svg">
     <g transform="translate(-140 -25)" stroke-width="2" fill="none" fill-rule="evenodd">
-        <rect stroke="#979797" opacity=".327" x="141" y="26" width="38" height="38" rx="2"/>
+    	<!-- #979797 -->
+        <rect stroke="transparent" opacity=".327" x="141" y="26" width="38" height="38" rx="2"/>
         <g stroke="#4A4A4A" stroke-linecap="round">
             <path d="M161 53.178V36.722M153 45h16.687"/>
         </g>

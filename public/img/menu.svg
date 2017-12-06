@@ -1,8 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="18.1" height="15.1" viewBox="0 0 18.1 15.1">
-	<path fill="none" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round" d="M17.2 7.6H1.1M17.2 1.2H1.1M17.2 14H1.1"/>
-	<defs>
-		<style>
-		:hover { stroke: black; }
-	 	</style>
-  	</defs>
+<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(-8 -25)" fill="none" fill-rule="evenodd">
+        <!-- fill="#000" -->
+        <rect  opacity=".33" x="8" y="25" width="43" height="40" rx="2"/>
+        <path d="M21.6 52.597l8-15.194 8 15.194z" stroke-width="1.5" stroke="#4A4A4A"/>
+    </g>
 </svg>

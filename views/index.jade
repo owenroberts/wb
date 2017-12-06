@@ -1,5 +1,11 @@
 extends layout
 block content
+
+	div#about
+		div.msg
+			div.text="Synomap is ..."
+			div.btn="Play with tooltips again"
+
 	div#error
 		div.msg
 			div.sorry= "We couldn't find a path. Sorry about that!"
@@ -8,29 +14,31 @@ block content
 				div="OK"
 	div#main
 		header
-			div.menu
-				a(href="/")
-					svg(class="stroke" width="22" height="22" viewBox="0 0 20 20")
-						path(fill="none" stroke="#C7C8CA" stroke-width="2" stroke-linecap="round" d="M17.2 7.6H1.1M17.2 1.2H1.1M17.2 14H1.1")
+			div#aboutBtn
+				img(src="/img/menu.svg")
+			div#title= "bridge two words"
+					
 		div.index
 			form(method="get", action="/search", id="search")
-				input(type="text",  name="s", class="query")
-				input(type="text",  name="e"  , class="query")
+				input(type="text",  name="s", class="query", placeholder="first")
+				input(type="text",  name="e"  , class="query", placeholder="second")
 				input(type="hidden",value="10",name="nl")
 				input(type="hidden",value="10",name="sl")
-				input(type="submit", value="search")
+				input(type="submit", value="Bridge")
 			div.ldr
 				img(src='/img/loader.svg')
 
-	// ** javascript ** // 
 	script(type="text/javascript").
 
-		var fadeDur = 500;
-		var termsEntered = [false, false];
+		const fadeDur = 500;
+		let termsEntered = [false, false];
 
-		$('a').on('click', function(ev) {
-			ev.preventDefault();
-			window.location = this.href;
+		$('#aboutBtn').on('click', function() {
+			console.log(this)
+			$('#about').fadeToggle();
+			$('#about').on('click', function() {
+				$('#about').fadeOut();
+			});
 		});
 
 		var submitForm = function() {
@@ -50,20 +58,11 @@ block content
 		});
 
 		$('.query').on('change keydown  paste', function(event) {
-			//- if (event.which == 32) {
-			//- 	if (this.name == "s") {
-			//- 		$('input[name=e]').focus();
-			//- 	} else {
-
-			//- 	}
-			//- }
 			termsEntered[$(this).index()] = true;
 			if (termsEntered[0] && termsEntered[1]) {
-				$('input[value="search"]').css({color: '#6a75ff'});
+				//- $('input[value="search"]').css({color: '#6a75ff'});
 			}
 		});
-
-		console.log("#{errmsg}")
 
 		function reportError(errmsg) {
 			$('#error').fadeIn();

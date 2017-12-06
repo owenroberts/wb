@@ -1,7 +1,7 @@
 $(document).ready( function() {
 	
 	// ** blogal variables ** //
-	window.debug = true;
+	window.debug = false;
 	window.fadeDur = debug ? 10 : 500;
 	window.noMorePaths = false;
 	window.noTouching = false;
@@ -10,6 +10,7 @@ $(document).ready( function() {
 	window.currentChain = 0;
 	window.qstrings = [];
 	qstrings.push(data.queryString);
+	$('#newpathloader').fadeOut(fadeDur);
 
 
 	window.reportError = function(err, option) {
@@ -24,6 +25,18 @@ $(document).ready( function() {
 		});
 		$('#error').on('click', function() {
 			$('#error').fadeOut();
+			$('body').css({overflow:"auto"});
+		});
+	}
+
+	window.report = function(msg, ok, callback) {
+		$('#report').fadeIn();
+		$('#report .msg').scrollTop(0);
+		$('#report .text').html(msg);
+		$('.btn').html(ok);
+		$('.btn').on('click', callback);
+		$('#report').on('click', function() {
+			$('#report').fadeOut();
 			$('body').css({overflow:"auto"});
 		});
 	}
@@ -70,6 +83,14 @@ $(document).ready( function() {
 	});
 	$('.path:gt(1) .node-dad').css({display:'block'});
 
+	/* home */
+	$('.home').on('click', function() {
+		report(
+			"Heads up—going home will clear your current paths.",
+			"Go Home",
+			() => { location.href = "/"; }
+		);
+	});
 
 	// ** share stuff **
 	$('.share').on('click', function() {

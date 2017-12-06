@@ -1,6 +1,13 @@
 extends layout
 block content
 
+	div#report
+		div.msg
+			div.text
+			div.btn
+			div.dismiss
+				img(src="/img/dismiss.svg")
+
 	div#error
 		div.msg
 			div.sorry
@@ -17,30 +24,20 @@ block content
 			div.sh.tw="Twitter"
 			//- div.sh.copy="Copy link"
 
-	div#newpath
-		ul
-			li
-				img(src='/img/loader.svg')
+	div#newpathloader
+		img(src='/img/loader.svg')
 					
 	div#main
 		header
-			div.menu
-				div.home
-					a(href="/")
-						img(src="/img/arrow_stop.svg")
-				div.plus
-					img(src="/img/new.svg")
-				div.share
-					img(src="/img/share.svg")
+			div.home
+				img(src="/img/arrow_stop.svg")
+			div.plus
+				img(src="/img/new.svg")
+			div.share
+				img(src="/img/share.svg")
 											
 
 		div.path-dots.slidedown.pathdotcontainer
-			div.leftarrow
-				svg(class="stroke" width="16"  viewBox="0 0 12 18")
-					path(fill="none" stroke="#C5C7C9" stroke-width="1.5" stroke-linecap="round" d="M9.31 1.75L2.06 9.01l7.25 7.26")
-			div.rightarrow
-				svg(class="stroke" width="16"  viewBox="0 0 12 18")
-					path(fill="none" stroke="#C5C7C9" stroke-width="1.5" stroke-linecap="round" d="M3 17.52l7.25-7.26L3 3")
 			div.dots
 				div.path-dot(id="p-0")
 

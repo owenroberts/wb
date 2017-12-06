@@ -70,7 +70,7 @@ $(document).ready(function() {
 			},
 			success: function(obj) {
 				if (obj.errormsg) {
-					var err = 'We couldn\'t find a chain between "' + alt + '" and "' + end + '".';
+					var err = 'We couldn\'t find a chain between "' + alt + '" and "' + data.end + '".';
 					var option = "Try swiping back to the previous synonym, or forward to the next.";
 					reportError(err, option);
 					$('.node:contains("'+alt+'")').addClass('mod-error');
