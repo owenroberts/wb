@@ -50,10 +50,11 @@ $(document).ready(function() {
 		}, fadeDur/2);
 
 		var allsynonyms = [data.start];
-
 		for (var i = 0; i < chainIndex; i++) {
-			for (var j = 0; j < data.chain[i].synonyms.length; j++) {
-				allsynonyms.push(data.chain[i].synonyms[j].word);
+			if (data.chain[i].synonyms) {
+				for (var j = 0; j < data.chain[i].synonyms.length; j++) {
+					allsynonyms.push(data.chain[i].synonyms[j].word);
+				}
 			}
 		}
 
@@ -72,7 +73,7 @@ $(document).ready(function() {
 				if (obj.errormsg) {
 					var err = 'We couldn\'t find a chain between "' + alt + '" and "' + data.end + '".';
 					var option = "Try swiping back to the previous synonym, or forward to the next.";
-					reportError(err, option);
+					report(err + "<br><br>" + option);
 					$('.node:contains("'+alt+'")').addClass('mod-error');
 					noTouching = false;
 					$('.ldrimg').remove();

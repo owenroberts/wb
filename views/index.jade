@@ -5,13 +5,15 @@ block content
 		div.msg
 			div.text="Synomap is ..."
 			div.btn="Play with tooltips again"
+			div.dismiss
+				img(src="/img/dismiss.svg")
 
 	div#error
 		div.msg
 			div.sorry= "We couldn't find a path. Sorry about that!"
 			div.errormsg
-			div.ok
-				div="OK"
+			div.dismiss
+				img(src="/img/dismiss.svg")
 	div#main
 		header
 			div#aboutBtn
@@ -67,9 +69,6 @@ block content
 		function reportError(errmsg) {
 			$('#error').fadeIn();
 			$('.errormsg').text("Hint: " + errmsg);
-			$('.ok').on('click', function() {
-				$('#error').fadeOut();
-			});
 			$('#error').on('click', function() {
 				$('#error').fadeOut();
 			});

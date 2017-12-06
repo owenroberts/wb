@@ -1,7 +1,7 @@
 $(document).ready( function() {
 	
 	// ** blogal variables ** //
-	window.debug = false;
+	window.debug = true;
 	window.fadeDur = debug ? 10 : 500;
 	window.noMorePaths = false;
 	window.noTouching = false;
@@ -12,30 +12,19 @@ $(document).ready( function() {
 	qstrings.push(data.queryString);
 	$('#newpathloader').fadeOut(fadeDur);
 
-
-	window.reportError = function(err, option) {
-		$('#error').fadeIn();
-		$('#error .msg').scrollTop(0);
-		$('.sorry').html(err);
-		$('.errormsg').html(option);
-		$('body').css({overflow:"hidden"});
-		$('#error .ok').on('click', function() {
-			$('#error').fadeOut();
-			$('body').css({overflow:"auto"});
-		});
-		$('#error').on('click', function() {
-			$('#error').fadeOut();
-			$('body').css({overflow:"auto"});
-		});
-	}
-
 	window.report = function(msg, ok, callback) {
 		$('#report').fadeIn();
 		$('#report .msg').scrollTop(0);
 		$('#report .text').html(msg);
-		$('.btn').html(ok);
-		$('.btn').on('click', callback);
+		if (ok) {
+			$('.btn').css("display", "block");
+			$('.btn').html(ok);
+			$('.btn').on('click', callback);
+		} else {
+			$('.btn').css("display", "none");
+		}
 		$('#report').on('click', function() {
+			$('header').removeClass("tip");
 			$('#report').fadeOut();
 			$('body').css({overflow:"auto"});
 		});
@@ -73,10 +62,16 @@ $(document).ready( function() {
 
 	// ** animate nodes on load ** //
 	$('.path:first-child .nodes').each( function() {
-		for (var i = 0; i < nodedads.length; i++) {
+		for (let i = 0; i < nodedads.length; i++) {
 			var showNode = function(num) {
 				setTimeout( function() {
 					$(nodedads[num]).fadeIn(fadeDur);
+					if (num == nodedads.length - 1) {
+						if (tooltips) {
+							$('header').addClass("tip");
+							report( "Make more paths between your words " + data.start + " & " + data.end)
+						}
+					}
 				}, num*fadeDur);
 			}(i);
 		}

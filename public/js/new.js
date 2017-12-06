@@ -7,7 +7,7 @@ $(document).ready(function() {
 			/* $('.plus').removeClass('rotate'); */
 			makeNewPath();
 		} else {
-			reportError("The algorithm is not able to generate more results based on the current parameters.");
+			report("The algorithm is not able to generate more results based on the current parameters.");
 		}
 	}
 
@@ -26,7 +26,7 @@ $(document).ready(function() {
 	var setZIndex = function() {
 		const paths = $('#paths').children();
 		paths.css({zIndex:1});
-		$(paths[currentChain]).css({zIndex:9});
+		$(paths[currentChain]).css({zIndex:2});
 	}
 
 	var switchPath = function() {
@@ -52,9 +52,7 @@ $(document).ready(function() {
 
 	$('.path-dot').on('click', switchPath);
 	$( ".path-dots" ).on( "swipeleft", nextPath);
-	$('.rightarrow').on('click', nextPath);
 	$( ".path-dots" ).on( "swiperight", prevPath);
-	$('.leftarrow').on('click', prevPath);
 
 	// ** plus button for new paths ** //
 	function makeNewPath() {
@@ -86,7 +84,7 @@ $(document).ready(function() {
 							makeNewPath();
 						} else {
 							noMorePaths = true;
-							reportError("The algorithm is not able to generate more results based on the current parameters.");
+							report("The algorithm is not able to generate more results based on the current parameters.");
 						}
 					} else {
 						const new_data = obj.data;
@@ -182,8 +180,8 @@ $(document).ready(function() {
 				}
 			});
 		} else {
-			$('#newpath').fadeOut(fadeDur/2);
-			reportError('You have reached the maximum number of paths.');
+			$('#newpathloader').fadeOut(fadeDur/2);
+			report('You have reached the maximum number of paths.');
 		}				
 	}
 	$('.plus').on('click', getNewPath);

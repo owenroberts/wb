@@ -13,6 +13,7 @@ var express = require('express')
 
 var app = express();
 var cache = new NodeCache();
+cache.set("tooltips", true);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -47,7 +48,10 @@ app.get('/search', function(req, res) {
 				}
 			}));
 		} else {
-			res.render('search', { data: result });
+			res.render('search', { 
+				data: result,
+				tooltips: cache.get("tooltips")
+			});
 		}
 	});
 });
