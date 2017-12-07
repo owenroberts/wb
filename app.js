@@ -14,7 +14,7 @@ const express = require('express')
 
 var app = express();
 var cache = new NodeCache();
-cache.set("tooltips", true);
+cache.set("tooltips", false);
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));

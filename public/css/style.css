@@ -364,8 +364,18 @@ select {
     .node-wrap:hover:active {
       cursor: -webkit-grabbing;
       cursor: -moz-grabbing; }
-    .node-wrap:hover .alternate {
-      display: inline-block; }
+  .node-wrap .node {
+    display: inline-block;
+    position: relative;
+    padding-right: 24px;
+    width: 300px;
+    padding: 0.125em 0; }
+  .node-wrap .alternate {
+    display: inline-block;
+    background: black;
+    color: white;
+    font-weight: 200;
+    /* opacity: 0; */ }
   .node-wrap:first-child, .node-wrap:last-child {
     padding: 0.25em 0;
     display: block;
@@ -373,7 +383,6 @@ select {
     cursor: default;
     text-transform: lowercase; }
     .node-wrap:first-child .node, .node-wrap:last-child .node {
-      color: black;
       -webkit-user-select: none;
       user-select: none;
       -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -398,16 +407,8 @@ select {
   .node-wrap .inner-nodes {
     display: inline-block;
     position: relative; }
-  .node-wrap .node {
-    color: black;
-    display: inline-block;
-    position: relative;
-    padding-right: 24px;
-    width: 300px; }
   .node-wrap .mod-error {
     color: #C5C7C9; }
-  .node-wrap .alternate {
-    opacity: 0; }
 
 #modified-search {
   position: fixed;

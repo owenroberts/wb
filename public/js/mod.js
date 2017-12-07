@@ -2,12 +2,32 @@ $(document).ready(function() {
 
 	// ** swipe left on nodes ** //
 	//-  taking about "modified" bool here, not sure what it should do
-	$( 'body' ).on( "swipeleft", ".node", function() {
-		if (!noTouching) chooseNode(this, 1, "-=300");	
+	console.log($('.node'));
+	$('.node-wrap').draggable({
+		axis: 'x',
+		distance: 10,
+		containment: [-300, 0, 300, 0],
+		stop: function(event, ui) {
+			//$(this).draggable({revert:true}); 
+		},
+		revert: function(event, ui) {
+			console.log(this[0].offsetLeft);
+			$(this).data("uiDraggable").originalPosition = {
+                top : 0,
+                left : 0
+            };
+            // return boolean
+            return !event;
+		}
 	});
-	$( 'body' ).on( "swiperight", ".node", function() {
-		if (!noTouching) chooseNode(this, 0, "+=300");	
-	});
+
+
+	// $( 'body' ).on( "swipeleft", ".node", function() {
+	// 	if (!noTouching) chooseNode(this, 1, "-=300");	
+	// });
+	// $( 'body' ).on( "swiperight", ".node", function() {
+	// 	if (!noTouching) chooseNode(this, 0, "+=300");	
+	// });
 
 	function chooseNode(elem, dir, animProp) {
 		noTouching = true;

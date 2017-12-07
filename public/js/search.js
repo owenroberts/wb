@@ -31,7 +31,7 @@ $(document).ready( function() {
 	}
 
 	if (data.error) 
-		reportError(data.error);
+		report(data.error);
 
 	// ** inner nodes, matching container width ** //
 	const nodedads = $('.node-wrap');
