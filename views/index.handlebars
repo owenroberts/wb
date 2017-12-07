@@ -1,0 +1,86 @@
+<!-- index -->
+<div id="about">
+	<div class="msg">
+		<div class="text">Synomap is ...</div>
+		<div class="btn">Play with tooltips again</div>
+		<div class="dismiss">
+			<img src="/img/dismiss.svg" alt="">
+		</div>
+	</div>
+</div>
+
+<div id="error">
+	<div class="msg">
+		<div class="sorry">We couldn't find a path.  Sorry about that!</div>
+		<div class="errormsg"></div>
+		<div class="dismiss">
+			<img src="img/dismiss.svg" alt="">
+		</div>
+	</div>
+</div>
+
+<div id="main">
+	<header>
+		<div id="aboutBtn">
+			<img src="/img/menu.svg" alt="">
+		</div>
+		<div id="title">bridge two words</div>
+	</header>
+	<div class="index">
+		<form action="/search" id="search" method="get">
+			<input type="text" name="s" class="query" placeholder="first">
+			<input type="text" name="e" class="query" placeholder="second">
+			<input type="hidden" value="10" name="nl">
+			<input type="hidden" value="10" name="sl">
+			<input type="submit" value="Bridge">
+		</form>
+		<div class="ldr">
+			<img src="/img/loader.svg" alt="">
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	const fadeDur = 500;
+	let termsEntered = [false, false];
+
+	$('#aboutBtn').on('click', function() {
+		console.log(this)
+		$('#about').fadeToggle();
+		$('#about').on('click', function() {
+			$('#about').fadeOut();
+		});
+	});
+
+	var submitForm = function() {
+		$('.ldr').fadeIn().css("display","inline-block");
+		$('input[value="search"]').fadeOut(10);
+		setTimeout( function() {
+			$("#search").submit();
+		}, fadeDur*2);
+		$('input[type="text"]').animate({
+			"background-color":"transparent"
+		}, fadeDur);
+	}
+
+	$('input[value="search"]').on('click', function(ev) {
+		ev.preventDefault();
+		submitForm();
+	});
+
+	$('.query').on('change keydown  paste', function(event) {
+		termsEntered[$(this).index()] = true;
+		if (termsEntered[0] && termsEntered[1]) {
+			//- $('input[value="search"]').css({color: '#6a75ff'});
+		}
+	});
+
+	function reportError(errmsg) {
+		$('#error').fadeIn();
+		$('.errormsg').text("Hint: " + errmsg);
+		$('#error').on('click', function() {
+			$('#error').fadeOut();
+		});
+		location.hash = "";
+	}
+	if ("{{errmsg}}") reportError("{{errmsg}}");
+</script>

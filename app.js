@@ -9,16 +9,28 @@ const express = require('express')
 	,	chain = require('./chain')
 	,	def = require('./def')
 	,	url = require('url')
-	,	pug = require('pug')
+	,	handlebars = require("express-handlebars")
 	;
-
 var app = express();
 var cache = new NodeCache();
 cache.set("tooltips", false);
 
+var hbs = handlebars.create({
+	// Specify helpers which are only registered on this instance.
+	defaultLayout: 'main',
+    helpers: {
+    	setLength: function(len) {
+    		hbs.dataLen = len;
+    	},
+    	getSyns: function(index) {
+    		console.log(index, hbs.dataLen);
+    	}
+	}
+});
+
 // view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "pug");
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
 
 // uncomment after placing your favicon in /public
 app.use(favicon(__dirname + '/public/img/favicon.ico'));
@@ -37,6 +49,8 @@ app.get('/', function(req, res) {
 		errmsg: err
 	});
 });
+
+
 
 app.get('/search', function(req, res) {
 	/* loadChain for production, makeChain to skip db/cache */

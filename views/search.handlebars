@@ -1,0 +1,72 @@
+<!-- search  -->
+<div class="sharemenu">
+	<div class="msg">
+		<p>Share Synomap</p>
+		<p>{{data.start}} ... {{data.end}}</p>
+		<div class="sh email">Email</div>
+		<div class="sh fb">Facebook</div>
+		<div class="sh tw">Twitter</div>
+		<div class="dismiss">
+			<img src="/img/dismiss.svg" alt="">
+		</div>
+	</div>
+</div>
+
+<div id="newpathloader">
+	<img src="/img/loader.svg" alt="">
+</div>
+
+<div id="main">
+	<header>
+		<div class="home">
+			<img src="/img/arrow_stop.svg" alt="">
+		</div>
+		<div class="plus">
+			<img src="/img/plus.svg" alt="">
+		</div>
+		<div class="share">
+			<img src="/img/share.svg" alt="">
+		</div>
+	</header>
+	
+	<div id="report">
+		<div class="msg">
+			<div class="text"></div>
+			<div class="btn"></div>
+			<div class="dismiss">
+				<img src="/img/dismiss.svg" alt="">
+			</div>
+		</div>
+	</div>
+
+	<div class="path-dots slidedown pathdotcontainer">
+		<div class="dots">
+			<div class="path-dot" id="p-0"></div>
+		</div>
+	</div>
+
+	<div id="paths">
+		<div class="path" id="path-0">
+			<div class="nodes">
+				{{{setLength data.chain.length}}}
+				{{#each data.chain}}
+					{{#if @first}}
+						<div class="node-wrap">{{word}}</div>
+					{{else if @last}}
+						<div class="node-wrap">{{word}}</div>
+					{{else}}
+						{{@index}}
+						<div class="node-wrap">
+							{{{getSyns @index data}}}
+						</div>
+						{{word}}
+					{{/if}}
+
+	
+						
+				{{/each}}
+			</div>
+		</div>
+	</div>
+</div>
+<script src='/js/search_helpers.js' type='text/javascript'></script>
