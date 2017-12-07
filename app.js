@@ -1,4 +1,4 @@
-var express = require('express')
+const express = require('express')
 	,	path = require('path')
 	,	favicon = require('serve-favicon')
 	,	logger = require('morgan')
@@ -9,6 +9,7 @@ var express = require('express')
 	,	chain = require('./chain')
 	,	def = require('./def')
 	,	url = require('url')
+	,	pug = require('pug')
 	;
 
 var app = express();
@@ -16,8 +17,8 @@ var cache = new NodeCache();
 cache.set("tooltips", true);
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "pug");
 
 // uncomment after placing your favicon in /public
 app.use(favicon(__dirname + '/public/img/favicon.ico'));
