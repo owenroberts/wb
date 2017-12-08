@@ -360,11 +360,26 @@ select { margin:1em; }
 	.node {
 		display:inline-block;
 		position:relative;
-		padding-right:24px;
 		width:300px;
 		padding: 0.125em 0;
 		background: $white;
 		z-index:2;
+	}
+	.alt {
+		background: $gray;
+		color: $white;
+		font-weight: 200;
+		display:inline-block;
+		z-index:1;
+		position:absolute;
+		top: 8px;
+		width: 100px;
+		&.right { 
+			right: 0;
+			text-align: right; 
+		}
+		&.left { left: 0; }
+		&.active { background: $black; }
 	}
 	.alternate { 
 		display:inline-block; 
@@ -373,14 +388,7 @@ select { margin:1em; }
 		font-weight:200;
 		/* opacity: 0; */
 	}
-	.alt {
-		background: $gray;
-		color: $white;
-		font-weight: 200;
-		display:inline-block;
-		padding: 0.125em;
-		z-index:1;
-	}
+	
 	&:first-child, &:last-child {
 		padding:0.25em 0;
 		display:block;

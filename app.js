@@ -70,7 +70,7 @@ app.get('/search/add', function(req, res) {
 
 app.get('/search/modified', function(req, res) {
 	/* don't load bc could have duplicate synonyms
-		maybe still save? */ 
+		maybe still save? */
 	makeChain(req, function(result) {
 		if (result.error) res.json({ errormsg: result.error });
 		else res.json({ data: result });

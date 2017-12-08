@@ -20,6 +20,7 @@
     "natural": "0.5.4",
     "node-cache": "3.0.0",
     "node-wordnet": "^0.1.11",
+    "performance-now": "^2.1.0",
     "pug": "^2.0.0-alpha6",
     "serve-favicon": "~2.2.0",
     "thesaurus": "0.0.0",
