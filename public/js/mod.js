@@ -2,20 +2,68 @@ $(document).ready(function() {
 
 	// ** swipe left on nodes ** //
 	//-  taking about "modified" bool here, not sure what it should do
-	console.log($('.node'));
-	$('.node-wrap').draggable({
+	$('.node').draggable({
 		axis: 'x',
-		distance: 10,
-		containment: [-300, 0, 300, 0],
+		distance: 1,
+		containment: [-100, 0, 100, 0],
+		start: function(event, ui) {
+			const word = this.textContent;
+			//const node = $(this).find('.thenode')[0]; 
+			const i = +this.dataset.index;
+			const offset = +this.parentNode.dataset.index > (data.chain.length/2) ? 1 : -1;
+			const index = +this.parentNode.dataset.index + offset;
+			const syns = data.chain[index].synonyms;
+			const left = i > 0 ? syns[i-1].word : "x";
+			const right = i < syns.length - 1 ? syns[i+1].word : "x";
+
+			const leftWord = document.createElement("div");
+			leftWord.classList.add("alt");
+			leftWord.textContent = left;
+			leftWord.style.position = "absolute";
+			leftWord.style.top = 16;
+			leftWord.style.left = 0;
+			leftWord.style.width = "100px";
+			this.parentNode.insertBefore(leftWord, this);
+
+			const rightWord = document.createElement("div");
+			rightWord.classList.add("alt");
+			rightWord.textContent = right;
+			rightWord.style.position = "absolute";
+			rightWord.style.top = 16;
+			rightWord.style.right = 0;
+			rightWord.style.width = "100px";
+			rightWord.style.textAlign = "right";
+			rightWord.style.zIndex = 0;
+			this.parentNode.appendChild(rightWord);
+
+
+		},
+		drag: function(event, ui) {
+			const offset = this.offsetLeft;
+			if (offset > 0) {
+				const left = this.previousSibling;
+				if (offset > left.clientWidth * 3/4) {
+					left.style.backgroundColor = "black";
+					//modifyChain(this.parentNode, left.textContent);
+				}
+			} else {
+				const right = this.nextSibling;
+				if (Math.abs(offset) > right.clientWidth * 3/4) {
+					right.style.backgroundColor = "black";
+				}
+			}
+		},
 		stop: function(event, ui) {
 			//$(this).draggable({revert:true}); 
 		},
 		revert: function(event, ui) {
-			console.log(this[0].offsetLeft);
+			const offset = this[0].offsetLeft;
+			console.log(offset);
 			$(this).data("uiDraggable").originalPosition = {
                 top : 0,
                 left : 0
             };
+            $(this[0].parentNode).find('.alt').remove();
             // return boolean
             return !event;
 		}
@@ -60,9 +108,11 @@ $(document).ready(function() {
 	// ** modify chain ** //
 	function modifyChain(elem, alt) {
 
-		var chainIndex = $(elem).index();
+		console.log(elem, alt);
+
+		var chainIndex = elem.dataset.index;
 		var pathParent = $(elem).parent().parent().attr('id');
-		var nodes = $('#' + pathParent + ' .node-wrap:gt('+elem.index()+')');
+		var nodes = $('#' + pathParent + ' .node-wrap:gt('+chainIndex+')');
 		var node = $(elem).find('.thenode').text();
 
 		$(nodes).animate({
@@ -78,6 +128,7 @@ $(document).ready(function() {
 			}
 		}
 
+
 		$.ajax({
 			url: '/search/modified',
 			type: 'get',
@@ -86,7 +137,7 @@ $(document).ready(function() {
 				s: alt,
 				e: data.end,
 				sl: 10,
-				nl: 10 - elem.index(),
+				nl: 10 - chainIndex,
 				as: allsynonyms
 			},
 			success: function(obj) {

@@ -369,13 +369,22 @@ select {
     position: relative;
     padding-right: 24px;
     width: 300px;
-    padding: 0.125em 0; }
+    padding: 0.125em 0;
+    background: white;
+    z-index: 2; }
   .node-wrap .alternate {
     display: inline-block;
     background: black;
     color: white;
     font-weight: 200;
     /* opacity: 0; */ }
+  .node-wrap .alt {
+    background: #C5C7C9;
+    color: white;
+    font-weight: 200;
+    display: inline-block;
+    padding: 0.125em;
+    z-index: 1; }
   .node-wrap:first-child, .node-wrap:last-child {
     padding: 0.25em 0;
     display: block;

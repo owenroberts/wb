@@ -363,6 +363,8 @@ select { margin:1em; }
 		padding-right:24px;
 		width:300px;
 		padding: 0.125em 0;
+		background: $white;
+		z-index:2;
 	}
 	.alternate { 
 		display:inline-block; 
@@ -370,6 +372,14 @@ select { margin:1em; }
 		color: $white;
 		font-weight:200;
 		/* opacity: 0; */
+	}
+	.alt {
+		background: $gray;
+		color: $white;
+		font-weight: 200;
+		display:inline-block;
+		padding: 0.125em;
+		z-index:1;
 	}
 	&:first-child, &:last-child {
 		padding:0.25em 0;

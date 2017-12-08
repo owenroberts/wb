@@ -43,8 +43,8 @@ $(document).ready( function() {
 		for (var h = 0; h < nodes.length; h++) {
 			innerWidth += $(nodes[h]).innerWidth();
 		}
-		$(inner).css({width:innerWidth});
-		$(dad).css({width:innerWidth + 48});
+		//$(inner).css({width:innerWidth});
+		//$(dad).css({width:innerWidth + 48});
 	}
 
 	// ** fade in ui ** //

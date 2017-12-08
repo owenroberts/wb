@@ -35,7 +35,7 @@ $(document).ready(function() {
 					msg += result.data[i].def;
 					msg += '<br><br>';
 				}
-				reportError(word, msg);
+				report(word, msg);
 			},
 		});
 	}
