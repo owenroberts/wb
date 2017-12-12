@@ -17,7 +17,7 @@ $(document).ready(function() {
 		$('.path-dot:nth-child('+(currentChain+1)+')').css({color:'black'});
 		if (next) setZIndex();
 		$('#paths').animate({
-			left: -window.innerWidth * currentChain
+			//left: -window.innerWidth * currentChain
 		}, fadeDur, function() {
 			if (!next) setZIndex();
 		});	
@@ -25,8 +25,8 @@ $(document).ready(function() {
 
 	var setZIndex = function() {
 		const paths = $('#paths').children();
-		paths.css({zIndex:1});
-		$(paths[currentChain]).css({zIndex:2});
+		paths.css({zIndex:1, opacity:0});
+		$(paths[currentChain]).css({zIndex:2, opacity: 1});
 	}
 
 	var switchPath = function() {
@@ -88,7 +88,10 @@ $(document).ready(function() {
 						}
 					} else {
 						const new_data = obj.data;
+						
+						/* need so save new chain data somewhere */
 						/* $('.plus').addClass('rotate'); */
+						
 						currentChain++;
 						chainCount++;
 
@@ -99,82 +102,49 @@ $(document).ready(function() {
 						$('.path-dot').css({color:'lightgray'});
 						newdot.css({color:'black'});
 
-						const newpath = $('<div>')
-							.attr({id:"path-" + currentChain})
-							.addClass('path')
-							.css({left: currentChain * window.innerWidth});
+						newpath = document.createElement("div");
+						newpath.classList.add('path');
+						newpath.id = "path-" + currentChain;
 						
-						const newnodes = $('<div>')
-							.addClass('nodes');
-						newpath.append(newnodes);
+						const nodes = document.createElement("div");
+						nodes.classList.add('nodes');
+						newpath.append(nodes);
 						
-						const startnodedad = $('<div>')
-							.addClass('node-wrap')
-							.text(new_data.start);
-						newnodes.append(startnodedad);
+						const startNode = document.createElement("div");
+						startNode.classList.add('node-wrap')
+						startNode.textContent = new_data.chain[0].word;
+						nodes.append(startNode);
 						
 						for (let i = 1; i < new_data.chain.length - 1; i++) {
-							const node = new_data.chain[i];
-							const anewnodedad = $('<div>')
-								.addClass('node-wrap');
-							let innerwidth = 0;
-							newnodes.append(anewnodedad);
-							const innernodes = $('<div>')
-								.addClass('inner-nodes');
-							anewnodedad.append(innernodes);
+							const newnodedad = document.createElement("div");
+							newnodedad.classList.add('node-wrap');
+							newnodedad.dataset.index = i;
+							nodes.append(newnodedad);
 
-							//console.log(i, (i > new_data.chain.length/2 ? 1 : -1))
+							setTimeout( function() {
+								$(newnodedad).fadeIn(fadeDur);
+							}, i * fadeDur);
+
 							let index = i > new_data.chain.length/2 ? 1 : -1;
-							let syns = new_data.chain[i + index].synonyms;
-							let nodeOffset = -1;
+							const syns = new_data.chain[i + index].synonyms;
+							let newsynnode = document.createElement("div")
+							newsynnode.classList.add('node')
+							newsynnode.textContent = new_data.chain[i].word;
 							for (var h = 0; h < syns.length; h++) {
-								innerwidth += window.innerWidth;
-								let newsynnode = $('<div>')
-									.addClass('node')
-									.text(syns[h].word);
-								if (syns[h].word != new_data.chain[i].word) {
-									newsynnode.addClass('alternate');
-								} else {
-									newsynnode.addClass('thenode');
-									nodeOffset = h;
-								}
-								innernodes.append(newsynnode);
+								if (syns[h].word == new_data.chain[i].word) {
+									newsynnode.dataset.index = h;
+								} 
 							}
-							innernodes.css({left: -nodeOffset * 300});
-							innernodes.css({width:innerwidth});
-							anewnodedad.css({width:innerwidth + 48});
+							newnodedad.appendChild(newsynnode);
 						}
-						var endnodedad = $('<div>')
-							.addClass('node-wrap')
-							.text(new_data.end);
-						newnodes.append(endnodedad);
+						const endNode = document.createElement("div");
+						endNode.classList.add('node-wrap')
+						endNode.textContent = new_data.chain[new_data.chain.length - 1].word;
+						nodes.append(endNode);
 						$('#paths').append(newpath);
-						newpath.find('.nodes').each( function() {
-							var nodes = $(this).find('.node-wrap');
-							for (var i = 0; i < nodes.length; i++) {
-								var showNode = function(num) {
-									setTimeout( function() {
-										$(nodes[num]).fadeIn(fadeDur);
-									}, num * fadeDur);
-								}(i);
-							}
-						});
-
-
-						newpath.find('.inner-nodes').each( function() {
-							var i = $(this).find('.thenode').index();
-							$(this).animate({
-								left: -300 * i
-							}, fadeDur);
-						});
 
 						
-						$('.path-dots').slideDown(fadeDur, function() {
-							$('#paths').animate({
-								left: -currentChain * window.innerWidth
-							}, fadeDur);
-						});
-
+						$('.path-dots').slideDown(fadeDur);
 						setPathDots(true);
 					}
 				}

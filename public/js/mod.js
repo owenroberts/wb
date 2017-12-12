@@ -170,8 +170,6 @@ $(document).ready(function() {
 						newnodedad.dataset.index = chainIndex + i;
 						const index = i > new_data.chain.length/2 ? 1 : -1;
 						const syns = new_data.chain[i + index].synonyms;
-
-
 						let newsynnode = document.createElement("div")
 						newsynnode.classList.add('node');
 						for (let h = 0; h < syns.length; h++) {
