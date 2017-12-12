@@ -16,7 +16,7 @@ $(document).ready(function() {
 			synonym = data.start;
 		} else {
 			var prev = parent.previousSibling;
-			synonym = $(prev).find('.thenode').text();
+			synonym = $(prev).find('.node').text();
 		}
 		
 		$.ajax({

@@ -52,14 +52,6 @@ $(document).ready( function() {
 		opacity: 1
 	}, fadeDur*2);
 
-	// ** move nodes to "thenode" //
-	$('.inner-nodes').each( function() {
-		var i = $(this).find('.thenode').index();
-		$(this).animate({
-			left: -300 * i
-		}, fadeDur);
-	});
-
 	// ** animate nodes on load ** //
 	$('.path:first-child .nodes').each( function() {
 		for (let i = 0; i < nodedads.length; i++) {
