@@ -21,11 +21,13 @@ $(document).ready(function() {
 			const leftWord = document.createElement("div");
 			leftWord.classList.add("alt", "left");
 			leftWord.textContent = left;
+			leftWord.dataset.index = i - 1;
 			this.parentNode.insertBefore(leftWord, this);
 
 			const rightWord = document.createElement("div");
 			rightWord.classList.add("alt", "right");
 			rightWord.textContent = right;
+			rightWord.dataset.index = i + 1;
 			this.parentNode.appendChild(rightWord);
 		},
 		drag: function(event, ui) {
@@ -125,15 +127,12 @@ $(document).ready(function() {
 					var option = "Try swiping back to the previous synonym, or forward to the next.";
 					report(err + "<br><br>" + option);
 					/* set node back to original */
-					elem.textContent = word;
-					elem.dataset.index = prevIndex;
+						//elem.textContent = word;
+						//elem.dataset.index = prevIndex;
+					/* don't need word or prevIndex if not setting back to original */
+					elem.classList.add("mod-error", "node");
 					noTouching = false;
 					$('.ldrimg').remove();
-					for (let i = chainIndex; i < nodes.length; i++) {
-						$(nodes[i]).animate({
-							opacity: 1
-						}, fadeDur/2);
-					}
 				} else {
 					const new_data = obj.data;
 					/* modify main chain data */
