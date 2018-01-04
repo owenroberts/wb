@@ -1,23 +1,10 @@
 $(document).ready(function() {
 	// ** get def ** 
-	function loadDef(e, word) {
-		e.preventDefault();
-		var parent;
-		var synonym;
-		if (word == data.end) {
-			parent = e.currentTarget;
-		} else if (word == data.start) {
-			synonym = null;
-		} else {
-			parent = e.currentTarget.parentNode.parentNode;
-		}
-		var i = $(parent).index();			
-		if (i == 1) {
-			synonym = data.start;
-		} else {
-			var prev = parent.previousSibling;
-			synonym = $(prev).find('.node').text();
-		}
+	function loadDef(ev, elem) {
+		ev.preventDefault();
+		const word = elem.textContent;
+		const index = +elem.dataset.index;
+		const synonym = window.data.chain[index-1].word;
 		
 		$.ajax({
 			url: '/def',
@@ -42,6 +29,6 @@ $(document).ready(function() {
 	}
 
 	/* def events */
-	$('body').on('dblclick','.node', function(e) { loadDef(e, this.innerHTML); });
-	$('body').on('doubletap','.node', function(e) { loadDef(e, this.innerHTML); });
+	$('body').on('dblclick','.node', function(ev) { loadDef(ev, this); });
+	$('body').on('doubletap','.node', function(ev) { loadDef(ev, this); });
 });
