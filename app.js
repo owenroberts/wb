@@ -11,20 +11,16 @@ const express = require('express')
 	,	url = require('url')
 	,	handlebars = require("express-handlebars")
 	;
-var app = express();
-var cache = new NodeCache();
+const app = express();
+const cache = new NodeCache();
 cache.set("tooltips", false);
 
-var hbs = handlebars.create({
-	// Specify helpers which are only registered on this instance.
-	defaultLayout: 'main',
-    helpers: {
-    	setLength: function(len) {
-    		hbs.dataLen = len;
-    	},
-    	getSyns: function(index) {
-    		console.log(index, hbs.dataLen);
-    	}
+const hbs = handlebars.create({
+	defaultLayout: "main",
+	helpers: {
+		json: function(content) {
+			return JSON.stringify(content);
+		}
 	}
 });
 
@@ -41,7 +37,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res) {
-	var err;
+	let err;
 	if (req.query.err instanceof Array) 
 		err = req.query.err[req.query.err.length - 1];
 	else err = req.query.err;
