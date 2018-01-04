@@ -2,7 +2,7 @@
 <div id="about">
 	<div class="msg">
 		<div class="text">Synomap is ...</div>
-		<div class="btn">Play with tooltips again</div>
+		<div class="btn" id="tooltips">Play with tooltips again</div>
 		<div class="dismiss">
 			<img src="/img/dismiss.svg" alt="">
 		</div>
@@ -44,10 +44,20 @@
 	let termsEntered = [false, false];
 
 	$('#aboutBtn').on('click', function() {
-		console.log(this)
 		$('#about').fadeToggle();
 		$('#about').on('click', function() {
 			$('#about').fadeOut();
+		});
+	});
+
+	$('#tooltips').on('click', function() {
+		$.ajax({
+			url: '/resettips',
+			type: 'get',
+			dataType:'json',
+			success: function(result) {
+				console.log(result.data);
+			},
 		});
 	});
 

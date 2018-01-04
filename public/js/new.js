@@ -2,6 +2,10 @@ $(document).ready(function() {
 	
 	function getNewPath(ev) {
 		ev.stopPropagation();
+		
+		if (window.tooltips) 
+			$('#report').trigger('click');
+
 		if (!noMorePaths) {
 			$('#newpathloader').fadeIn(fadeDur);
 			/* $('.plus').removeClass('rotate'); */
@@ -152,5 +156,4 @@ $(document).ready(function() {
 		}				
 	}
 	$('.plus').on('click', getNewPath);
-
 });

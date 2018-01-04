@@ -2,7 +2,7 @@ $(document).ready(function() {
 	// ** get def ** 
 	function loadDef(ev, elem) {
 		ev.preventDefault();
-		const word = elem.textContent;
+		const word = elem.textContent.trim();
 		const index = +elem.dataset.index;
 		const synonym = window.data.chain[index-1].word;
 		

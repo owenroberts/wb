@@ -12,7 +12,7 @@ $(document).ready( function() {
 	qstrings.push(data.queryString);
 	$('#newpathloader').fadeOut(fadeDur);
 
-	window.report = function(msg, ok, callback) {
+	window.report = function(msg, ok, callback, dismissback) {
 		$('#report').fadeIn();
 		$('#report .msg').scrollTop(0);
 		$('#report .text').html(msg);
@@ -24,9 +24,10 @@ $(document).ready( function() {
 			$('.btn').css("display", "none");
 		}
 		$('#report').on('click', function() {
-			$('header').removeClass("tip");
 			$('#report').fadeOut();
 			$('body').css({overflow:"auto"});
+			if (dismissback) dismissback();
+			$('#report').off();
 		});
 	}
 
@@ -45,10 +46,31 @@ $(document).ready( function() {
 			var showNode = function(num) {
 				setTimeout( function() {
 					$(nodedads[num]).fadeIn(fadeDur);
-					if (num == nodedads.length - 1) {
-						if (tooltips) {
+					if (num == nodedads.length - 1) {  // last one 
+						if (!window.tooltips.plus) {
 							$('header').addClass("tip");
-							report( "Make more paths between your words " + data.start + " & " + data.end)
+							document.getElementById("plusbkg").classList.add("tip");
+							report( "Make more paths between your words " + data.start + " & " + data.end, null, null, function() {
+								$('header').removeClass("tip");
+								document.getElementById("plusbkg").classList.remove("tip");
+								$.ajax({
+									url: '/tips',
+									type: 'get',
+									dataType:'json',
+									data: {
+										tip: "plus"
+									},
+									success: function(result) {
+										console.log(result.data);
+									},
+								});
+								setTimeout(() => {
+									window.report("Swipe words left or right to try alternate paths.", null, null, function() {
+										$('#report').removeClass('swipe');
+									});
+									$('#report').addClass('swipe');
+								}, 1000);
+							});
 						}
 					}
 				}, num*fadeDur);

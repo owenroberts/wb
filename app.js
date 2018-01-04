@@ -13,7 +13,14 @@ const express = require('express')
 	;
 const app = express();
 const cache = new NodeCache();
-cache.set("tooltips", false);
+const tips = {
+	plus: false,
+	mod: false
+}
+const cachedTips = cache.get("tips");
+if (!cachedTips) {
+	cache.set("tips", tips);
+}
 
 const hbs = handlebars.create({
 	defaultLayout: "main",
@@ -46,8 +53,6 @@ app.get('/', function(req, res) {
 	});
 });
 
-
-
 app.get('/search', function(req, res) {
 	/* loadChain for production, makeChain to skip db/cache */
 	makeChain(req, function(result) {
@@ -61,10 +66,23 @@ app.get('/search', function(req, res) {
 		} else {
 			res.render('search', { 
 				data: result,
-				tooltips: true //cache.get("tooltips")
+				tips: cache.get("tips")
 			});
 		}
 	});
+});
+
+app.get('/resettips', function(req, res) {
+	tips.plus = false;
+	tips.mod = false;
+	cache.set("tips", tips);
+	res.json({ data: "success" });
+});
+
+app.get('/tips', function(req, res) {
+	tips[req.query.tip] = true;
+	cache.set("tips", tips);
+	res.json({ data: "success" });
 });
 
 app.get('/search/add', function(req, res) {

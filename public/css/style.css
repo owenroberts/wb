@@ -180,7 +180,11 @@ header {
     z-index: -1; }
   header .home, header .share, header .plus {
     display: inline-block;
-    width: calc(100% / 3); }
+    width: calc(100%/3 - 6px); }
+  header #plusbkg {
+    transition: fill 500ms; }
+    header #plusbkg.tip {
+      fill: white; }
   header .home {
     text-align: left; }
   header .plus {
@@ -229,6 +233,10 @@ header {
 
 .slidedown {
   display: none; }
+
+#report.swipe {
+  margin-top: 0;
+  top: 168px; }
 
 #error, #about, .definition, .sharemenu, #report {
   display: none;

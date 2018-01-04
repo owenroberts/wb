@@ -36,14 +36,14 @@ $(document).ready(function() {
 			const offset = this.offsetLeft;
 			this.offset = offset; /* save offset for stop function */
 			if (offset > 0) {
-				const left = this.previousSibling;
+				const left = this.previousElementSibling;
 				if (offset > left.clientWidth * 3/4 && left.textContent != "x") {
 					left.classList.add("active");
 				} else {
 					left.classList.remove("active");
 				}
 			} else {
-				const right = this.nextSibling;
+				const right = this.nextElementSibling;
 				if (Math.abs(offset) > right.clientWidth * 3/4 && right.textContent != "x") {
 					right.classList.add("active");
 				} else {
@@ -53,8 +53,8 @@ $(document).ready(function() {
 		},
 		stop: function(event, ui) {
 			/* remove the dragged node, made the new node the main node, search for new chain */
-			const left = this.previousSibling;
-			const right = this.nextSibling;
+			const left = this.previousElementSibling;
+			const right = this.nextElementSibling;
 			if (this.offset > 0) {
 				if (this.offset > left.clientWidth * 3/4 && left.textContent != "x") {
 					left.classList.add("node");
