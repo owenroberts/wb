@@ -118,7 +118,10 @@ input:focus {
     border-radius: 0;
     border: none;
     color: #C5C7C9;
-    font-size: 16px; }
+    font-size: 16px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none; }
   .index input:focus {
     background: #C5C7C9;
     color: black; }
