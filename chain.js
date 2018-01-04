@@ -59,7 +59,31 @@ function makeChain(query, allSynonyms, callback) {
 					for (let h = endChain.length-1; h >= 0; h--) {
 						startCopy.push( endChain[h] );
 					}
-					callback(null, startCopy);
+
+					/* prepare the data for front end */
+					const chain = [];
+					chain[0] = { word: startWord };
+					chain[startCopy.length - 1] = { word: endWord };
+					let nextIndex = -1;
+					for (let h = 1; h < startCopy.length - 1; h++) {
+						chain[h] = {};
+						chain[h].word = startCopy[h].word;
+						chain[h].alts = [];
+						const alts = startCopy[h + (h > (startCopy.length)/2 ? 1 : -1)].synonyms;
+						for (let j = 0; j < alts.length; j++) {
+							// syndex is the synonym level
+							if (alts[j].word == chain[h].word) {
+								chain[h].syndex = j;
+							} else {
+								chain[h].alts.push({
+									word: alts[j].word,
+									syndex: j
+								});
+							}
+						}
+					}
+					//console.log(chain);
+					callback(null, chain);
 				} else if (startChain.length + endChain.length < currentNodeNumber - 1 && !foundChain) {
 					let endCopy = endChain.slice(0);
 					endCopy.push(endSyn);
