@@ -29,7 +29,7 @@ $(document).ready(function() {
 			},
 			success: function(result) {
 				var msg = "";
-				msg += word + "<br><br>"
+				msg += "<strong>" + word + "</strong><br><br>"
 				for (let i = 0; i < result.data.length; i++) {
 					msg += parts[result.data[i].pos];
 					msg += '<br>';
@@ -43,5 +43,5 @@ $(document).ready(function() {
 
 	/* def events */
 	$('body').on('dblclick','.node', function(e) { loadDef(e, this.innerHTML); });
-	$('body').on('tap','.node', function(e) { loadDef(e, this.innerHTML); });
+	$('body').on('doubletap','.node', function(e) { loadDef(e, this.innerHTML); });
 });

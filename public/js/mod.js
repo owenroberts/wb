@@ -8,26 +8,28 @@ $(document).ready(function() {
 		start: function(event, ui) {
 			/* get prev and next synonym from word in prev word synonyms */
 			const word = this.textContent;
-			const i = +this.dataset.index;
-			const offset = +this.parentNode.dataset.index > (data.chain.length/2) ? 1 : -1; /* flip middle of chain */
-			const index = +this.parentNode.dataset.index + offset;
-			const syns = data.chain[index].synonyms;
-
+			const syndex = +this.dataset.syndex; // synonym level of word
+			const index = +this.dataset.index; // index in chain
+			const alts = data.chain[index].alts;
+			console.log(data.chain[index]);
+			
 			/* if not there just x for now */
-			const left = i > 0 ? syns[i-1].word : "x";
-			const right = i < syns.length - 1 ? syns[i+1].word : "x";
+			const left = syndex > 0 ? alts[syndex - 1].word : "x";
+			const right = syndex < alts.length - 1 ? alts[syndex + 1].word : "x";
 
 			/* add left and right words below the node */
 			const leftWord = document.createElement("div");
 			leftWord.classList.add("alt", "left");
 			leftWord.textContent = left;
-			leftWord.dataset.index = i - 1;
+			leftWord.dataset.syndex = syndex - 1;
+			leftWord.dataset.index = index;
 			this.parentNode.insertBefore(leftWord, this);
 
 			const rightWord = document.createElement("div");
 			rightWord.classList.add("alt", "right");
 			rightWord.textContent = right;
-			rightWord.dataset.index = i + 1;
+			rightWord.dataset.syndex = syndex + 1;
+			rightWord.dataset.index = index;
 			this.parentNode.appendChild(rightWord);
 		},
 		drag: function(event, ui) {
@@ -87,8 +89,9 @@ $(document).ready(function() {
 
 	// ** modify chain ** //
 	function modifyChain(elem, alt, word, prevIndex) {
+
 		var nodeIndex = +elem.dataset.index;
-		var chainIndex = +elem.parentNode.dataset.index;
+		var chainIndex = +elem.dataset.index;
 		var nodes = elem.parentNode.parentNode.children;
 
 		/* hide other nodes */
@@ -101,10 +104,11 @@ $(document).ready(function() {
 
 		/* get all syns for new chain algorithm */
 		var allsynonyms = [data.start];
-		for (let i = 0; i < chainIndex - 1; i++) {
-			if (data.chain[i].synonyms) {
-				for (var j = 0; j < data.chain[i].synonyms.length; j++) {
-					allsynonyms.push(data.chain[i].synonyms[j].word);
+		console.log(chainIndex);
+		for (let i = 0; i < chainIndex; i++) {
+			if (data.chain[i].alts) {
+				for (var j = 0; j < data.chain[i].alts.length; j++) {
+					allsynonyms.push(data.chain[i].alts[j].word);
 				}
 			}
 		}
@@ -136,7 +140,7 @@ $(document).ready(function() {
 				} else {
 					const new_data = obj.data;
 					/* modify main chain data */
-					for (var i = chainIndex; i < data.chain.length; i++) {
+					for (var i = chainIndex + 1; i < data.chain.length; i++) {
 						data.chain[i] = new_data.chain[i - chainIndex];
 					}
 
@@ -166,16 +170,11 @@ $(document).ready(function() {
 					for (let i = 1; i < new_data.chain.length - 1; i++) {
 						const newnodedad = document.createElement("div")
 						newnodedad.classList.add('node-wrap');
-						newnodedad.dataset.index = chainIndex + i;
-						const index = i > new_data.chain.length/2 ? 1 : -1;
-						const syns = new_data.chain[i + index].synonyms;
-						let newsynnode = document.createElement("div")
+						const newsynnode = document.createElement("div")
 						newsynnode.classList.add('node');
-						for (let h = 0; h < syns.length; h++) {
-							if (syns[h].word == new_data.chain[i].word) 
-								newsynnode.dataset.index = h;
-						}
+						newsynnode.dataset.index = chainIndex + i;
 						newsynnode.textContent = new_data.chain[i].word;
+						newsynnode.dataset.syndex = new_data.chain[i].syndex;
 						newnodedad.appendChild(newsynnode);
 						elem.parentNode.parentNode.insertBefore(newnodedad, elem.parentNode.parentNode.lastChild);
 						$(newnodedad).delay(i * fadeDur/2 + waitTime + fadeDur/2).fadeIn(fadeDur);

@@ -33,6 +33,14 @@ later
 - can't take error messages out of url 
 
 9.1.2017
-- can't always reverse engineer synonyms because some hypernyms dont' have their hyponym as synonym
+- can't always reverse engineer synonyms because some hypernyms don't have their hyponym as synonym
 - going to serve all results if no matches
 - related to sub chains - need to separate loadChain and makeChain so we can distinguish between them, need to use some kind of indexing to make this easier
+
+1.3.2018
+- where did i leave off? need to take better notes
+- decide how to prep data
+- implement tooltips
+- have to clean the mongo database (back up?)
+- need to add multiple path data to global data values  // do this after sharing new version
+- modifying modifieds?

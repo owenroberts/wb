@@ -74,12 +74,11 @@ function makeChain(query, allSynonyms, callback) {
 							// syndex is the synonym level
 							if (alts[j].word == chain[h].word) {
 								chain[h].syndex = j;
-							} else {
-								chain[h].alts.push({
-									word: alts[j].word,
-									syndex: j
-								});
 							}
+							chain[h].alts.push({
+								word: alts[j].word,
+								syndex: j // maybe don't need
+							});
 						}
 					}
 					//console.log(chain);

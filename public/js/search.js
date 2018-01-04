@@ -33,26 +33,13 @@ $(document).ready( function() {
 	if (data.error) 
 		report(data.error);
 
-	// ** inner nodes, matching container width ** //
-	const nodedads = $('.node-wrap');
-	for (var i = 1; i < nodedads.length - 1; i++) {
-		const dad = nodedads[i];
-		const inner = $(dad).find('.inner-nodes');
-		let innerWidth = 0;
-		const nodes = $(inner).find('.node');
-		for (var h = 0; h < nodes.length; h++) {
-			innerWidth += $(nodes[h]).innerWidth();
-		}
-		//$(inner).css({width:innerWidth});
-		//$(dad).css({width:innerWidth + 48});
-	}
-
 	// ** fade in ui ** //
 	$('.fadein').animate({
 		opacity: 1
 	}, fadeDur*2);
 
 	// ** animate nodes on load ** //
+	const nodedads = $('.node-wrap');
 	$('.path:first-child .nodes').each( function() {
 		for (let i = 0; i < nodedads.length; i++) {
 			var showNode = function(num) {
