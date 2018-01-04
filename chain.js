@@ -75,10 +75,7 @@ function makeChain(query, allSynonyms, callback) {
 							if (alts[j].word == chain[h].word) {
 								chain[h].syndex = j;
 							}
-							chain[h].alts.push({
-								word: alts[j].word,
-								syndex: j // maybe don't need
-							});
+							chain[h].alts.push(alts[j].word);
 						}
 					}
 					//console.log(chain);

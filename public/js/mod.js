@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
 	/* drag nodes to modify chain */
-	const dragParams = {
+	window.dragParams = {
 		axis: 'x',
 		distance: 1,
 		containment: [-100, 0, 100, 0], /* 100 is hardcoded prob needs to be updated */
@@ -11,11 +11,10 @@ $(document).ready(function() {
 			const syndex = +this.dataset.syndex; // synonym level of word
 			const index = +this.dataset.index; // index in chain
 			const alts = data.chain[index].alts;
-			console.log(data.chain[index]);
 			
 			/* if not there just x for now */
-			const left = syndex > 0 ? alts[syndex - 1].word : "x";
-			const right = syndex < alts.length - 1 ? alts[syndex + 1].word : "x";
+			const left = syndex > 0 ? alts[syndex - 1] : "x";
+			const right = syndex < alts.length - 1 ? alts[syndex + 1] : "x";
 
 			/* add left and right words below the node */
 			const leftWord = document.createElement("div");
@@ -104,11 +103,10 @@ $(document).ready(function() {
 
 		/* get all syns for new chain algorithm */
 		var allsynonyms = [data.start];
-		console.log(chainIndex);
 		for (let i = 0; i < chainIndex; i++) {
 			if (data.chain[i].alts) {
 				for (var j = 0; j < data.chain[i].alts.length; j++) {
-					allsynonyms.push(data.chain[i].alts[j].word);
+					allsynonyms.push(data.chain[i].alts[j]);
 				}
 			}
 		}
@@ -170,13 +168,16 @@ $(document).ready(function() {
 					for (let i = 1; i < new_data.chain.length - 1; i++) {
 						const newnodedad = document.createElement("div")
 						newnodedad.classList.add('node-wrap');
+
 						const newsynnode = document.createElement("div")
 						newsynnode.classList.add('node');
 						newsynnode.dataset.index = chainIndex + i;
 						newsynnode.textContent = new_data.chain[i].word;
 						newsynnode.dataset.syndex = new_data.chain[i].syndex;
+						
 						newnodedad.appendChild(newsynnode);
 						elem.parentNode.parentNode.insertBefore(newnodedad, elem.parentNode.parentNode.lastChild);
+						
 						$(newnodedad).delay(i * fadeDur/2 + waitTime + fadeDur/2).fadeIn(fadeDur);
 					}
 					

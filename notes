@@ -43,4 +43,8 @@ later
 - implement tooltips
 - have to clean the mongo database (back up?)
 - need to add multiple path data to global data values  // do this after sharing new version
-- modifying modifieds?
+- alts just an array...
+
+1.4.2017
+- mod new chains? works not but might be crap
+- attaching all this stuff to window, maybe use an object??

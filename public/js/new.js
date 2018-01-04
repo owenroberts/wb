@@ -125,16 +125,12 @@ $(document).ready(function() {
 								$(newnodedad).fadeIn(fadeDur);
 							}, i * fadeDur);
 
-							let index = i > new_data.chain.length/2 ? 1 : -1;
-							const syns = new_data.chain[i + index].synonyms;
 							let newsynnode = document.createElement("div")
-							newsynnode.classList.add('node')
+							newsynnode.classList.add('node');
+							newsynnode.dataset.index = i;
 							newsynnode.textContent = new_data.chain[i].word;
-							for (var h = 0; h < syns.length; h++) {
-								if (syns[h].word == new_data.chain[i].word) {
-									newsynnode.dataset.index = h;
-								} 
-							}
+							newsynnode.dataset.syndex = new_data.chain[i].syndex;
+							
 							newnodedad.appendChild(newsynnode);
 						}
 						const endNode = document.createElement("div");
@@ -147,6 +143,7 @@ $(document).ready(function() {
 						$('.path-dots').slideDown(fadeDur);
 						setPathDots(true);
 					}
+					$('.node').draggable(window.dragParams); 
 				}
 			});
 		} else {
