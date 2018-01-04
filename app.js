@@ -51,7 +51,7 @@ app.get('/search', function(req, res) {
 		} else {
 			res.render('search', { 
 				data: result,
-				tooltips: cache.get("tooltips")
+				tooltips: true //cache.get("tooltips")
 			});
 		}
 	});
