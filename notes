@@ -49,5 +49,5 @@ later
 - mod new chains? works not but might be crap
 - attaching all this stuff to window, maybe use an object??
 - mobile def scrolling
-- did the two word thing disappear?
+- did the two word thing disappear? - not working because bypassing make query string, does need to be fixed
 - share is broken
