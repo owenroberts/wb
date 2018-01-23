@@ -47,30 +47,24 @@ $(document).ready( function() {
 				setTimeout( function() {
 					$(nodedads[num]).fadeIn(fadeDur);
 					if (num == nodedads.length - 1) {  // last one 
-						if (!window.tooltips.plus) {
-							$('header').addClass("tip");
-							document.getElementById("plusbkg").classList.add("tip");
-							report( "Make more paths between your words " + data.start + " & " + data.end, null, null, function() {
-								$('header').removeClass("tip");
-								document.getElementById("plusbkg").classList.remove("tip");
-								$.ajax({
-									url: '/tips',
-									type: 'get',
-									dataType:'json',
-									data: {
-										tip: "plus"
-									},
-									success: function(result) {
-										console.log(result.data);
-									},
-								});
-								setTimeout(() => {
-									window.report("Swipe words left or right to try alternate paths.", null, null, function() {
-										$('#report').removeClass('swipe');
-									});
-									$('#report').addClass('swipe');
-								}, 1000);
-							});
+						if (!window.tooltips) {
+							
+							
+							// report( "Make more paths between your words " + data.start + " & " + data.end, null, null, function() {
+							// 	$('header').removeClass("tip");
+							// 	document.getElementById("plusbkg").classList.remove("tip");
+							// 	$.ajax({
+							// 		url: '/tips',
+							// 		type: 'get',
+							// 		dataType:'json',
+							// 		data: {
+							// 			tip: true
+							// 		},
+							// 		success: function(result) {
+							// 			console.log(result.data);
+							// 		},
+							// 	});
+							// });
 						}
 					}
 				}, num*fadeDur);

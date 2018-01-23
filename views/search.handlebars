@@ -34,13 +34,20 @@
 	
 	<div id="report">
 		<div class="msg">
-			
 			<div class="text"></div>
 			<div class="btn"></div>
 			<div class="dismiss">
 				<img src="/img/dismiss.svg" alt="">
 			</div>
 		</div>
+	</div>
+
+	<div id="tooltips">
+		<div id="count">1/3</div>
+		<div id="tip_one">Swipe words to play with the bridge.</div>
+		<div id="tip_two">Tap words to see their definition.</div>
+		<div id="tip_three">Make new paths with your bridge words.</div>
+		<div id="next_btn">NEXT</div>
 	</div>
 
 	<div class="path-dots slidedown pathdotcontainer">
@@ -50,6 +57,7 @@
 	</div>
 
 	<div id="paths">
+
 		<div class="path" id="path-0">
 			<div class="nodes">
 				{{#each data.chain}}

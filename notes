@@ -51,3 +51,6 @@ later
 - mobile def scrolling
 - did the two word thing disappear? - not working because bypassing make query string, does need to be fixed
 - share is broken
+
+1.15.2018
+- low priority - if the mod chain doesn't work, give the option to jump out to try the new chain

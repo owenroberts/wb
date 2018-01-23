@@ -11,12 +11,10 @@ const express = require('express')
 	,	url = require('url')
 	,	handlebars = require("express-handlebars")
 	;
+
 const app = express();
 const cache = new NodeCache();
-const tips = {
-	plus: false,
-	mod: false
-}
+const tips = true;
 const cachedTips = cache.get("tips");
 if (!cachedTips) {
 	cache.set("tips", tips);
@@ -73,15 +71,12 @@ app.get('/search', function(req, res) {
 });
 
 app.get('/resettips', function(req, res) {
-	tips.plus = false;
-	tips.mod = false;
-	cache.set("tips", tips);
+	cache.set("tips", true);
 	res.json({ data: "success" });
 });
 
 app.get('/tips', function(req, res) {
-	tips[req.query.tip] = true;
-	cache.set("tips", tips);
+	cache.set("tips", false);
 	res.json({ data: "success" });
 });
 

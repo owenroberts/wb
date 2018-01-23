@@ -93,6 +93,33 @@ hr {
 input:focus {
   outline: none; }
 
+input {
+  border: none;
+  font-weight: 500; }
+
+svg.stroke * {
+  transition: stroke 500ms; }
+svg.stroke:hover * {
+  stroke: black; }
+
+svg.fill path {
+  transition: fill 500ms; }
+svg.fill:hover path {
+  fill: black; }
+
+a:hover {
+  cursor: pointer;
+  color: black; }
+
+select {
+  margin: 1em; }
+
+.ldr {
+  font-size: 20px;
+  display: none; }
+  .ldr img {
+    width: 40px; }
+
 .index {
   margin-top: 60px;
   padding: 8px; }
@@ -126,23 +153,8 @@ input:focus {
     background: #C5C7C9;
     color: black; }
 
-input {
-  border: none;
-  font-weight: 500; }
-
-svg.stroke * {
-  transition: stroke 500ms; }
-svg.stroke:hover * {
-  stroke: black; }
-
-svg.fill path {
-  transition: fill 500ms; }
-svg.fill:hover path {
-  fill: black; }
-
-a:hover {
-  cursor: pointer;
-  color: black; }
+.fadein {
+  opacity: 0; }
 
 #main {
   position: absolute;
@@ -153,8 +165,7 @@ a:hover {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   background-color: white;
-  z-index: -3;
-  /* margin-bottom:128px; */ }
+  z-index: -3; }
 
 header {
   padding-bottom: 0;
@@ -195,24 +206,6 @@ header {
   header .share {
     text-align: right; }
 
-.rotate {
-  -webkit-animation: roll 2s 1;
-  animation: roll 3s 1; }
-
-@-webkit-keyframes roll {
-  0% {
-    -webkit-transform: rotate(0);
-    transform: rotate(0); }
-  100% {
-    -webkit-transform: rotate(180deg);
-    transform: rotate(180deg); } }
-@keyframes roll {
-  0% {
-    -webkit-transform: rotate(0);
-    transform: rotate(0); }
-  100% {
-    -webkit-transform: rotate(180deg);
-    transform: rotate(180deg); } }
 .path-dots {
   text-align: center;
   height: 50px;
@@ -237,95 +230,7 @@ header {
 .slidedown {
   display: none; }
 
-#report.swipe {
-  margin-top: 0;
-  top: 168px; }
-
-#error, #about, .definition, .sharemenu, #report {
-  display: none;
-  position: fixed;
-  font-weight: 100;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.95);
-  padding: 32px;
-  z-index: 3;
-  font-size: 20px;
-  line-height: 1.45;
-  margin-top: 48px;
-  overflow-y: scroll; }
-  #error .msg, #about .msg, .definition .msg, .sharemenu .msg, #report .msg {
-    color: white;
-    overflow-y: scroll;
-    text-align: center; }
-    #error .msg::-webkit-scrollbar, #about .msg::-webkit-scrollbar, .definition .msg::-webkit-scrollbar, .sharemenu .msg::-webkit-scrollbar, #report .msg::-webkit-scrollbar {
-      width: 0.25em; }
-    #error .msg::-webkit-scrollbar-thumb, #about .msg::-webkit-scrollbar-thumb, .definition .msg::-webkit-scrollbar-thumb, .sharemenu .msg::-webkit-scrollbar-thumb, #report .msg::-webkit-scrollbar-thumb {
-      background-color: #6a75ff;
-      border-radius: 0.5em; }
-    #error .msg .text, #about .msg .text, .definition .msg .text, .sharemenu .msg .text, #report .msg .text {
-      /* margin-top: 2em; */ }
-    #error .msg .btn, #about .msg .btn, .definition .msg .btn, .sharemenu .msg .btn, #report .msg .btn {
-      border: 1px solid white;
-      padding: 8px;
-      border-radius: 3px;
-      font-size: 0.75em;
-      text-align: center;
-      width: 200px;
-      margin: 2em auto; }
-      #error .msg .btn:active, #about .msg .btn:active, .definition .msg .btn:active, .sharemenu .msg .btn:active, #report .msg .btn:active {
-        background: white;
-        color: black; }
-    #error .msg .dismiss, #about .msg .dismiss, .definition .msg .dismiss, .sharemenu .msg .dismiss, #report .msg .dismiss {
-      margin-top: 2em; }
-    #error .msg .word, #about .msg .word, .definition .msg .word, .sharemenu .msg .word, #report .msg .word {
-      text-transform: capitalize; }
-    #error .msg .pos, #about .msg .pos, .definition .msg .pos, .sharemenu .msg .pos, #report .msg .pos {
-      margin-bottom: 1em; }
-      #error .msg .pos::after, #about .msg .pos::after, .definition .msg .pos::after, .sharemenu .msg .pos::after, #report .msg .pos::after {
-        content: "."; }
-    #error .msg .sorry, #about .msg .sorry, .definition .msg .sorry, .sharemenu .msg .sorry, #report .msg .sorry {
-      margin-bottom: 1em; }
-    #error .msg .ok, #about .msg .ok, .definition .msg .ok, .sharemenu .msg .ok, #report .msg .ok {
-      color: #6a75ff;
-      margin-top: 1.25em;
-      /* border-top: 1px solid $black; */
-      cursor: pointer;
-      text-align: center; }
-    #error .msg .sh, #about .msg .sh, .definition .msg .sh, .sharemenu .msg .sh, #report .msg .sh {
-      color: #6a75ff;
-      margin: 0.5em 0; }
-    #error .msg p, #about .msg p, .definition .msg p, .sharemenu .msg p, #report .msg p {
-      margin: 0.2em 0; }
-    #error .msg #tooltips, #about .msg #tooltips, .definition .msg #tooltips, .sharemenu .msg #tooltips, #report .msg #tooltips {
-      border: 1px solid white;
-      position: absolute;
-      bottom: 2em;
-      border-radius: 3px;
-      padding: 8px;
-      font-size: 0.75em;
-      left: 0;
-      right: 0;
-      margin: 0 20%;
-      text-align: center; }
-
-.ldr {
-  font-size: 20px;
-  display: none; }
-  .ldr img {
-    width: 40px; }
-
-select {
-  margin: 1em; }
-
-/*  results page */
-.fadein {
-  opacity: 0; }
-
 #newpathloader {
-  /* display:none; */
   position: fixed;
   top: 0;
   left: 0;
@@ -403,8 +308,7 @@ select {
     display: inline-block;
     background: black;
     color: white;
-    font-weight: 200;
-    /* opacity: 0; */ }
+    font-weight: 200; }
   .node-wrap:first-child, .node-wrap:last-child {
     padding: 0.25em 0;
     display: block;
@@ -478,6 +382,95 @@ select {
 .newsearch a {
   padding: 0.5em;
   border: 1px solid #f1f1f2; }
+
+#report.swipe {
+  margin-top: 0;
+  top: 168px; }
+
+#error, #about, .definition, .sharemenu, #report {
+  display: none;
+  position: fixed;
+  font-weight: 100;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.95);
+  padding: 32px;
+  z-index: 3;
+  font-size: 20px;
+  line-height: 1.45;
+  margin-top: 48px;
+  overflow-y: scroll; }
+  #error .msg, #about .msg, .definition .msg, .sharemenu .msg, #report .msg {
+    color: white;
+    overflow-y: scroll;
+    text-align: center; }
+    #error .msg::-webkit-scrollbar, #about .msg::-webkit-scrollbar, .definition .msg::-webkit-scrollbar, .sharemenu .msg::-webkit-scrollbar, #report .msg::-webkit-scrollbar {
+      width: 0.25em; }
+    #error .msg::-webkit-scrollbar-thumb, #about .msg::-webkit-scrollbar-thumb, .definition .msg::-webkit-scrollbar-thumb, .sharemenu .msg::-webkit-scrollbar-thumb, #report .msg::-webkit-scrollbar-thumb {
+      background-color: #6a75ff;
+      border-radius: 0.5em; }
+    #error .msg .btn, #about .msg .btn, .definition .msg .btn, .sharemenu .msg .btn, #report .msg .btn {
+      border: 1px solid white;
+      padding: 8px;
+      border-radius: 3px;
+      font-size: 0.75em;
+      text-align: center;
+      width: 200px;
+      margin: 2em auto; }
+      #error .msg .btn:active, #about .msg .btn:active, .definition .msg .btn:active, .sharemenu .msg .btn:active, #report .msg .btn:active {
+        background: white;
+        color: black; }
+    #error .msg .dismiss, #about .msg .dismiss, .definition .msg .dismiss, .sharemenu .msg .dismiss, #report .msg .dismiss {
+      margin-top: 2em; }
+    #error .msg .word, #about .msg .word, .definition .msg .word, .sharemenu .msg .word, #report .msg .word {
+      text-transform: capitalize; }
+    #error .msg .pos, #about .msg .pos, .definition .msg .pos, .sharemenu .msg .pos, #report .msg .pos {
+      margin-bottom: 1em; }
+      #error .msg .pos::after, #about .msg .pos::after, .definition .msg .pos::after, .sharemenu .msg .pos::after, #report .msg .pos::after {
+        content: "."; }
+    #error .msg .sorry, #about .msg .sorry, .definition .msg .sorry, .sharemenu .msg .sorry, #report .msg .sorry {
+      margin-bottom: 1em; }
+    #error .msg .ok, #about .msg .ok, .definition .msg .ok, .sharemenu .msg .ok, #report .msg .ok {
+      color: #6a75ff;
+      margin-top: 1.25em;
+      cursor: pointer;
+      text-align: center; }
+    #error .msg .sh, #about .msg .sh, .definition .msg .sh, .sharemenu .msg .sh, #report .msg .sh {
+      color: #6a75ff;
+      margin: 0.5em 0; }
+    #error .msg p, #about .msg p, .definition .msg p, .sharemenu .msg p, #report .msg p {
+      margin: 0.2em 0; }
+    #error .msg #tooltips, #about .msg #tooltips, .definition .msg #tooltips, .sharemenu .msg #tooltips, #report .msg #tooltips {
+      border: 1px solid white;
+      position: absolute;
+      bottom: 2em;
+      border-radius: 3px;
+      padding: 8px;
+      font-size: 0.75em;
+      left: 0;
+      right: 0;
+      margin: 0 20%;
+      text-align: center; }
+
+#tooltips {
+  background-color: #6a75ff;
+  color: white;
+  margin: 12px;
+  padding: 1em;
+  font-size: 0.75em; }
+  #tooltips #count {
+    position: absolute;
+    right: 1.5em; }
+  #tooltips #tip_one, #tooltips #tip_two, #tooltips #tip_three {
+    width: 75%; }
+  #tooltips #tip_two {
+    display: none; }
+  #tooltips #tip_three {
+    display: none; }
+  #tooltips #next_btn {
+    text-align: right; }
 
 #dOne {
   animation-iteration-count: infinite;

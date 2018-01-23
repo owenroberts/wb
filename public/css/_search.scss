@@ -1,0 +1,265 @@
+.fadein { opacity:0; }
+
+#main {
+	position:absolute;
+	width:100%;
+	border-left:1px solid $lightgray;
+	height:100%;
+	overflow-x: hidden;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+	background-color: $white;
+	z-index:-3;
+}
+
+header {
+	padding-bottom:0;
+	position:fixed;
+	z-index:3;
+	max-height:50px;
+	width:100%;
+	border-bottom:1px solid $lightgray;
+	background-color: $new_gray;
+	-webkit-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.25);
+	   -moz-box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.25);
+			box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.25);
+	text-align:center;
+	
+	transition: background-color 500ms;
+	&.tip {
+		background-color: rgba($black, 0.95);
+	}
+	#aboutBtn {
+		text-align:left;
+		display:inline-block;
+		width:100%;
+	}
+	
+	#title {
+		width:inherit;
+		top:16px;
+		font-size:0.75em;
+		position:absolute;
+		z-index:-1;
+	}
+	.home, .share, .plus {
+		display:inline-block;
+		width: calc(100%/3 - 6px);
+	}
+	#plusbkg {
+		transition: fill 500ms;
+		&.tip {
+			fill: white;
+		}
+	}
+	.home {
+		text-align:left;
+	}
+	.plus {
+		text-align:center;
+	}
+	.share {
+		text-align:right;
+	}
+}
+
+.path-dots {
+	text-align:center;
+	height: 50px;
+	line-height: 50px;
+	position:fixed;
+	bottom:0;
+	left:0;
+	right:0;
+	z-index:3;
+	background: $new_gray;
+	border-top: 1px solid $lightgray;
+	.path-dot {
+		display:inline-block;
+		margin:0 4px;
+		transition: color 300ms;
+	}
+	.path-dot:before { content:"\2022"; }
+}
+.pathdotcontainer { border-bottom:1px solid $lightgray; }
+.slidedown { display:none; }
+
+
+#newpathloader {
+	position:fixed;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	background-color: rgba($black, 0.6);
+	z-index: 4;
+	text-align: center;
+	font-size:20px;
+	img { 
+		width: 16%;
+		height: 75%;
+	}
+	li {
+		
+		a {
+			padding:0.5em;
+			/* color:$blue; */
+			display:inline-block;
+			width:100%;
+			position:relative;
+		}
+		.ldr { padding:0.5em; }
+	}
+}
+
+#paths {
+	position: relative;
+	margin-top:60px;
+	.path {
+		position:absolute;
+		padding-bottom:68px;
+	}
+}
+
+.nodes {
+	position: relative;
+	width:100%;
+	margin-top:0.5em;
+	transition:top 500ms;
+	top:0px;
+	background-color: $white;
+	min-width:260px;
+	min-height:500px;
+}
+
+.node-wrap {
+	position: relative;
+	display:none;
+	padding:0.2em 0;
+	margin:0.2em 0;
+	margin-left: 16px;
+	&:hover {
+		cursor: -webkit-grab; 
+		cursor: -moz-grab;
+		&:active {
+			cursor: -webkit-grabbing; 
+			cursor: -moz-grabbing;
+		}
+		
+	}
+	.node {
+		display:inline-block;
+		position:relative;
+		width:300px;
+		padding: 0.125em 0;
+		background: $white;
+		z-index:2;
+	}
+	.alt {
+		background: $gray;
+		color: $white;
+		font-weight: 200;
+		display:inline-block;
+		z-index:1;
+		position:absolute;
+		top: 8px;
+		width: 100px;
+		&.right { 
+			right: 0;
+			text-align: right; 
+		}
+		&.left { left: 0; }
+		&.active { background: $black; }
+	}
+	.alternate { 
+		display:inline-block; 
+		background: $black;
+		color: $white;
+		font-weight:200;
+	}
+	
+	&:first-child, &:last-child {
+		padding:0.25em 0;
+		display:block;
+		font-weight:600;
+		cursor:default;
+		text-transform: lowercase;
+		.node {  
+			-webkit-user-select: none;
+			user-select: none;
+			-webkit-tap-highlight-color: rgba(0,0,0,0);
+			tap-highlight-color: rgba(0,0,0,0);
+			-webkit-touch-callout: none !important;
+			touch-callout: none !important;
+		}
+		&:hover { background:none; }
+	}
+	.ldr { position:absolute; }
+	.arrow {
+		display:inline-block;
+		overflow:hidden;
+		width:24px;
+		position:absolute;
+		top:0;
+		left:250px;
+		text-align:center;
+		img {
+			width:24px;
+			vertical-align:middle;
+		}
+	}
+	.inner-nodes {
+		display:inline-block;
+		position:relative;
+	}
+	.mod-error { color: $gray; }
+}
+
+#modified-search {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: rgba(255,255,255,0.9);
+	padding: 2em;
+	
+	form {
+		margin-bottom:1em;
+		background:$lightgray;
+	}
+	input[type="submit"] {
+		font-size:24px;
+		white-space:pre-wrap;
+		text-align:left;
+		border:none;
+		background:none;
+	}
+	button {
+		background:$lightgray;
+		text-align:left;
+		border-radius: 4px;
+		font-size:20px;
+		padding:0.25em;
+		border:none;
+		font-family: Helvetica, sans-serif;
+	}
+}
+
+.filter {
+	position:absolute;
+	padding:0.5em;
+	margin:0.25em;
+	box-shadow:0 0 5px $lightgray;
+	display:none;
+	left:200px;
+	font-size:14px;
+	border-radius:4px;
+}
+
+.newsearch {
+	a {
+		padding:0.5em;
+		border:1px solid $lightgray;
+	}
+}

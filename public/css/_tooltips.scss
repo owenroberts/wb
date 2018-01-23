@@ -1,0 +1,23 @@
+#tooltips {
+	background-color: $blue;
+	color: $white;
+	margin: 12px;
+	padding:1em;
+	font-size: 0.75em;
+	#count {
+		position:absolute;
+		right: 1.5em;
+	}
+	#tip_one, #tip_two, #tip_three {
+		width: 75%;
+	}
+	#tip_two {
+		display: none;
+	}
+	#tip_three {
+		display: none;
+	}
+	#next_btn {
+		text-align: right;
+	}
+}
