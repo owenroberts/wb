@@ -459,7 +459,12 @@ header {
   color: white;
   margin: 12px;
   padding: 1em;
-  font-size: 0.75em; }
+  font-size: 0.75em;
+  margin-top: 60px;
+  height: 0;
+  transition: height 500ms; }
+  #tooltips.active {
+    height: 105px; }
   #tooltips #count {
     position: absolute;
     right: 1.5em; }

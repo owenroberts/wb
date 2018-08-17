@@ -191,7 +191,7 @@ function objToString (obj) {
 
 
 var server = app.listen(3000, function() {
-	var host = server.address().host;
+	var host = server.address().host || 'localhost';
 	var port = server.address().port;
 	console.log('Example app listening at http://%s:%s', host, port);
 });
