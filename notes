@@ -54,3 +54,19 @@ later
 
 1.15.2018
 - low priority - if the mod chain doesn't work, give the option to jump out to try the new chain
+
+8.16.2018
+- maybe do simplified version
+- make list of things that need to be done before deployment
+- leave swiping and tooltips for later release
+- features for first release
+	- modify chain by word
+	- add new chains
+	- definitions
+	- share chains
+	- fix back and forth chain to not always be odd number (?)
+	- database (switch to firebase?)
+
+- considering branching off 
+	- current master HEAD is tooltip/swipe branch
+	- previous commit become "release" branch
