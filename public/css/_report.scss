@@ -3,7 +3,7 @@
 	top: 168px;
 }
 
-#error, #about, .definition, .sharemenu, #report {
+#error, #about, .definition, .share-menu, #report {
 	display:none;
 	position:fixed;
 	font-weight:100;
@@ -59,8 +59,10 @@
 			cursor:pointer;
 			text-align: center;
 		}
-		.sh { color: $blue; 
-			margin: 0.5em 0; }
+		.share-item { 
+			color: $blue; 
+			margin: 0.5em 0; 
+		}
 		p { margin: 0.2em 0; }
 		
 		#tooltips {

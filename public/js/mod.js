@@ -1,90 +1,39 @@
 $(document).ready(function() {
 
-	/* drag nodes to modify chain */
-	window.dragParams = {
-		axis: 'x',
-		distance: 1,
-		containment: [-100, 0, 100, 0], /* 100 is hardcoded prob needs to be updated */
-		start: function(event, ui) {
-			/* get prev and next synonym from word in prev word synonyms */
-			const word = this.textContent;
-			const syndex = +this.dataset.syndex; // synonym level of word
-			const index = +this.dataset.index; // index in chain
-			const alts = data.chain[index].alts;
-			
-			/* if not there just x for now */
-			const left = syndex > 0 ? alts[syndex - 1] : "x";
-			const right = syndex < alts.length - 1 ? alts[syndex + 1] : "x";
+	/* new syn */
+	function newSyn(ev, elem, dir) {
 
-			/* add left and right words below the node */
-			const leftWord = document.createElement("div");
-			leftWord.classList.add("alt", "left");
-			leftWord.textContent = left;
-			leftWord.dataset.syndex = syndex - 1;
-			leftWord.dataset.index = index;
-			this.parentNode.insertBefore(leftWord, this);
+		const node = elem.parentNode;
+		const word = node.dataset.word;
+		const index = +node.dataset.index;
+		const syndex = +node.dataset.syndex;
+		const newSyndex = syndex + (dir == 'prev' ? -1 : 1)
+		const syn = window.data.chain[index].alts[newSyndex]; /* should be like window.Chain */
+		node.children[0].textContent = syn;
+		node.dataset.syndex = newSyndex;
 
-			const rightWord = document.createElement("div");
-			rightWord.classList.add("alt", "right");
-			rightWord.textContent = right;
-			rightWord.dataset.syndex = syndex + 1;
-			rightWord.dataset.index = index;
-			this.parentNode.appendChild(rightWord);
-		},
-		drag: function(event, ui) {
-			/* measure amount of drag, if its past the word, modify, change bg color at 3/4 */
-			const offset = this.offsetLeft;
-			this.offset = offset; /* save offset for stop function */
-			if (offset > 0) {
-				const left = this.previousElementSibling;
-				if (offset > left.clientWidth * 3/4 && left.textContent != "x") {
-					left.classList.add("active");
-				} else {
-					left.classList.remove("active");
-				}
-			} else {
-				const right = this.nextElementSibling;
-				if (Math.abs(offset) > right.clientWidth * 3/4 && right.textContent != "x") {
-					right.classList.add("active");
-				} else {
-					right.classList.remove("active");
-				}
-			}
-		},
-		stop: function(event, ui) {
-			/* remove the dragged node, made the new node the main node, search for new chain */
-			const left = this.previousElementSibling;
-			const right = this.nextElementSibling;
-			if (this.offset > 0) {
-				if (this.offset > left.clientWidth * 3/4 && left.textContent != "x") {
-					left.classList.add("node");
-					left.classList.remove("alt", "left", "active");
-					right.remove();					
-					modifyChain(left, left.textContent, this.textContent, this.dataset.index);
-					this.remove();
-				} 
-			} else {
-				if (Math.abs(this.offset) > right.clientWidth * 3/4 && right.textContent != "x") {
-					right.classList.add("node");
-					right.classList.remove("alt", "right", "active");
-					left.remove();
-					this.remove();
-					modifyChain(right, right.textContent, this.textContent, this.dataset.index);
-				}
-			}
-			$(this.parentNode).find('.alt').remove();
-		},
-		revert: function(event, ui) {
-			const offset = this[0].offsetLeft;
-			$(this).data("uiDraggable").originalPosition = {
-                top : 0,
-                left : 0
-            };
-            // return boolean
-            return !event;
+		/*
+			much more to fix
+		*/
+
+		/* hide other nodes */
+		const nodes = elem.parentNode.parentNode.children;
+		for (let i = index + 1; i < nodes.length; i++) {
+			/* maybe do all these as css classes */
+			$(nodes[i]).animate({
+				opacity: 0.3
+			}, fadeDur/2);
 		}
+		
+
+		
+
 	}
-	$('.node').draggable(dragParams);
+	$('.prev').on('click', function(ev) { newSyn(ev, this, 'prev'); });
+	$('.prev').on('tap', function(ev) { newSyn(ev, this, 'prev'); });
+	$('.next').on('click', function(ev) { newSyn(ev, this, 'next'); });
+	$('.next').on('tap', function(ev) { newSyn(ev, this, 'next'); });
+
 
 	// ** modify chain ** //
 	function modifyChain(elem, alt, word, prevIndex) {

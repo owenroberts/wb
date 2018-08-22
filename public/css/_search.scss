@@ -84,7 +84,6 @@ header {
 .pathdotcontainer { border-bottom:1px solid $lightgray; }
 .slidedown { display:none; }
 
-
 #newpathloader {
 	position:fixed;
 	top:0;
@@ -147,15 +146,29 @@ header {
 		}
 		
 	}
+	.node, .word, .def, .next, .prev, .mod-btn {
+		display: inline-block;
+	}
+	.next, .prev, .mod-btn, .def  {
+		font-size: 0.8em;
+		background: $gray;
+		border-radius: 0.25em;
+		padding: 0 0.3em;
+		vertical-align: top;
+	}
+	.word, .node {
+		margin-right: 0.1em;
+	}
+	
 	.node {
 		display:inline-block;
 		position:relative;
-		width:300px;
+		/* width:300px; */
 		padding: 0.125em 0;
 		background: $white;
 		z-index:2;
 	}
-	.alt {
+/* 	.alt {
 		background: $gray;
 		color: $white;
 		font-weight: 200;
@@ -170,13 +183,13 @@ header {
 		}
 		&.left { left: 0; }
 		&.active { background: $black; }
-	}
-	.alternate { 
+	} */
+	/* .alternate { 
 		display:inline-block; 
 		background: $black;
 		color: $white;
 		font-weight:200;
-	}
+	} */
 	
 	&:first-child, &:last-child {
 		padding:0.25em 0;

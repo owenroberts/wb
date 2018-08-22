@@ -1,11 +1,11 @@
 <!-- search  -->
-<div class="sharemenu">
+<div class="share-menu">
 	<div class="msg">
 		<p>Share Synomap</p>
 		<p>{{data.start}} ... {{data.end}}</p>
-		<div class="sh email">Email</div>
-		<div class="sh fb">Facebook</div>
-		<div class="sh tw">Twitter</div>
+		<div class="share-item email">Email</div>
+		<div class="share-item fb">Facebook</div>
+		<div class="share-item tw">Twitter</div>
 		<div class="dismiss">
 			<img src="/img/dismiss.svg" alt="">
 		</div>
@@ -42,14 +42,6 @@
 		</div>
 	</div>
 
-	<div id="tooltips" class="active">
-		<div id="count">1/3</div>
-		<div id="tip_one">Swipe words to play with the bridge.</div>
-		<div id="tip_two">Tap words to see their definition.</div>
-		<div id="tip_three">Make new paths with your bridge words.</div>
-		<div id="next_btn">NEXT</div>
-	</div>
-
 	<div class="path-dots slidedown pathdotcontainer">
 		<div class="dots">
 			<div class="path-dot" id="p-0"></div>
@@ -59,19 +51,27 @@
 	<div id="paths">
 		<div class="path" id="path-0">
 			<div class="nodes">
+				{{!-- {{data.chain.length}} --}}
 				{{#each data.chain}}
-					{{#if @first}}
-						<div class="node-wrap">{{this.word}}</div>
-					{{else if @last}}
-						<div class="node-wrap">{{this.word}}</div>
-					{{else}}
-						<div class="node-wrap">
-							{{this.index}}
-							<div class="node" data-index={{@index}} data-syndex={{this.syndex}}>
+					<div class="node-wrap"  data-word={{this.word}} data-index={{@index}} data-syndex={{this.syndex}}>
+						{{#if @first}}
+							<div class="word">{{this.word}}</div>
+						{{else if @last}}
+							<div class="word">{{this.word}}</div>
+						{{else}}
+							<div class="node"  >
 								{{this.word}}
 							</div>
-						</div>
-					{{/if}}
+							<div class="def">d</div>
+							{{#if this.syndex}}
+								<div class="prev"> < </div>
+							{{/if}}
+							{{#lessThan this.syndex this.alts.length}}
+								<div class="next"> > </div>
+							{{/lessThan}}
+							<div class="mod-btn">m</div>
+						{{/if}}
+					</div>
 				{{/each}}
 			</div>
 		</div>

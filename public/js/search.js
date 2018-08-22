@@ -83,12 +83,12 @@ $(document).ready( function() {
 
 	// ** share stuff **
 	$('.share').on('click', function() {
-		$('.sharemenu').fadeIn(fadeDur);
+		$('.share-menu').fadeIn(fadeDur);
 	});
-	$('.sharemenu').on('click', function() {
+	$('.share-menu').on('click', function() {
 		$(this).fadeOut(fadeDur);
 	});
-	$('.sh').on('click', function() {
+	$('.share-item').on('click', function() {
 		var wh = this.className.split(" ")[1];
 		var b = "SynoMapp: " + data.start + " ... " + data.end;
 		var l = location.href.split("?")[0] + "?s=" + data.start + "&e=" + data.end + "&nl=" + qstrings[chainCount].split(data.start)[1].split(data.end)[0] + "&sl=" + qstrings[chainCount].split(data.start)[1].split(data.end)[1];

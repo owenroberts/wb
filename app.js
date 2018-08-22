@@ -25,6 +25,12 @@ const hbs = handlebars.create({
 	helpers: {
 		json: function(content) {
 			return JSON.stringify(content);
+		},
+		lessThan: function(n1, n2, options) {
+			if (n1 < n2) 
+				return options.fn(this);
+			else 
+				return options.inverse(this);
 		}
 	}
 });

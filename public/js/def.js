@@ -1,9 +1,11 @@
 $(document).ready(function() {
 	// ** get def ** 
 	function loadDef(ev, elem) {
+		$('#newpathloader').fadeIn(fadeDur);
 		ev.preventDefault();
-		const word = elem.textContent.trim();
-		const index = +elem.dataset.index;
+		const node = elem.parentNode;
+		const word = node.dataset.word;
+		const index = +node.dataset.index;
 		const synonym = window.data.chain[index-1].word;
 		
 		$.ajax({
@@ -15,6 +17,7 @@ $(document).ready(function() {
 				synonym: synonym
 			},
 			success: function(result) {
+				$('#newpathloader').fadeOut(fadeDur);
 				var msg = "";
 				msg += "<strong>" + word + "</strong><br><br>"
 				for (let i = 0; i < result.data.length; i++) {
@@ -29,6 +32,8 @@ $(document).ready(function() {
 	}
 
 	/* def events */
-	$('body').on('dblclick','.node', function(ev) { loadDef(ev, this); });
-	$('body').on('doubletap','.node', function(ev) { loadDef(ev, this); });
+	$('.def').on('click', function(ev) { loadDef(ev, this); });
+	$('.def').on('tap', function(ev) { loadDef(ev, this); });
+	$('body').on('tap','.def', function(ev) { loadDef(ev, this); });
+	$('body').on('click','.def', function(ev) { loadDef(ev, this); });
 });

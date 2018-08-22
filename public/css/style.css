@@ -274,41 +274,52 @@ header {
   display: none;
   padding: 0.2em 0;
   margin: 0.2em 0;
-  margin-left: 16px; }
+  margin-left: 16px;
+  /* 	.alt {
+  		background: $gray;
+  		color: $white;
+  		font-weight: 200;
+  		display:inline-block;
+  		z-index:1;
+  		position:absolute;
+  		top: 8px;
+  		width: 100px;
+  		&.right { 
+  			right: 0;
+  			text-align: right; 
+  		}
+  		&.left { left: 0; }
+  		&.active { background: $black; }
+  	} */
+  /* .alternate { 
+  	display:inline-block; 
+  	background: $black;
+  	color: $white;
+  	font-weight:200;
+  } */ }
   .node-wrap:hover {
     cursor: -webkit-grab;
     cursor: -moz-grab; }
     .node-wrap:hover:active {
       cursor: -webkit-grabbing;
       cursor: -moz-grabbing; }
+  .node-wrap .node, .node-wrap .word, .node-wrap .def, .node-wrap .next, .node-wrap .prev, .node-wrap .mod-btn {
+    display: inline-block; }
+  .node-wrap .next, .node-wrap .prev, .node-wrap .mod-btn, .node-wrap .def {
+    font-size: 0.8em;
+    background: #C5C7C9;
+    border-radius: 0.25em;
+    padding: 0 0.3em;
+    vertical-align: top; }
+  .node-wrap .word, .node-wrap .node {
+    margin-right: 0.1em; }
   .node-wrap .node {
     display: inline-block;
     position: relative;
-    width: 300px;
+    /* width:300px; */
     padding: 0.125em 0;
     background: white;
     z-index: 2; }
-  .node-wrap .alt {
-    background: #C5C7C9;
-    color: white;
-    font-weight: 200;
-    display: inline-block;
-    z-index: 1;
-    position: absolute;
-    top: 8px;
-    width: 100px; }
-    .node-wrap .alt.right {
-      right: 0;
-      text-align: right; }
-    .node-wrap .alt.left {
-      left: 0; }
-    .node-wrap .alt.active {
-      background: black; }
-  .node-wrap .alternate {
-    display: inline-block;
-    background: black;
-    color: white;
-    font-weight: 200; }
   .node-wrap:first-child, .node-wrap:last-child {
     padding: 0.25em 0;
     display: block;
@@ -387,7 +398,7 @@ header {
   margin-top: 0;
   top: 168px; }
 
-#error, #about, .definition, .sharemenu, #report {
+#error, #about, .definition, .share-menu, #report {
   display: none;
   position: fixed;
   font-weight: 100;
@@ -402,16 +413,16 @@ header {
   line-height: 1.45;
   margin-top: 48px;
   overflow-y: scroll; }
-  #error .msg, #about .msg, .definition .msg, .sharemenu .msg, #report .msg {
+  #error .msg, #about .msg, .definition .msg, .share-menu .msg, #report .msg {
     color: white;
     overflow-y: scroll;
     text-align: center; }
-    #error .msg::-webkit-scrollbar, #about .msg::-webkit-scrollbar, .definition .msg::-webkit-scrollbar, .sharemenu .msg::-webkit-scrollbar, #report .msg::-webkit-scrollbar {
+    #error .msg::-webkit-scrollbar, #about .msg::-webkit-scrollbar, .definition .msg::-webkit-scrollbar, .share-menu .msg::-webkit-scrollbar, #report .msg::-webkit-scrollbar {
       width: 0.25em; }
-    #error .msg::-webkit-scrollbar-thumb, #about .msg::-webkit-scrollbar-thumb, .definition .msg::-webkit-scrollbar-thumb, .sharemenu .msg::-webkit-scrollbar-thumb, #report .msg::-webkit-scrollbar-thumb {
+    #error .msg::-webkit-scrollbar-thumb, #about .msg::-webkit-scrollbar-thumb, .definition .msg::-webkit-scrollbar-thumb, .share-menu .msg::-webkit-scrollbar-thumb, #report .msg::-webkit-scrollbar-thumb {
       background-color: #6a75ff;
       border-radius: 0.5em; }
-    #error .msg .btn, #about .msg .btn, .definition .msg .btn, .sharemenu .msg .btn, #report .msg .btn {
+    #error .msg .btn, #about .msg .btn, .definition .msg .btn, .share-menu .msg .btn, #report .msg .btn {
       border: 1px solid white;
       padding: 8px;
       border-radius: 3px;
@@ -419,30 +430,30 @@ header {
       text-align: center;
       width: 200px;
       margin: 2em auto; }
-      #error .msg .btn:active, #about .msg .btn:active, .definition .msg .btn:active, .sharemenu .msg .btn:active, #report .msg .btn:active {
+      #error .msg .btn:active, #about .msg .btn:active, .definition .msg .btn:active, .share-menu .msg .btn:active, #report .msg .btn:active {
         background: white;
         color: black; }
-    #error .msg .dismiss, #about .msg .dismiss, .definition .msg .dismiss, .sharemenu .msg .dismiss, #report .msg .dismiss {
+    #error .msg .dismiss, #about .msg .dismiss, .definition .msg .dismiss, .share-menu .msg .dismiss, #report .msg .dismiss {
       margin-top: 2em; }
-    #error .msg .word, #about .msg .word, .definition .msg .word, .sharemenu .msg .word, #report .msg .word {
+    #error .msg .word, #about .msg .word, .definition .msg .word, .share-menu .msg .word, #report .msg .word {
       text-transform: capitalize; }
-    #error .msg .pos, #about .msg .pos, .definition .msg .pos, .sharemenu .msg .pos, #report .msg .pos {
+    #error .msg .pos, #about .msg .pos, .definition .msg .pos, .share-menu .msg .pos, #report .msg .pos {
       margin-bottom: 1em; }
-      #error .msg .pos::after, #about .msg .pos::after, .definition .msg .pos::after, .sharemenu .msg .pos::after, #report .msg .pos::after {
+      #error .msg .pos::after, #about .msg .pos::after, .definition .msg .pos::after, .share-menu .msg .pos::after, #report .msg .pos::after {
         content: "."; }
-    #error .msg .sorry, #about .msg .sorry, .definition .msg .sorry, .sharemenu .msg .sorry, #report .msg .sorry {
+    #error .msg .sorry, #about .msg .sorry, .definition .msg .sorry, .share-menu .msg .sorry, #report .msg .sorry {
       margin-bottom: 1em; }
-    #error .msg .ok, #about .msg .ok, .definition .msg .ok, .sharemenu .msg .ok, #report .msg .ok {
+    #error .msg .ok, #about .msg .ok, .definition .msg .ok, .share-menu .msg .ok, #report .msg .ok {
       color: #6a75ff;
       margin-top: 1.25em;
       cursor: pointer;
       text-align: center; }
-    #error .msg .sh, #about .msg .sh, .definition .msg .sh, .sharemenu .msg .sh, #report .msg .sh {
+    #error .msg .share-item, #about .msg .share-item, .definition .msg .share-item, .share-menu .msg .share-item, #report .msg .share-item {
       color: #6a75ff;
       margin: 0.5em 0; }
-    #error .msg p, #about .msg p, .definition .msg p, .sharemenu .msg p, #report .msg p {
+    #error .msg p, #about .msg p, .definition .msg p, .share-menu .msg p, #report .msg p {
       margin: 0.2em 0; }
-    #error .msg #tooltips, #about .msg #tooltips, .definition .msg #tooltips, .sharemenu .msg #tooltips, #report .msg #tooltips {
+    #error .msg #tooltips, #about .msg #tooltips, .definition .msg #tooltips, .share-menu .msg #tooltips, #report .msg #tooltips {
       border: 1px solid white;
       position: absolute;
       bottom: 2em;
