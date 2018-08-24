@@ -137,6 +137,7 @@ header {
 	padding:0.2em 0;
 	margin:0.2em 0;
 	margin-left: 16px;
+
 	&:hover {
 		cursor: -webkit-grab; 
 		cursor: -moz-grab;
@@ -151,15 +152,23 @@ header {
 	}
 	.next, .prev, .mod-btn, .def  {
 		font-size: 0.8em;
-		background: $gray;
+		background: $lightgray;
 		border-radius: 0.25em;
 		padding: 0 0.3em;
 		vertical-align: top;
+		font-weight: 100;
 	}
 	.word, .node {
 		margin-right: 0.1em;
 	}
 	
+	.next, .prev {
+		display: none;
+		&.exists {
+			display: inline-block;
+		}
+	}
+
 	.node {
 		display:inline-block;
 		position:relative;

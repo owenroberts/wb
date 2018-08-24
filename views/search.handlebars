@@ -53,22 +53,18 @@
 			<div class="nodes">
 				{{!-- {{data.chain.length}} --}}
 				{{#each data.chain}}
-					<div class="node-wrap"  data-word={{this.word}} data-index={{@index}} data-syndex={{this.syndex}}>
+					<div class="node-wrap" data-word={{this.word}} data-index={{@index}} data-syndex={{this.syndex}}>
 						{{#if @first}}
 							<div class="word">{{this.word}}</div>
 						{{else if @last}}
 							<div class="word">{{this.word}}</div>
 						{{else}}
-							<div class="node"  >
+							<div class="node">
 								{{this.word}}
 							</div>
 							<div class="def">d</div>
-							{{#if this.syndex}}
-								<div class="prev"> < </div>
-							{{/if}}
-							{{#lessThan this.syndex this.alts.length}}
-								<div class="next"> > </div>
-							{{/lessThan}}
+							<div class="prev {{#if this.syndex}}exists{{/if}}"> < </div>
+							<div class="next {{#lessThan this.syndex this.alts.length}}exists{{/lessThan}}" > > </div>
 							<div class="mod-btn">m</div>
 						{{/if}}
 					</div>

@@ -307,12 +307,17 @@ header {
     display: inline-block; }
   .node-wrap .next, .node-wrap .prev, .node-wrap .mod-btn, .node-wrap .def {
     font-size: 0.8em;
-    background: #C5C7C9;
+    background: #f1f1f2;
     border-radius: 0.25em;
     padding: 0 0.3em;
-    vertical-align: top; }
+    vertical-align: top;
+    font-weight: 100; }
   .node-wrap .word, .node-wrap .node {
     margin-right: 0.1em; }
+  .node-wrap .next, .node-wrap .prev {
+    display: none; }
+    .node-wrap .next.exists, .node-wrap .prev.exists {
+      display: inline-block; }
   .node-wrap .node {
     display: inline-block;
     position: relative;

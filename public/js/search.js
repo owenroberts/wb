@@ -46,26 +46,6 @@ $(document).ready( function() {
 			var showNode = function(num) {
 				setTimeout( function() {
 					$(nodedads[num]).fadeIn(fadeDur);
-					if (num == nodedads.length - 1) {  // last one 
-						if (!window.tooltips) {
-							
-							// report( "Make more paths between your words " + data.start + " & " + data.end, null, null, function() {
-							// 	$('header').removeClass("tip");
-							// 	document.getElementById("plusbkg").classList.remove("tip");
-							// 	$.ajax({
-							// 		url: '/tips',
-							// 		type: 'get',
-							// 		dataType:'json',
-							// 		data: {
-							// 			tip: true
-							// 		},
-							// 		success: function(result) {
-							// 			console.log(result.data);
-							// 		},
-							// 	});
-							// });
-						}
-					}
 				}, num * fadeDur);
 			}(i);
 		}
