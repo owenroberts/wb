@@ -1,42 +1,42 @@
 <!-- search  -->
-<div class="share-menu">
+<div id="share-menu" class="fade fade-out">
 	<div class="msg">
 		<p>Share Synomap</p>
 		<p>{{data.start}} ... {{data.end}}</p>
-		<div class="share-item email">Email</div>
-		<div class="share-item fb">Facebook</div>
-		<div class="share-item tw">Twitter</div>
+		<div class="share-item" id="email">Email</div>
+		<div class="share-item" id="fb">Facebook</div>
+		<div class="share-item" id="tw">Twitter</div>
 		<div class="dismiss">
 			<img src="/img/dismiss.svg" alt="">
 		</div>
 	</div>
 </div>
 
-<div id="newpathloader">
+<div id="new-path-loader" class="fade">
 	<img src="/img/loader.svg" alt="">
 </div>
 
 <div id="main">
 	<header>
-		<div class="home">
+		<div id="home">
 			<img src="/img/arrow_stop.svg">
 		</div>
-		<div class="plus">
+		<div id="plus">
 			<svg xmlns="http://www.w3.org/2000/svg" width="53" height="50">
 				<path d="M0 0h53v50H0V0z" fill="none" id="plusbkg"/>
 				<path fill="none" stroke="#070707" stroke-width="3" d="M17.312 25.005h18.377m-9.194 9.183V15.812"/>
 			</svg>
 		</div>
-		<div class="share">
+		<div id="share">
 			<img src="/img/share.svg">
 		</div>
 	</header>
 	
 	<div id="report">
-		<div class="msg">
-			<div class="text"></div>
-			<div class="btn"></div>
-			<div class="dismiss">
+		<div id="report-msg" class="msg">
+			<div id="report-txt" class="text"></div>
+			<div id="report-btn" class="btn"></div>
+			<div id="report-dismiss" class="dismiss">
 				<img src="/img/dismiss.svg" alt="">
 			</div>
 		</div>
@@ -53,18 +53,16 @@
 			<div class="nodes">
 				{{!-- {{data.chain.length}} --}}
 				{{#each data.chain}}
-					<div class="node-wrap" data-word={{this.word}} data-index={{@index}} data-syndex={{this.syndex}}>
+					<div class="node fade" data-word={{this.word}} data-index={{@index}} data-syndex={{this.syndex}}>
 						{{#if @first}}
 							<div class="word">{{this.word}}</div>
 						{{else if @last}}
 							<div class="word">{{this.word}}</div>
 						{{else}}
-							<div class="node">
-								{{this.word}}
-							</div>
+							<div class="word">{{this.word}}</div>
 							<div class="def">d</div>
 							<div class="prev {{#if this.syndex}}exists{{/if}}"> < </div>
-							<div class="next {{#lessThan this.syndex this.alts.length}}exists{{/lessThan}}" > > </div>
+							<div class="next {{#lessThan this.syndex this.alts.length}}exists{{/lessThan}}"> > </div>
 							<div class="mod-btn">m</div>
 						{{/if}}
 					</div>
@@ -74,13 +72,16 @@
 	</div>
 </div>
 
-<script src='/js/search_helpers.js' type='text/javascript'></script>
+
 <script src='/js/jquery.doubletap.js', type='text/javascript'></script>
 <script type='text/javascript'>
-	window.data = {{{json data}}};
-	window.tooltips = {{{json tips}}};
+	/* B is bridge object */
+	B = {};
+	B.data = {{{json data}}};
+	B.tooltips = {{{json tips}}};
 	/*console.log(data);*/
 </script>
+<script src='/js/helpers.js' type='text/javascript'></script>
 <script src='/js/search.js' type='text/javascript'></script>
 <script src='/js/def.js' type='text/javascript'></script>
 <script src='/js/mod.js' type='text/javascript'></script>

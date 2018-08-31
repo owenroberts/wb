@@ -155,5 +155,7 @@ $(document).ready(function() {
 			report('You have reached the maximum number of paths.');
 		}				
 	}
-	$('.plus').on('click', getNewPath);
+	
+	const plusBtn = document.getElementById('plus');
+	plusBtn.addEventListener('click', getNewPath);
 });

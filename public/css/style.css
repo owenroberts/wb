@@ -192,18 +192,18 @@ header {
     font-size: 0.75em;
     position: absolute;
     z-index: -1; }
-  header .home, header .share, header .plus {
+  header #home, header #share, header #plus {
     display: inline-block;
     width: calc(100%/3 - 6px); }
   header #plusbkg {
     transition: fill 500ms; }
     header #plusbkg.tip {
       fill: white; }
-  header .home {
+  header #home {
     text-align: left; }
-  header .plus {
+  header #plus {
     text-align: center; }
-  header .share {
+  header #share {
     text-align: right; }
 
 .path-dots {
@@ -230,7 +230,7 @@ header {
 .slidedown {
   display: none; }
 
-#newpathloader {
+#new-path-loader {
   position: fixed;
   top: 0;
   left: 0;
@@ -239,17 +239,18 @@ header {
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 4;
   text-align: center;
-  font-size: 20px; }
-  #newpathloader img {
+  font-size: 20px;
+  opacity: 1; }
+  #new-path-loader img {
     width: 16%;
     height: 75%; }
-  #newpathloader li a {
+  #new-path-loader li a {
     padding: 0.5em;
     /* color:$blue; */
     display: inline-block;
     width: 100%;
     position: relative; }
-  #newpathloader li .ldr {
+  #new-path-loader li .ldr {
     padding: 0.5em; }
 
 #paths {
@@ -257,7 +258,8 @@ header {
   margin-top: 60px; }
   #paths .path {
     position: absolute;
-    padding-bottom: 68px; }
+    padding-bottom: 68px;
+    width: 100%; }
 
 .nodes {
   position: relative;
@@ -267,82 +269,60 @@ header {
   top: 0px;
   background-color: white;
   min-width: 260px;
-  min-height: 500px; }
+  min-height: 500px;
+  padding: 0 0.5em; }
 
-.node-wrap {
+.node {
   position: relative;
-  display: none;
   padding: 0.2em 0;
   margin: 0.2em 0;
-  margin-left: 16px;
-  /* 	.alt {
-  		background: $gray;
-  		color: $white;
-  		font-weight: 200;
-  		display:inline-block;
-  		z-index:1;
-  		position:absolute;
-  		top: 8px;
-  		width: 100px;
-  		&.right { 
-  			right: 0;
-  			text-align: right; 
-  		}
-  		&.left { left: 0; }
-  		&.active { background: $black; }
-  	} */
-  /* .alternate { 
-  	display:inline-block; 
-  	background: $black;
-  	color: $white;
-  	font-weight:200;
-  } */ }
-  .node-wrap:hover {
+  opacity: 0;
+  display: flex;
+  width: 100%; }
+  .node.start, .node.end {
+    opacity: 1; }
+  .node .word {
+    margin-right: 0.1em;
+    flex: 1 1 auto; }
+  .node:hover {
     cursor: -webkit-grab;
     cursor: -moz-grab; }
-    .node-wrap:hover:active {
+    .node:hover:active {
       cursor: -webkit-grabbing;
       cursor: -moz-grabbing; }
-  .node-wrap .node, .node-wrap .word, .node-wrap .def, .node-wrap .next, .node-wrap .prev, .node-wrap .mod-btn {
-    display: inline-block; }
-  .node-wrap .next, .node-wrap .prev, .node-wrap .mod-btn, .node-wrap .def {
+  .node .word, .node .def, .node .next, .node .prev, .node .mod-btn {
+    display: inline-block;
+    margin-right: 5px; }
+  .node .next, .node .prev, .node .mod-btn, .node .def {
     font-size: 0.8em;
     background: #f1f1f2;
     border-radius: 0.25em;
-    padding: 0 0.3em;
+    padding: 0 0.1em;
     vertical-align: top;
-    font-weight: 100; }
-  .node-wrap .word, .node-wrap .node {
-    margin-right: 0.1em; }
-  .node-wrap .next, .node-wrap .prev {
+    font-weight: 100;
+    line-height: 1.4; }
+  .node .next, .node .prev {
     display: none; }
-    .node-wrap .next.exists, .node-wrap .prev.exists {
+    .node .next.exists, .node .prev.exists {
       display: inline-block; }
-  .node-wrap .node {
-    display: inline-block;
-    position: relative;
-    /* width:300px; */
-    padding: 0.125em 0;
-    background: white;
-    z-index: 2; }
-  .node-wrap:first-child, .node-wrap:last-child {
+  .node:first-child, .node:last-child {
     padding: 0.25em 0;
     display: block;
     font-weight: 600;
     cursor: default;
     text-transform: lowercase; }
-    .node-wrap:first-child .node, .node-wrap:last-child .node {
+    .node:first-child .node, .node:last-child .node {
       -webkit-user-select: none;
       user-select: none;
       -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
       tap-highlight-color: rgba(0, 0, 0, 0);
       -webkit-touch-callout: none !important;
       touch-callout: none !important; }
-    .node-wrap:first-child:hover, .node-wrap:last-child:hover {
+    .node:first-child:hover, .node:last-child:hover {
       background: none; }
-  .node-wrap .ldr {
+  .node .ldr {
     position: absolute; }
-  .node-wrap .arrow {
+  .node .arrow {
     display: inline-block;
     overflow: hidden;
     width: 24px;
@@ -350,13 +330,13 @@ header {
     top: 0;
     left: 250px;
     text-align: center; }
-    .node-wrap .arrow img {
+    .node .arrow img {
       width: 24px;
       vertical-align: middle; }
-  .node-wrap .inner-nodes {
+  .node .inner-nodes {
     display: inline-block;
     position: relative; }
-  .node-wrap .mod-error {
+  .node.mod-error .word {
     color: #C5C7C9; }
 
 #modified-search {
@@ -399,11 +379,26 @@ header {
   padding: 0.5em;
   border: 1px solid #f1f1f2; }
 
+.fade {
+  transition: opacity 500ms; }
+
+.fade-in {
+  opacity: 1; }
+
+.fade-grey {
+  opacity: 0.3; }
+
+.fade-out {
+  opacity: 0; }
+
+.display-none {
+  display: none; }
+
 #report.swipe {
   margin-top: 0;
   top: 168px; }
 
-#error, #about, .definition, .share-menu, #report {
+#error, #about, .definition, #share-menu, #report {
   display: none;
   position: fixed;
   font-weight: 100;
@@ -418,16 +413,16 @@ header {
   line-height: 1.45;
   margin-top: 48px;
   overflow-y: scroll; }
-  #error .msg, #about .msg, .definition .msg, .share-menu .msg, #report .msg {
+  #error .msg, #about .msg, .definition .msg, #share-menu .msg, #report .msg {
     color: white;
     overflow-y: scroll;
     text-align: center; }
-    #error .msg::-webkit-scrollbar, #about .msg::-webkit-scrollbar, .definition .msg::-webkit-scrollbar, .share-menu .msg::-webkit-scrollbar, #report .msg::-webkit-scrollbar {
+    #error .msg::-webkit-scrollbar, #about .msg::-webkit-scrollbar, .definition .msg::-webkit-scrollbar, #share-menu .msg::-webkit-scrollbar, #report .msg::-webkit-scrollbar {
       width: 0.25em; }
-    #error .msg::-webkit-scrollbar-thumb, #about .msg::-webkit-scrollbar-thumb, .definition .msg::-webkit-scrollbar-thumb, .share-menu .msg::-webkit-scrollbar-thumb, #report .msg::-webkit-scrollbar-thumb {
+    #error .msg::-webkit-scrollbar-thumb, #about .msg::-webkit-scrollbar-thumb, .definition .msg::-webkit-scrollbar-thumb, #share-menu .msg::-webkit-scrollbar-thumb, #report .msg::-webkit-scrollbar-thumb {
       background-color: #6a75ff;
       border-radius: 0.5em; }
-    #error .msg .btn, #about .msg .btn, .definition .msg .btn, .share-menu .msg .btn, #report .msg .btn {
+    #error .msg .btn, #about .msg .btn, .definition .msg .btn, #share-menu .msg .btn, #report .msg .btn {
       border: 1px solid white;
       padding: 8px;
       border-radius: 3px;
@@ -435,30 +430,30 @@ header {
       text-align: center;
       width: 200px;
       margin: 2em auto; }
-      #error .msg .btn:active, #about .msg .btn:active, .definition .msg .btn:active, .share-menu .msg .btn:active, #report .msg .btn:active {
+      #error .msg .btn:active, #about .msg .btn:active, .definition .msg .btn:active, #share-menu .msg .btn:active, #report .msg .btn:active {
         background: white;
         color: black; }
-    #error .msg .dismiss, #about .msg .dismiss, .definition .msg .dismiss, .share-menu .msg .dismiss, #report .msg .dismiss {
+    #error .msg .dismiss, #about .msg .dismiss, .definition .msg .dismiss, #share-menu .msg .dismiss, #report .msg .dismiss {
       margin-top: 2em; }
-    #error .msg .word, #about .msg .word, .definition .msg .word, .share-menu .msg .word, #report .msg .word {
+    #error .msg .word, #about .msg .word, .definition .msg .word, #share-menu .msg .word, #report .msg .word {
       text-transform: capitalize; }
-    #error .msg .pos, #about .msg .pos, .definition .msg .pos, .share-menu .msg .pos, #report .msg .pos {
+    #error .msg .pos, #about .msg .pos, .definition .msg .pos, #share-menu .msg .pos, #report .msg .pos {
       margin-bottom: 1em; }
-      #error .msg .pos::after, #about .msg .pos::after, .definition .msg .pos::after, .share-menu .msg .pos::after, #report .msg .pos::after {
+      #error .msg .pos::after, #about .msg .pos::after, .definition .msg .pos::after, #share-menu .msg .pos::after, #report .msg .pos::after {
         content: "."; }
-    #error .msg .sorry, #about .msg .sorry, .definition .msg .sorry, .share-menu .msg .sorry, #report .msg .sorry {
+    #error .msg .sorry, #about .msg .sorry, .definition .msg .sorry, #share-menu .msg .sorry, #report .msg .sorry {
       margin-bottom: 1em; }
-    #error .msg .ok, #about .msg .ok, .definition .msg .ok, .share-menu .msg .ok, #report .msg .ok {
+    #error .msg .ok, #about .msg .ok, .definition .msg .ok, #share-menu .msg .ok, #report .msg .ok {
       color: #6a75ff;
       margin-top: 1.25em;
       cursor: pointer;
       text-align: center; }
-    #error .msg .share-item, #about .msg .share-item, .definition .msg .share-item, .share-menu .msg .share-item, #report .msg .share-item {
+    #error .msg .share-item, #about .msg .share-item, .definition .msg .share-item, #share-menu .msg .share-item, #report .msg .share-item {
       color: #6a75ff;
       margin: 0.5em 0; }
-    #error .msg p, #about .msg p, .definition .msg p, .share-menu .msg p, #report .msg p {
+    #error .msg p, #about .msg p, .definition .msg p, #share-menu .msg p, #report .msg p {
       margin: 0.2em 0; }
-    #error .msg #tooltips, #about .msg #tooltips, .definition .msg #tooltips, .share-menu .msg #tooltips, #report .msg #tooltips {
+    #error .msg #tooltips, #about .msg #tooltips, .definition .msg #tooltips, #share-menu .msg #tooltips, #report .msg #tooltips {
       border: 1px solid white;
       position: absolute;
       bottom: 2em;

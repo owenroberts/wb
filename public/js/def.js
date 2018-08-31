@@ -1,12 +1,12 @@
-$(document).ready(function() {
-	// ** get def ** 
+window.addEventListener('load', function() {
+
 	function loadDef(ev, elem) {
-		$('#newpathloader').fadeIn(fadeDur);
+		B.fade(B.loader, 'in', false);
 		ev.preventDefault();
 		const node = elem.parentNode;
 		const word = node.dataset.word;
 		const index = +node.dataset.index;
-		const synonym = window.data.chain[index-1].word;
+		const synonym = B.data.chain[index-1].word;
 		
 		$.ajax({
 			url: '/def',
@@ -17,16 +17,16 @@ $(document).ready(function() {
 				synonym: synonym
 			},
 			success: function(result) {
-				$('#newpathloader').fadeOut(fadeDur);
+				B.fade(B.loader, 'out', true);
 				var msg = "";
 				msg += "<strong>" + word + "</strong><br><br>"
 				for (let i = 0; i < result.data.length; i++) {
-					msg += parts[result.data[i].pos];
+					msg += B.pos[result.data[i].pos];
 					msg += '<br>';
 					msg += result.data[i].def;
 					msg += '<br><br>';
 				}
-				report(msg);
+				B.report(msg);
 			},
 		});
 	}

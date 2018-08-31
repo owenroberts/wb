@@ -29,11 +29,9 @@ $(document).ready(function() {
 
 		/* hide other nodes */
 		const nodes = elem.parentNode.parentNode.children;
-		for (let i = index + 1; i < nodes.length; i++) {
+		for (let i = index + 1; i < nodes.length - 1; i++) {
 			/* maybe do all these as css classes */
-			$(nodes[i]).animate({
-				opacity: 0.3
-			}, fadeDur/2);
+			nodes[i].classList.replace('fade-in', 'fade-grey');
 		}
 	}
 
@@ -65,15 +63,12 @@ $(document).ready(function() {
 
 		const node = elem.parentNode;
 		const index = +node.dataset.index;
-		const nodes = elem.parentNode.parentNode.children;
+		const nodes = document.getElementsByClassName('node'); // elem.parentNode.parentNode.children;
 		const alt = node.dataset.word;
 
-		/* hide other nodes */
-		for (let i = index + 1; i < nodes.length; i++) {
-			/* maybe do all these as css classes */
-			$(nodes[i]).animate({
-				opacity: 0.3
-			}, fadeDur/2);
+		/* grey out other nodes */
+		for (let i = index + 1; i < nodes.length - 1; i++) {
+			nodes[i].classList.add('fade-grey');
 		}
 
 		/* get all syns for new chain algorithm */
@@ -100,56 +95,91 @@ $(document).ready(function() {
 			success: function(obj) {
 				if (obj.errormsg) {
 					/* report error */
-					var err = 'We couldn\'t find a chain between "' + alt + '" and "' + data.end + '".';
-					var option = "Try swiping back to the previous synonym, or forward to the next.";
+					const err = 'We couldn\'t find a chain between "' + alt + '" and "' + data.end + '".';
+					const option = "Try swiping back to the previous synonym, or forward to the next.";
 					report(err + "<br><br>" + option);
-					elem.classList.add("mod-error", "node");
+					/*node.classList.add("mod-error");*/
 					noTouching = false;
 					$('.ldrimg').remove();
 				} else {
 					const newData = obj.data;
+					
 					/* modify main chain data */
-					for (var i = index + 1; i < data.chain.length; i++) {
+					for (let i = index + 1; i < data.chain.length; i++) {
 						data.chain[i] = newData.chain[i - index];
 					}
 
-					for (let i = index; i < nodes.length; i++) {
-						$(nodes[i]).animate({
-							opacity: 1
-						}, fadeDur/2);
-					}
-
 					const waitTime = nodes.length * fadeDur/2;
-					setTimeout(function() {
+					setTimeout(() => {
 						noTouching = false;
 					}, waitTime + fadeDur);
-					setTimeout(function() {
+					setTimeout(() => {
 						$('.ldrimg').remove();
 					}, waitTime);
 
 					/* remove old nodes */
-					for (let i = index + 1; i < nodes.length - 1; i++) {
-						let n = i;
-						$(nodes[i]).fadeOut((nodes.length - i) * fadeDur/2, function(n) {
-							this.remove();
-						});
+					const len = nodes.length - index - 2;
+					for (let i = 0; i < len; i++) {
+						nodes[index + 1].classList.replace('fade-grey', 'fade-out');
+						setTimeout(() => {
+							nodes[index + 1].remove();
+						}, fadeDur);
 					}
 
 					/* add new nodes */
 					for (let i = 1; i < newData.chain.length - 1; i++) {
-						const newnodedad = document.createElement("div")
-						newnodedad.classList.add('node-wrap');
+						const node = document.createElement("div")
+						node.classList.add('node');
+						node.dataset.index = index + i;
+						node.dataset.word = newData.chain[i].word;
+						node.dataset.syndex = newData.chain[i].syndex
 
-						const newsynnode = document.createElement("div")
-						newsynnode.classList.add('node');
-						newsynnode.dataset.index = index + i;
-						newsynnode.textContent = newData.chain[i].word;
-						newsynnode.dataset.syndex = newData.chain[i].syndex;
+						const word = document.createElement('div');
+						word.textContent = newData.chain[i].word;
+						word.classList.add('word');
 						
-						newnodedad.appendChild(newsynnode);
-						elem.parentNode.parentNode.insertBefore(newnodedad, elem.parentNode.parentNode.lastChild);
+						const defBtn = document.createElement('div');
+						defBtn.textContent = 'd';
+						defBtn.classList.add('def');
+
+						const prevBtn = document.createElement('div');
+						prevBtn.textContent = ' < ';
+						prevBtn.classList.add('prev');
+						prevBtn.addEventListener('click', function(ev) {
+							newSyn(ev, this, 'prev');
+						});
+						if (newData.chain[i].syndex > 0)
+							prevBtn.classList.add('exists');
+
+						const nextBtn = document.createElement('div');
+						nextBtn.textContent = ' > ';
+						nextBtn.classList.add('prev');
+						if (newData.chain[i].syndex < newData.chain[i].alts.length)
+							nextBtn.classList.add('exists');
+						nextBtn.addEventListener('click', function(ev) {
+							newSyn(ev, this, 'next');
+						});
+
+						const modBtn = document.createElement('div');
+						modBtn.textContent = 'm';
+						modBtn.classList.add('mod-btn');
+						modBtn.addEventListener('click', function(ev) {
+							modifyChain(this);
+						});
+
+						node.appendChild(word);
+						node.appendChild(defBtn);
+						node.appendChild(prevBtn);
+						node.appendChild(nextBtn);
+						node.appendChild(modBtn);
+
+						const parent = elem.parentNode.parentNode;
+						parent.insertBefore(node, parent.lastElementChild);
+
 						
-						$(newnodedad).delay(i * fadeDur/2 + waitTime + fadeDur/2).fadeIn(fadeDur);
+						setTimeout(() => {
+							node.classList.add('fade-in');
+						}, i * fadeDur)
 					}
 					
 				}

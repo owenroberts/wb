@@ -3,8 +3,9 @@
 	top: 168px;
 }
 
-#error, #about, .definition, .share-menu, #report {
+#error, #about, .definition, #share-menu, #report {
 	display:none;
+	
 	position:fixed;
 	font-weight:100;
 	top:0;
