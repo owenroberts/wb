@@ -1,12 +1,11 @@
 window.addEventListener('load', function() {
 
-	function loadDef(ev, elem) {
+	B.getDef = function() {
 		B.fade(B.loader, 'in', false);
-		ev.preventDefault();
-		const node = elem.parentNode;
+		const node = this.parentNode;
 		const word = node.dataset.word;
 		const index = +node.dataset.index;
-		const synonym = B.data.chain[index-1].word;
+		const synonym = B.data.chains[B.currentChain][index-1].word;
 		
 		$.ajax({
 			url: '/def',
@@ -19,8 +18,9 @@ window.addEventListener('load', function() {
 			success: function(result) {
 				B.fade(B.loader, 'out', true);
 				var msg = "";
-				msg += "<strong>" + word + "</strong><br><br>"
-				for (let i = 0; i < result.data.length; i++) {
+				msg += "<strong>" + word + "</strong><br><br>";
+				const len = Math.min(result.data.length, 10);
+				for (let i = 0; i < len; i++) {
 					msg += B.pos[result.data[i].pos];
 					msg += '<br>';
 					msg += result.data[i].def;
@@ -29,11 +29,10 @@ window.addEventListener('load', function() {
 				B.report(msg);
 			},
 		});
-	}
+	};
 
-	/* def events */
-	$('.def').on('click', function(ev) { loadDef(ev, this); });
-	$('.def').on('tap', function(ev) { loadDef(ev, this); });
-	$('body').on('tap','.def', function(ev) { loadDef(ev, this); });
-	$('body').on('click','.def', function(ev) { loadDef(ev, this); });
+	const defBtns = document.getElementsByClassName('def');
+	for (let i = 0; i < defBtns.length; i++) {
+		defBtns[i].addEventListener('click', B.getDef);
+	}
 });

@@ -2,15 +2,18 @@ window.addEventListener('load', function() {
 
 	B.debug = true;
 	B.fadeDur = B.debug ? 100 : 500;
-	B.noMorePaths = false;
 	B.noTouching = false;
-	B.chainCount = 0;
 	B.nodelimitArray = [+B.data.nodelimit];
+	B.queryStrings = [];
+	B.queryStrings.push(B.data.queryString);
+
 	B.currentChain = 0;
-	B.qstrings = [];
-	B.qstrings.push(B.data.queryString);
+	B.data.chains = [];
+	B.data.chains[B.currentChain] = B.data.chain;
+
+	B.noMorePaths = false;
 	
-	B.loader = document.getElementById('new-path-loader');
+	B.loader = document.getElementById('loader');
 	B.fade(B.loader, 'out', true);
 
 	const reportDiv = document.getElementById('report');
@@ -20,6 +23,7 @@ window.addEventListener('load', function() {
 
 	B.report = function(msg, ok, callback, dismissBack) {
 		B.fade(reportDiv, 'in', false);
+		reportDiv.scrollTop = 0;
 		reportMsg.scrollTop = 0;
 		reportTxt.innerHTML = msg;
 		if (ok) {
@@ -37,7 +41,7 @@ window.addEventListener('load', function() {
 			reportDiv.removeEventListener('click', dismissReport);
 		}
 		reportDiv.addEventListener('click', dismissReport);
-	}
+	};
 
 	if (B.data.error) 
 		B.report(B.data.error);
@@ -75,7 +79,7 @@ window.addEventListener('load', function() {
 		shareItems[i].addEventListener('click', function() {
 			const id = this.id;
 			const title = "SynoMapp: " + B.data.start + " ... " + B.data.end;
-			const link = location.href.split("?")[0] + "?s=" + B.data.start + "&e=" + B.data.end + "&nl=" + B.qstrings[B.chainCount].split(B.data.start)[1].split(B.data.end)[0] + "&sl=" + B.qstrings[B.chainCount].split(B.data.start)[1].split(B.data.end)[1];
+			const link = location.href.split("?")[0] + "?s=" + B.data.start + "&e=" + B.data.end + "&nl=" + B.queryStrings[B.chainCount].split(B.data.start)[1].split(B.data.end)[0] + "&sl=" + B.queryStrings[B.chainCount].split(B.data.start)[1].split(B.data.end)[1];
 			const url = encodeURIComponent(link);
 			switch(this.id) {
 				case 'email':

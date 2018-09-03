@@ -78,7 +78,7 @@ function makeChain(query, allSynonyms, callback) {
 							chain[h].alts.push(alts[j].word);
 						}
 					}
-					//console.log(chain);
+					// console.log(chain);
 					callback(null, chain);
 				} else if (startChain.length + endChain.length < currentNodeNumber - 1 && !foundChain) {
 					let endCopy = endChain.slice(0);
@@ -101,6 +101,7 @@ function makeChain(query, allSynonyms, callback) {
 				getShortestChain();
 			}
 		} else {
+			console.log(foundChain);
 			callback("Your search was not able to be performed with the current parameters.");
 		}
 	}
@@ -121,7 +122,8 @@ function makeChain(query, allSynonyms, callback) {
 			[{word:endWord}], 
 			allSynonyms.slice(0)
 		);
-		getShortestChain(); 
+		if (!foundChain)
+			getShortestChain(); 
 		/* should be called by build Chain at ending condition.... 
 			but this didn't work for some reason? */
 	}

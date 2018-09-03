@@ -135,7 +135,7 @@ function loadChain(request, callback) {
 }
 
 function makeChain(request, callback) {
-	var allsynonyms;
+	let allsynonyms;
 	if (request.query.as) 
 		allsynonyms = request.query.as;
 	else 

@@ -1,161 +1,172 @@
-$(document).ready(function() {
+window.addEventListener('load', function() {
 	
 	function getNewPath(ev) {
 		ev.stopPropagation();
 		
-		if (window.tooltips) 
+		if (B.tooltips) 
 			$('#report').trigger('click');
 
-		if (!noMorePaths) {
-			$('#newpathloader').fadeIn(fadeDur);
-			/* $('.plus').removeClass('rotate'); */
+		if (!B.noMorePaths) {
+			B.fade(B.loader, 'in', false);
 			makeNewPath();
 		} else {
-			report("The algorithm is not able to generate more results based on the current parameters.");
+			B.report("The algorithm is not able to generate more results based on the current parameters.");
 		}
 	}
 
-	/* switching paths */
-	var setPathDots = function(next) {
-		$('.path-dot').css({color:'lightgray'});
-		$('.path-dot:nth-child('+(currentChain+1)+')').css({color:'black'});
-		if (next) setZIndex();
-		$('#paths').animate({
-			//left: -window.innerWidth * currentChain
-		}, fadeDur, function() {
-			if (!next) setZIndex();
-		});	
+	function setChainDepth() {
+		for (let i = 0; i < dots.length; i++) {
+			if (i == B.currentChain) {
+				dots[i].classList.add('current');
+				chains[i].classList.add('current');
+			} else {
+				if (dots[i].classList.contains('current'))
+					dots[i].classList.remove('current');
+				if (chains[i].classList.contains('current'))
+					chains[i].classList.remove('current');
+			}
+		}
+
+		if (B.currentChain == 0) {
+			nextChainBtn.classList.add('clickable');
+			prevChainBtn.classList.remove('clickable');
+		} 
+		if (B.currentChain > 0 && B.currentChain < B.data.chains.length) {
+			prevChainBtn.classList.add('clickable');
+			nextChainBtn.classList.add('clickable');
+		}
+		if (B.currentChain == B.data.chains.length - 1) {
+			nextChainBtn.classList.remove('clickable');
+		} 
 	}
 
-	var setZIndex = function() {
-		const paths = $('#paths').children();
-		paths.css({zIndex:1, opacity:0});
-		$(paths[currentChain]).css({zIndex:2, opacity: 1});
+	function switchChain() {
+		const c = + this.dataset.index;
+		if (B.currentChain != c) {
+			B.currentChain = c;
+			setChainDepth();
+		}
 	}
 
-	var switchPath = function() {
-		let n = false;
-		if (currentChain < $(this).index()) n = true;
-		currentChain = $(this).index();
-		setPathDots(n);
-	};
-
-	var nextPath = function() {
-		if (currentChain < chainCount) {
-			currentChain++;
-			setPathDots(true);
+	function nextChain() {
+		if (B.currentChain < B.data.chains.length) {
+			B.currentChain++;
+			setChainDepth();
 		}
-	};
+	}
 
-	var prevPath = function() {
-		if (currentChain > 0) {
-			currentChain--;
-			setPathDots(false);
+	function prevChain() {
+		if (B.currentChain > 0) {
+			B.currentChain--;
+			setChainDepth();
 		}
-	};
+	}
 
-	$('.path-dot').on('click', switchPath);
-	$( ".path-dots" ).on( "swipeleft", nextPath);
-	$( ".path-dots" ).on( "swiperight", prevPath);
+	const nextChainBtn = document.getElementById('next-chain');
+	const prevChainBtn = document.getElementById('prev-chain');
+	const dots = document.getElementsByClassName('chain-dot');
+	const chains = document.getElementsByClassName('chain');
 
-	// ** plus button for new paths ** //
+	nextChainBtn.addEventListener('click', nextChain);
+	prevChainBtn.addEventListener('click', prevChain);
+	for (let i = 0; i < dots.length; i++) {
+		dots[i].addEventListener('click', switchChain);
+	}
+
 	function makeNewPath() {
 		let nodelimit;
-		if (chainCount < 10) {
+		if (B.data.chains.length < 10) {
 			do {
-				nodelimit = getRandomInt(2,20);
-			} while (nodelimitArray.indexOf(nodelimit) != -1);
+				nodelimit = B.getRandomInt(2,20);
+			} while (B.nodelimitArray.indexOf(nodelimit) != -1);
 			//nodelimit = 2; // break it for testing
-			nodelimitArray.push(nodelimit);
+			B.nodelimitArray.push(nodelimit);
 			
 			const synonymlevel = 10;  // should synonym level be randomized?
-			qstrings.push(data.start + nodelimit + data.end + synonymlevel);
+			B.queryStrings.push(B.data.start + nodelimit + B.data.end + synonymlevel);
 
 			$.ajax({
 				url: '/search/add',
 				type: 'get',
 				dataType:'json',
 				data: {
-					s: data.start,
-					e: data.end,
+					s: B.data.start,
+					e: B.data.end,
 					sl: synonymlevel,
 					nl: nodelimit
 				},
 				success: function(obj) {
-					$('#newpathloader').fadeOut(fadeDur);
+					B.fade(B.loader, 'in', false);
 					if (obj.errormsg) {
-						if (nodelimitArray.length < 9) {
+						if (B.nodelimitArray.length < 9) {
 							makeNewPath();
 						} else {
-							noMorePaths = true;
+							B.noMorePaths = true;
 							report("The algorithm is not able to generate more results based on the current parameters.");
 						}
 					} else {
-						const new_data = obj.data;
-						
-						/* need so save new chain data somewhere */
-						/* $('.plus').addClass('rotate'); */
-						
-						currentChain++;
-						chainCount++;
 
-						const newdot = $('<div>')
-							.attr({id:"p-" + currentChain})
-							.addClass('path-dot');
-						$('.dots').append(newdot);
-						$('.path-dot').css({color:'lightgray'});
-						newdot.css({color:'black'});
+						B.data.chains.push(obj.data.chain);
+						B.currentChain++;
 
-						newpath = document.createElement("div");
-						newpath.classList.add('path');
-						newpath.id = "path-" + currentChain;
+						const chain = document.createElement("div");
+						chain.classList.add('chain');
+						chain.id = "chain-" + B.currentChain;
 						
 						const nodes = document.createElement("div");
 						nodes.classList.add('nodes');
-						newpath.append(nodes);
+						chain.append(nodes);
 						
 						const startNode = document.createElement("div");
-						startNode.classList.add('node-wrap')
-						startNode.textContent = new_data.chain[0].word;
+						startNode.classList.add('node');
+
+						const startWord = document.createElement('div');
+						startWord.classList.add('word');
+						startWord.textContent = B.data.chains[B.currentChain][0].word;
+						
+						startNode.appendChild(startWord);
 						nodes.append(startNode);
-						
-						for (let i = 1; i < new_data.chain.length - 1; i++) {
-							const newnodedad = document.createElement("div");
-							newnodedad.classList.add('node-wrap');
-							newnodedad.dataset.index = i;
-							nodes.append(newnodedad);
+						setTimeout(() => {
+							startNode.classList.add('fade-in');
+						}, B.fadeDur);
 
-							setTimeout( function() {
-								$(newnodedad).fadeIn(fadeDur);
-							}, i * fadeDur);
-
-							let newsynnode = document.createElement("div")
-							newsynnode.classList.add('node');
-							newsynnode.dataset.index = i;
-							newsynnode.textContent = new_data.chain[i].word;
-							newsynnode.dataset.syndex = new_data.chain[i].syndex;
-							
-							newnodedad.appendChild(newsynnode);
-						}
 						const endNode = document.createElement("div");
-						endNode.classList.add('node-wrap')
-						endNode.textContent = new_data.chain[new_data.chain.length - 1].word;
-						nodes.append(endNode);
-						$('#paths').append(newpath);
+						endNode.classList.add('node');
 
+						const endWord = document.createElement('div');
+						endWord.classList.add('word');
+						const idx = B.data.chains[B.currentChain].length - 1;
+						endWord.textContent = B.data.chains[B.currentChain][idx].word;
+
+						endNode.appendChild(endWord);
+						setTimeout(() => {
+							endNode.classList.add('fade-in');
+						}, B.fadeDur);
+						nodes.append(endNode);
+
+						for (let i = 1; i < B.data.chains[B.currentChain].length - 1; i++) {
+							B.makeNode(i, nodes);
+						}
 						
-						$('.path-dots').slideDown(fadeDur);
-						setPathDots(true);
+						document.getElementById('chains').appendChild(chain);
+						
+						const dot = document.createElement('div');
+						dot.dataset.index = B.currentChain;
+						dot.classList.add('chain-dot');
+						dot.addEventListener('click', switchChain);
+						document.getElementById('dots').appendChild(dot);
+						document.getElementById('chain-dots').classList.add('slide-up');
+						setChainDepth();
+
+						B.fade(B.loader, 'out', true);
 					}
-					$('.node').draggable(window.dragParams); 
 				}
 			});
 		} else {
-			$('#newpathloader').fadeOut(fadeDur/2);
-			report('You have reached the maximum number of paths.');
+			B.fade(B.loader, 'out', true);
+			B.report('You have reached the maximum number of chains.');
 		}				
 	}
-	
 	const plusBtn = document.getElementById('plus');
 	plusBtn.addEventListener('click', getNewPath);
 });

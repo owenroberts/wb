@@ -12,7 +12,7 @@
 	</div>
 </div>
 
-<div id="new-path-loader" class="fade">
+<div id="loader" class="fade">
 	<img src="/img/loader.svg" alt="">
 </div>
 
@@ -42,16 +42,17 @@
 		</div>
 	</div>
 
-	<div class="path-dots slidedown pathdotcontainer">
-		<div class="dots">
-			<div class="path-dot" id="p-0"></div>
+	<div id="chain-dots">
+		<div id="prev-chain" class="chain-btn"> < </div>
+		<div id="dots">
+			<div data-index="0" class="chain-dot" style="margin-right:-2px;"></div>
 		</div>
+		<div id="next-chain" class="chain-btn"> > </div>
 	</div>
 
-	<div id="paths">
-		<div class="path" id="path-0">
+	<div id="chains">
+		<div class="chain current" id="chain-0">
 			<div class="nodes">
-				{{!-- {{data.chain.length}} --}}
 				{{#each data.chain}}
 					<div class="node fade" data-word={{this.word}} data-index={{@index}} data-syndex={{this.syndex}}>
 						{{#if @first}}
