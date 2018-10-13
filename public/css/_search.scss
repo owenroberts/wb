@@ -184,12 +184,12 @@ header {
 		}
 		
 	}
-	.word, .def, .next, .prev, .mod-btn {
+	.word, .next, .prev, .mod-btn {
 		display: inline-block;
 		margin-right: 5px;
 
 	}
-	.next, .prev, .mod-btn, .def  {
+	.next, .prev, .mod-btn {
 		font-size: 0.8em;
 		background: $lightgray;
 		border-radius: 0.25em;
@@ -201,11 +201,7 @@ header {
 
 	.next, .prev {
 		/* display: none; */
-		opacity: 0;
-		&.exists {
-			/* display: inline-block; */
-			opacity: 1;
-		}
+		opacity: 1;
 	}
 	
 	&:first-child, &:last-child {

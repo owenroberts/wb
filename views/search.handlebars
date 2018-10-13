@@ -54,16 +54,15 @@
 		<div class="chain current" id="chain-0">
 			<div class="nodes">
 				{{#each data.chain}}
-					<div class="node fade def" data-word={{this.word}} data-index={{@index}} data-syndex={{this.syndex}}>
+					<div class="node fade" data-word={{this.word}} data-index={{@index}} data-syndex={{this.syndex}}>
 						{{#if @first}}
-							<div class="word">{{this.word}}</div>
+							<div class="word def">{{this.word}}</div>
 						{{else if @last}}
-							<div class="word">{{this.word}}</div>
+							<div class="word def">{{this.word}}</div>
 						{{else}}
-							<div class="word">{{this.word}}</div>
-							<div>d</div>
-							<div class="prev {{#if this.syndex}}exists{{/if}}"> < </div>
-							<div class="next {{#lessThan this.syndex this.alts.length}}exists{{/lessThan}}"> > </div>
+							<div class="word def">{{this.word}}</div>
+							<div class="prev"> < </div>
+							<div class="next"> > </div>
 							<div class="mod-btn">m</div>
 						{{/if}}
 					</div>

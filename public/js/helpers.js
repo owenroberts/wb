@@ -1,5 +1,8 @@
 window.addEventListener('load', function() {
 
+	B.debug = true;
+	B.fadeDur = B.debug ? 100 : 500;
+
 	B.getRandomInt = function(min, max) {
 		return Math.floor(Math.random()* ( max - min + 1) + min);
 	}
@@ -56,11 +59,8 @@ window.addEventListener('load', function() {
 		const word = document.createElement('div');
 		word.textContent = B.data.chains[B.currentChain][index].word;
 		word.classList.add('word');
-
-		const defBtn = document.createElement('div');
-		defBtn.textContent = 'd';
-		defBtn.classList.add('def');
-		defBtn.addEventListener('click', B.getDef);
+		word.classList.add('def');
+		word.addEventListener('click', B.getDef);
 
 		const prevBtn = document.createElement('div');
 		prevBtn.textContent = ' < ';
@@ -86,7 +86,6 @@ window.addEventListener('load', function() {
 		modBtn.addEventListener('click', B.modifyChain);
 
 		node.appendChild(word);
-		node.appendChild(defBtn);
 		node.appendChild(prevBtn);
 		node.appendChild(nextBtn);
 		node.appendChild(modBtn);

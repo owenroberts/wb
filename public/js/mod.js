@@ -8,35 +8,22 @@ window.addEventListener('load', function() {
 		const syndex = +node.dataset.syndex;
 		const len = B.data.chains[B.currentChain][index].alts.length;
 
-		/* first check to see there is another alt */
-		if (syndex != 0 && dir == 'prev' ||
-			syndex != len - 1 && dir == 'next') {
+		const word = node.dataset.word;
+		let newSyndex = syndex + (dir == 'prev' ? -1 : 1);
+		if (newSyndex == -1)
+			newSyndex = len - 1;
+		else if (newSyndex == len)
+			newSyndex = 0;
 
-			const word = node.dataset.word;
-			const newSyndex = syndex + (dir == 'prev' ? -1 : 1);
-			const syn = B.data.chains[B.currentChain][index].alts[newSyndex]; /* should be like window.Chain */
-			node.children[0].textContent = syn;
-			node.dataset.syndex = newSyndex;
-			node.dataset.word = syn;
-			
+		const syn = B.data.chains[B.currentChain][index].alts[newSyndex]; /* should be like window.Chain */
+		node.children[0].textContent = syn;
+		node.dataset.syndex = newSyndex;
+		node.dataset.word = syn;
 		
-			/* slightly wack way of hiding/showing next/prev buttons
-				these look awful */
-			if (syndex == 0 && newSyndex > 0) {
-				elem.previousElementSibling.classList.add('exists');
-			} else if (syndex == 1 && newSyndex == 0) {
-				elem.classList.remove('exists');
-			} else if (newSyndex == len - 1) {
-				elem.classList.remove('exists');
-			} else if (syndex == len - 1 && newSyndex == syndex - 1) {
-				elem.nextElementSibling.classList.add('exists');
-			}
-	
-			/* hide other nodes */
-			const nodes = elem.parentNode.parentNode.children;
-			for (let i = index + 1; i < nodes.length - 1; i++) {
-				nodes[i].classList.replace('fade-in', 'fade-grey');
-			}
+		/* hide other nodes */
+		const nodes = elem.parentNode.parentNode.children;
+		for (let i = index + 1; i < nodes.length - 1; i++) {
+			nodes[i].classList.replace('fade-in', 'fade-grey');
 		}
 	}
 

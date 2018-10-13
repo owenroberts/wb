@@ -4,12 +4,12 @@ const express = require('express')
 	,	logger = require('morgan')
 	,	bodyParser = require('body-parser')
 	,	wordnet = require('wordnet')
-	,	NodeCache = require( "node-cache")
+	,	NodeCache = require('node-cache')
 	,	PathProvider = require('./pathprovider').PathProvider
 	,	chain = require('./chain')
 	,	def = require('./def')
 	,	url = require('url')
-	,	handlebars = require("express-handlebars")
+	,	handlebars = require('express-handlebars')
 	;
 
 const app = express();
@@ -51,7 +51,8 @@ app.get('/', function(req, res) {
 	let err;
 	if (req.query.err instanceof Array) 
 		err = req.query.err[req.query.err.length - 1];
-	else err = req.query.err;
+	else 
+		err = req.query.err;
 	res.render('index', {
 		errmsg: err
 	});

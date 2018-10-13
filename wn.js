@@ -21,8 +21,8 @@ wordnet.lookup(word, function(results) {
         console.log("--");
         //console.log(result);
        	//console.log(result.pos);
-        //console.log(result.lemma);
-        //console.log(result.synonyms);
+        console.log(result.lemma);
+        console.log(result.synonyms);
         //console.log(result.gloss.split(";")[0]);
 
         if (result.lemma == syn) {

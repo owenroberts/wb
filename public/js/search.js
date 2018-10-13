@@ -1,7 +1,5 @@
 window.addEventListener('load', function() {
-
-	B.debug = true;
-	B.fadeDur = B.debug ? 100 : 500;
+	
 	B.noTouching = false;
 	B.nodelimitArray = [+B.data.nodelimit];
 	B.queryStrings = [];
@@ -16,9 +14,6 @@ window.addEventListener('load', function() {
 	B.loader = document.getElementById('loader');
 	B.fade(B.loader, 'out', true);
 
-	
-
-	
 
 	if (B.data.error) 
 		B.report(B.data.error);
