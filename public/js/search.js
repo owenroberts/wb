@@ -16,32 +16,9 @@ window.addEventListener('load', function() {
 	B.loader = document.getElementById('loader');
 	B.fade(B.loader, 'out', true);
 
-	const reportDiv = document.getElementById('report');
-	const reportMsg = document.getElementById('report-msg');
-	const reportTxt = document.getElementById('report-txt');
-	const reportBtn = document.getElementById('report-btn');
+	
 
-	B.report = function(msg, ok, callback, dismissBack) {
-		B.fade(reportDiv, 'in', false);
-		reportDiv.scrollTop = 0;
-		reportMsg.scrollTop = 0;
-		reportTxt.innerHTML = msg;
-		if (ok) {
-			reportBtn.style.display = 'block';
-			reportBtn.textContent = ok;
-			reportBtn.addEventListener('click', callback);
-		} else {
-			reportBtn.style.display = 'none';
-		}
-		function dismissReport() {
-			B.fade(reportDiv, 'out', true);
-			document.body.style.overflow = 'auto';	
-			if (dismissBack)
-				dismissback();
-			reportDiv.removeEventListener('click', dismissReport);
-		}
-		reportDiv.addEventListener('click', dismissReport);
-	};
+	
 
 	if (B.data.error) 
 		B.report(B.data.error);

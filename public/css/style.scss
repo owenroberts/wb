@@ -16,8 +16,9 @@ $high_gray: #D1D1D1;
 @import 'search';
 @import 'report';
 @import 'tooltips';
+@import 'fade';
 
-
+/* svg loader dots animation */
 #dOne  {
 	animation-iteration-count: infinite;
   	animation-duration: 1.6s;

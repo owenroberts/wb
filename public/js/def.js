@@ -2,10 +2,10 @@ window.addEventListener('load', function() {
 
 	B.getDef = function() {
 		B.fade(B.loader, 'in', false);
-		const node = this.parentNode;
+		const node = this;
 		const word = node.dataset.word;
 		const index = +node.dataset.index;
-		const synonym = B.data.chains[B.currentChain][index-1].word;
+		const synonym = index > 0 ? B.data.chains[B.currentChain][index - 1].word : B.data.chains[B.currentChain][index + 1].word;
 		
 		$.ajax({
 			url: '/def',

@@ -401,27 +401,13 @@ header {
   padding: 0.5em;
   border: 1px solid #f1f1f2; }
 
-.fade {
-  transition: opacity 500ms; }
-
-.fade-in {
-  opacity: 1; }
-
-.fade-grey {
-  opacity: 0.3; }
-
-.fade-out {
-  opacity: 0; }
-
-.display-none {
-  display: none; }
-
 #report.swipe {
   margin-top: 0;
   top: 168px; }
 
 #error, #about, .definition, #share-menu, #report {
   display: none;
+  /* opacity: 0; */
   position: fixed;
   font-weight: 100;
   top: 0;
@@ -475,17 +461,6 @@ header {
       margin: 0.5em 0; }
     #error .msg p, #about .msg p, .definition .msg p, #share-menu .msg p, #report .msg p {
       margin: 0.2em 0; }
-    #error .msg #tooltips, #about .msg #tooltips, .definition .msg #tooltips, #share-menu .msg #tooltips, #report .msg #tooltips {
-      border: 1px solid white;
-      position: absolute;
-      bottom: 2em;
-      border-radius: 3px;
-      padding: 8px;
-      font-size: 0.75em;
-      left: 0;
-      right: 0;
-      margin: 0 20%;
-      text-align: center; }
 
 #tooltips {
   background-color: #6a75ff;
@@ -510,6 +485,28 @@ header {
   #tooltips #next_btn {
     text-align: right; }
 
+.fade {
+  transition: opacity 500ms; }
+
+.visible {
+  opacity: 1; }
+
+.hidden {
+  opacity: 0; }
+
+.fade-in {
+  opacity: 1; }
+
+.fade-grey {
+  opacity: 0.3; }
+
+.fade-out {
+  opacity: 0; }
+
+.display-none {
+  display: none; }
+
+/* svg loader dots animation */
 #dOne {
   animation-iteration-count: infinite;
   animation-duration: 1.6s;
