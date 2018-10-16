@@ -19,7 +19,12 @@ chain.makeChain(query, [program.args[0]], function(err, data) {
 	if (err) query.error = err;
 	else {
 		console.log("time", now() - start);
-		console.log(data);
+		// console.log(data);
+		let index = 0;
+		for (const word in data) {
+			console.log(index, data[word].word);
+			index++;
+		}
 	}
 });
 

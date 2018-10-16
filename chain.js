@@ -10,6 +10,28 @@ function makeChain(query, allSynonyms, callback) {
 	let currentNodeNumber = query.nodelimit; // try to get under this first
 	let foundChain = false;
 
+	if (!startWord || !endWord) {
+		callback("Please enter two search words.");
+	} else if (!reg.test(startWord) || !reg.test(endWord)) {
+		callback("Please enter single words with no spaces or special characters.");
+	} else if (startWord == endWord) {
+		callback("Please enter different words.")
+	} else if (thesaurus.find(startWord).length == 0) {
+		callback("The first word was not found.");
+	} else if (thesaurus.find(endWord).length == 0) {
+		callback("The second word was not found.");
+	} else {
+		buildChain(
+			[{word:startWord}], 
+			[{word:endWord}], 
+			allSynonyms.slice(0)
+		);
+		if (!foundChain)
+			getShortestChain(); 
+		/* should be called by build Chain at ending condition.... 
+			but this didn't work for some reason? */
+	}
+
 	function getSynonyms(word, allSynsCopy) {
 		let tempSyns = thesaurus.find(word);
 		let synonyms = [];
@@ -28,9 +50,10 @@ function makeChain(query, allSynonyms, callback) {
 	}
 
 	function buildChain(startChain, endChain, allSyns) {
-		let startIndex = startChain.length - 1;
-		let endIndex = endChain.length - 1;
-		let allSynsCopy = allSyns.slice(0);
+
+		const startIndex = startChain.length - 1;
+		const endIndex = endChain.length - 1;
+		const allSynsCopy = allSyns.slice(0);
 		allSynsCopy.push(startChain[startIndex].word);
 		allSynsCopy.push(endChain[endIndex].word);
 		
@@ -40,12 +63,14 @@ function makeChain(query, allSynonyms, callback) {
 		if (endChain[endIndex].synonyms === undefined) {
 			endChain[endIndex].synonyms = getSynonyms(endChain[endIndex].word, allSynsCopy);
 		}
+		
 		for (let i = 0; i < startChain[startIndex].synonyms.length; i++) {
-			allSynsCopy.push( startChain[startIndex].synonyms[i].word );
+			allSynsCopy.push(startChain[startIndex].synonyms[i].word);
 		}
-		for (let i = 0; i < endChain[endIndex].synonyms.length; i++) {
-			allSynsCopy.push( endChain[endIndex].synonyms[i].word );
-		}
+		// for (let i = 0; i < endChain[endIndex].synonyms.length; i++) {
+		// 	allSynsCopy.push(endChain[endIndex].synonyms[i].word);
+		// }
+		
 
 		for (let i = 0; i < startChain[startIndex].synonyms.length; i++) {
 			let startCopy =  startChain.slice(0);
@@ -69,22 +94,30 @@ function makeChain(query, allSynonyms, callback) {
 						chain[h] = {};
 						chain[h].word = startCopy[h].word;
 						chain[h].alts = [];
-						const alts = startCopy[h + (h > (startCopy.length)/2 ? 1 : -1)].synonyms;
-						for (let j = 0; j < alts.length; j++) {
-							// syndex is the synonym level
-							if (alts[j].word == chain[h].word) {
-								chain[h].syndex = j;
-							}
-							chain[h].alts.push(alts[j].word);
-						}
+						// console.log(h + (h > (startCopy.length)/2 ? 1 : -1))
+						// const alts = startCopy[h + (h > (startCopy.length)/2 ? 1 : -1)].synonyms;
+						// for (let j = 0; j < alts.length; j++) {
+						// 	// syndex is the synonym level
+						// 	if (alts[j].word == chain[h].word) {
+						// 		chain[h].syndex = j;
+						// 	}
+						// 	chain[h].alts.push(alts[j].word);
+						// }
 					}
-					// console.log(chain);
+					// console.log(chain); /* the first working chain */
 					callback(null, chain);
-				} else if (startChain.length + endChain.length < currentNodeNumber - 1 && !foundChain) {
-					let endCopy = endChain.slice(0);
-					endCopy.push(endSyn);
-					buildChain(startCopy, endCopy, allSynsCopy);
-				}
+				} 
+				// else if (startChain.length + endChain.length < currentNodeNumber - 1 && !foundChain) {
+				// 	let endCopy = endChain.slice(0);
+				// 	endCopy.push(endSyn);
+				// 	// buildChain(startCopy, endCopy, allSynsCopy); /* original */
+				// 	buildChain(startChain, endCopy, allSynsCopy);
+				// }
+			}
+			if (startChain.length + endChain.length < currentNodeNumber - 1 && !foundChain) {
+				buildChain(startCopy, endChain, allSynsCopy); /* fastest ?*/
+				// buildChain(endChain, startCopy, allSynsCopy);
+				// what about all syns .... 
 			}
 		}
 	}
@@ -106,27 +139,7 @@ function makeChain(query, allSynonyms, callback) {
 		}
 	}
 
-	if (!startWord || !endWord) {
-		callback("Please enter two search words.");
-	} else if (!reg.test(startWord) || !reg.test(endWord)) {
-		callback("Please enter single words with no spaces or dashes.");
-	} else if (startWord == endWord) {
-		callback("Please enter different words.")
-	} else if (thesaurus.find(startWord).length == 0) {
-		callback("The first word was not found.");
-	} else if (thesaurus.find(endWord).length == 0) {
-		callback("The second word was not found.");
-	} else {
-		buildChain(
-			[{word:startWord}], 
-			[{word:endWord}], 
-			allSynonyms.slice(0)
-		);
-		if (!foundChain)
-			getShortestChain(); 
-		/* should be called by build Chain at ending condition.... 
-			but this didn't work for some reason? */
-	}
+
 
 }
 exports.makeChain = makeChain;
