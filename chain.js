@@ -95,6 +95,7 @@ function makeChain(query, allSynonyms, callback) {
 					}
 					// console.log(chain); /* the first working chain */
 					callback(null, chain);
+					return;
 				} 
 			}
 			if (startChain.length + endChain.length < currentNodeNumber - 1 && !foundChain) {
