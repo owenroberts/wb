@@ -23,7 +23,7 @@ function makeChain(query, allSynonyms, callback) {
 	} else {
 		buildChain(
 			[{word:startWord}], 
-			[{word:endWord}], 
+			[{ word:endWord, synonyms: getSynonyms(endWord, allSynonyms.slice(0)) }], 
 			allSynonyms.slice(0)
 		);
 		if (!foundChain)
@@ -57,20 +57,11 @@ function makeChain(query, allSynonyms, callback) {
 		allSynsCopy.push(startChain[startIndex].word);
 		allSynsCopy.push(endChain[endIndex].word);
 		
-		if (startChain[startIndex].synonyms === undefined) {
-			startChain[startIndex].synonyms = getSynonyms(startChain[startIndex].word, allSynsCopy);
-		}
-		if (endChain[endIndex].synonyms === undefined) {
-			endChain[endIndex].synonyms = getSynonyms(endChain[endIndex].word, allSynsCopy);
-		}
+		startChain[startIndex].synonyms = getSynonyms(startChain[startIndex].word, allSynsCopy);
 		
 		for (let i = 0; i < startChain[startIndex].synonyms.length; i++) {
 			allSynsCopy.push(startChain[startIndex].synonyms[i].word);
 		}
-		// for (let i = 0; i < endChain[endIndex].synonyms.length; i++) {
-		// 	allSynsCopy.push(endChain[endIndex].synonyms[i].word);
-		// }
-		
 
 		for (let i = 0; i < startChain[startIndex].synonyms.length; i++) {
 			let startCopy =  startChain.slice(0);
@@ -81,8 +72,8 @@ function makeChain(query, allSynonyms, callback) {
 				// attemptCount++;
 				if (startSyn.word == endSyn.word && !foundChain) {
 					foundChain = true;
-					for (let h = endChain.length-1; h >= 0; h--) {
-						startCopy.push( endChain[h] );
+					for (let k = endChain.length-1; k >= 0; k--) {
+						startCopy.push( endChain[k] );
 					}
 
 					/* prepare the data for front end */
@@ -90,34 +81,24 @@ function makeChain(query, allSynonyms, callback) {
 					chain[0] = { word: startWord };
 					chain[startCopy.length - 1] = { word: endWord };
 					let nextIndex = -1;
-					for (let h = 1; h < startCopy.length - 1; h++) {
-						chain[h] = {};
-						chain[h].word = startCopy[h].word;
-						chain[h].alts = [];
-						// console.log(h + (h > (startCopy.length)/2 ? 1 : -1))
-						// const alts = startCopy[h + (h > (startCopy.length)/2 ? 1 : -1)].synonyms;
-						// for (let j = 0; j < alts.length; j++) {
-						// 	// syndex is the synonym level
-						// 	if (alts[j].word == chain[h].word) {
-						// 		chain[h].syndex = j;
-						// 	}
-						// 	chain[h].alts.push(alts[j].word);
-						// }
+					for (let k = 1; k < startCopy.length - 1; k++) {
+						chain[k] = {};
+						chain[k].word = startCopy[k].word;
+						chain[k].alts = [];
+						const alts = startCopy[k + (k > startCopy.length - 2 ? 1 : -1)].synonyms;
+						for (let l = 0; l < alts.length; l++) {
+							if (alts[l].word == chain[k].word) {
+								chain[k].syndex = l;
+							} // syndex is the synonym level
+							chain[k].alts.push(alts[l].word);
+						}
 					}
 					// console.log(chain); /* the first working chain */
 					callback(null, chain);
 				} 
-				// else if (startChain.length + endChain.length < currentNodeNumber - 1 && !foundChain) {
-				// 	let endCopy = endChain.slice(0);
-				// 	endCopy.push(endSyn);
-				// 	// buildChain(startCopy, endCopy, allSynsCopy); /* original */
-				// 	buildChain(startChain, endCopy, allSynsCopy);
-				// }
 			}
 			if (startChain.length + endChain.length < currentNodeNumber - 1 && !foundChain) {
 				buildChain(startCopy, endChain, allSynsCopy); /* fastest ?*/
-				// buildChain(endChain, startCopy, allSynsCopy);
-				// what about all syns .... 
 			}
 		}
 	}
