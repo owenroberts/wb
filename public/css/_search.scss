@@ -173,6 +173,17 @@ header {
 	.word {
 		margin-right: 0.1em;
 		flex: 1 1 auto;
+		width: 100px;
+	}
+
+	.mod-open {
+		margin-right: 1em;
+	}
+
+	.mod-options {
+		display: none;
+		margin-right: 0.5em;
+		box-shadow: -5px 0px 10px white;
 	}
 
 	&:hover {
@@ -182,22 +193,19 @@ header {
 			cursor: -webkit-grabbing; 
 			cursor: -moz-grabbing;
 		}
-		
 	}
-	.word, .next, .prev, .mod-btn {
-		display: inline-block;
-		margin-right: 5px;
 
+	.word, .next, .prev, .mod-btn, .mod-close {
+		display: inline-block;
 	}
-	.next, .prev, .mod-btn {
-		font-size: 0.8em;
-		background: $lightgray;
-		border-radius: 0.25em;
-		padding: 0 0.1em;
-		vertical-align: top;
-		font-weight: 100;
-		line-height: 1.4;
+
+	.next {
+		margin-left: -0.5em;
 	}
+	.prev {
+		margin-right: 6px;
+	}
+
 
 	.next, .prev {
 		/* display: none; */

@@ -116,12 +116,8 @@ function makeChain(query, allSynonyms, callback) {
 				getShortestChain();
 			}
 		} else {
-			console.log(foundChain);
 			callback("Your search was not able to be performed with the current parameters.");
 		}
 	}
-
-
-
 }
 exports.makeChain = makeChain;

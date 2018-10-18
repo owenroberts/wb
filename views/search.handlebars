@@ -61,9 +61,24 @@
 							<div class="word def">{{this.word}}</div>
 						{{else}}
 							<div class="word def">{{this.word}}</div>
-							<div class="prev"> < </div>
-							<div class="next"> > </div>
-							<div class="mod-btn">m</div>
+							<div class="mod-options">
+								<div class="mod-close">
+									<img src="/img/mod-close.svg">
+								</div>
+								<div class="mod-btn">
+									<img src="/img/mod-down-arrow.svg" alt="">
+								</div>
+								<div class="prev">
+									<img src="/img/mod-left-arrow.svg" alt="">
+								</div>
+								<div class="next">
+									<img src="/img/mod-right-arrow.svg" alt="">
+								</div>
+								
+							</div>
+							<div class="mod-open">
+								<img src="/img/Arrow-Right.svg">
+							</div>
 						{{/if}}
 					</div>
 				{{/each}}

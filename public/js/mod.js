@@ -2,8 +2,9 @@ window.addEventListener('load', function() {
 
 	/* new syn */
 	B.newSyn = function(elem, dir) {
+		console.log(elem);
 
-		const node = elem.parentNode;
+		const node = elem.parentNode.parentNode;
 		const index = +node.dataset.index;
 		const syndex = +node.dataset.syndex;
 		const len = B.data.chains[B.currentChain][index].alts.length;
@@ -21,7 +22,7 @@ window.addEventListener('load', function() {
 		node.dataset.word = syn;
 		
 		/* hide other nodes */
-		const nodes = elem.parentNode.parentNode.children;
+		const nodes = node.parentNode.children;
 		for (let i = index + 1; i < nodes.length - 1; i++) {
 			nodes[i].classList.replace('fade-in', 'fade-grey');
 		}
@@ -29,8 +30,8 @@ window.addEventListener('load', function() {
 
 	const prevBtns = document.getElementsByClassName('prev');
 	for (let i = 0; i < prevBtns.length; i++) {
-		prevBtns[i].addEventListener('click', function() {
-			B.newSyn(this, 'prev');
+		prevBtns[i].addEventListener('click', ev => {
+			B.newSyn(ev.currentTarget, 'prev');
 		});
 	}
 
@@ -44,10 +45,9 @@ window.addEventListener('load', function() {
 	// ** modify chain ** //
 	B.modifyChain = function() {
 
-		const elem = this;
-		const node = elem.parentNode;
+		const node = this.parentNode.parentNode;
 		const index = +node.dataset.index;
-		const nodes = elem.parentNode.parentNode.children;
+		const nodes = node.parentNode.children;
 		const alt = node.dataset.word;
 
 		/* get all syns for new chain algorithm */
@@ -105,7 +105,7 @@ window.addEventListener('load', function() {
 
 					/* add new nodes */
 					for (let i = index + 1; i < B.data.chains[B.currentChain].length - 1; i++) {
-						B.makeNode(i, elem.parentNode.parentNode);
+						B.makeNode(i, node.parentNode);
 					}
 				}
 			}
@@ -116,4 +116,20 @@ window.addEventListener('load', function() {
 	for (let i = 0; i < nextBtns.length; i++) {
 		modBtns[i].addEventListener('click', B.modifyChain);
 	}
+
+	const openMods = document.getElementsByClassName('mod-open');
+	Array.from(openMods).forEach(function(openMod) {
+		openMod.addEventListener('click', ev => {
+			ev.currentTarget.style.display = 'none';
+			ev.currentTarget.previousElementSibling.style.display = 'inline-block';
+		});
+	});
+
+	const closeMods = document.getElementsByClassName('mod-close');
+	Array.from(closeMods).forEach(function(closeMod) {
+		closeMod.addEventListener('click', ev => {
+			ev.currentTarget.parentNode.style.display = 'none';
+			ev.currentTarget.parentNode.nextElementSibling.style.display = 'inline-block';
+		});
+	});
 });

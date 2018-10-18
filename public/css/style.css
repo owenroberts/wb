@@ -303,24 +303,26 @@ header {
     opacity: 1; }
   .node .word {
     margin-right: 0.1em;
-    flex: 1 1 auto; }
+    flex: 1 1 auto;
+    width: 100px; }
+  .node .mod-open {
+    margin-right: 1em; }
+  .node .mod-options {
+    display: none;
+    margin-right: 0.5em;
+    box-shadow: -5px 0px 10px white; }
   .node:hover {
     cursor: -webkit-grab;
     cursor: -moz-grab; }
     .node:hover:active {
       cursor: -webkit-grabbing;
       cursor: -moz-grabbing; }
-  .node .word, .node .next, .node .prev, .node .mod-btn {
-    display: inline-block;
-    margin-right: 5px; }
-  .node .next, .node .prev, .node .mod-btn {
-    font-size: 0.8em;
-    background: #f1f1f2;
-    border-radius: 0.25em;
-    padding: 0 0.1em;
-    vertical-align: top;
-    font-weight: 100;
-    line-height: 1.4; }
+  .node .word, .node .next, .node .prev, .node .mod-btn, .node .mod-close {
+    display: inline-block; }
+  .node .next {
+    margin-left: -0.5em; }
+  .node .prev {
+    margin-right: 6px; }
   .node .next, .node .prev {
     /* display: none; */
     opacity: 1; }

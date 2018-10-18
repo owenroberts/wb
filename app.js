@@ -59,8 +59,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/search', function(req, res) {
-	/* loadChain for production, makeChain to skip db/cache */
-	makeChain(req, function(result) {
+	makeChain(req, function(result) { /* loadChain for production, makeChain to skip db/cache */
 		if (result.error) {
 			res.redirect(url.format({
 				pathname: req.get('Referrer').split("?")[0],
