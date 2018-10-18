@@ -2,7 +2,6 @@ window.addEventListener('load', function() {
 
 	/* new syn */
 	B.newSyn = function(elem, dir) {
-		console.log(elem);
 
 		const node = elem.parentNode.parentNode;
 		const index = +node.dataset.index;
@@ -43,9 +42,11 @@ window.addEventListener('load', function() {
 	}
 
 	// ** modify chain ** //
-	B.modifyChain = function() {
+	B.modifyChain = ev => {
 
-		const node = this.parentNode.parentNode;
+		B.closeModOptions(ev.currentTarget);
+
+		const node = ev.currentTarget.parentNode.parentNode;
 		const index = +node.dataset.index;
 		const nodes = node.parentNode.children;
 		const alt = node.dataset.word;
@@ -60,7 +61,6 @@ window.addEventListener('load', function() {
 				}
 			}
 		}
-		// console.log(usedSynonyms);
 
 		$.ajax({
 			url: '/search/modified',
@@ -117,19 +117,34 @@ window.addEventListener('load', function() {
 		modBtns[i].addEventListener('click', B.modifyChain);
 	}
 
+	B.openModOptions = e => {
+		if (!modIsOpen) {
+			e.style.display = 'none';
+			e.previousElementSibling.style.display = 'inline-block';
+			modIsOpen = true;
+			document.getElementsByClassName('nodes')[B.currentChain].classList.add('mod-disabled'); // nodes
+		}
+	};
+	
+	B.closeModOptions = e => {
+		e.parentNode.style.display = 'none';
+		e.parentNode.nextElementSibling.style.display = 'inline-block';	
+		modIsOpen = false;
+		document.getElementsByClassName('nodes')[B.currentChain].classList.remove('mod-disabled'); // nodes		
+	};
+
 	const openMods = document.getElementsByClassName('mod-open');
 	Array.from(openMods).forEach(function(openMod) {
 		openMod.addEventListener('click', ev => {
-			ev.currentTarget.style.display = 'none';
-			ev.currentTarget.previousElementSibling.style.display = 'inline-block';
+			B.openModOptions(ev.currentTarget);
 		});
 	});
 
+	let modIsOpen = false;
 	const closeMods = document.getElementsByClassName('mod-close');
 	Array.from(closeMods).forEach(function(closeMod) {
 		closeMod.addEventListener('click', ev => {
-			ev.currentTarget.parentNode.style.display = 'none';
-			ev.currentTarget.parentNode.nextElementSibling.style.display = 'inline-block';
+			B.closeModOptions(ev.currentTarget);
 		});
 	});
 });

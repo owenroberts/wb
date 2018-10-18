@@ -132,10 +132,10 @@ header {
 
 #chains {
 	position: relative;
-	margin-top:60px;
+	margin-top: 60px;
 	.chain {
-		position:absolute;
-		padding-bottom:68px;
+		position: absolute;
+		padding-bottom: 1em;
 		width: 100%;
 		z-index: 0;
 		opacity: 0;
@@ -155,13 +155,18 @@ header {
 	background-color: $white;
 	min-width: 260px;
 	min-height: 500px;
-	padding: 0 0.5em;
+	padding: 0 0.75em;
+	
+	&.mod-disabled {
+		.mod-open .active { display: none; }
+		.mod-open .disabled { display: inline-block; }	
+	}
 }
 
 .node {
 	position: relative;
-	padding:0.2em 0;
-	margin:0.2em 0;
+	padding: 0.2em 0;
+	margin: 0.1em 0;
 	
 	opacity: 0;
 
@@ -177,12 +182,15 @@ header {
 	}
 
 	.mod-open {
-		margin-right: 1em;
+		cursor: pointer;
+		margin-right: 6px;
+		.active { display: inline-block; }
+		.disabled { display: none; }
 	}
 
 	.mod-options {
 		display: none;
-		margin-right: 0.5em;
+		/* margin-right: 0.5em; */
 		box-shadow: -5px 0px 10px white;
 	}
 
@@ -196,14 +204,21 @@ header {
 	}
 
 	.word, .next, .prev, .mod-btn, .mod-close {
+		height: 36px;
 		display: inline-block;
+	}
+	.next, .prev, .mod-btn, .mod-close, .mod-options {
+		line-height: 0;
+		cursor: pointer;
 	}
 
 	.next {
-		margin-left: -0.5em;
+		/* margin-left: -0.5em; */
+		margin-right: -5px;
+		margin-left: -6px;
 	}
 	.prev {
-		margin-right: 6px;
+		/* margin-right: 6px; */
 	}
 
 

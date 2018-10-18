@@ -273,7 +273,7 @@ header {
   margin-top: 60px; }
   #chains .chain {
     position: absolute;
-    padding-bottom: 68px;
+    padding-bottom: 1em;
     width: 100%;
     z-index: 0;
     opacity: 0; }
@@ -290,12 +290,16 @@ header {
   background-color: white;
   min-width: 260px;
   min-height: 500px;
-  padding: 0 0.5em; }
+  padding: 0 0.75em; }
+  .nodes.mod-disabled .mod-open .active {
+    display: none; }
+  .nodes.mod-disabled .mod-open .disabled {
+    display: inline-block; }
 
 .node {
   position: relative;
   padding: 0.2em 0;
-  margin: 0.2em 0;
+  margin: 0.1em 0;
   opacity: 0;
   display: flex;
   width: 100%; }
@@ -306,10 +310,15 @@ header {
     flex: 1 1 auto;
     width: 100px; }
   .node .mod-open {
-    margin-right: 1em; }
+    cursor: pointer;
+    margin-right: 6px; }
+    .node .mod-open .active {
+      display: inline-block; }
+    .node .mod-open .disabled {
+      display: none; }
   .node .mod-options {
     display: none;
-    margin-right: 0.5em;
+    /* margin-right: 0.5em; */
     box-shadow: -5px 0px 10px white; }
   .node:hover {
     cursor: -webkit-grab;
@@ -318,11 +327,17 @@ header {
       cursor: -webkit-grabbing;
       cursor: -moz-grabbing; }
   .node .word, .node .next, .node .prev, .node .mod-btn, .node .mod-close {
+    height: 36px;
     display: inline-block; }
+  .node .next, .node .prev, .node .mod-btn, .node .mod-close, .node .mod-options {
+    line-height: 0;
+    cursor: pointer; }
   .node .next {
-    margin-left: -0.5em; }
+    /* margin-left: -0.5em; */
+    margin-right: -5px;
+    margin-left: -6px; }
   .node .prev {
-    margin-right: 6px; }
+    /* margin-right: 6px; */ }
   .node .next, .node .prev {
     /* display: none; */
     opacity: 1; }

@@ -49,46 +49,78 @@ window.addEventListener('load', function() {
 		reportDiv.addEventListener('click', dismissReport);
 	};
 
+
+	B.createElem = function(tag, classes, text, img) {
+		const elem = document.createElement(tag);
+		if (classes) {
+			classes.forEach(function(c) {
+				elem.classList.add(c);
+			});
+		}
+		if (text) {
+			elem.textContent = text;
+		}
+		if (img) {
+			const image = new Image();
+			image.src = img;
+			elem.appendChild(image);
+		}
+		return elem;
+	}
+
 	B.makeNode = function(index, parent) {
-		const node = document.createElement("div");
-		node.classList.add('node');
+		const node = B.createElem('div', ['node']);
 		node.dataset.index = index;
 		node.dataset.word = B.data.chains[B.currentChain][index].word;
 		node.dataset.syndex = B.data.chains[B.currentChain][index].syndex;
 
-		const word = document.createElement('div');
-		word.textContent = B.data.chains[B.currentChain][index].word;
-		word.classList.add('word');
-		word.classList.add('def');
+		const word = B.createElem('div', ['word', 'def'], B.data.chains[B.currentChain][index].word);
 		word.addEventListener('click', B.getDef);
 
-		const prevBtn = document.createElement('div');
-		prevBtn.textContent = ' < ';
-		prevBtn.classList.add('prev');
-		prevBtn.addEventListener('click', function(ev) {
-			B.newSyn(this, 'prev');
-		});
-		if (B.data.chains[B.currentChain][index].syndex > 0)
-			prevBtn.classList.add('exists');
+		const modOptions = B.createElem('div', ['mod-options']);
 
-		const nextBtn = document.createElement('div');
-		nextBtn.textContent = ' > ';
-		nextBtn.classList.add('next');
-		if (B.data.chains[B.currentChain][index].syndex < B.data.chains[B.currentChain][index].alts.length)
-			nextBtn.classList.add('exists');
-		nextBtn.addEventListener('click', function(ev) {
-			B.newSyn(this, 'next');
+		const modClose = B.createElem('div', ['mod-close'], undefined, '/img/mod-close.svg');
+		modClose.addEventListener('click', ev => {
+			B.closeModOptions(ev.currentTarget)
 		});
 
-		const modBtn = document.createElement('div');
-		modBtn.textContent = 'm';
-		modBtn.classList.add('mod-btn');
+		const modBtn = B.createElem('div', ['mod-btn'], undefined, '/img/mod-down-arrow.svg');
 		modBtn.addEventListener('click', B.modifyChain);
 
+		const prevBtn = B.createElem('div', ['prev'], undefined, '/img/mod-left-arrow.svg');
+		prevBtn.addEventListener('click', ev => {
+			B.newSyn(ev.currentTarget, 'prev');
+		});
+
+		const nextBtn = B.createElem('div', ['next'], undefined, '/img/mod-right-arrow.svg');
+		nextBtn.addEventListener('click', ev => {
+			B.newSyn(ev.currentTarget, 'next');
+		});
+
+		modOptions.appendChild(modClose);
+		modOptions.appendChild(modBtn);
+		modOptions.appendChild(prevBtn);
+		modOptions.appendChild(nextBtn);
+
+		const modOpen = B.createElem('div', ['mod-open']);
+		modOpen.addEventListener('click', ev => {
+			B.openModOptions(ev.currentTarget);
+		});
+		
+		const openImg = new Image();
+		openImg.src = '/img/Arrow-Right.svg';
+		openImg.classList.add('active');
+
+		const disabledImg = new Image();
+		disabledImg.src = '/img/Arrow-Right-Disabled.svg';
+		disabledImg.classList.add('disabled');
+
+		modOpen.appendChild(openImg);
+		modOpen.appendChild(disabledImg);
+
 		node.appendChild(word);
-		node.appendChild(prevBtn);
-		node.appendChild(nextBtn);
-		node.appendChild(modBtn);
+		node.appendChild(modOptions);
+		node.appendChild(modOpen)
 
 		parent.insertBefore(node, parent.lastElementChild);
 
