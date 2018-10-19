@@ -1,13 +1,13 @@
 window.addEventListener('load', function() {
 	
 	B.noTouching = false;
-	B.nodelimitArray = [+B.data.nodelimit];
+	B.nodelimitArray = [+B.chain.nodelimit];
 	B.queryStrings = [];
-	B.queryStrings.push(B.data.queryString);
+	B.queryStrings.push(B.chain.queryString);
 
 	B.currentChain = 0;
-	B.data.chains = [];
-	B.data.chains[B.currentChain] = B.data.chain;
+	B.chains = [];
+	B.chains[B.currentChain] = B.chain.chain;
 
 	B.noMorePaths = false;
 	
@@ -15,8 +15,8 @@ window.addEventListener('load', function() {
 	B.fade(B.loader, 'out', true);
 
 
-	if (B.data.error) 
-		B.report(B.data.error);
+	if (B.chain.error) 
+		B.report(B.chain.error);
 
 	// ** animate nodes on load ** //
 	const nodes = document.getElementsByClassName('node');
@@ -50,8 +50,30 @@ window.addEventListener('load', function() {
 	for (let i = 0; i < shareItems.length; i++) {
 		shareItems[i].addEventListener('click', function() {
 			const id = this.id;
-			const title = "SynoMapp: " + B.data.start + " ... " + B.data.end;
-			const link = location.href.split("?")[0] + "?s=" + B.data.start + "&e=" + B.data.end + "&nl=" + B.queryStrings[B.chainCount].split(B.data.start)[1].split(B.data.end)[0] + "&sl=" + B.queryStrings[B.chainCount].split(B.data.start)[1].split(B.data.end)[1];
+			const title = "Bridge: " + B.chain.start + " ... " + B.chain.end;
+			const link = `${location.origin}/search?qs=${B.queryStrings[B.currentChain]}`;
+			if (B.queryStrings[B.currentChain].includes('-')) {
+				$.ajax({
+					url: '/save',
+					type: 'post',
+					dataType:'json',
+					data: {
+						qs: B.queryStrings[B.currentChain],
+						chain: JSON.stringify(B.chains[B.currentChain]),
+						s: B.chain.start,
+						e: B.chain.end,
+						sl: 10,
+						nl: 10 /* this is not right ... */
+					},
+					success: function(obj) {
+						console.log(obj);
+					},
+					error: function(err) {
+						console.log('err', err);
+					}
+				});
+			}
+			
 			const url = encodeURIComponent(link);
 			switch(this.id) {
 				case 'email':

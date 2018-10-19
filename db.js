@@ -27,12 +27,16 @@ ChainDb.prototype.save = function(chain, callback) {
 				else if (result == null) {
 					chain_collection.insert(chain, function(err) {
 						if (err) console.log(err);
+						else callback();
 					});
 				} else {
 					chain_collection.update(
 						{ queryString: chain.queryString }, 
 						{ $push: { searches: chain.searches } }
-					);
+					, function(err, result) {
+						if (err) console.log(err);
+						else callback();
+					});
 				}
 			});
 		}

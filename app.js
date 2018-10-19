@@ -96,6 +96,24 @@ app.get('/search/add', function(req, res) {
 	});
 });
 
+app.post('/save', function(req, res) {
+	/* worth it to save mod chains in db? */
+	// console.log(req.body);
+	console.log('chain', req.body.chain);
+	db.save({
+		queryString: req.body.qs,
+		chain: JSON.parse(req.body.chain),
+		start: req.body.s,
+		end: req.body.e,
+		nodelimit: req.body.nl,
+		synonymlevel: req.body.sl,
+		searches: [{ date: new Date() }] /* location? */
+	}, function(err) {
+		if (err) console.log('err', err);
+		else res.send("success"); 
+	});
+});
+
 app.get('/search/modified', function(req, res) {
 	/* don't load bc could have duplicate synonyms
 		maybe still save? */
@@ -112,15 +130,15 @@ app.get('/def', function(req,res) {
 	})
 });
 
-function loadChain(request, callback) {
-	var queryString = makeQueryString(request);
+function loadChain(req, callback) {
+	var queryString = req.query.qs || makeQueryString(req);
 	var cacheSearch = cache.get(queryString);
 	if (cacheSearch == undefined) {
 		db.get(queryString, function(err, result) {
 			if (err) console.log(err);
 			else {
 				if (result == null) {
-					makeChain(request, callback);
+					makeChain(req, callback);
 				} else {
 				 	db.addSearchTime(queryString, function(err) { console.log(err) } );
 				 	cache.set(queryString, result);
@@ -133,19 +151,19 @@ function loadChain(request, callback) {
 	}
 }
 
-function makeChain(request, callback) {
+function makeChain(req, callback) {
 	let allsynonyms;
-	if (request.query.as) 
-		allsynonyms = request.query.as;
+	if (req.query.as) 
+		allsynonyms = req.query.as;
 	else 
-		allsynonyms = [request.query.s];
+		allsynonyms = [req.query.s];
 	var query = {
-		queryString: makeQueryString(request),
-		start: request.query.s.replace(/ /g, ""),
-		end: request.query.e.replace(/ /g, ""),
-		nodelimit: request.query.nl,
-		synonymlevel: request.query.sl,
-		searches: [{loc:"tk", date: new Date()}]
+		queryString: makeQueryString(req),
+		start: req.query.s.replace(/ /g, ""),
+		end: req.query.e.replace(/ /g, ""),
+		nodelimit: req.query.nl,
+		synonymlevel: req.query.sl,
+		searches: [{ date: new Date() }] /* location? */
 	};
 	chain.makeChain(query, allsynonyms, function(err, chain) {
 		if (err) query.error = err;
@@ -154,15 +172,17 @@ function makeChain(request, callback) {
 		/* this save any chain, mod or reg ... */
 		/* this is removing all the extra data for some reason? 
 			should combine search data with weighting data? */
-		db.save(query, function(err) { console.log(err); });
+		db.save(query, function(err) { 
+			if (err) console.log(err);
+		});
 		cache.set(query.queryString, query);
 		callback(query);
 	});
 }
 
-function makeQueryString(request) {
-	let startWord = request.query.s;
-	let endWord = request.query.e;
+function makeQueryString(req) {
+	let startWord = req.query.s;
+	let endWord = req.query.e;
 	if (!startWord) {
 		let words = endWord.split(" ");
 		if (words[0].length > 0 && words[1].length > 0) {
@@ -176,7 +196,7 @@ function makeQueryString(request) {
 			endWord = words[1];
 		}
 	}
-	var string = startWord + request.query.nl + endWord + request.query.sl;
+	var string = startWord + req.query.nl + endWord + req.query.sl;
 	string = string.toLowerCase().replace(/ /g, ""); // remove spaces 
 	return string;
 }

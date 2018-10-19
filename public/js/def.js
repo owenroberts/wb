@@ -5,7 +5,7 @@ window.addEventListener('load', function() {
 		const node = this.parentNode;
 		const word = node.dataset.word;
 		const index = +node.dataset.index;
-		const synonym = index > 0 ? B.data.chains[B.currentChain][index - 1].word : B.data.chains[B.currentChain][index + 1].word;
+		const synonym = index > 0 ? B.chain.chains[B.currentChain][index - 1].word : B.chain.chains[B.currentChain][index + 1].word;
 		
 		$.ajax({
 			url: '/def',

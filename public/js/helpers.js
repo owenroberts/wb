@@ -71,10 +71,10 @@ window.addEventListener('load', function() {
 	B.makeNode = function(index, parent) {
 		const node = B.createElem('div', ['node']);
 		node.dataset.index = index;
-		node.dataset.word = B.data.chains[B.currentChain][index].word;
-		node.dataset.syndex = B.data.chains[B.currentChain][index].syndex;
+		node.dataset.word = B.chains[B.currentChain][index].word;
+		node.dataset.syndex = B.chains[B.currentChain][index].syndex;
 
-		const word = B.createElem('div', ['word', 'def'], B.data.chains[B.currentChain][index].word);
+		const word = B.createElem('div', ['word', 'def'], B.chains[B.currentChain][index].word);
 		word.addEventListener('click', B.getDef);
 
 		const modOptions = B.createElem('div', ['mod-options']);

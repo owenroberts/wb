@@ -31,11 +31,11 @@ window.addEventListener('load', function() {
 			nextChainBtn.classList.add('clickable');
 			prevChainBtn.classList.remove('clickable');
 		} 
-		if (B.currentChain > 0 && B.currentChain < B.data.chains.length) {
+		if (B.currentChain > 0 && B.currentChain < B.chains.length) {
 			prevChainBtn.classList.add('clickable');
 			nextChainBtn.classList.add('clickable');
 		}
-		if (B.currentChain == B.data.chains.length - 1) {
+		if (B.currentChain == B.chains.length - 1) {
 			nextChainBtn.classList.remove('clickable');
 		} 
 	}
@@ -49,7 +49,7 @@ window.addEventListener('load', function() {
 	}
 
 	function nextChain() {
-		if (B.currentChain < B.data.chains.length) {
+		if (B.currentChain < B.chains.length) {
 			B.currentChain++;
 			setChainDepth();
 		}
@@ -75,7 +75,7 @@ window.addEventListener('load', function() {
 
 	function makeNewPath() {
 		let nodelimit;
-		if (B.data.chains.length < 10) {
+		if (B.chains.length < 10) {
 			do {
 				nodelimit = B.getRandomInt(2,20);
 			} while (B.nodelimitArray.indexOf(nodelimit) != -1);
@@ -83,15 +83,15 @@ window.addEventListener('load', function() {
 			B.nodelimitArray.push(nodelimit);
 			
 			const synonymlevel = 10;  // should synonym level be randomized?
-			B.queryStrings.push(B.data.start + nodelimit + B.data.end + synonymlevel);
+			B.queryStrings.push(B.chain.start + nodelimit + B.chain.end + synonymlevel);
 
 			$.ajax({
 				url: '/search/add',
 				type: 'get',
 				dataType:'json',
 				data: {
-					s: B.data.start,
-					e: B.data.end,
+					s: B.chain.start,
+					e: B.chain.end,
 					sl: synonymlevel,
 					nl: nodelimit
 				},
@@ -106,7 +106,7 @@ window.addEventListener('load', function() {
 						}
 					} else {
 
-						B.data.chains.push(obj.data.chain);
+						B.chains.push(obj.data.chain);
 						B.currentChain++;
 
 						const chain = document.createElement("div");
@@ -122,7 +122,7 @@ window.addEventListener('load', function() {
 
 						const startWord = document.createElement('div');
 						startWord.classList.add('word');
-						startWord.textContent = B.data.chains[B.currentChain][0].word;
+						startWord.textContent = B.chains[B.currentChain][0].word;
 						
 						startNode.appendChild(startWord);
 						nodes.append(startNode);
@@ -135,8 +135,8 @@ window.addEventListener('load', function() {
 
 						const endWord = document.createElement('div');
 						endWord.classList.add('word');
-						const idx = B.data.chains[B.currentChain].length - 1;
-						endWord.textContent = B.data.chains[B.currentChain][idx].word;
+						const idx = B.chains[B.currentChain].length - 1;
+						endWord.textContent = B.chains[B.currentChain][idx].word;
 
 						endNode.appendChild(endWord);
 						setTimeout(() => {
@@ -144,7 +144,7 @@ window.addEventListener('load', function() {
 						}, B.fadeDur);
 						nodes.append(endNode);
 
-						for (let i = 1; i < B.data.chains[B.currentChain].length - 1; i++) {
+						for (let i = 1; i < B.chains[B.currentChain].length - 1; i++) {
 							B.makeNode(i, nodes);
 						}
 						
