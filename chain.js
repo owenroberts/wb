@@ -98,7 +98,7 @@ function makeChain(query, allSynonyms, callback) {
 					return;
 				} 
 			}
-			if (startCopy.length + endChain.length < currentNodeNumber - 1 && !foundChain) {
+			if (startCopy.length + endChain.length < currentNodeNumber && !foundChain) {
 				buildChain(startCopy, endChain, allSynsCopy); /* fastest ?*/
 			}
 		}

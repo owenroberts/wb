@@ -5,7 +5,7 @@ const express = require('express')
 	,	bodyParser = require('body-parser')
 	,	wordnet = require('wordnet')
 	,	NodeCache = require('node-cache')
-	,	PathProvider = require('./pathprovider').PathProvider
+	,	ChainDb = require('./db').ChainDb
 	,	chain = require('./chain')
 	,	def = require('./def')
 	,	url = require('url')
@@ -59,7 +59,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/search', function(req, res) {
-	makeChain(req, function(result) { /* loadChain for production, makeChain to skip db/cache */
+	loadChain(req, function(result) { /* loadChain for production, makeChain to skip db/cache */
 		if (result.error) {
 			res.redirect(url.format({
 				pathname: req.get('Referrer').split("?")[0],
@@ -87,8 +87,7 @@ app.get('/tips', function(req, res) {
 });
 
 app.get('/search/add', function(req, res) {
-	/* loadChain for production, makeChain to skip db/cache */
-	makeChain(req, function(result) {
+	makeChain(req, function(result) { /* loadChain for production, makeChain to skip db/cache */
 		if (result.error)
 			res.json({
 				errormsg: "This randomly generated path was unable to be performed by the algorithm.  Please try the add path button again."
@@ -100,8 +99,7 @@ app.get('/search/add', function(req, res) {
 app.get('/search/modified', function(req, res) {
 	/* don't load bc could have duplicate synonyms
 		maybe still save? */
-	makeChain(req, function(result) {
-		console.log(result);
+	makeChain(req, function(result) { /* save this in separate collection ? only if shared ?  */
 		if (result.error) res.json({ errormsg: result.error });
 		else res.json({ data: result });
 	});
@@ -118,13 +116,13 @@ function loadChain(request, callback) {
 	var queryString = makeQueryString(request);
 	var cacheSearch = cache.get(queryString);
 	if (cacheSearch == undefined) {
-		pathprovider.get(queryString, function(err, result) {
+		db.get(queryString, function(err, result) {
 			if (err) console.log(err);
 			else {
 				if (result == null) {
 					makeChain(request, callback);
 				} else {
-				 	pathprovider.addSearchTime(queryString, function(err) { console.log(err) } );
+				 	db.addSearchTime(queryString, function(err) { console.log(err) } );
 				 	cache.set(queryString, result);
 				 	callback(result);
 				}
@@ -150,13 +148,13 @@ function makeChain(request, callback) {
 		searches: [{loc:"tk", date: new Date()}]
 	};
 	chain.makeChain(query, allsynonyms, function(err, chain) {
-		//console.log(data);
 		if (err) query.error = err;
 		else query.chain = chain;
 
+		/* this save any chain, mod or reg ... */
 		/* this is removing all the extra data for some reason? 
 			should combine search data with weighting data? */
-		pathprovider.save(query, function(err) { console.log(err); });
+		db.save(query, function(err) { console.log(err); });
 		cache.set(query.queryString, query);
 		callback(query);
 	});
@@ -205,7 +203,7 @@ var server = app.listen(3000, function() {
 var mongoUri = process.env.MONGOLAB_URI || 
   process.env.MONGOHQ_URL || 
   'localhost';
-var pathprovider = new PathProvider(mongoUri);
+const db = new ChainDb(mongoUri);
     
 // error handlers
 
