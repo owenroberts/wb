@@ -39,7 +39,6 @@ const hbs = handlebars.create({
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
-// uncomment after placing your favicon in /public
 app.use(favicon(__dirname + '/public/img/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -87,7 +86,7 @@ app.get('/tips', function(req, res) {
 });
 
 app.get('/search/add', function(req, res) {
-	makeChain(req, function(result) { /* loadChain for production, makeChain to skip db/cache */
+	loadChain(req, function(result) { /* loadChain for production, makeChain to skip db/cache */
 		if (result.error)
 			res.json({
 				errormsg: "This randomly generated path was unable to be performed by the algorithm.  Please try the add path button again."
@@ -97,9 +96,6 @@ app.get('/search/add', function(req, res) {
 });
 
 app.post('/save', function(req, res) {
-	/* worth it to save mod chains in db? */
-	// console.log(req.body);
-	console.log('chain', req.body.chain);
 	db.save({
 		queryString: req.body.qs,
 		chain: JSON.parse(req.body.chain),
@@ -115,9 +111,7 @@ app.post('/save', function(req, res) {
 });
 
 app.get('/search/modified', function(req, res) {
-	/* don't load bc could have duplicate synonyms
-		maybe still save? */
-	makeChain(req, function(result) { /* save this in separate collection ? only if shared ?  */
+	loadChain(req, function(result) { 
 		if (result.error) res.json({ errormsg: result.error });
 		else res.json({ data: result });
 	});
@@ -169,7 +163,6 @@ function makeChain(req, callback) {
 		if (err) query.error = err;
 		else query.chain = chain;
 
-		/* this save any chain, mod or reg ... */
 		/* this is removing all the extra data for some reason? 
 			should combine search data with weighting data? */
 		db.save(query, function(err) { 
