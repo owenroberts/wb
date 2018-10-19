@@ -22,7 +22,7 @@ PathProvider.prototype.save = function(path, callback) {
 	this.getCollection(function(err, path_collection) {
 		if (err) callback(err);
 		else {
-			path_collection.findOne({ queryString:path.queryString }, function(err, result) {
+			path_collection.findOne({ queryString: path.queryString }, function(err, result) {
 				if (err) console.log(err);
 				else if (result == null) {
 					path_collection.insert(path, function(err) {
@@ -30,7 +30,7 @@ PathProvider.prototype.save = function(path, callback) {
 					});
 				} else {
 					path_collection.update(
-						{ queryString:path.queryString }, 
+						{ queryString: path.queryString }, 
 						{ $push: { searches: path.searches } }
 					);
 				}

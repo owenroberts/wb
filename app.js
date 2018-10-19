@@ -101,6 +101,7 @@ app.get('/search/modified', function(req, res) {
 	/* don't load bc could have duplicate synonyms
 		maybe still save? */
 	makeChain(req, function(result) {
+		console.log(result);
 		if (result.error) res.json({ errormsg: result.error });
 		else res.json({ data: result });
 	});
@@ -151,7 +152,8 @@ function makeChain(request, callback) {
 	chain.makeChain(query, allsynonyms, function(err, chain) {
 		//console.log(data);
 		if (err) query.error = err;
-		else query.chain = chain; 
+		else query.chain = chain;
+
 		/* this is removing all the extra data for some reason? 
 			should combine search data with weighting data? */
 		pathprovider.save(query, function(err) { console.log(err); });

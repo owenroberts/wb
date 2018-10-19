@@ -98,7 +98,7 @@ function makeChain(query, allSynonyms, callback) {
 					return;
 				} 
 			}
-			if (startChain.length + endChain.length < currentNodeNumber - 1 && !foundChain) {
+			if (startCopy.length + endChain.length < currentNodeNumber - 1 && !foundChain) {
 				buildChain(startCopy, endChain, allSynsCopy); /* fastest ?*/
 			}
 		}
@@ -110,7 +110,7 @@ function makeChain(query, allSynonyms, callback) {
 			if (!foundChain) {
 				buildChain(
 					[{word:startWord}], 
-					[{word:endWord}], 
+					[{ word:endWord, synonyms: getSynonyms(endWord, allSynonyms.slice(0)) }], 
 					allSynonyms.slice(0)
 				);
 				getShortestChain();
