@@ -1,4 +1,5 @@
 const thesaurus = require('thesaurus');
+const _ = require('lodash');
 
 function makeChain(query, allSynonyms, callback) {
 	const startWord = query.start.toLowerCase();
@@ -21,22 +22,26 @@ function makeChain(query, allSynonyms, callback) {
 	} else if (thesaurus.find(endWord).length == 0) {
 		callback("The second word was not found.");
 	} else {
-		buildChain(
-			[{word:startWord}], 
-			[{ word:endWord, synonyms: getSynonyms(endWord, allSynonyms.slice(0)) }], 
-			allSynonyms.slice(0)
-		);
+		startChain();
 		if (!foundChain)
 			getShortestChain(); 
 		/* should be called by build Chain at ending condition.... 
 			but this didn't work for some reason? */
 	}
 
+	function startChain() {
+		buildChain(
+			[{word:startWord}], 
+			[{ word:endWord, synonyms: getSynonyms(endWord, allSynonyms.slice(0)) }], 
+			allSynonyms.slice(0)
+		);
+	}
+
 	function getSynonyms(word, allSynsCopy) {
-		let tempSyns = thesaurus.find(word);
-		let synonyms = [];
+		const tempSyns = thesaurus.find(word);
+		const synonyms = [];
 		for (let i = 0; i < tempSyns.length; i++) {
-			let syn = tempSyns[i];
+			const syn = tempSyns[i];
 			if (reg.test(syn)
 				&& allSynsCopy.indexOf(syn) == -1
 				&& allSynsCopy.indexOf(syn+"s") == -1
@@ -54,21 +59,19 @@ function makeChain(query, allSynonyms, callback) {
 		const startIndex = startChain.length - 1;
 		const endIndex = endChain.length - 1;
 		const allSynsCopy = allSyns.slice(0);
-		allSynsCopy.push(startChain[startIndex].word);
-		allSynsCopy.push(endChain[endIndex].word);
 		
 		startChain[startIndex].synonyms = getSynonyms(startChain[startIndex].word, allSynsCopy);
-		
+
 		for (let i = 0; i < startChain[startIndex].synonyms.length; i++) {
 			allSynsCopy.push(startChain[startIndex].synonyms[i].word);
 		}
 
 		for (let i = 0; i < startChain[startIndex].synonyms.length; i++) {
-			let startCopy =  startChain.slice(0);
-			let startSyn = startChain[startIndex].synonyms[i];
+			const startCopy =  startChain.slice(0); // object values will be refs, won't push new ones
+			const startSyn = startChain[startIndex].synonyms[i];
 			startCopy.push(startSyn);
 			for (let j = 0; j < endChain[endIndex].synonyms.length; j++) {
-				let endSyn = endChain[endIndex].synonyms[j];
+				const endSyn = endChain[endIndex].synonyms[j];
 				// attemptCount++;
 				if (startSyn.word == endSyn.word && !foundChain) {
 					foundChain = true;
@@ -108,11 +111,7 @@ function makeChain(query, allSynonyms, callback) {
 		if (currentNodeNumber < nodeNumberLimit) {
 			currentNodeNumber++;
 			if (!foundChain) {
-				buildChain(
-					[{word:startWord}], 
-					[{ word:endWord, synonyms: getSynonyms(endWord, allSynonyms.slice(0)) }], 
-					allSynonyms.slice(0)
-				);
+				startChain();
 				getShortestChain();
 			}
 		} else {
