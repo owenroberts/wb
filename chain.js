@@ -16,7 +16,7 @@ function makeChain(query, allSynonyms, callback) {
 	} else if (!reg.test(startWord) || !reg.test(endWord)) {
 		callback("Please enter single words with no spaces or special characters.");
 	} else if (startWord == endWord) {
-		callback("Please enter different words.")
+		callback("Please enter different words.");
 	} else if (thesaurus.find(startWord).length == 0) {
 		callback("The first word was not found.");
 	} else if (thesaurus.find(endWord).length == 0) {
