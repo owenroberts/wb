@@ -49,7 +49,7 @@ window.addEventListener('load', function() {
 	}
 
 	function nextChain() {
-		if (B.currentChain < B.chains.length) {
+		if (B.currentChain < B.chains.length - 1) {
 			B.currentChain++;
 			setChainDepth();
 		}
