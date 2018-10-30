@@ -1,5 +1,4 @@
 const thesaurus = require('thesaurus');
-const _ = require('lodash');
 
 function makeChain(query, allSynonyms, callback) {
 	const startWord = query.start.toLowerCase();
