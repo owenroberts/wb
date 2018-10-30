@@ -74,8 +74,10 @@ window.addEventListener('load', function() {
 		node.dataset.word = B.chains[B.currentChain][index].word;
 		node.dataset.syndex = B.chains[B.currentChain][index].syndex;
 
-		const word = B.createElem('div', ['word', 'def'], B.chains[B.currentChain][index].word);
-		word.addEventListener('click', B.getDef);
+		const wordSpan = B.createElem('span', ['def'], B.chains[B.currentChain][index].word);
+		const word = B.createElem('div', ['word', 'def']);
+		wordSpan.addEventListener('click', B.getDef);
+		word.appendChild(wordSpan);
 
 		const modOptions = B.createElem('div', ['mod-options']);
 
@@ -108,11 +110,11 @@ window.addEventListener('load', function() {
 		});
 		
 		const openImg = new Image();
-		openImg.src = '/img/Arrow-Right.svg';
+		openImg.src = '/img/mod-open.svg';
 		openImg.classList.add('active');
 
 		const disabledImg = new Image();
-		disabledImg.src = '/img/Arrow-Right-Disabled.svg';
+		disabledImg.src = '/img/mod-open-disabled.svg';
 		disabledImg.classList.add('disabled');
 
 		modOpen.appendChild(openImg);

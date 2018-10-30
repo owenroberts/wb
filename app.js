@@ -57,35 +57,7 @@ app.get('/', function(req, res) {
 	});
 });
 
-app.get('/search', function(req, res) {
-	loadChain(req, function(result) { /* loadChain for production, makeChain to skip db/cache */
-		if (result.error) {
-			res.redirect(url.format({
-				pathname: req.get('Referrer').split("?")[0],
-				query: {
-					"err": result.error
-				}
-			}));
-		} else {
-			res.render('search', { 
-				data: result,
-				tips: cache.get("tips")
-			});
-		}
-	});
-});
-
-app.get('/resettips', function(req, res) {
-	cache.set("tips", true);
-	res.json({ data: "success" });
-});
-
-app.get('/tips', function(req, res) {
-	cache.set("tips", false);
-	res.json({ data: "success" });
-});
-
-app.get('/search/add', function(req, res) {
+app.get('/chain', function(req, res) {
 	loadChain(req, function(result) { /* loadChain for production, makeChain to skip db/cache */
 		if (result.error)
 			res.json({
@@ -110,7 +82,7 @@ app.post('/save', function(req, res) {
 	});
 });
 
-app.get('/search/modified', function(req, res) {
+app.get('/mod', function(req, res) {
 	loadChain(req, function(result) { 
 		if (result.error) res.json({ errormsg: result.error });
 		else res.json({ data: result });

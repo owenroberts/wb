@@ -2,9 +2,6 @@ window.addEventListener('load', function() {
 	
 	function getNewPath(ev) {
 		ev.stopPropagation();
-		
-		if (B.tooltips) 
-			$('#report').trigger('click');
 
 		if (!B.noMorePaths) {
 			B.fade(B.loader, 'in', false);
@@ -20,6 +17,7 @@ window.addEventListener('load', function() {
 				dots[i].classList.add('current');
 				chains[i].classList.add('current');
 			} else {
+				console.log(i);
 				if (dots[i].classList.contains('current'))
 					dots[i].classList.remove('current');
 				if (chains[i].classList.contains('current'))
@@ -73,27 +71,33 @@ window.addEventListener('load', function() {
 		dots[i].addEventListener('click', switchChain);
 	}
 
-	function makeNewPath() {
-		let nodelimit;
+	B.makeNewPath = (params, callback) => {
+		let nodeLimit, startWord, endWord;
 		if (B.chains.length < 10) {
-			do {
-				nodelimit = B.getRandomInt(2,20);
-			} while (B.nodelimitArray.indexOf(nodelimit) != -1);
-			//nodelimit = 2; // break it for testing
-			B.nodelimitArray.push(nodelimit);
-			
-			const synonymlevel = 10;  // should synonym level be randomized?
-			B.queryStrings.push(B.chain.start + nodelimit + B.chain.end + synonymlevel);
+			if (params) {
+				startWord = params.start;
+				endWord = params.end;
+				nodeLimit = params.nl;
+				synonymLevel = params.sl;
+			} else {
+				do {
+					nodelimit = B.getRandomInt(2,20);
+				} while (B.nodelimitArray.indexOf(nodelimit) != -1);
+				const synonymlevel = 10;  // should synonym level be randomized?
+
+			}
+			B.nodeLimitArray.push(nodeLimit);
+			B.queryStrings.push(`startWordnodeLimitendWordsynonymLevel`);
 
 			$.ajax({
-				url: '/search/add',
+				url: '/chain',
 				type: 'get',
 				dataType:'json',
 				data: {
-					s: B.chain.start,
-					e: B.chain.end,
-					sl: synonymlevel,
-					nl: nodelimit
+					s: startWord,
+					e: endWord,
+					sl: synonymLevel,
+					nl: nodeLimit
 				},
 				success: function(obj) {
 					B.fade(B.loader, 'in', false);
@@ -105,7 +109,9 @@ window.addEventListener('load', function() {
 							report("The algorithm is not able to generate more results based on the current parameters.");
 						}
 					} else {
-
+						if (callback)
+							callback();
+						console.log(obj.data);
 						B.chains.push(obj.data.chain);
 						B.currentChain++;
 
@@ -155,7 +161,8 @@ window.addEventListener('load', function() {
 						dot.classList.add('chain-dot');
 						dot.addEventListener('click', switchChain);
 						document.getElementById('dots').appendChild(dot);
-						document.getElementById('chain-dots').classList.add('slide-up');
+						if (B.chains.length > 1)
+							document.getElementById('chain-nav').classList.add('slide-up');
 						setChainDepth();
 
 						B.fade(B.loader, 'out', true);
@@ -167,6 +174,7 @@ window.addEventListener('load', function() {
 			B.report('You have reached the maximum number of chains.');
 		}				
 	}
+
 	const plusBtn = document.getElementById('plus');
 	plusBtn.addEventListener('click', getNewPath);
 });

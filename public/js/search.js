@@ -1,22 +1,44 @@
 window.addEventListener('load', function() {
 	
 	B.noTouching = false;
-	B.nodelimitArray = [+B.chain.nodelimit];
+	B.nodeLimitArray = [];
 	B.queryStrings = [];
-	B.queryStrings.push(B.chain.queryString);
 
-	B.currentChain = 0;
+	B.currentChain = -1;
 	B.chains = [];
-	B.chains[B.currentChain] = B.chain.chain;
 
 	B.noMorePaths = false;
 	
 	B.loader = document.getElementById('loader');
 	B.fade(B.loader, 'out', true);
 
+	/* get initial search */
+	const bridge = document.getElementById('bridge');
+	const search = document.getElementById('search');
+	const ldr = document.getElementById('ldr');
+	bridge.addEventListener('click', ev => {
+		B.fade(ldr, 'in');
+		const params = {
+			start: document.getElementById('start-word').value,
+			end: document.getElementById('end-word').value,
+			nl: 10,
+			sl: 10
+		};
+		B.makeNewPath(params, () => {
+			B.fade(search, 'out', true);
+			B.fade(ldr, 'out', true);
+		});
+	});
 
-	if (B.chain.error) 
-		B.report(B.chain.error);
+	/* about */
+	const about = document.getElementById('about');
+	const aboutBtn = document.getElementById('about-btn');
+	aboutBtn.addEventListener('click', ev => {
+		B.fade(about, 'in', false); /* not fading ? */
+	});
+	about.addEventListener('click', () => {
+		B.fade(about, 'out', true);
+	});
 
 	// ** animate nodes on load ** //
 	const nodes = document.getElementsByClassName('node');
@@ -26,15 +48,6 @@ window.addEventListener('load', function() {
 		}, i * B.fadeDur)
 	}
 
-	const homeBtn = document.getElementById('home');
-	homeBtn.addEventListener('click', function() {
-		B.report(
-			"Heads up — going home will clear your current paths.",
-			"Go Home",
-			() => { location.href = "/"; }
-		);
-	});
-
 	// ** share stuff **
 	const shareBtn = document.getElementById('share');
 	const shareMenu = document.getElementById('share-menu');
@@ -43,6 +56,7 @@ window.addEventListener('load', function() {
 	shareBtn.addEventListener('click', function() {
 		B.fade(shareMenu, 'in', false);
 	});
+
 	shareMenu.addEventListener('click', function() {
 		B.fade(shareMenu, 'out', true);
 	});

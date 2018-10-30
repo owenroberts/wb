@@ -2,7 +2,7 @@ window.addEventListener('load', function() {
 
 	B.getDef = function() {
 		B.fade(B.loader, 'in', false);
-		const node = this.parentNode;
+		const node = this.parentNode.parentNode;
 		const word = node.dataset.word;
 		const index = +node.dataset.index;
 		// 0 of undefined

@@ -1,11 +1,11 @@
 * { box-sizing:border-box; }
 
 body {
-	font-size:26px;
+	/* font-size:26px; */
 	font-family: Helvetica, sans-serif;
-	margin:0;
-	width:100%;
-	overflow-x:hidden;
+	margin: 0;
+	width: 100%;
+	overflow-x: hidden;
 }
 
 pre { font-size:12px; }
@@ -57,4 +57,8 @@ select { margin:1em; }
 	font-size:20px;
 	display:none;
 	img { width:40px; }
+}
+
+#container {
+	padding: 1em 1em;
 }
