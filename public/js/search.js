@@ -24,7 +24,7 @@ window.addEventListener('load', function() {
 			nl: 10,
 			sl: 10
 		};
-		B.makeNewPath(params, () => {
+		B.newChain(params, () => {
 			B.fade(search, 'out', true);
 			B.fade(ldr, 'out', true);
 		});
@@ -64,7 +64,9 @@ window.addEventListener('load', function() {
 	for (let i = 0; i < shareItems.length; i++) {
 		shareItems[i].addEventListener('click', function() {
 			const id = this.id;
-			const title = "Bridge: " + B.chain.start + " ... " + B.chain.end;
+			const start = B.chains[B.currentChain][0].word
+			const end = B.chains[B.currentChain][B.chains[B.currentChain].length - 1].word;
+			const title = "Bridge: " + start + " ... " + end;
 			const link = `${location.origin}/search?qs=${B.queryStrings[B.currentChain]}`;
 			if (B.queryStrings[B.currentChain].includes('-')) {
 				$.ajax({
@@ -74,7 +76,7 @@ window.addEventListener('load', function() {
 					data: {
 						qs: B.queryStrings[B.currentChain],
 						chain: JSON.stringify(B.chains[B.currentChain]),
-						s: B.chain.start,
+						s: B.queryStrings[B.currentChain],
 						e: B.chain.end,
 						sl: 10,
 						nl: 10 /* this is not right ... */
@@ -89,7 +91,11 @@ window.addEventListener('load', function() {
 			}
 			
 			const url = encodeURIComponent(link);
+			console.log(this.id);
 			switch(this.id) {
+				case 'link':
+					location.href = link;
+					break;
 				case 'email':
 					window.open("mailto:?body=" + title + " -- " + url + "&subject= + b", "_blank")
 					break;

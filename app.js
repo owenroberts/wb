@@ -57,6 +57,19 @@ app.get('/', function(req, res) {
 	});
 });
 
+app.get('/search', function(req, res) {
+	loadChain(req, function(result) { /* loadChain for production, makeChain to skip db/cache */
+		if (result.error)
+			res.render('index', {
+				errmsg: result.error
+			});
+		else
+			res.render('index', {
+				data: result
+			});
+	});
+});
+
 app.get('/chain', function(req, res) {
 	loadChain(req, function(result) { /* loadChain for production, makeChain to skip db/cache */
 		if (result.error)

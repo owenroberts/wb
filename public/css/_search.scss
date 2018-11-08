@@ -198,25 +198,15 @@
 		height: 36px;
 		display: inline-block;
 	}
-	.next, .prev, .mod-btn, .mod-close, .mod-options {
+	.next, .prev, .mod-btn, .mod-close, .mod-options, .mod-open {
 		line-height: 0;
 		cursor: pointer;
 	}
 
-	.next {
-		/* margin-left: -0.5em; */
-		margin-right: -5px;
-		margin-left: -6px;
-	}
-	.prev {
-		/* margin-right: 6px; */
+	.next, .prev, .mod-btn, .mod-close {
+		margin-right: 6px;
 	}
 
-
-	.next, .prev {
-		/* display: none; */
-		opacity: 1;
-	}
 	
 	&:first-child, &:last-child {
 		padding:0.25em 0;

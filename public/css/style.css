@@ -73,8 +73,8 @@ pre {
   font-size: 12px; }
 
 a, .leftarrow, .rightarrow {
-  color: #C5C7C9;
-  text-decoration: none;
+  color: black;
+  /* text-decoration:none; */
   transition: color 500ms; }
   a:hover, .leftarrow:hover, .rightarrow:hover {
     color: #f1f1f2; }
@@ -121,7 +121,9 @@ select {
     width: 40px; }
 
 #container {
-  padding: 1em 1em; }
+  padding: 1em 1em;
+  margin: 0 auto;
+  max-width: 640px; }
 
 #search {
   margin-top: 1em; }
@@ -313,18 +315,11 @@ select {
   .node .word, .node .next, .node .prev, .node .mod-btn, .node .mod-close {
     height: 36px;
     display: inline-block; }
-  .node .next, .node .prev, .node .mod-btn, .node .mod-close, .node .mod-options {
+  .node .next, .node .prev, .node .mod-btn, .node .mod-close, .node .mod-options, .node .mod-open {
     line-height: 0;
     cursor: pointer; }
-  .node .next {
-    /* margin-left: -0.5em; */
-    margin-right: -5px;
-    margin-left: -6px; }
-  .node .prev {
-    /* margin-right: 6px; */ }
-  .node .next, .node .prev {
-    /* display: none; */
-    opacity: 1; }
+  .node .next, .node .prev, .node .mod-btn, .node .mod-close {
+    margin-right: 6px; }
   .node:first-child, .node:last-child {
     padding: 0.25em 0;
     display: block;

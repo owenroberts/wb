@@ -2,10 +2,9 @@ window.addEventListener('load', function() {
 	
 	function getNewPath(ev) {
 		ev.stopPropagation();
-
 		if (!B.noMorePaths) {
 			B.fade(B.loader, 'in', false);
-			makeNewPath();
+			B.newChain();
 		} else {
 			B.report("The algorithm is not able to generate more results based on the current parameters.");
 		}
@@ -71,7 +70,62 @@ window.addEventListener('load', function() {
 		dots[i].addEventListener('click', switchChain);
 	}
 
-	B.makeNewPath = (params, callback) => {
+	B.makeChain = (data) => {
+		B.chains.push(data);
+		B.currentChain++;
+
+		const chain = document.createElement("div");
+		chain.classList.add('chain');
+		chain.id = "chain-" + B.currentChain;
+		
+		const nodes = document.createElement("div");
+		nodes.classList.add('nodes');
+		chain.append(nodes);
+		
+		const startNode = document.createElement("div");
+		startNode.classList.add('node');
+
+		const startWord = document.createElement('div');
+		startWord.classList.add('word');
+		startWord.textContent = B.chains[B.currentChain][0].word;
+		
+		startNode.appendChild(startWord);
+		nodes.append(startNode);
+		setTimeout(() => {
+			startNode.classList.add('fade-in');
+		}, B.fadeDur);
+
+		const endNode = document.createElement("div");
+		endNode.classList.add('node');
+
+		const endWord = document.createElement('div');
+		endWord.classList.add('word');
+		const idx = B.chains[B.currentChain].length - 1;
+		endWord.textContent = B.chains[B.currentChain][idx].word;
+
+		endNode.appendChild(endWord);
+		setTimeout(() => {
+			endNode.classList.add('fade-in');
+		}, B.fadeDur);
+		nodes.append(endNode);
+
+		for (let i = 1; i < B.chains[B.currentChain].length - 1; i++) {
+			B.makeNode(i, nodes);
+		}
+		
+		document.getElementById('chains').appendChild(chain);
+		
+		const dot = document.createElement('div');
+		dot.dataset.index = B.currentChain;
+		dot.classList.add('chain-dot');
+		dot.addEventListener('click', switchChain);
+		document.getElementById('dots').appendChild(dot);
+		if (B.chains.length > 1)
+			document.getElementById('chain-nav').classList.add('slide-up');
+		setChainDepth();
+	};
+
+	B.newChain = (params, callback) => {
 		let nodeLimit, startWord, endWord;
 		if (B.chains.length < 10) {
 			if (params) {
@@ -87,7 +141,7 @@ window.addEventListener('load', function() {
 
 			}
 			B.nodeLimitArray.push(nodeLimit);
-			B.queryStrings.push(`startWordnodeLimitendWordsynonymLevel`);
+			B.queryStrings.push(`${startWord}${nodeLimit}${endWord}${synonymLevel}`);
 
 			$.ajax({
 				url: '/chain',
@@ -109,61 +163,12 @@ window.addEventListener('load', function() {
 							report("The algorithm is not able to generate more results based on the current parameters.");
 						}
 					} else {
+						console.log(obj);
 						if (callback)
 							callback();
-						console.log(obj.data);
-						B.chains.push(obj.data.chain);
-						B.currentChain++;
-
-						const chain = document.createElement("div");
-						chain.classList.add('chain');
-						chain.id = "chain-" + B.currentChain;
+						B.makeChain(obj.data.chain);
 						
-						const nodes = document.createElement("div");
-						nodes.classList.add('nodes');
-						chain.append(nodes);
 						
-						const startNode = document.createElement("div");
-						startNode.classList.add('node');
-
-						const startWord = document.createElement('div');
-						startWord.classList.add('word');
-						startWord.textContent = B.chains[B.currentChain][0].word;
-						
-						startNode.appendChild(startWord);
-						nodes.append(startNode);
-						setTimeout(() => {
-							startNode.classList.add('fade-in');
-						}, B.fadeDur);
-
-						const endNode = document.createElement("div");
-						endNode.classList.add('node');
-
-						const endWord = document.createElement('div');
-						endWord.classList.add('word');
-						const idx = B.chains[B.currentChain].length - 1;
-						endWord.textContent = B.chains[B.currentChain][idx].word;
-
-						endNode.appendChild(endWord);
-						setTimeout(() => {
-							endNode.classList.add('fade-in');
-						}, B.fadeDur);
-						nodes.append(endNode);
-
-						for (let i = 1; i < B.chains[B.currentChain].length - 1; i++) {
-							B.makeNode(i, nodes);
-						}
-						
-						document.getElementById('chains').appendChild(chain);
-						
-						const dot = document.createElement('div');
-						dot.dataset.index = B.currentChain;
-						dot.classList.add('chain-dot');
-						dot.addEventListener('click', switchChain);
-						document.getElementById('dots').appendChild(dot);
-						if (B.chains.length > 1)
-							document.getElementById('chain-nav').classList.add('slide-up');
-						setChainDepth();
 
 						B.fade(B.loader, 'out', true);
 					}

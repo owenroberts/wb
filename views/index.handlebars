@@ -26,6 +26,7 @@
 	<div class="msg">
 		<p>Share Synomap</p>
 		<p>{{data.start}} ... {{data.end}}</p>
+		<div class="share-item" id="link">Link</div>
 		<div class="share-item" id="email">Email</div>
 		<div class="share-item" id="fb">Facebook</div>
 		<div class="share-item" id="tw">Twitter</div>
@@ -35,11 +36,9 @@
 	</div>
 </div>
 
-
-
 <div id="container">
 	<div id="header">
-		<div id="title">Word Bridge</div>
+		<div id="title"><a href="/">Word Bridge</a></div>
 		<div id="about-btn">About</div>
 		<div id="share">Share</div>
 		<div id="plus">+</div>
@@ -77,6 +76,11 @@
 	window.addEventListener('load', function() {
 		if ("{{errmsg}}") 
 			B.report("{{errmsg}}", 'Okay');	
+		if ("{{data}}") {
+			const data = {{{json data}}};
+			B.makeChain(data.chain);
+			document.getElementById('search').style.display = 'none';
+		}
 	});
 </script>
 
