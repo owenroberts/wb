@@ -73,6 +73,9 @@ window.addEventListener('load', function() {
 		B.chains.push(data.chain);
 		B.currentChain++;
 
+		B.startWord = B.chains[B.currentChain][0].word;
+		B.endWord = B.chains[B.currentChain][B.chains[B.currentChain].length - 1].word;
+
 		const chain = document.createElement("div");
 		chain.classList.add('chain');
 		chain.id = "chain-" + B.currentChain;
@@ -81,27 +84,28 @@ window.addEventListener('load', function() {
 		nodes.classList.add('nodes');
 		chain.append(nodes);
 		
-		const startNode = document.createElement("div");
-		startNode.classList.add('node');
-
-		const startWord = document.createElement('div');
-		startWord.classList.add('word');
-		startWord.textContent = B.startWord =  B.chains[B.currentChain][0].word;
+		const startNode = B.createElem('div', ['node']);
+		startNode.dataset.word = B.startWord;
+		startNode.dataset.index = 0;
+		const startWord =  B.createElem('div', ['word']);
+		const startWordSpan = B.createElem('span', [], B.startWord);
+		startWordSpan.addEventListener('click', B.getDef);
 		
+		startWord.appendChild(startWordSpan);
 		startNode.appendChild(startWord);
 		nodes.append(startNode);
 		setTimeout(() => {
 			startNode.classList.add('fade-in');
 		}, B.fadeDur);
 
-		const endNode = document.createElement("div");
-		endNode.classList.add('node');
+		const endNode = B.createElem('div', ['node']);
+		endNode.dataset.word = B.endWord;
+		endNode.dataset.index = B.chains[B.currentChain].length - 1;
+		const endWord =  B.createElem('div', ['word']);
+		const endWordSpan = B.createElem('span', [], B.endWord);
+		endWordSpan.addEventListener('click', B.getDef);
 
-		const endWord = document.createElement('div');
-		endWord.classList.add('word');
-		const idx = B.chains[B.currentChain].length - 1;
-		endWord.textContent = B.endWord = B.chains[B.currentChain][idx].word;
-
+		endWord.appendChild(endWordSpan);
 		endNode.appendChild(endWord);
 		setTimeout(() => {
 			endNode.classList.add('fade-in');

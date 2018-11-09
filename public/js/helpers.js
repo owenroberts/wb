@@ -74,8 +74,8 @@ window.addEventListener('load', function() {
 		node.dataset.word = B.chains[B.currentChain][index].word;
 		node.dataset.syndex = B.chains[B.currentChain][index].syndex;
 
-		const wordSpan = B.createElem('span', ['def'], B.chains[B.currentChain][index].word);
-		const word = B.createElem('div', ['word', 'def']);
+		const wordSpan = B.createElem('span', [], B.chains[B.currentChain][index].word);
+		const word = B.createElem('div', ['word']);
 		wordSpan.addEventListener('click', B.getDef);
 		word.appendChild(wordSpan);
 
