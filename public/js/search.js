@@ -16,11 +16,18 @@ window.addEventListener('load', function() {
 	const bridge = document.getElementById('bridge');
 	const search = document.getElementById('search');
 	const ldr = document.getElementById('ldr');
-	bridge.addEventListener('click', ev => {
+	const endWordInput = document.getElementById('end-word');
+	bridge.addEventListener('click', loadFirstChain);
+	endWordInput.addEventListener('keydown', ev => {
+		if (ev.which == 13)
+			loadFirstChain();
+	});
+
+	function loadFirstChain() {
 		B.fade(ldr, 'in');
 		const params = {
 			start: document.getElementById('start-word').value,
-			end: document.getElementById('end-word').value,
+			end: endWordInput.value,
 			nl: 10,
 			sl: 10
 		};
@@ -28,7 +35,7 @@ window.addEventListener('load', function() {
 			B.fade(search, 'out', true);
 			B.fade(ldr, 'out', true);
 		});
-	});
+	}
 
 	/* about */
 	const about = document.getElementById('about');

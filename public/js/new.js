@@ -16,7 +16,6 @@ window.addEventListener('load', function() {
 				dots[i].classList.add('current');
 				chains[i].classList.add('current');
 			} else {
-				console.log(i);
 				if (dots[i].classList.contains('current'))
 					dots[i].classList.remove('current');
 				if (chains[i].classList.contains('current'))
@@ -71,7 +70,7 @@ window.addEventListener('load', function() {
 	}
 
 	B.makeChain = (data) => {
-		B.chains.push(data);
+		B.chains.push(data.chain);
 		B.currentChain++;
 
 		const chain = document.createElement("div");
@@ -87,7 +86,7 @@ window.addEventListener('load', function() {
 
 		const startWord = document.createElement('div');
 		startWord.classList.add('word');
-		startWord.textContent = B.chains[B.currentChain][0].word;
+		startWord.textContent = B.startWord =  B.chains[B.currentChain][0].word;
 		
 		startNode.appendChild(startWord);
 		nodes.append(startNode);
@@ -101,7 +100,7 @@ window.addEventListener('load', function() {
 		const endWord = document.createElement('div');
 		endWord.classList.add('word');
 		const idx = B.chains[B.currentChain].length - 1;
-		endWord.textContent = B.chains[B.currentChain][idx].word;
+		endWord.textContent = B.endWord = B.chains[B.currentChain][idx].word;
 
 		endNode.appendChild(endWord);
 		setTimeout(() => {
@@ -126,23 +125,24 @@ window.addEventListener('load', function() {
 	};
 
 	B.newChain = (params, callback) => {
-		let nodeLimit, startWord, endWord;
 		if (B.chains.length < 10) {
+			let nodeLimit, synonymLevel, startWord, endWord;
 			if (params) {
 				startWord = params.start;
 				endWord = params.end;
 				nodeLimit = params.nl;
 				synonymLevel = params.sl;
 			} else {
+				startWord = B.startWord;
+				endWord = B.endWord;
 				do {
-					nodelimit = B.getRandomInt(2,20);
-				} while (B.nodelimitArray.indexOf(nodelimit) != -1);
-				const synonymlevel = 10;  // should synonym level be randomized?
+					nodeLimit = B.getRandomInt(2,20);
+				} while (B.nodeLimitArray.indexOf(nodeLimit) != -1);
+				synonymLevel = 10;  // should synonym level be randomized?
 
 			}
 			B.nodeLimitArray.push(nodeLimit);
 			B.queryStrings.push(`${startWord}${nodeLimit}${endWord}${synonymLevel}`);
-
 			$.ajax({
 				url: '/chain',
 				type: 'get',
@@ -163,13 +163,9 @@ window.addEventListener('load', function() {
 							report("The algorithm is not able to generate more results based on the current parameters.");
 						}
 					} else {
-						console.log(obj);
 						if (callback)
 							callback();
-						B.makeChain(obj.data.chain);
-						
-						
-
+						B.makeChain(obj.data);
 						B.fade(B.loader, 'out', true);
 					}
 				}

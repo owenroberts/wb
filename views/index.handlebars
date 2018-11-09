@@ -39,12 +39,12 @@
 <div id="container">
 	<div id="header">
 		<div id="title"><a href="/">Word Bridge</a></div>
-		<div id="about-btn">About</div>
-		<div id="share">Share</div>
+		<div><span id="about-btn">About</span></div>
+		<div><span id="share">Share</span></div>
 		<div id="plus">+</div>
 	</div>
 
-	<div id="search">
+	<div id="search" class="fade hidden display-none">
 		<input type="text" id="start-word" name="s" class="query" placeholder="first">
 		<input type="text" id="end-word" name="e" class="query" placeholder="second">
 		<input type="submit" value="Bridge" id="bridge">
@@ -56,9 +56,11 @@
 	<div id="chains"></div>
 
 	<div id="chain-nav">
-		<div id="prev-chain" class="chain-btn"> < </div>
-		<div id="dots"></div>
-		<div id="next-chain" class="chain-btn"> > </div>
+		<div id="inner-chain-nav">
+			<div id="prev-chain" class="chain-btn"> < </div>
+			<div id="dots"></div>
+			<div id="next-chain" class="chain-btn"> > </div>
+		</div>
 	</div>
 </div>
 
@@ -77,9 +79,10 @@
 		if ("{{errmsg}}") 
 			B.report("{{errmsg}}", 'Okay');	
 		if ("{{data}}") {
-			const data = {{{json data}}};
-			B.makeChain(data.chain);
+			B.makeChain({{{json data}}});
 			document.getElementById('search').style.display = 'none';
+		} else {
+			B.fade(document.getElementById('search'), 'in');
 		}
 	});
 </script>

@@ -31,7 +31,21 @@
 	}
 
 	#home, #share, #plus {
-		display:inline-block;
+		/* display:inline-block; */
+	}
+
+	#plus {
+		background: black;
+		width: 40px;
+		height: 40px;
+		border-radius: 20px;
+		font-size: 30px;
+		color: white;
+		text-align: center;
+		position: absolute;
+		top: 20px;
+		right: 20px;
+		cursor: pointer;
 	}
 
 	#plusbkg {
@@ -61,6 +75,11 @@
 	-webkit-box-shadow: 0px -1px 2px 0px rgba(0,0,0,0.25);
 	   -moz-box-shadow: 0px -1px 2px 0px rgba(0,0,0,0.25);
 			box-shadow: 0px -1px 2px 0px rgba(0,0,0,0.25);
+	#inner-chain-nav {
+		max-width: 560px;
+		margin: 0 auto;
+		position: relative;
+	}
 	.chain-dot {
 		display:inline-block;
 		margin:0 4px;
@@ -125,7 +144,7 @@
 	
 	.chain {
 		position: absolute;
-		padding-bottom: 1em;
+		padding-bottom: 2em;
 		width: 100%;
 		z-index: 0;
 		opacity: 0;

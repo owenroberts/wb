@@ -21,19 +21,24 @@ function makeChain(query, allSynonyms, callback) {
 	} else if (thesaurus.find(endWord).length == 0) {
 		callback("The second word was not found.");
 	} else {
-		startChain();
-		if (!foundChain)
-			getShortestChain(); 
-		/* should be called by build Chain at ending condition.... 
-			but this didn't work for some reason? */
+		getChain(); 
 	}
 
-	function startChain() {
-		buildChain(
-			[{word:startWord}], 
-			[{ word:endWord, synonyms: getSynonyms(endWord, allSynonyms.slice(0)) }], 
-			allSynonyms.slice(0)
-		);
+	function getChain() {
+		if (currentNodeNumber < nodeNumberLimit) {
+			currentNodeNumber++; // for next chain
+			if (!foundChain) {
+				buildChain(
+					[{word:startWord}], 
+					[{ word:endWord, synonyms: getSynonyms(endWord, allSynonyms.slice(0)) }], 
+					allSynonyms.slice(0)
+				);
+				if (!foundChain)
+					getChain();
+			}
+		} else {
+			callback("Your search was not able to be performed with the current parameters.");
+		}
 	}
 
 	function getSynonyms(word, allSynsCopy) {
@@ -103,18 +108,6 @@ function makeChain(query, allSynonyms, callback) {
 			if (startCopy.length + endChain.length < currentNodeNumber && !foundChain) {
 				buildChain(startCopy, endChain, allSynsCopy); /* fastest ?*/
 			}
-		}
-	}
-
-	function getShortestChain() {
-		if (currentNodeNumber < nodeNumberLimit) {
-			currentNodeNumber++;
-			if (!foundChain) {
-				startChain();
-				getShortestChain();
-			}
-		} else {
-			callback("Your search was not able to be performed with the current parameters.");
 		}
 	}
 }

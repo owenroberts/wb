@@ -71,11 +71,9 @@ app.get('/search', function(req, res) {
 });
 
 app.get('/chain', function(req, res) {
+	console.log(req.query);
 	loadChain(req, function(result) { /* loadChain for production, makeChain to skip db/cache */
-		if (result.error)
-			res.json({
-				errormsg: "This randomly generated path was unable to be performed by the algorithm.  Please try the add path button again."
-			});
+		if (result.error) res.json({ errormsg: result.error });
 		else res.json({ data: result });
 	});
 });
@@ -95,12 +93,6 @@ app.post('/save', function(req, res) {
 	});
 });
 
-app.get('/mod', function(req, res) {
-	loadChain(req, function(result) { 
-		if (result.error) res.json({ errormsg: result.error });
-		else res.json({ data: result });
-	});
-});
 
 app.get('/def', function(req,res) {
 	def.getDef(req.query.word, req.query.synonym, function(err, result) {

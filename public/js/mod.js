@@ -52,7 +52,7 @@ window.addEventListener('load', function() {
 		const alt = node.dataset.word;
 
 		/* get all syns for new chain algorithm */
-		var usedSynonyms = [B.chain.start];
+		var usedSynonyms = [B.startWord];
 		// console.log(index);
 		for (let i = 0; i < index + 1; i++) {
 			if (B.chains[B.currentChain][i].alts) {
@@ -63,12 +63,12 @@ window.addEventListener('load', function() {
 		}
 
 		$.ajax({
-			url: '/search/modified',
+			url: '/chain',
 			type: 'get',
 			dataType:'json',
 			data: {
 				s: alt,
-				e: B.chain.end,
+				e: B.endWord,
 				sl: 10,
 				nl: 10 - index,
 				as: usedSynonyms

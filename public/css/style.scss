@@ -78,7 +78,7 @@ $high_gray: #D1D1D1;
 /*  media queries */
 /* desktop */
 @media only screen  and (min-width : 800px) {
-	body { font-size:30px; }
+	body { /* font-size:30px; */ }
 	header { min-height:52px; }
 	#sidebar {
 		li { height:52px; }
