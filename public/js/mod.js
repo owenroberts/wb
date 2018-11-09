@@ -21,12 +21,6 @@ window.addEventListener('load', function() {
 		node.children[0].children[0].textContent = syn;
 		node.dataset.syndex = newSyndex;
 		node.dataset.word = syn;
-		
-		/* hide other nodes */
-		const nodes = node.parentNode.children;
-		for (let i = index + 1; i < nodes.length - 1; i++) {
-			nodes[i].classList.replace('fade-in', 'fade-grey');
-		}
 	}
 	// ** modify chain ** //
 	B.modifyChain = ev => {
@@ -105,6 +99,11 @@ window.addEventListener('load', function() {
 			e.previousElementSibling.style.display = 'inline-block';
 			modIsOpen = true;
 			document.getElementsByClassName('nodes')[B.currentChain].classList.add('mod-disabled'); // nodes
+
+			/* hide other nodes */
+			for (let i = +e.parentNode.dataset.index + 1; i < e.parentNode.parentNode.children.length - 1; i++) {
+				e.parentNode.parentNode.children[i].classList.replace('fade-in', 'fade-grey');
+			}
 		}
 	};
 	
