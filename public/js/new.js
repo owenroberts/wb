@@ -65,9 +65,6 @@ window.addEventListener('load', function() {
 
 	nextChainBtn.addEventListener('click', nextChain);
 	prevChainBtn.addEventListener('click', prevChain);
-	for (let i = 0; i < dots.length; i++) {
-		dots[i].addEventListener('click', switchChain);
-	}
 
 	B.makeChain = (data) => {
 		B.chains.push(data.chain);

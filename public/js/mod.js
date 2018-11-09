@@ -1,5 +1,7 @@
 window.addEventListener('load', function() {
 
+	let modIsOpen = false;
+
 	/* new syn */
 	B.newSyn = function(elem, dir) {
 
@@ -16,7 +18,7 @@ window.addEventListener('load', function() {
 			newSyndex = 0;
 
 		const syn = B.chains[B.currentChain][index].alts[newSyndex]; /* should be like window.Chain */
-		node.children[0].textContent = syn;
+		node.children[0].children[0].textContent = syn;
 		node.dataset.syndex = newSyndex;
 		node.dataset.word = syn;
 		
@@ -26,25 +28,10 @@ window.addEventListener('load', function() {
 			nodes[i].classList.replace('fade-in', 'fade-grey');
 		}
 	}
-
-	const prevBtns = document.getElementsByClassName('prev');
-	for (let i = 0; i < prevBtns.length; i++) {
-		prevBtns[i].addEventListener('click', ev => {
-			B.newSyn(ev.currentTarget, 'prev');
-		});
-	}
-
-	const nextBtns = document.getElementsByClassName('next');
-	for (let i = 0; i < nextBtns.length; i++) {
-		nextBtns[i].addEventListener('click', function() {
-			B.newSyn(this, 'next');
-		});
-	}
-
 	// ** modify chain ** //
 	B.modifyChain = ev => {
 
-		B.closeModOptions(ev.currentTarget);
+		B.closeModOptions(ev.currentTarget, true);
 
 		const node = ev.currentTarget.parentNode.parentNode;
 		const index = +node.dataset.index;
@@ -112,11 +99,6 @@ window.addEventListener('load', function() {
 		});
 	}
 
-	const modBtns = document.getElementsByClassName('mod-btn');
-	for (let i = 0; i < nextBtns.length; i++) {
-		modBtns[i].addEventListener('click', B.modifyChain);
-	}
-
 	B.openModOptions = e => {
 		if (!modIsOpen) {
 			e.style.display = 'none';
@@ -126,25 +108,23 @@ window.addEventListener('load', function() {
 		}
 	};
 	
-	B.closeModOptions = e => {
+	B.closeModOptions = (e, isMod) => {
+		const node = e.parentNode.parentNode;
+		const index = +node.dataset.index;
 		e.parentNode.style.display = 'none';
 		e.parentNode.nextElementSibling.style.display = 'inline-block';	
 		modIsOpen = false;
-		document.getElementsByClassName('nodes')[B.currentChain].classList.remove('mod-disabled'); // nodes		
+		document.getElementsByClassName('nodes')[B.currentChain].classList.remove('mod-disabled'); // nodes
+
+		if (!isMod) {
+			/* change original work back */
+			node.dataset.word = node.children[0].children[0].textContent = B.chains[B.currentChain][index].word;
+
+			/* show other nodes */
+			const nodes = node.parentNode.children;
+			for (let i = index + 1; i < nodes.length - 1; i++) {
+				nodes[i].classList.replace('fade-grey', 'fade-in');
+			}
+		}
 	};
-
-	const openMods = document.getElementsByClassName('mod-open');
-	Array.from(openMods).forEach(function(openMod) {
-		openMod.addEventListener('click', ev => {
-			B.openModOptions(ev.currentTarget);
-		});
-	});
-
-	let modIsOpen = false;
-	const closeMods = document.getElementsByClassName('mod-close');
-	Array.from(closeMods).forEach(function(closeMod) {
-		closeMod.addEventListener('click', ev => {
-			B.closeModOptions(ev.currentTarget);
-		});
-	});
 });

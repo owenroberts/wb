@@ -31,9 +31,4 @@ window.addEventListener('load', function() {
 			},
 		});
 	};
-
-	const defBtns = document.getElementsByClassName('def');
-	for (let i = 0; i < defBtns.length; i++) {
-		defBtns[i].addEventListener('click', B.getDef);
-	}
 });

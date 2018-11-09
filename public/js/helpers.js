@@ -83,7 +83,7 @@ window.addEventListener('load', function() {
 
 		const modClose = B.createElem('div', ['mod-close'], undefined, '/img/mod-close.svg');
 		modClose.addEventListener('click', ev => {
-			B.closeModOptions(ev.currentTarget)
+			B.closeModOptions(ev.currentTarget, false);
 		});
 
 		const modBtn = B.createElem('div', ['mod-btn'], undefined, '/img/mod-down-arrow.svg');
