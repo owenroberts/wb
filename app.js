@@ -71,7 +71,6 @@ app.get('/search', function(req, res) {
 });
 
 app.get('/chain', function(req, res) {
-	console.log(req.query)
 	loadChain(req, function(result) { /* loadChain for production, makeChain to skip db/cache */
 		if (result.error) res.json({ errormsg: result.error });
 		else res.json({ data: result });
@@ -109,7 +108,7 @@ function loadChain(req, callback) {
 			if (err) console.log(err);
 			else {
 				if (result == null) {
-					makeChain(req, callback);
+					makeChain(queryString, req, callback);
 				} else {
 				 	db.addSearchTime(queryString, function(err) { console.log(err) } );
 				 	cache.set(queryString, result);
@@ -122,14 +121,14 @@ function loadChain(req, callback) {
 	}
 }
 
-function makeChain(req, callback) {
+function makeChain(queryString, req, callback) {
 	let allsynonyms;
 	if (req.query.as) 
 		allsynonyms = req.query.as;
 	else 
 		allsynonyms = [req.query.s];
 	var query = {
-		queryString: makeQueryString(req),
+		queryString: queryString || makeQueryString(req),
 		start: req.query.s.replace(/ /g, ""),
 		end: req.query.e.replace(/ /g, ""),
 		nodeLimit: req.query.nl,
