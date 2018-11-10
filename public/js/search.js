@@ -77,6 +77,25 @@ window.addEventListener('load', function() {
 			const end = B.chains[B.currentChain][B.chains[B.currentChain].length - 1].word;
 			const title = "Bridge: " + start + " ... " + end;
 			const link = `${location.origin}/search?qs=${B.queryStrings[B.currentChain]}`;
+			const url = encodeURIComponent(link);
+
+			function share() {
+				switch(this.id) {
+					case 'link':
+						location.href = link;
+						break;
+					case 'email':
+						window.open("mailto:?body=" + title + " -- " + url + "&subject= + b", "_blank")
+						break;
+					case "tw":
+						window.open("https://twitter.com/intent/tweet?text=" + title + " " + url, "_blank");
+						break;
+					case "fb":
+						window.open("http://www.facebook.com/sharer.php?u=" + title + " " + url, "_blank");
+					break;
+				}
+			}
+
 			if (B.queryStrings[B.currentChain].includes('-')) {
 				$.ajax({
 					url: '/save',
@@ -92,27 +111,15 @@ window.addEventListener('load', function() {
 					},
 					success: function(obj) {
 						console.log(obj);
+						/* wait until saved to share */
+						share();
 					},
 					error: function(err) {
 						console.log('err', err);
 					}
 				});
-			}
-			
-			const url = encodeURIComponent(link);
-			switch(this.id) {
-				case 'link':
-					location.href = link;
-					break;
-				case 'email':
-					window.open("mailto:?body=" + title + " -- " + url + "&subject= + b", "_blank")
-					break;
-				case "tw":
-					window.open("https://twitter.com/intent/tweet?text=" + title + " " + url, "_blank");
-					break;
-				case "fb":
-					window.open("http://www.facebook.com/sharer.php?u=" + title + " " + url, "_blank");
-				break;
+			} else {
+				share();
 			}
 		});
 	}

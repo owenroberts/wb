@@ -108,12 +108,6 @@ function loadChain(req, callback) {
 			if (err) console.log(err);
 			else {
 				if (result == null) {
-					if (!req.query.s) {
-						req.query.s = queryString.split(/[0-9]+/)[0];
-						req.query.e = queryString.split(/[0-9]+/)[1];
-						req.query.nl = queryString.split(/[a-z]+/)[1];
-						req.query.sl = queryString.split(/[a-z]+/)[2];
-					} // temp fix, should just not return qs queries with no entry in db
 					makeChain(req, callback);
 				} else {
 				 	db.addSearchTime(queryString, function(err) { console.log(err) } );
