@@ -36,24 +36,9 @@ window.addEventListener('load', function() {
 		} 
 	}
 
-	function switchChain() {
-		const c = + this.dataset.index;
-		if (B.currentChain != c) {
-			B.currentChain = c;
-			setChainDepth();
-		}
-	}
-
-	function nextChain() {
-		if (B.currentChain < B.chains.length - 1) {
-			B.currentChain++;
-			setChainDepth();
-		}
-	}
-
-	function prevChain() {
-		if (B.currentChain > 0) {
-			B.currentChain--;
+	function showChain(index) {
+		if (index < B.chains.length && B.currentChain != index && index >= 0) {
+			B.currentChain = index;
 			setChainDepth();
 		}
 	}
@@ -63,10 +48,21 @@ window.addEventListener('load', function() {
 	const dots = document.getElementsByClassName('chain-dot');
 	const chains = document.getElementsByClassName('chain');
 
-	nextChainBtn.addEventListener('click', nextChain);
-	prevChainBtn.addEventListener('click', prevChain);
+	nextChainBtn.addEventListener('click', () => {
+		showChain(B.currentChain + 1);
+	});
+	prevChainBtn.addEventListener('click', () => {
+		showChain(B.currentChain - 1);
+	});
 
-	B.makeChain = (data) => {
+	B.makeChain = data => {
+
+		B.isAnimating = true;
+		setTimeout(() => {
+			B.isAnimating = false;
+		}, B.fadeDur * data.chain.length);
+
+		B.queryStrings.push(data.queryString);
 		B.chains.push(data.chain);
 		B.currentChain++;
 
@@ -74,7 +70,7 @@ window.addEventListener('load', function() {
 		B.endWord = B.chains[B.currentChain][B.chains[B.currentChain].length - 1].word;
 
 		const chain = document.createElement("div");
-		chain.classList.add('chain');
+		chain.classList.add('chain', 'fade', 'visible');
 		chain.id = "chain-" + B.currentChain;
 		
 		const nodes = document.createElement("div");
@@ -118,7 +114,9 @@ window.addEventListener('load', function() {
 		const dot = document.createElement('div');
 		dot.dataset.index = B.currentChain;
 		dot.classList.add('chain-dot');
-		dot.addEventListener('click', switchChain);
+		dot.addEventListener('click', ev => {
+			showChain(ev.currentTarget.dataset.index);
+		});
 		document.getElementById('dots').appendChild(dot);
 		if (B.chains.length > 1)
 			document.getElementById('chain-nav').classList.add('slide-up');
@@ -143,7 +141,7 @@ window.addEventListener('load', function() {
 
 			}
 			B.nodeLimitArray.push(nodeLimit);
-			B.queryStrings.push(`${startWord}${nodeLimit}${endWord}${synonymLevel}`);
+			
 			$.ajax({
 				url: '/chain',
 				type: 'get',
@@ -157,8 +155,8 @@ window.addEventListener('load', function() {
 				success: function(obj) {
 					B.fade(B.loader, 'in', false);
 					if (obj.errormsg) {
-						if (B.nodelimitArray.length < 9) {
-							makeNewPath();
+						if (B.nodeLimitArray.length < 9) {
+							B.newChain(params, callback);
 						} else {
 							B.noMorePaths = true;
 							report("The algorithm is not able to generate more results based on the current parameters.");
@@ -178,5 +176,6 @@ window.addEventListener('load', function() {
 	}
 
 	const plusBtn = document.getElementById('plus');
+	plusBtn.addEventListener('tap', getNewPath);
 	plusBtn.addEventListener('click', getNewPath);
 });

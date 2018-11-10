@@ -7,7 +7,7 @@ var mongodb = require('mongodb')
 
 ChainDb = function(uri) {
 	if (uri == "localhost") {
-		this.db = new Db('chains', new Server('localhost', 27017, {safe:false}, {auto_reconnect:true}, {}));
+		this.db = new Db('bridge', new Server('localhost', 27017, {safe:false}, {auto_reconnect:true}, {}));
 		this.db.open(function(){});
 	} else {
 		var that = this;
@@ -56,7 +56,7 @@ ChainDb.prototype.get = function(queryString, callback) {
 };
 
 ChainDb.prototype.addSearchTime = function(queryString, callback) {
-	this.getCollection( function(err, chain_collection) {
+	this.getCollection(function(err, chain_collection) {
 		if (err) callback(err);
 		else {
 			// add location ?
@@ -70,10 +70,10 @@ ChainDb.prototype.addSearchTime = function(queryString, callback) {
 };
 
 ChainDb.prototype.getCollection = function(callback) {
-  this.db.collection('chains', function(err, chain_collection) {
-    if (err) callback(err);
-    else callback(null, chain_collection);
-  });
+	this.db.collection('chains', function(err, chain_collection) {
+		if (err) callback(err);
+		else callback(null, chain_collection);
+	});
 };
 
 exports.ChainDb = ChainDb;

@@ -3,9 +3,9 @@ window.addEventListener('load', function() {
 	let modIsOpen = false;
 
 	/* new syn */
-	B.newSyn = function(elem, dir) {
-
-		const node = elem.parentNode.parentNode;
+	B.newSyn = (e, dir) => {
+		const node = e.parentNode.parentNode;
+		const wordSpan = node.children[0].children[0];
 		const index = +node.dataset.index;
 		const syndex = +node.dataset.syndex;
 		const len = B.chains[B.currentChain][index].alts.length;
@@ -18,24 +18,29 @@ window.addEventListener('load', function() {
 			newSyndex = 0;
 
 		const syn = B.chains[B.currentChain][index].alts[newSyndex]; /* should be like window.Chain */
-		node.children[0].children[0].textContent = syn;
-		node.dataset.syndex = newSyndex;
-		node.dataset.word = syn;
-	}
+			
+		wordSpan.classList.add('fade-out');
+		setTimeout(() => {
+			wordSpan.classList.replace('fade-out', 'fade-in');
+			wordSpan.textContent = syn;
+			node.dataset.syndex = newSyndex;
+			node.dataset.word = syn;
+		}, B.fadeDur);
+	};
+
 	// ** modify chain ** //
 	B.modifyChain = ev => {
-
-		B.closeModOptions(ev.currentTarget, true);
 
 		const node = ev.currentTarget.parentNode.parentNode;
 		const index = +node.dataset.index;
 		const nodes = node.parentNode.children;
 		const alt = node.dataset.word;
+		const e = ev.currentTarget;
 
 		/* get all syns for new chain algorithm */
-		var usedSynonyms = [B.startWord];
-		// console.log(index);
-		for (let i = 0; i < index + 1; i++) {
+		var usedSynonyms = [B.startWord, alt];
+		/* index, index + 1, should include current alt? */
+		for (let i = 0; i < index; i++) {
 			if (B.chains[B.currentChain][i].alts) {
 				for (var j = 0; j < B.chains[B.currentChain][i].alts.length; j++) {
 					usedSynonyms.push(B.chains[B.currentChain][i].alts[j]);
@@ -57,12 +62,12 @@ window.addEventListener('load', function() {
 			success: function(obj) {
 				if (obj.errormsg) {
 					/* report error */
-					const err = 'We couldn\'t find a chain between "' + alt + '" and "' + B.chain.end + '".';
+					const err = `We couldn't find a chain between ${alt} and ${B.endWord}.`;
 					const option = "Try swiping back to the previous synonym, or forward to the next.";
-					B.report(err + "<br><br>" + option);
-					/*node.classList.add("mod-error");*/ // something to remove node?
+					B.report(`${err}<br><br>${option}`);
 					B.noTouching = false;
 				} else {
+					B.closeModOptions(e, true);
 					B.queryStrings[B.currentChain] += '-' + obj.data.queryString;
 					B.chains[B.currentChain][index].word = alt;
 					B.chains[B.currentChain].splice(index + 1, B.chains[B.currentChain].length - 1);
@@ -91,10 +96,10 @@ window.addEventListener('load', function() {
 				}
 			}
 		});
-	}
+	};
 
 	B.openModOptions = e => {
-		if (!modIsOpen) {
+		if (!modIsOpen && !B.isAnimating) {
 			e.style.display = 'none';
 			e.previousElementSibling.style.display = 'inline-block';
 			modIsOpen = true;

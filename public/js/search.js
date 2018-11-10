@@ -35,6 +35,8 @@ window.addEventListener('load', function() {
 			B.fade(search, 'out', true);
 			B.fade(ldr, 'out', true);
 		});
+		document.getElementById('share-dek').textContent = `${params.start} -> ${params.end}`;
+		document.getElementById('plus').classList.replace('hidden', 'visible');
 	}
 
 	/* about */
@@ -83,10 +85,10 @@ window.addEventListener('load', function() {
 					data: {
 						qs: B.queryStrings[B.currentChain],
 						chain: JSON.stringify(B.chains[B.currentChain]),
-						s: B.queryStrings[B.currentChain],
-						e: B.chain.end,
-						sl: 10,
-						nl: 10 /* this is not right ... */
+						s: B.startWord,
+						e: B.endWord,
+						sl: B.queryStrings[B.currentChain].split(/[a-z]+/)[1],
+						nl: B.queryStrings[B.currentChain].split(/[a-z]+/)[2]
 					},
 					success: function(obj) {
 						console.log(obj);

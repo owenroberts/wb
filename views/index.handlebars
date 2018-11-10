@@ -1,5 +1,5 @@
 <div id="loader" class="fade">
-	<img src="/img/loader.svg" alt="">
+	<img src="/img/loader-white.svg" alt="">
 </div>
 
 <div id="about" class="fade hidden">
@@ -25,7 +25,7 @@
 <div id="share-menu" class="fade fade-out">
 	<div class="msg">
 		<p>Share Synomap</p>
-		<p>{{data.start}} ... {{data.end}}</p>
+		<p id="share-dek"></p>
 		<div class="share-item" id="link">Link</div>
 		<div class="share-item" id="email">Email</div>
 		<div class="share-item" id="fb">Facebook</div>
@@ -36,44 +36,41 @@
 	</div>
 </div>
 
-<div id="container">
-	<div id="header">
-		<div id="title"><a href="/">Word Bridge</a></div>
-		<div><span id="about-btn">About</span></div>
-		<div><span id="share">Share</span></div>
-		<div id="plus">+</div>
-	</div>
+<div id="header">
+	<div id="title"><a href="/">Word Bridge</a></div>
+	<div><span id="about-btn">About</span></div>
+	<div><span id="share">Share</span></div>
+	<div id="plus" class="fade hidden">+</div>
+</div>
 
-	<div id="search" class="fade hidden display-none">
-		<input type="text" id="start-word" name="s" class="query" placeholder="first">
-		<input type="text" id="end-word" name="e" class="query" placeholder="second">
-		<input type="submit" value="Bridge" id="bridge">
-		<div class="ldr" id="ldr">
-			<img src="/img/loader.svg" alt="">
-		</div>
-	</div>
-
-	<div id="chains"></div>
-
-	<div id="chain-nav">
-		<div id="inner-chain-nav">
-			<div id="prev-chain" class="chain-btn"> < </div>
-			<div id="dots"></div>
-			<div id="next-chain" class="chain-btn"> > </div>
-		</div>
+<div id="search" class="fade hidden display-none">
+	<input type="text" id="start-word" name="s" class="query" placeholder="first">
+	<input type="text" id="end-word" name="e" class="query" placeholder="second">
+	<input type="submit" value="Bridge" id="bridge">
+	<div class="ldr" id="ldr">
+		<img src="/img/loader-black.svg" alt="">
 	</div>
 </div>
+
+<div id="chains"></div>
+
+<div id="chain-nav">
+	<div id="inner-chain-nav">
+		<div id="prev-chain" class="chain-btn"> < </div>
+		<div id="dots"></div>
+		<div id="next-chain" class="chain-btn"> > </div>
+	</div>
+</div>
+
 
 <script type="text/javascript">
 	B = {}; // need B for helpers
 </script>
 <script src="/js/helpers.js"></script>
-
 <script src='/js/search.js' type='text/javascript'></script>
 <script src='/js/def.js' type='text/javascript'></script>
 <script src='/js/mod.js' type='text/javascript'></script>
 <script src='/js/new.js' type='text/javascript'></script>
-
 <script type="text/javascript">
 	window.addEventListener('load', function() {
 		if ("{{errmsg}}") 
@@ -81,6 +78,8 @@
 		if ("{{data}}") {
 			B.makeChain({{{json data}}});
 			document.getElementById('search').style.display = 'none';
+			document.getElementById('share-dek').textContent = `${B.startWord} -> ${B.endWord}`;
+			document.getElementById('plus').classList.replace('hidden', 'visible');
 		} else {
 			B.fade(document.getElementById('search'), 'in');
 		}

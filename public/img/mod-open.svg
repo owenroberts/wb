@@ -1,5 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36">
 	<!-- fill="#EDEDED" -->
-	<path fill="none" d="M4 0h28a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4V4a4 4 0 0 1 4-4z"/>
+	<path opacity="0" fill="#EDEDED" d="M4 0h28a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4V4a4 4 0 0 1 4-4z">
+		<animate
+			attributeName="opacity"
+			values="0; 1; 0;"
+			begin="click"
+			dur="0.5s"
+			repeatCount="0"
+		/>
+	</path>
 	<g><path fill="none" stroke="#000" d="M14.458 24.003L21.128 18l-6.67-6.003"/></g>
 </svg>

@@ -71,7 +71,7 @@ app.get('/search', function(req, res) {
 });
 
 app.get('/chain', function(req, res) {
-	console.log(req.query);
+	console.log(req.query)
 	loadChain(req, function(result) { /* loadChain for production, makeChain to skip db/cache */
 		if (result.error) res.json({ errormsg: result.error });
 		else res.json({ data: result });
@@ -84,8 +84,8 @@ app.post('/save', function(req, res) {
 		chain: JSON.parse(req.body.chain),
 		start: req.body.s,
 		end: req.body.e,
-		nodelimit: req.body.nl,
-		synonymlevel: req.body.sl,
+		nodeLimit: req.body.nl,
+		synonymLevel: req.body.sl,
 		searches: [{ date: new Date() }] /* location? */
 	}, function(err) {
 		if (err) console.log('err', err);
@@ -132,16 +132,13 @@ function makeChain(req, callback) {
 		queryString: makeQueryString(req),
 		start: req.query.s.replace(/ /g, ""),
 		end: req.query.e.replace(/ /g, ""),
-		nodelimit: req.query.nl,
-		synonymlevel: req.query.sl,
+		nodeLimit: req.query.nl,
+		synonymLevel: req.query.sl,
 		searches: [{ date: new Date() }] /* location? */
 	};
 	chain.makeChain(query, allsynonyms, function(err, chain) {
 		if (err) query.error = err;
 		else query.chain = chain;
-
-		/* this is removing all the extra data for some reason? 
-			should combine search data with weighting data? */
 		db.save(query, function(err) { 
 			if (err) console.log(err);
 		});

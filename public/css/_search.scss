@@ -16,6 +16,8 @@
 	width: 100%;
 	transition: background-color 500ms;
 	/* padding: 0.25em; */
+	padding: 1rem;
+	position: relative;
 	
 	&.tip {
 		background-color: rgba($black, 0.95);
@@ -85,6 +87,7 @@
 		margin:0 4px;
 		transition: color 300ms;
 		color: $gray;
+		cursor: pointer;
 		&.current { color: black; }
 	}
 	.chain-dot:before { content:"\2022"; }
@@ -99,6 +102,9 @@
 		&.clickable {
 			color: black;
 		}
+	}
+	#prev-chain, #next-chain {
+		cursor: pointer;
 	}
 	#prev-chain { left: 2em; }
 	#next-chain { right: 2em; }
@@ -136,12 +142,8 @@
 }
 
 #chains {
-	
 	position: relative;
-	margin-top: 1em;
-	
 	font-size: 26px;
-	
 	.chain {
 		position: absolute;
 		padding-bottom: 2em;
@@ -162,8 +164,9 @@
 	transition: top 500ms;
 	top: 0px;
 	background-color: $white;
-	min-width: 260px;
-	min-height: 500px;
+	/* min-width: 260px;
+	min-height: 500px; */
+	padding: 0 1rem;
 	
 	&.mod-disabled {
 		.mod-open .active { display: none; }
@@ -174,8 +177,8 @@
 .node {
 
 	position: relative;
-	padding: 0.2em 0;
-	margin: 0.1em 0;
+	padding: 0.1em 0;
+	/* margin: 0.1em 0; */
 	
 	opacity: 0;
 
@@ -194,6 +197,8 @@
 		/* flex: 1 32px; */
 		cursor: pointer;
 		margin-right: 6px;
+		background-color: white;
+		border-radius: 3px;
 		.active { display: inline-block; }
 		.disabled { display: none; }
 	}
@@ -202,6 +207,9 @@
 		display: none;
 		/* margin-right: 0.5em; */
 		box-shadow: -5px 0px 10px white;
+		background: white;
+		z-index: 9;
+		position: relative;
 	}
 
 	&:hover {
@@ -226,6 +234,31 @@
 		margin-right: 6px;
 	}
 
+	.next, .prev, .mod-btn, .mod-close {
+		background-color: #ededed;
+		border-radius: 3px;
+		transition: background-color 300ms;
+	}
+
+	.next:hover, .prev:hover, .mod-btn:hover, .mod-close:hover, .mod-open:hover {
+		background-color: #6d6d6d;
+	}
+
+	.next:active, .prev:active, .mod-btn:active, .mod-close:active, .mod-open:active {
+		background-color: #6d6d6d;
+	}
+
+	@keyframes button-anim-hover {
+		/* 0% { background-color: #ededed; } */
+		50% { background-color: #6d6d6d; }
+		/* 100% { background-color: #ededed; } */
+	}
+
+	@keyframes button-anim-active {
+		/* 0% { background-color: #ededed; } */
+		50% { background-color: #000000; }
+		/* 100% { background-color: #ededed; } */
+	}
 	
 	&:first-child, &:last-child {
 		padding:0.25em 0;

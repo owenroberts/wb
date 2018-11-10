@@ -1,7 +1,8 @@
 window.addEventListener('load', function() {
 
-	B.debug = true;
-	B.fadeDur = B.debug ? 100 : 500;
+	B.debug = false; // true;
+	B.fadeDur = B.debug ? 100 : 300;
+	B.isAnimating =
 
 	B.getRandomInt = function(min, max) {
 		return Math.floor(Math.random()* ( max - min + 1) + min);
@@ -10,16 +11,16 @@ window.addEventListener('load', function() {
 	// http://wordnet.princeton.edu/wordnet/man/wndb.5WN.html#sect3
 	B.pos = { "n":"noun", "v":"verb", "a":"adjective", "s":"adjective", "r":"adverb" };
 
-	B.fade = function(elem, status, displayNone) {
+	B.fade = (e, status, displayNone) => {
 		const [addClass, removeClass] = status == 'in' ? ['fade-in', 'fade-out'] : ['fade-out', 'fade-in'];
 		if (status == 'in')
-			elem.style.display = 'block';
-		if (elem.classList.contains(removeClass))
-			elem.classList.replace(removeClass, addClass);
+			e.style.display = 'block';
+		if (e.classList.contains(removeClass))
+			e.classList.replace(removeClass, addClass);
 		else
-			elem.classList.add(addClass);
+			e.classList.add(addClass);
 		if (displayNone)
-			setTimeout(() => { elem.style.display = 'none'; }, B.fadeDur);
+			setTimeout(() => { e.style.display = 'none'; }, B.fadeDur);
 	};
 
 	const reportDiv = document.getElementById('report');
@@ -49,7 +50,6 @@ window.addEventListener('load', function() {
 		reportDiv.addEventListener('click', dismissReport);
 	};
 
-
 	B.createElem = function(tag, classes, text, img) {
 		const elem = document.createElement(tag);
 		if (classes) {
@@ -62,6 +62,7 @@ window.addEventListener('load', function() {
 		}
 		if (img) {
 			const image = new Image();
+			// const image = document.createElement('embed');
 			image.src = img;
 			elem.appendChild(image);
 		}
@@ -69,12 +70,12 @@ window.addEventListener('load', function() {
 	}
 
 	B.makeNode = function(index, parent) {
-		const node = B.createElem('div', ['node']);
+		const node = B.createElem('div', ['node', 'fade', 'hidden']);
 		node.dataset.index = index;
 		node.dataset.word = B.chains[B.currentChain][index].word;
 		node.dataset.syndex = B.chains[B.currentChain][index].syndex;
 
-		const wordSpan = B.createElem('span', [], B.chains[B.currentChain][index].word);
+		const wordSpan = B.createElem('span', ['fade', 'visible'], B.chains[B.currentChain][index].word);
 		const word = B.createElem('div', ['word']);
 		wordSpan.addEventListener('click', B.getDef);
 		word.appendChild(wordSpan);

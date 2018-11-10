@@ -6,9 +6,10 @@ function makeChain(query, allSynonyms, callback) {
 	const reg = /^[a-z]+$/; /* eliminate words with non-alpha chars */
 
 	const nodeNumberLimit = 20; // no chains more than this number of nodes
-	const synonymLevel = query.synonymlevel;
-	let currentNodeNumber = query.nodelimit; // try to get under this first
+	const synonymLevel = query.synonymLevel;
+	let currentNodeNumber = query.nodeLimit; // try to get under this first
 	let foundChain = false;
+	let attemptCount = 0;
 
 	if (!startWord || !endWord) {
 		callback("Please enter two search words.");
@@ -74,9 +75,10 @@ function makeChain(query, allSynonyms, callback) {
 			const startCopy =  startChain.slice(0); // object values will be refs, won't push new ones
 			const startSyn = startChain[startIndex].synonyms[i];
 			startCopy.push(startSyn);
+			
 			for (let j = 0; j < endChain[endIndex].synonyms.length; j++) {
 				const endSyn = endChain[endIndex].synonyms[j];
-				// attemptCount++;
+				attemptCount++;
 				if (startSyn.word == endSyn.word && !foundChain) {
 					foundChain = true;
 					for (let k = endChain.length-1; k >= 0; k--) {
@@ -105,6 +107,8 @@ function makeChain(query, allSynonyms, callback) {
 					return;
 				} 
 			}
+			//  console.log('word', startChain[startIndex].word, 'len', startCopy.length + endChain.length, 'nn', currentNodeNumber)
+			// might need an attempt limit re: green -> avocado, mod chromatic to party
 			if (startCopy.length + endChain.length < currentNodeNumber && !foundChain) {
 				buildChain(startCopy, endChain, allSynsCopy); /* fastest ?*/
 			}
