@@ -78,6 +78,7 @@ app.get('/chain', function(req, res) {
 });
 
 app.post('/save', function(req, res) {
+	/* what if it already exists ? */
 	db.save({
 		queryString: req.body.qs,
 		chain: JSON.parse(req.body.chain),
@@ -87,8 +88,8 @@ app.post('/save', function(req, res) {
 		synonymLevel: req.body.sl,
 		searches: [{ date: new Date() }] /* location? */
 	}, function(err) {
-		if (err) console.log('err', err);
-		else res.send("success"); 
+		if (err != undefined)console.log('err', err);
+		else res.json({ msg: 'success' });
 	});
 });
 
@@ -101,14 +102,20 @@ app.get('/def', function(req,res) {
 });
 
 function loadChain(req, callback) {
-	var queryString = req.query.qs || makeQueryString(req);
+	var queryString = req.query.qs || makeQueryString(req.query);
 	var cacheSearch = cache.get(queryString);
 	if (cacheSearch == undefined) {
 		db.get(queryString, function(err, result) {
 			if (err) console.log(err);
 			else {
 				if (result == null) {
-					makeChain(req, callback);
+					if (!req.query.s) {
+						req.query.s = queryString.split(/[0-9]+/)[0];
+						req.query.e = queryString.split(/[0-9]+/)[1];
+						req.query.nl = queryString.split(/[a-z]+/)[1];
+						req.query.sl = queryString.split(/[a-z]+/)[2];
+					} /* if db is fucked up, what about hyphen searches ... */
+					makeChain(req.query, callback);
 				} else {
 				 	db.addSearchTime(queryString, function(err) { console.log(err) } );
 				 	cache.set(queryString, result);
@@ -121,21 +128,17 @@ function loadChain(req, callback) {
 	}
 }
 
-function makeChain(req, callback) {
-	let allsynonyms;
-	if (req.query.as) 
-		allsynonyms = req.query.as;
-	else 
-		allsynonyms = [req.query.s];
+function makeChain(query, callback) {
+	let syns = query.as || [query.s, query.e];
 	var query = {
-		queryString: makeQueryString(req),
-		start: req.query.s.replace(/ /g, ""),
-		end: req.query.e.replace(/ /g, ""),
-		nodeLimit: req.query.nl,
-		synonymLevel: req.query.sl,
+		queryString: makeQueryString(query),
+		start: query.s.replace(/ /g, ""),
+		end: query.e.replace(/ /g, ""),
+		nodeLimit: query.nl,
+		synonymLevel: query.sl,
 		searches: [{ date: new Date() }] /* location? */
 	};
-	chain.makeChain(query, allsynonyms, function(err, chain) {
+	chain.makeChain(query, syns, function(err, chain) {
 		if (err) query.error = err;
 		else query.chain = chain;
 		db.save(query, function(err) { 
@@ -146,9 +149,9 @@ function makeChain(req, callback) {
 	});
 }
 
-function makeQueryString(req) {
-	let startWord = req.query.s;
-	let endWord = req.query.e;
+function makeQueryString(query) {
+	let startWord = query.s;
+	let endWord = query.e;
 	if (!startWord) {
 		let words = endWord.split(" ");
 		if (words[0].length > 0 && words[1].length > 0) {
@@ -162,7 +165,7 @@ function makeQueryString(req) {
 			endWord = words[1];
 		}
 	}
-	var string = startWord + req.query.nl + endWord + req.query.sl;
+	var string = startWord + query.nl + endWord + query.sl;
 	string = string.toLowerCase().replace(/ /g, ""); // remove spaces 
 	return string;
 }

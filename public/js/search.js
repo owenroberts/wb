@@ -80,7 +80,7 @@ window.addEventListener('load', function() {
 			const url = encodeURIComponent(link);
 
 			function share() {
-				switch(this.id) {
+				switch(id) {
 					case 'link':
 						location.href = link;
 						break;
@@ -106,11 +106,11 @@ window.addEventListener('load', function() {
 						chain: JSON.stringify(B.chains[B.currentChain]),
 						s: B.startWord,
 						e: B.endWord,
-						sl: B.queryStrings[B.currentChain].split(/[a-z]+/)[1],
-						nl: B.queryStrings[B.currentChain].split(/[a-z]+/)[2]
-					},
+						sl: B.queryStrings[B.currentChain].split(/[a-z\\-]+/)[1],
+						nl: B.queryStrings[B.currentChain].split(/[a-z\\-]+/)[2]
+					}, /* just gets the first one ... */
 					success: function(obj) {
-						console.log(obj);
+						// console.log('success', obj);
 						/* wait until saved to share */
 						share();
 					},

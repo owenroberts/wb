@@ -38,7 +38,7 @@ window.addEventListener('load', function() {
 		const e = ev.currentTarget;
 
 		/* get all syns for new chain algorithm */
-		var usedSynonyms = [B.startWord, alt];
+		var usedSynonyms = [B.startWord, alt, B.endWord];
 		/* index, index + 1, should include current alt? */
 		for (let i = 0; i < index; i++) {
 			if (B.chains[B.currentChain][i].alts) {

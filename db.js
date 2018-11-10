@@ -35,7 +35,7 @@ ChainDb.prototype.save = function(chain, callback) {
 						{ $push: { searches: chain.searches } }
 					, function(err, result) {
 						if (err) console.log(err);
-						else callback();
+						else callback(null);
 					});
 				}
 			});
