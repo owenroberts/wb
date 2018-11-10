@@ -100,7 +100,6 @@ window.addEventListener('load', function() {
 			}
 			
 			const url = encodeURIComponent(link);
-			console.log(this.id);
 			switch(this.id) {
 				case 'link':
 					location.href = link;

@@ -108,7 +108,13 @@ function loadChain(req, callback) {
 			if (err) console.log(err);
 			else {
 				if (result == null) {
-					makeChain(queryString, req, callback);
+					if (!req.query.s) {
+						req.query.s = queryString.split(/[0-9]+/)[0];
+						req.query.e = queryString.split(/[0-9]+/)[1];
+						req.query.nl = queryString.split(/[a-z]+/)[1];
+						req.query.sl = queryString.split(/[a-z]+/)[2];
+					} // temp fix, should just not return qs queries with no entry in db
+					makeChain(req, callback);
 				} else {
 				 	db.addSearchTime(queryString, function(err) { console.log(err) } );
 				 	cache.set(queryString, result);
@@ -121,14 +127,14 @@ function loadChain(req, callback) {
 	}
 }
 
-function makeChain(queryString, req, callback) {
+function makeChain(req, callback) {
 	let allsynonyms;
 	if (req.query.as) 
 		allsynonyms = req.query.as;
 	else 
 		allsynonyms = [req.query.s];
 	var query = {
-		queryString: queryString || makeQueryString(req),
+		queryString: makeQueryString(req),
 		start: req.query.s.replace(/ /g, ""),
 		end: req.query.e.replace(/ /g, ""),
 		nodeLimit: req.query.nl,
