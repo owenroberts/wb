@@ -1,0 +1,15 @@
+/*  media queries */
+/* desktop */
+@media only screen  and (min-width : 800px) {
+	body { /* font-size:30px; */ }
+	header { min-height:52px; }
+	#sidebar {
+		li { height:52px; }
+	}
+}
+
+/*  phone  */
+@media screen and (max-device-width: 480px){
+	body { -webkit-text-size-adjust: none; }
+}
+

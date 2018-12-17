@@ -17,16 +17,22 @@ window.addEventListener('load', function() {
 	const search = document.getElementById('search');
 	const ldr = document.getElementById('ldr');
 	const endWordInput = document.getElementById('end-word');
+	const startWordInput = document.getElementById('start-word');
 	bridge.addEventListener('click', loadFirstChain);
 	endWordInput.addEventListener('keydown', ev => {
-		if (ev.which == 13)
+		if (ev.which == 13) 
 			loadFirstChain();
+		else {
+			if (startWordInput.value.length > 0) {
+				bridge.classList.add('active');
+			}
+		}
 	});
 
 	function loadFirstChain() {
 		B.fade(ldr, 'in');
 		const params = {
-			start: document.getElementById('start-word').value,
+			start: startWordInput.value,
 			end: endWordInput.value,
 			nl: 10,
 			sl: 10

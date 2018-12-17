@@ -1,5 +1,3 @@
-@import 'animate';
-
 $lightgray: #f1f1f2;
 $gray: #C5C7C9; /* #c6c8ca; */
 $black: black;
@@ -8,85 +6,18 @@ $lightblue: #f7f9ff;
 $blue: #0081F6;
 $blue: #6a75ff;
 
+$disabled: #cfe6ff;
+$active: #75b5ff;
+
 $new_gray: #EDEDED;
 $high_gray: #D1D1D1;
 
 @import 'global';
-@import 'index';
+@import 'loader';
+@import 'header';
 @import 'search';
+@import 'main';
 @import 'report';
 @import 'tooltips';
 @import 'fade';
-
-/* svg loader dots animation */
-#dOne  {
-	animation-iteration-count: infinite;
-  	animation-duration: 1.6s;
-  	animation-name: fadeOne;
-}
-#dTwo {
-	animation-iteration-count: infinite;
-  	animation-duration: 1.6s;
-  	animation-name: fadeTwo;
-}
-#dThree {
-	animation-iteration-count: infinite;
-  	animation-duration: 1.6s;
-  	animation-name: fadeThree;
-}
-
-@keyframes fadeOne {
- 	0% 		{ opacity: 0.6; }
- 	10%		{ opacity: 0.8; }
- 	20% 	{ opacity: 1.0; }
- 	30% 	{ opacity: 0.8; }
- 	40% 	{ opacity: 0.6; }
- 	50% 	{ opacity: 0.4; }
- 	60% 	{ opacity: 0.2; }
- 	70% 	{ opacity: 0.1; }
- 	80% 	{ opacity: 0.1; }
- 	90% 	{ opacity: 0.2; }
-  	100% 	{ opacity: 0.4; }
-}
-@keyframes fadeTwo {
- 	0% 		{ opacity: 0.1; }
- 	10%		{ opacity: 0.2; }
- 	20% 	{ opacity: 0.4; }
- 	30% 	{ opacity: 0.6; }
- 	40% 	{ opacity: 0.8; }
- 	50% 	{ opacity: 1.0; }
- 	60% 	{ opacity: 0.8; }
- 	70% 	{ opacity: 0.6; }
- 	80% 	{ opacity: 0.4; }
- 	90% 	{ opacity: 0.2; }
-  	100% 	{ opacity: 0.1; }
-}
-@keyframes fadeThree {
- 	0% 		{ opacity: 0.1; }
- 	10%		{ opacity: 0.1; }
- 	20% 	{ opacity: 0.1; }
- 	30% 	{ opacity: 0.2; }
- 	40% 	{ opacity: 0.4; }
- 	50% 	{ opacity: 0.6; }
- 	60% 	{ opacity: 0.8; }
- 	70% 	{ opacity: 1.0; }
- 	80% 	{ opacity: 0.8; }
- 	90% 	{ opacity: 0.4; }
-  	100% 	{ opacity: 0.2; }
-}
-
-/*  media queries */
-/* desktop */
-@media only screen  and (min-width : 800px) {
-	body { /* font-size:30px; */ }
-	header { min-height:52px; }
-	#sidebar {
-		li { height:52px; }
-	}
-}
-
-/*  phone  */
-@media screen and (max-device-width: 480px){
-  body { -webkit-text-size-adjust: none; }
-}
-
+@import 'media';

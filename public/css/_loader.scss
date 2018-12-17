@@ -1,0 +1,56 @@
+/* svg loader dots animation */
+#dOne  {
+	animation-iteration-count: infinite;
+	animation-duration: 1.6s;
+	animation-name: fadeOne;
+}
+#dTwo {
+	animation-iteration-count: infinite;
+	animation-duration: 1.6s;
+	animation-name: fadeTwo;
+}
+#dThree {
+	animation-iteration-count: infinite;
+	animation-duration: 1.6s;
+	animation-name: fadeThree;
+}
+
+@keyframes fadeOne {
+	0% 		{ opacity: 0.6; }
+	10%		{ opacity: 0.8; }
+	20% 	{ opacity: 1.0; }
+	30% 	{ opacity: 0.8; }
+	40% 	{ opacity: 0.6; }
+	50% 	{ opacity: 0.4; }
+	60% 	{ opacity: 0.2; }
+	70% 	{ opacity: 0.1; }
+	80% 	{ opacity: 0.1; }
+	90% 	{ opacity: 0.2; }
+	100% 	{ opacity: 0.4; }
+}
+@keyframes fadeTwo {
+	0% 		{ opacity: 0.1; }
+	10%		{ opacity: 0.2; }
+	20% 	{ opacity: 0.4; }
+	30% 	{ opacity: 0.6; }
+	40% 	{ opacity: 0.8; }
+	50% 	{ opacity: 1.0; }
+	60% 	{ opacity: 0.8; }
+	70% 	{ opacity: 0.6; }
+	80% 	{ opacity: 0.4; }
+	90% 	{ opacity: 0.2; }
+	100% 	{ opacity: 0.1; }
+}
+@keyframes fadeThree {
+	0% 		{ opacity: 0.1; }
+	10%		{ opacity: 0.1; }
+	20% 	{ opacity: 0.1; }
+	30% 	{ opacity: 0.2; }
+	40% 	{ opacity: 0.4; }
+	50% 	{ opacity: 0.6; }
+	60% 	{ opacity: 0.8; }
+	70% 	{ opacity: 1.0; }
+	80% 	{ opacity: 0.8; }
+	90% 	{ opacity: 0.4; }
+	100% 	{ opacity: 0.2; }
+}

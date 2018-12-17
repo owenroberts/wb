@@ -15,10 +15,14 @@ window.addEventListener('load', function() {
 		const [addClass, removeClass] = status == 'in' ? ['fade-in', 'fade-out'] : ['fade-out', 'fade-in'];
 		if (status == 'in')
 			e.style.display = 'block';
-		if (e.classList.contains(removeClass))
-			e.classList.replace(removeClass, addClass);
-		else
-			e.classList.add(addClass);
+
+		setTimeout(() => {
+			if (e.classList.contains(removeClass))
+				e.classList.replace(removeClass, addClass);
+			else
+				e.classList.add(addClass);
+		}, 1); // hacky anim/display fix
+		
 		if (displayNone)
 			setTimeout(() => { e.style.display = 'none'; }, B.fadeDur);
 	};
