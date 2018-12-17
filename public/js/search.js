@@ -30,19 +30,46 @@ window.addEventListener('load', function() {
 	});
 
 	function loadFirstChain() {
-		B.fade(ldr, 'in');
-		const params = {
-			start: startWordInput.value,
-			end: endWordInput.value,
-			nl: 10,
-			sl: 10
-		};
-		B.newChain(params, () => {
-			B.fade(search, 'out', true);
-			B.fade(ldr, 'out', true);
-		});
-		document.getElementById('share-dek').textContent = `${params.start} -> ${params.end}`;
-		document.getElementById('plus').classList.replace('hidden', 'visible');
+		// B.fade(ldr, 'in');
+
+		let startWord = startWordInput.value;
+		let endWord = endWordInput.value;
+
+		if (!startWord) {
+			if (endWord.includes(" ")) {
+				let words = endWord.split(" ");
+				if (words[0].length > 0 && words[1].length > 0) {
+					startWord = words[0];
+					endWord = words[1];
+				}
+			}
+		} else if (!endWord) {
+			if (startWord.includes(" ")) {
+				let words = startWord.split(" ");
+				if (words[0].length > 0 && words[1].length > 0) {
+					startWord = words[0];
+					endWord = words[1];
+				}
+			}
+		}
+
+		if (startWord && endWord) {
+			B.resultUI();
+			const params = {
+				start: startWord,
+				end: endWord,
+				nl: 10,
+				sl: 10
+			};
+			B.newChain(params, () => {
+				B.fade(search, 'out', true);
+				// B.fade(ldr, 'out', true);
+			});
+			document.getElementById('share-dek').textContent = `${params.start} -> ${params.end}`;
+			B.fade(document.getElementById('plus'), 'in', false);
+		} else {
+			B.report("Please enter two words.");
+		}
 	}
 
 	/* about */
@@ -64,7 +91,7 @@ window.addEventListener('load', function() {
 	}
 
 	// ** share stuff **
-	const shareBtn = document.getElementById('share');
+	const shareBtn = document.getElementById('share-btn');
 	const shareMenu = document.getElementById('share-menu');
 	const shareItems = document.getElementsByClassName('share-item');
 

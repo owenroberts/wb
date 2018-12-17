@@ -2,6 +2,10 @@ window.addEventListener('load', function() {
 	
 	function getNewPath(ev) {
 		ev.stopPropagation();
+		plusBtn.children[0].classList.add('active');
+		setTimeout(() => {
+			plusBtn.children[0].classList.remove('active');
+		}, 800);
 		if (!B.noMorePaths) {
 			B.fade(B.loader, 'in', false);
 			B.newChain();
@@ -159,7 +163,8 @@ window.addEventListener('load', function() {
 							B.newChain(params, callback);
 						} else {
 							B.noMorePaths = true;
-							report("The algorithm is not able to generate more results based on the current parameters.");
+							B.fade(B.loader, 'out', true);
+							B.report(obj.errormsg);
 						}
 					} else {
 						if (callback)

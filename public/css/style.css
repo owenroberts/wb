@@ -165,37 +165,40 @@ select {
   padding: 1rem;
   position: relative;
   font-size: 18px;
+  height: 70px;
   display: flex; }
-  #header.tip {
-    background-color: rgba(0, 0, 0, 0.95); }
-  #header #about-btn {
+  #header #about-btn, #header #share-btn {
     text-decoration: underline; }
+  #header #about-btn {
+    display: none; }
   #header #title {
     width: inherit;
+    display: none;
     /* font-size: 0.75em; */ }
-    #header #title a {
-      text-decoration: none; }
+  #header #home-btn {
+    margin-right: 0.5em; }
+  #header #home-btn, #header #share-btn {
+    display: none; }
   #header #home, #header #share, #header #plus {
     /* display:inline-block; */ }
-  #header #share {
-    display: none; }
   #header #plus {
     display: none;
-    background: black;
-    width: 40px;
-    height: 40px;
-    border-radius: 20px;
-    font-size: 30px;
-    color: white;
-    text-align: center;
     position: absolute;
-    top: 20px;
+    top: 10px;
     right: 20px;
     cursor: pointer; }
-  #header #plusbkg {
-    transition: fill 500ms; }
-    #header #plusbkg.tip {
-      fill: white; }
+    #header #plus img {
+      display: block;
+      -webkit-transition: -webkit-transform 0;
+      -ms-transition: -ms-transform 0;
+      transition: transform 0; }
+      #header #plus img.active {
+        -webkit-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+        transform: rotate(90deg);
+        -webkit-transition: -webkit-transform .8s ease-in-out;
+        -ms-transition: -ms-transform .8s ease-in-out;
+        transition: transform .8s ease-in-out; }
   #header #share {
     text-decoration: underline; }
 
@@ -247,52 +250,6 @@ select {
   -webkit-overflow-scrolling: touch;
   background-color: white;
   z-index: -3; }
-
-#chain-nav {
-  text-align: center;
-  height: 50px;
-  height: 0px;
-  transition: height 500ms;
-  line-height: 50px;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 3;
-  background: #EDEDED;
-  -webkit-box-shadow: 0px -1px 2px 0px rgba(0, 0, 0, 0.25);
-  -moz-box-shadow: 0px -1px 2px 0px rgba(0, 0, 0, 0.25);
-  box-shadow: 0px -1px 2px 0px rgba(0, 0, 0, 0.25); }
-  #chain-nav #inner-chain-nav {
-    max-width: 560px;
-    margin: 0 auto;
-    position: relative; }
-  #chain-nav .chain-dot {
-    display: inline-block;
-    margin: 0 4px;
-    transition: color 300ms;
-    color: #C5C7C9;
-    cursor: pointer; }
-    #chain-nav .chain-dot.current {
-      color: black; }
-  #chain-nav .chain-dot:before {
-    content: "\2022"; }
-  #chain-nav.slide-up {
-    height: 50px; }
-  #chain-nav #dots {
-    display: inline-block; }
-  #chain-nav .chain-btn {
-    display: inline-block;
-    position: absolute;
-    color: #C5C7C9; }
-    #chain-nav .chain-btn.clickable {
-      color: black; }
-  #chain-nav #prev-chain, #chain-nav #next-chain {
-    cursor: pointer; }
-  #chain-nav #prev-chain {
-    left: 2em; }
-  #chain-nav #next-chain {
-    right: 2em; }
 
 #loader {
   display: none;
@@ -596,5 +553,50 @@ select {
 @media screen and (max-device-width: 480px) {
   body {
     -webkit-text-size-adjust: none; } }
+#chain-nav {
+  text-align: center;
+  height: 0px;
+  transition: height 500ms;
+  line-height: 50px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  background: white;
+  -webkit-box-shadow: 0px -1px 2px 0px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0px -1px 2px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px -1px 2px 0px rgba(0, 0, 0, 0.25); }
+  #chain-nav #inner-chain-nav {
+    max-width: 560px;
+    margin: 0 auto;
+    position: relative; }
+  #chain-nav .chain-dot {
+    display: inline-block;
+    margin: 0 4px;
+    transition: color 300ms;
+    color: #C5C7C9;
+    cursor: pointer; }
+    #chain-nav .chain-dot.current {
+      color: black; }
+  #chain-nav .chain-dot:before {
+    content: "\2022";
+    font-size: 1.5em; }
+  #chain-nav.slide-up {
+    height: 50px; }
+  #chain-nav #dots {
+    display: inline-block; }
+  #chain-nav .chain-btn {
+    display: inline-block;
+    position: absolute;
+    color: #C5C7C9; }
+    #chain-nav .chain-btn.clickable {
+      color: black; }
+  #chain-nav #prev-chain, #chain-nav #next-chain {
+    cursor: pointer; }
+  #chain-nav #prev-chain {
+    left: 2em; }
+  #chain-nav #next-chain {
+    right: 2em; }
 
 /*# sourceMappingURL=style.css.map */

@@ -152,19 +152,6 @@ function makeChain(query, callback) {
 function makeQueryString(query) {
 	let startWord = query.s;
 	let endWord = query.e;
-	if (!startWord) {
-		let words = endWord.split(" ");
-		if (words[0].length > 0 && words[1].length > 0) {
-			startWord = words[0];
-			endWord = words[1];
-		}
-	} else if (!endWord) {
-		let words = startWord.split(" ");
-		if (words[0].length > 0 && words[1].length > 0) {
-			startWord = words[0];
-			endWord = words[1];
-		}
-	}
 	var string = startWord + query.nl + endWord + query.sl;
 	string = string.toLowerCase().replace(/ /g, ""); // remove spaces 
 	return string;
@@ -187,7 +174,7 @@ function objToString (obj) {
 var server = app.listen(3000, function() {
 	var host = server.address().host || 'localhost';
 	var port = server.address().port;
-	console.log('Example app listening at http://%s:%s', host, port);
+	console.log('word bridge listening at http://%s:%s', host, port);
 });
 var mongoUri = process.env.MONGOLAB_URI || 
   process.env.MONGOHQ_URL || 

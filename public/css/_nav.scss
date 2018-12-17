@@ -1,0 +1,53 @@
+#chain-nav {
+	text-align: center;
+	height: 0px;
+	transition: height 500ms;
+	line-height: 50px;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 3;
+	background: $white;
+	
+	-webkit-box-shadow: 0px -1px 2px 0px rgba(0,0,0,0.25);
+	   -moz-box-shadow: 0px -1px 2px 0px rgba(0,0,0,0.25);
+			box-shadow: 0px -1px 2px 0px rgba(0,0,0,0.25);
+	
+	#inner-chain-nav {
+		max-width: 560px;
+		margin: 0 auto;
+		position: relative;
+	}
+	.chain-dot {
+		display:inline-block;
+		margin:0 4px;
+		transition: color 300ms;
+		color: $gray;
+		cursor: pointer;
+		&.current { 
+			color: black; 
+		}
+	}
+	.chain-dot:before { 
+		content:"\2022"; 
+		font-size: 1.5em;
+	}
+	&.slide-up { height: 50px; }
+	#dots {
+		display: inline-block;
+	}
+	.chain-btn {
+		display: inline-block;
+		position: absolute;
+		color: $gray;
+		&.clickable {
+			color: black;
+		}
+	}
+	#prev-chain, #next-chain {
+		cursor: pointer;
+	}
+	#prev-chain { left: 2em; }
+	#next-chain { right: 2em; }
+}

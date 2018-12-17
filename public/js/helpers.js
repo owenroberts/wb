@@ -6,7 +6,7 @@ window.addEventListener('load', function() {
 
 	B.getRandomInt = function(min, max) {
 		return Math.floor(Math.random()* ( max - min + 1) + min);
-	}
+	};
 
 	// http://wordnet.princeton.edu/wordnet/man/wndb.5WN.html#sect3
 	B.pos = { "n":"noun", "v":"verb", "a":"adjective", "s":"adjective", "r":"adverb" };
@@ -134,5 +134,20 @@ window.addEventListener('load', function() {
 		setTimeout(() => {
 			node.classList.add('fade-in');
 		}, index * B.fadeDur);
+	};
+
+	B.resultUI = function() {
+		document.getElementById('search').style.display = 'none';
+		document.getElementById('share-dek').textContent = `${B.startWord} -> ${B.endWord}`;
+		B.fade(document.getElementById('plus'), 'in', false);
+		document.getElementById('title').style.display = 'none';
+		document.getElementById('about-btn').style.display = 'none';
+		document.getElementById('home-btn').style.display = 'block';
+		document.getElementById('share-btn').style.display = 'block';
+	};
+
+	B.homeUI = function() {
+		document.getElementById('title').style.display = 'block';
+		document.getElementById('about-btn').style.display = 'block';
 	};
 });
