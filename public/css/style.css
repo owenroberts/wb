@@ -544,8 +544,8 @@ select {
     #chain-nav #prev-chain.active circle, #chain-nav #next-chain.active circle {
       fill: #ebebeb; }
   #chain-nav #prev-chain {
-    left: 2em; }
+    left: 1em; }
   #chain-nav #next-chain {
-    right: 2em; }
+    right: 1em; }
 
 /*# sourceMappingURL=style.css.map */
