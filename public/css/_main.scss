@@ -1,16 +1,5 @@
 .fadein { opacity:0; }
 
-#main {
-	position:absolute;
-	width:100%;
-	border-left:1px solid $lightgray;
-	height:100%;
-	overflow-x: hidden;
-	overflow-y: auto;
-	-webkit-overflow-scrolling: touch;
-	background-color: $white;
-	z-index:-3;
-}
 
 #loader {
 	display: none;
@@ -131,6 +120,10 @@
 	.next, .prev, .mod-btn, .mod-close, .mod-options, .mod-open {
 		line-height: 0;
 		cursor: pointer;
+		transition: background-color 500ms ease-in-out;
+		&.active {
+			background-color: $btn;
+		}
 	}
 
 	.next, .prev, .mod-btn, .mod-close {
@@ -143,25 +136,7 @@
 		transition: background-color 300ms;
 	}
 
-	.next:hover, .prev:hover, .mod-btn:hover, .mod-close:hover, .mod-open:hover {
-		background-color: #6d6d6d;
-	}
 
-	.next:active, .prev:active, .mod-btn:active, .mod-close:active, .mod-open:active {
-		background-color: #6d6d6d;
-	}
-
-	@keyframes button-anim-hover {
-		/* 0% { background-color: #ededed; } */
-		50% { background-color: #6d6d6d; }
-		/* 100% { background-color: #ededed; } */
-	}
-
-	@keyframes button-anim-active {
-		/* 0% { background-color: #ededed; } */
-		50% { background-color: #000000; }
-		/* 100% { background-color: #ededed; } */
-	}
 	
 	&:first-child, &:last-child {
 		padding:0.25em 0;
@@ -199,53 +174,3 @@
 	}
 	&.mod-error .word { color: $gray; }
 }
-
-#modified-search {
-	position: fixed;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	background: rgba(255,255,255,0.9);
-	padding: 2em;
-	
-	form {
-		margin-bottom:1em;
-		background:$lightgray;
-	}
-	input[type="submit"] {
-		font-size:24px;
-		white-space:pre-wrap;
-		text-align:left;
-		border:none;
-		background:none;
-	}
-	button {
-		background:$lightgray;
-		text-align:left;
-		border-radius: 4px;
-		font-size:20px;
-		padding:0.25em;
-		border:none;
-		font-family: Helvetica, sans-serif;
-	}
-}
-
-.filter {
-	position:absolute;
-	padding:0.5em;
-	margin:0.25em;
-	box-shadow:0 0 5px $lightgray;
-	display:none;
-	left:200px;
-	font-size:14px;
-	border-radius:4px;
-}
-
-.newsearch {
-	a {
-		padding:0.5em;
-		border:1px solid $lightgray;
-	}
-}
-

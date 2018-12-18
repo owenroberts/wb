@@ -1,7 +1,11 @@
 #chain-nav {
+
 	text-align: center;
+	
 	height: 0px;
 	transition: height 500ms;
+	&.slide-up { height: 50px; }
+	
 	line-height: 50px;
 	position: fixed;
 	bottom: 0;
@@ -19,6 +23,7 @@
 		margin: 0 auto;
 		position: relative;
 	}
+
 	.chain-dot {
 		display:inline-block;
 		margin:0 4px;
@@ -29,25 +34,40 @@
 			color: black; 
 		}
 	}
+
 	.chain-dot:before { 
 		content:"\2022"; 
 		font-size: 1.5em;
 	}
-	&.slide-up { height: 50px; }
+
 	#dots {
 		display: inline-block;
 	}
+
 	.chain-btn {
 		display: inline-block;
 		position: absolute;
-		color: $gray;
-		&.clickable {
-			color: black;
+		svg path { stroke: $gray; }
+		&.clickable svg path {
+			stroke: $black;
 		}
 	}
+
 	#prev-chain, #next-chain {
 		cursor: pointer;
+		svg {
+			vertical-align: middle;
+		}
+		circle {
+			transition: fill 500ms ease-in-out;
+		}
+		&.active {
+			circle {
+				fill: $tool;
+			}
+		}
 	}
+
 	#prev-chain { left: 2em; }
 	#next-chain { right: 2em; }
 }

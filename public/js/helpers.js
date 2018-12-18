@@ -27,6 +27,13 @@ window.addEventListener('load', function() {
 			setTimeout(() => { e.style.display = 'none'; }, B.fadeDur);
 	};
 
+	B.btnAnim = elem => {
+		elem.classList.add('active');
+		setTimeout(() => {
+			elem.classList.remove('active');
+		}, 300);
+	};
+
 	const reportDiv = document.getElementById('report');
 	const reportMsg = document.getElementById('report-msg');
 	const reportTxt = document.getElementById('report-txt');
@@ -89,19 +96,25 @@ window.addEventListener('load', function() {
 		const modClose = B.createElem('div', ['mod-close'], undefined, '/img/mod-close.svg');
 		modClose.addEventListener('click', ev => {
 			B.closeModOptions(ev.currentTarget, false);
+			B.btnAnim(modClose);
 		});
 
 		const modBtn = B.createElem('div', ['mod-btn'], undefined, '/img/mod-down-arrow.svg');
-		modBtn.addEventListener('click', B.modifyChain);
+		modBtn.addEventListener('click', ev => {
+			B.modifyChain(ev)
+			B.btnAnim(modBtn);
+		});
 
 		const prevBtn = B.createElem('div', ['prev'], undefined, '/img/mod-left-arrow.svg');
 		prevBtn.addEventListener('click', ev => {
 			B.newSyn(ev.currentTarget, 'prev');
+			B.btnAnim(prevBtn);
 		});
 
 		const nextBtn = B.createElem('div', ['next'], undefined, '/img/mod-right-arrow.svg');
 		nextBtn.addEventListener('click', ev => {
 			B.newSyn(ev.currentTarget, 'next');
+			B.btnAnim(nextBtn);
 		});
 
 		modOptions.appendChild(modClose);
@@ -111,7 +124,10 @@ window.addEventListener('load', function() {
 
 		const modOpen = B.createElem('div', ['mod-open']);
 		modOpen.addEventListener('click', ev => {
-			B.openModOptions(ev.currentTarget);
+			if (!B.modIsOpen) {
+				B.openModOptions(ev.currentTarget);
+				B.btnAnim(modOpen);
+			}
 		});
 		
 		const openImg = new Image();

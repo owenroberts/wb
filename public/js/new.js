@@ -54,9 +54,11 @@ window.addEventListener('load', function() {
 
 	nextChainBtn.addEventListener('click', () => {
 		showChain(B.currentChain + 1);
+		B.btnAnim(nextChainBtn);
 	});
 	prevChainBtn.addEventListener('click', () => {
 		showChain(B.currentChain - 1);
+		B.btnAnim(prevChainBtn);
 	});
 
 	B.makeChain = data => {

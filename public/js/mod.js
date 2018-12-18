@@ -1,6 +1,6 @@
 window.addEventListener('load', function() {
 
-	let modIsOpen = false;
+	B.modIsOpen = false;
 
 	/* new syn */
 	B.newSyn = (e, dir) => {
@@ -99,10 +99,10 @@ window.addEventListener('load', function() {
 	};
 
 	B.openModOptions = e => {
-		if (!modIsOpen && !B.isAnimating) {
+		if (!B.modIsOpen && !B.isAnimating) {
 			e.style.display = 'none';
 			e.previousElementSibling.style.display = 'inline-block';
-			modIsOpen = true;
+			B.modIsOpen = true;
 			document.getElementsByClassName('nodes')[B.currentChain].classList.add('mod-disabled'); // nodes
 
 			/* hide other nodes */
@@ -117,7 +117,7 @@ window.addEventListener('load', function() {
 		const index = +node.dataset.index;
 		e.parentNode.style.display = 'none';
 		e.parentNode.nextElementSibling.style.display = 'inline-block';	
-		modIsOpen = false;
+		B.modIsOpen = false;
 		document.getElementsByClassName('nodes')[B.currentChain].classList.remove('mod-disabled'); // nodes
 
 		if (!isMod) {

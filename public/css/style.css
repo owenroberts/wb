@@ -2,6 +2,9 @@
 * {
   box-sizing: border-box; }
 
+html {
+  -webkit-tap-highlight-color: transparent; }
+
 html, body {
   width: 100%;
   height: 100%; }
@@ -209,6 +212,8 @@ select {
   /* word inputs */
   /* bridge button  */ }
   #search input {
+    margin: 0;
+    border-radius: 0;
     border-bottom: 3px solid black;
     letter-spacing: 1px;
     font-size: 1em;
@@ -239,17 +244,6 @@ select {
 
 .fadein {
   opacity: 0; }
-
-#main {
-  position: absolute;
-  width: 100%;
-  border-left: 1px solid #f1f1f2;
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  background-color: white;
-  z-index: -3; }
 
 #loader {
   display: none;
@@ -343,27 +337,16 @@ select {
     display: inline-block; }
   .node .next, .node .prev, .node .mod-btn, .node .mod-close, .node .mod-options, .node .mod-open {
     line-height: 0;
-    cursor: pointer; }
+    cursor: pointer;
+    transition: background-color 500ms ease-in-out; }
+    .node .next.active, .node .prev.active, .node .mod-btn.active, .node .mod-close.active, .node .mod-options.active, .node .mod-open.active {
+      background-color: #6d6d6d; }
   .node .next, .node .prev, .node .mod-btn, .node .mod-close {
     margin-right: 6px; }
   .node .next, .node .prev, .node .mod-btn {
     background-color: #ededed;
     border-radius: 1em;
     transition: background-color 300ms; }
-  .node .next:hover, .node .prev:hover, .node .mod-btn:hover, .node .mod-close:hover, .node .mod-open:hover {
-    background-color: #6d6d6d; }
-  .node .next:active, .node .prev:active, .node .mod-btn:active, .node .mod-close:active, .node .mod-open:active {
-    background-color: #6d6d6d; }
-@keyframes button-anim-hover {
-  /* 0% { background-color: #ededed; } */
-  50% {
-    background-color: #6d6d6d; }
-  /* 100% { background-color: #ededed; } */ }
-@keyframes button-anim-active {
-  /* 0% { background-color: #ededed; } */
-  50% {
-    background-color: #000000; }
-  /* 100% { background-color: #ededed; } */ }
   .node:first-child, .node:last-child {
     padding: 0.25em 0;
     display: block;
@@ -397,46 +380,6 @@ select {
     position: relative; }
   .node.mod-error .word {
     color: #C5C7C9; }
-
-#modified-search {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 2em; }
-  #modified-search form {
-    margin-bottom: 1em;
-    background: #f1f1f2; }
-  #modified-search input[type="submit"] {
-    font-size: 24px;
-    white-space: pre-wrap;
-    text-align: left;
-    border: none;
-    background: none; }
-  #modified-search button {
-    background: #f1f1f2;
-    text-align: left;
-    border-radius: 4px;
-    font-size: 20px;
-    padding: 0.25em;
-    border: none;
-    font-family: Helvetica, sans-serif; }
-
-.filter {
-  position: absolute;
-  padding: 0.5em;
-  margin: 0.25em;
-  box-shadow: 0 0 5px #f1f1f2;
-  display: none;
-  left: 200px;
-  font-size: 14px;
-  border-radius: 4px; }
-
-.newsearch a {
-  padding: 0.5em;
-  border: 1px solid #f1f1f2; }
 
 #report.swipe {
   margin-top: 0;
@@ -567,6 +510,8 @@ select {
   -webkit-box-shadow: 0px -1px 2px 0px rgba(0, 0, 0, 0.25);
   -moz-box-shadow: 0px -1px 2px 0px rgba(0, 0, 0, 0.25);
   box-shadow: 0px -1px 2px 0px rgba(0, 0, 0, 0.25); }
+  #chain-nav.slide-up {
+    height: 50px; }
   #chain-nav #inner-chain-nav {
     max-width: 560px;
     margin: 0 auto;
@@ -582,18 +527,23 @@ select {
   #chain-nav .chain-dot:before {
     content: "\2022";
     font-size: 1.5em; }
-  #chain-nav.slide-up {
-    height: 50px; }
   #chain-nav #dots {
     display: inline-block; }
   #chain-nav .chain-btn {
     display: inline-block;
-    position: absolute;
-    color: #C5C7C9; }
-    #chain-nav .chain-btn.clickable {
-      color: black; }
+    position: absolute; }
+    #chain-nav .chain-btn svg path {
+      stroke: #C5C7C9; }
+    #chain-nav .chain-btn.clickable svg path {
+      stroke: black; }
   #chain-nav #prev-chain, #chain-nav #next-chain {
     cursor: pointer; }
+    #chain-nav #prev-chain svg, #chain-nav #next-chain svg {
+      vertical-align: middle; }
+    #chain-nav #prev-chain circle, #chain-nav #next-chain circle {
+      transition: fill 500ms ease-in-out; }
+    #chain-nav #prev-chain.active circle, #chain-nav #next-chain.active circle {
+      fill: #ebebeb; }
   #chain-nav #prev-chain {
     left: 2em; }
   #chain-nav #next-chain {
