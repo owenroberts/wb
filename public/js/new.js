@@ -53,12 +53,18 @@ window.addEventListener('load', function() {
 	const chains = document.getElementsByClassName('chain');
 
 	nextChainBtn.addEventListener('click', () => {
-		showChain(B.currentChain + 1);
-		B.btnAnim(nextChainBtn);
+		if (B.currentChain + 1 < B.chains.length) {
+			B.currentChain = B.currentChain + 1;
+			setChainDepth();
+			B.btnAnim(nextChainBtn);
+		}
 	});
 	prevChainBtn.addEventListener('click', () => {
-		showChain(B.currentChain - 1);
-		B.btnAnim(prevChainBtn);
+		if (B.currentChain > 0) {
+			B.currentChain = B.currentChain - 1;
+			setChainDepth();
+			B.btnAnim(prevChainBtn);
+		}
 	});
 
 	B.makeChain = data => {
@@ -77,6 +83,7 @@ window.addEventListener('load', function() {
 
 		const chain = document.createElement("div");
 		chain.classList.add('chain', 'fade', 'visible');
+		// chain.style.left = B.currentChain * window.innerWidth + 'px';
 		chain.id = "chain-" + B.currentChain;
 		
 		const nodes = document.createElement("div");
@@ -147,6 +154,8 @@ window.addEventListener('load', function() {
 
 			}
 			B.nodeLimitArray.push(nodeLimit);
+
+			B.fade(B.loader, 'in', false);
 			
 			$.ajax({
 				url: '/chain',

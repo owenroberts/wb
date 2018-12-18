@@ -4,7 +4,7 @@ window.addEventListener('load', function() {
 	B.fadeDur = B.debug ? 100 : 300;
 	B.isAnimating =
 
-	B.getRandomInt = function(min, max) {
+	B.getRandomInt = (min, max) => {
 		return Math.floor(Math.random()* ( max - min + 1) + min);
 	};
 
@@ -13,8 +13,9 @@ window.addEventListener('load', function() {
 
 	B.fade = (e, status, displayNone) => {
 		const [addClass, removeClass] = status == 'in' ? ['fade-in', 'fade-out'] : ['fade-out', 'fade-in'];
-		if (status == 'in')
+		if (status == 'in') {
 			e.style.display = 'block';
+		}
 
 		setTimeout(() => {
 			if (e.classList.contains(removeClass))

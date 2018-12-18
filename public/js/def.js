@@ -1,7 +1,7 @@
 window.addEventListener('load', function() {
 
 	B.getDef = function() {
-		B.fade(B.loader, 'in', false);
+		B.fade(B.loader, 'in');
 		const node = this.parentNode.parentNode;
 		const word = node.dataset.word;
 		const index = +node.dataset.index;

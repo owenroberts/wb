@@ -4,19 +4,20 @@
 	
 	height: 0px;
 	transition: height 500ms;
-	&.slide-up { height: 50px; }
+	&.slide-up { 
+		height: 60px; 
+		bottom: 0;
+	}
 	
-	line-height: 50px;
+	line-height: 55px;
 	position: fixed;
-	bottom: 0;
+	bottom: -3px;
 	left: 0;
 	right: 0;
 	z-index: 3;
 	background: $white;
 	
-	-webkit-box-shadow: 0px -1px 2px 0px rgba(0,0,0,0.25);
-	   -moz-box-shadow: 0px -1px 2px 0px rgba(0,0,0,0.25);
-			box-shadow: 0px -1px 2px 0px rgba(0,0,0,0.25);
+	border-top: 3px solid $lightgray;
 	
 	#inner-chain-nav {
 		max-width: 560px;

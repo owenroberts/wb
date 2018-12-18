@@ -115,10 +115,18 @@ window.addEventListener('load', function() {
 			function share() {
 				switch(id) {
 					case 'link':
-						location.href = link;
+						navigator.permissions.query({name: "clipboard-write"}).then(result => {
+  							if (result.state == "granted" || result.state == "prompt") {
+    							navigator.clipboard.writeText(link).then(function() {
+    								B.report('Copied URL');
+  								}, function() {
+    								B.report('Unable to copy URL');
+  								});
+  							}
+						});
 						break;
 					case 'email':
-						window.open("mailto:?body=" + title + " -- " + url + "&subject= + b", "_blank")
+						window.open("mailto:?body=" + title + " -- " + url + "&subject= word bridge", "_blank")
 						break;
 					case "tw":
 						window.open("https://twitter.com/intent/tweet?text=" + title + " " + url, "_blank");
