@@ -460,27 +460,6 @@ select {
   #tooltips #next_btn {
     text-align: right; }
 
-.fade {
-  transition: opacity 500ms; }
-
-.visible {
-  opacity: 1; }
-
-.hidden {
-  opacity: 0; }
-
-.fade-in {
-  opacity: 1; }
-
-.fade-grey {
-  opacity: 0.3; }
-
-.fade-out {
-  opacity: 0; }
-
-.display-none {
-  display: none; }
-
 /*  media queries */
 /* desktop */
 @media only screen and (min-width: 800px) {
@@ -547,5 +526,26 @@ select {
     left: 1em; }
   #chain-nav #next-chain {
     right: 1em; }
+
+.fade {
+  transition: opacity 500ms; }
+
+.visible {
+  opacity: 1; }
+
+.hidden {
+  opacity: 0; }
+
+.fade-in {
+  opacity: 1; }
+
+.fade-grey {
+  opacity: 0.3; }
+
+.fade-out {
+  opacity: 0; }
+
+.display-none {
+  display: none; }
 
 /*# sourceMappingURL=style.css.map */

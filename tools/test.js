@@ -9,24 +9,14 @@ program
   .parse(process.argv);
 
 var query = {
-	start: 'party', // program.args[0],
-	end: 'avocado',  // program.args[1],
+	start: program.args[0],
+	end: program.args[1],
 	nodeLimit: 9,
 	synonymLevel: 10
 };
 let start = now();
-chain.makeChain(query, ['party', 'avocado', 'green',
-     'greenish',
-     'chromatic',
-     'party',
-     'unripe',
-     'unripened',
-     'immature',
-     'unaged',
-     'ill',
-     'sick',
-     'fleeceable'], function(err, data) {
-	if (err) query.error = err;
+chain.makeChain(query, [program.args[0], program.args[1]], function(err, data) {
+	if (err) console.log(err);
 	else {
 		console.log("time", now() - start);
 		// console.log(data);

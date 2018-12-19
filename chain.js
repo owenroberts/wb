@@ -34,11 +34,13 @@ function makeChain(query, allSynonyms, callback) {
 					[{ word:endWord, synonyms: getSynonyms(endWord, allSynonyms.slice(0)) }], 
 					allSynonyms.slice(0)
 				);
-				if (!foundChain)
+				if (!foundChain) {
+					console.log( 'still going',  attemptCount );
 					getChain();
+				}
 			}
 		} else {
-			callback("Your search was not able to be performed with the current parameters.");
+			callback(`Your search was not able to be performed with the current parameters. ${attemptCount} attempts.`);
 		}
 	}
 
@@ -79,6 +81,7 @@ function makeChain(query, allSynonyms, callback) {
 			for (let j = 0; j < endChain[endIndex].synonyms.length; j++) {
 				const endSyn = endChain[endIndex].synonyms[j];
 				attemptCount++;
+				// console.log('attempt', attemptCount);
 				if (startSyn.word == endSyn.word && !foundChain) {
 					foundChain = true;
 					for (let k = endChain.length-1; k >= 0; k--) {
@@ -109,9 +112,17 @@ function makeChain(query, allSynonyms, callback) {
 			}
 			//  console.log('word', startChain[startIndex].word, 'len', startCopy.length + endChain.length, 'nn', currentNodeNumber)
 			// might need an attempt limit re: green -> avocado, mod chromatic to party
+			
 			if (startCopy.length + endChain.length < currentNodeNumber && !foundChain) {
 				buildChain(startCopy, endChain, allSynsCopy); /* fastest ?*/
 			}
+		}
+		if (attemptCount > 1000000) {
+			if (!foundChain) {
+				callback(`Your search was aborted after ${attemptCount} attempts.`);
+				foundChain = true;
+			}
+			return;
 		}
 	}
 }

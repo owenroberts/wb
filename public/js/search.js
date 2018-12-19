@@ -19,15 +19,21 @@ window.addEventListener('load', function() {
 	const endWordInput = document.getElementById('end-word');
 	const startWordInput = document.getElementById('start-word');
 	bridge.addEventListener('click', loadFirstChain);
-	endWordInput.addEventListener('keydown', ev => {
+
+	function inputKeys(ev) {
 		if (ev.which == 13) 
 			loadFirstChain();
 		else {
-			if (startWordInput.value.length > 0) {
+			if (startWordInput.value.length > 0 && endWordInput.value.length > 0) {
 				bridge.classList.add('active');
+			} else {
+				bridge.classList.remove('active');
 			}
 		}
-	});
+	}
+
+	endWordInput.addEventListener('keypress', inputKeys);
+	startWordInput.addEventListener('keypress', inputKeys);
 
 	function loadFirstChain() {
 		// B.fade(ldr, 'in');
@@ -54,7 +60,6 @@ window.addEventListener('load', function() {
 		}
 
 		if (startWord && endWord) {
-			B.resultUI();
 			const params = {
 				start: startWord,
 				end: endWord,
@@ -63,10 +68,11 @@ window.addEventListener('load', function() {
 			};
 			B.newChain(params, () => {
 				B.fade(search, 'out', true);
-				// B.fade(ldr, 'out', true);
+				B.resultUI();
+				document.getElementById('share-dek').textContent = `${params.start} -> ${params.end}`;
+				B.fade(document.getElementById('plus'), 'in', false);
 			});
-			document.getElementById('share-dek').textContent = `${params.start} -> ${params.end}`;
-			B.fade(document.getElementById('plus'), 'in', false);
+			
 		} else {
 			B.report("Please enter two words.");
 		}

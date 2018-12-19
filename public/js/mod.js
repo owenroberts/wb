@@ -83,16 +83,20 @@ window.addEventListener('load', function() {
 					/* remove old nodes */
 					const len = nodes.length - index - 2;
 					for (let i = 0; i < len; i++) {
-						nodes[index + 1].classList.replace('fade-grey', 'fade-out');
 						setTimeout(() => {
-							nodes[index + 1].remove();
-						}, B.fadeDur);
+							nodes[nodes.length - 1].classList.replace('fade-grey', 'fade-out');
+							setTimeout(() => {
+								nodes[index + 1].remove();
+							}, B.fadeDur);
+						}, i * B.fadeDur);
 					}
 
 					/* add new nodes */
-					for (let i = index + 1; i < B.chains[B.currentChain].length - 1; i++) {
-						B.makeNode(i, node.parentNode);
-					}
+					setTimeout(() => {
+						for (let i = index + 1; i < B.chains[B.currentChain].length - 1; i++) {
+							B.makeNode(i, node.parentNode);
+						}
+					}, len * B.fadeDur);
 				}
 			}
 		});
