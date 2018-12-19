@@ -46,7 +46,7 @@ window.addEventListener('load', function() {
 	const reportBtn = document.getElementById('report-btn');
 
 	B.report = function(msg, ok, callback, dismissBack) {
-		B.fade(reportDiv, 'in', false);
+		B.fade(reportDiv, 'in', 'block');
 		reportDiv.scrollTop = 0;
 		reportMsg.scrollTop = 0;
 		reportTxt.innerHTML = msg;
@@ -58,7 +58,7 @@ window.addEventListener('load', function() {
 			reportBtn.style.display = 'none';
 		}
 		function dismissReport() {
-			B.fade(reportDiv, 'out', true);
+			B.fade(reportDiv, 'out', 'none');
 			document.body.style.overflow = 'auto';	
 			if (dismissBack)
 				dismissback();

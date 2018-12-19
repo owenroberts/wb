@@ -7,7 +7,7 @@ window.addEventListener('load', function() {
 			plusBtn.children[0].classList.remove('active');
 		}, 800);
 		if (!B.noMorePaths) {
-			B.fade(B.loader, 'in', false);
+			B.fade(B.loader, 'in', 'block');
 			B.newChain();
 		} else {
 			B.report("The algorithm is not able to generate more results based on the current parameters.");
@@ -164,7 +164,7 @@ window.addEventListener('load', function() {
 			}
 			B.nodeLimitArray.push(nodeLimit);
 
-			B.fade(B.loader, 'in', false);
+			B.fade(B.loader, 'in', 'none');
 			
 			$.ajax({
 				url: '/chain',
@@ -177,25 +177,25 @@ window.addEventListener('load', function() {
 					nl: nodeLimit
 				},
 				success: function(obj) {
-					B.fade(B.loader, 'in', false);
+					B.fade(B.loader, 'in', 'block');
 					if (obj.errormsg) {
 						if (B.nodeLimitArray.length < 9) {
 							B.newChain(params, callback);
 						} else {
 							B.noMorePaths = true;
-							B.fade(B.loader, 'out', true);
+							B.fade(B.loader, 'out', 'none');
 							B.report(obj.errormsg);
 						}
 					} else {
 						if (callback)
 							callback();
 						B.makeChain(obj.data);
-						B.fade(B.loader, 'out', true);
+						B.fade(B.loader, 'out', 'none');
 					}
 				}
 			});
 		} else {
-			B.fade(B.loader, 'out', true);
+			B.fade(B.loader, 'out', 'none');
 			B.report('You have reached the maximum number of chains.');
 		}				
 	}

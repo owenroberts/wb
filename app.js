@@ -14,11 +14,6 @@ const express = require('express')
 
 const app = express();
 const cache = new NodeCache();
-const tips = true;
-const cachedTips = cache.get("tips");
-if (!cachedTips) {
-	cache.set("tips", tips);
-}
 
 const hbs = handlebars.create({
 	defaultLayout: "main",
@@ -72,6 +67,7 @@ app.get('/search', function(req, res) {
 
 app.get('/chain', function(req, res) {
 	loadChain(req, function(result) { /* loadChain for production, makeChain to skip db/cache */
+		console.log(result);
 		if (result.error) res.json({ errormsg: result.error });
 		else res.json({ data: result });
 	});

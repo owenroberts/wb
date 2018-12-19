@@ -1,7 +1,7 @@
 window.addEventListener('load', function() {
 
 	B.getDef = function() {
-		B.fade(B.loader, 'in');
+		B.fade(B.loader, 'in', 'block');
 		const node = this.parentNode.parentNode;
 		const word = node.dataset.word;
 		const index = +node.dataset.index;
@@ -17,7 +17,7 @@ window.addEventListener('load', function() {
 				synonym: synonym
 			},
 			success: function(result) {
-				B.fade(B.loader, 'out', true);
+				B.fade(B.loader, 'out', 'none');
 				var msg = "";
 				msg += "<strong>" + word + "</strong><br><br>";
 				const len = Math.min(result.data.length, 10);

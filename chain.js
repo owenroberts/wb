@@ -35,7 +35,6 @@ function makeChain(query, allSynonyms, callback) {
 					allSynonyms.slice(0)
 				);
 				if (!foundChain) {
-					console.log( 'still going',  attemptCount );
 					getChain();
 				}
 			}

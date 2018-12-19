@@ -36,7 +36,6 @@ window.addEventListener('load', function() {
 	startWordInput.addEventListener('keypress', inputKeys);
 
 	function loadFirstChain() {
-		// B.fade(ldr, 'in');
 
 		let startWord = startWordInput.value;
 		let endWord = endWordInput.value;
