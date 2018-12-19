@@ -67,14 +67,12 @@ app.get('/search', function(req, res) {
 
 app.get('/chain', function(req, res) {
 	loadChain(req, function(result) { /* loadChain for production, makeChain to skip db/cache */
-		console.log(result);
 		if (result.error) res.json({ errormsg: result.error });
 		else res.json({ data: result });
 	});
 });
 
 app.post('/save', function(req, res) {
-	/* what if it already exists ? */
 	db.save({
 		queryString: req.body.qs,
 		chain: JSON.parse(req.body.chain),
@@ -125,7 +123,7 @@ function loadChain(req, callback) {
 }
 
 function makeChain(query, callback) {
-	let syns = query.as || [query.s, query.e];
+	let syns = query.as ? query.as.split(',') : [query.s, query.e];
 	var query = {
 		queryString: makeQueryString(query),
 		start: query.s.replace(/ /g, ""),
@@ -153,25 +151,12 @@ function makeQueryString(query) {
 	return string;
 }
 
-function getRandomInt(min, max) {
-	return Math.floor(Math.random()* ( max - min + 1) + min);
-}
-
-function objToString (obj) {
-	var str = '';
-	for (var p in obj) {
-		if (obj.hasOwnProperty(p)) {
-			str += p + '::' + obj[p] + '\n';
-		}
-	}
-	return str;
-}
-
 var server = app.listen(3000, function() {
 	var host = server.address().host || 'localhost';
 	var port = server.address().port;
 	console.log('word bridge listening at http://%s:%s', host, port);
 });
+
 var mongoUri = process.env.MONGOLAB_URI || 
   process.env.MONGOHQ_URL || 
   'localhost';

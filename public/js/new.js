@@ -165,18 +165,11 @@ window.addEventListener('load', function() {
 			B.nodeLimitArray.push(nodeLimit);
 
 			B.fade(B.loader, 'in', 'none');
-			
-			$.ajax({
-				url: '/chain',
-				type: 'get',
-				dataType:'json',
-				data: {
-					s: startWord,
-					e: endWord,
-					sl: synonymLevel,
-					nl: nodeLimit
-				},
-				success: function(obj) {
+
+			const url = `/chain?s=${startWord}&e=${endWord}&sl=${synonymLevel}&nl=${nodeLimit}`;
+			fetch(url)
+				.then(response => { return response.json(); })
+				.then(obj => {
 					B.fade(B.loader, 'in', 'block');
 					if (obj.errormsg) {
 						if (B.nodeLimitArray.length < 9) {
@@ -192,8 +185,7 @@ window.addEventListener('load', function() {
 						B.makeChain(obj.data);
 						B.fade(B.loader, 'out', 'none');
 					}
-				}
-			});
+				});
 		} else {
 			B.fade(B.loader, 'out', 'none');
 			B.report('You have reached the maximum number of chains.');

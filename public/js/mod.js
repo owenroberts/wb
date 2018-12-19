@@ -48,18 +48,11 @@ window.addEventListener('load', function() {
 			}
 		}
 
-		$.ajax({
-			url: '/chain',
-			type: 'get',
-			dataType:'json',
-			data: {
-				s: alt,
-				e: B.endWord,
-				sl: 10,
-				nl: 10 - index,
-				as: usedSynonyms
-			},
-			success: function(obj) {
+		const url = `/chain?s=${alt}&e=${B.endWord}&sl=10&nl=${10 - index}&as=${usedSynonyms}`;
+
+		fetch(url)
+			.then(response => { return response.json() })
+			.then(obj => {
 				if (obj.errormsg) {
 					/* report error */
 					const err = `We couldn't find a chain between ${alt} and ${B.endWord}.`;
@@ -104,8 +97,7 @@ window.addEventListener('load', function() {
 						});
 					}
 				}
-			}
-		});
+			});
 	};
 
 	B.openModOptions = e => {

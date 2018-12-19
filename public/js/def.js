@@ -7,16 +7,12 @@ window.addEventListener('load', function() {
 		const index = +node.dataset.index;
 		// 0 of undefined
 		const synonym = index > 0 ? B.chains[B.currentChain][index - 1].word : B.chains[B.currentChain][index + 1].word;
+
+		const url = `/def?word=${word}&synonym=${synonym}`;
 		
-		$.ajax({
-			url: '/def',
-			type: 'get',
-			dataType:'json',
-			data: {
-				word: word,
-				synonym: synonym
-			},
-			success: function(result) {
+		fetch(url)
+			.then(response => { return response.json(); })
+			.then(result => {
 				B.fade(B.loader, 'out', 'none');
 				var msg = "";
 				msg += "<strong>" + word + "</strong><br><br>";
@@ -28,7 +24,6 @@ window.addEventListener('load', function() {
 					msg += '<br><br>';
 				}
 				B.report(msg);
-			},
-		});
+			});
 	};
 });
