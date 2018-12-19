@@ -1,4 +1,4 @@
-.fade { transition: opacity 500ms; }
+.fade { transition: opacity 300ms ease-in; }
 .visible { opacity: 1; }
 .hidden { opacity: 0; }
 .fade-in { opacity: 1; }

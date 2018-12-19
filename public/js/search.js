@@ -10,7 +10,7 @@ window.addEventListener('load', function() {
 	B.noMorePaths = false;
 	
 	B.loader = document.getElementById('loader');
-	B.fade(B.loader, 'out', true);
+	B.fade(B.loader, 'out', 'none');
 
 	/* get initial search */
 	const bridge = document.getElementById('bridge');
@@ -67,10 +67,10 @@ window.addEventListener('load', function() {
 				sl: 10
 			};
 			B.newChain(params, () => {
-				B.fade(search, 'out', true);
+				B.fade(search, 'out', 'none');
 				B.resultUI();
 				document.getElementById('share-dek').textContent = `${params.start} -> ${params.end}`;
-				B.fade(document.getElementById('plus'), 'in', false);
+				B.fade(document.getElementById('plus'), 'in', 'block');
 			});
 			
 		} else {
@@ -82,10 +82,10 @@ window.addEventListener('load', function() {
 	const about = document.getElementById('about');
 	const aboutBtn = document.getElementById('about-btn');
 	aboutBtn.addEventListener('click', ev => {
-		B.fade(about, 'in', false); /* not fading ? */
+		B.fade(about, 'in', 'block'); /* not fading ? */
 	});
 	about.addEventListener('click', () => {
-		B.fade(about, 'out', true);
+		B.fade(about, 'out', 'none');
 	});
 
 	// ** animate nodes on load ** //
@@ -102,11 +102,11 @@ window.addEventListener('load', function() {
 	const shareItems = document.getElementsByClassName('share-item');
 
 	shareBtn.addEventListener('click', function() {
-		B.fade(shareMenu, 'in', false);
+		B.fade(shareMenu, 'in', 'block');
 	});
 
 	shareMenu.addEventListener('click', function() {
-		B.fade(shareMenu, 'out', true);
+		B.fade(shareMenu, 'out', 'none');
 	});
 
 	for (let i = 0; i < shareItems.length; i++) {

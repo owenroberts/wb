@@ -528,7 +528,7 @@ select {
     right: 1em; }
 
 .fade {
-  transition: opacity 500ms; }
+  transition: opacity 300ms ease-in; }
 
 .visible {
   opacity: 1; }

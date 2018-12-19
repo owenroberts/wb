@@ -53,14 +53,14 @@ window.addEventListener('load', function() {
 	const chains = document.getElementsByClassName('chain');
 
 	nextChainBtn.addEventListener('click', () => {
-		if (B.currentChain + 1 < B.chains.length) {
+		if (B.currentChain + 1 < B.chains.length && !B.isAnimating) {
 			B.currentChain = B.currentChain + 1;
 			setChainDepth();
 			B.btnAnim(nextChainBtn);
 		}
 	});
 	prevChainBtn.addEventListener('click', () => {
-		if (B.currentChain > 0) {
+		if (B.currentChain > 0 && !B.isAnimating) {
 			B.currentChain = B.currentChain - 1;
 			setChainDepth();
 			B.btnAnim(prevChainBtn);
@@ -90,10 +90,10 @@ window.addEventListener('load', function() {
 		nodes.classList.add('nodes');
 		chain.append(nodes);
 		
-		const startNode = B.createElem('div', ['node']);
+		const startNode = B.createElem('div', ['node', 'fade', 'hidden']);
 		startNode.dataset.word = B.startWord;
 		startNode.dataset.index = 0;
-		const startWord =  B.createElem('div', ['word']);
+		const startWord = B.createElem('div', ['word']);
 		const startWordSpan = B.createElem('span', [], B.startWord);
 		startWordSpan.addEventListener('click', B.getDef);
 		
@@ -101,10 +101,13 @@ window.addEventListener('load', function() {
 		startNode.appendChild(startWord);
 		nodes.append(startNode);
 		setTimeout(() => {
-			startNode.classList.add('fade-in');
+			B.fade(startNode, 'in', 'flex', () => {
+				fadeNode(1);
+			});
 		}, B.fadeDur);
 
-		const endNode = B.createElem('div', ['node']);
+
+		const endNode = B.createElem('div', ['node', 'fade', 'hidden']);
 		endNode.dataset.word = B.endWord;
 		endNode.dataset.index = B.chains[B.currentChain].length - 1;
 		const endWord =  B.createElem('div', ['word']);
@@ -117,12 +120,18 @@ window.addEventListener('load', function() {
 			endNode.classList.add('fade-in');
 		}, B.fadeDur);
 		nodes.append(endNode);
-
-		for (let i = 1; i < B.chains[B.currentChain].length - 1; i++) {
-			B.makeNode(i, nodes);
-		}
 		
 		document.getElementById('chains').appendChild(chain);
+
+		function fadeNode(index) {
+			const node = B.makeNode(index);
+			nodes.insertBefore(node, nodes.lastElementChild);
+			B.fade(node, 'in', 'flex', () => {
+				if (index < B.chains[B.currentChain].length - 2) {
+					fadeNode(++index);
+				}
+			});
+		}
 		
 		const dot = document.createElement('div');
 		dot.dataset.index = B.currentChain;

@@ -11,10 +11,10 @@ window.addEventListener('load', function() {
 	// http://wordnet.princeton.edu/wordnet/man/wndb.5WN.html#sect3
 	B.pos = { "n":"noun", "v":"verb", "a":"adjective", "s":"adjective", "r":"adverb" };
 
-	B.fade = (e, status, displayNone) => {
+	B.fade = (e, status, display, end) => {
 		const [addClass, removeClass] = status == 'in' ? ['fade-in', 'fade-out'] : ['fade-out', 'fade-in'];
 		if (status == 'in') {
-			e.style.display = 'block';
+			e.style.display = display;
 		}
 
 		setTimeout(() => {
@@ -22,10 +22,15 @@ window.addEventListener('load', function() {
 				e.classList.replace(removeClass, addClass);
 			else
 				e.classList.add(addClass);
+			e.addEventListener('transitionend', end);
+			e.addEventListener('transitionend', () => {
+				e.removeEventListener('transitionend', end);
+			});
+
 		}, 1); // hacky anim/display fix
 		
-		if (displayNone)
-			setTimeout(() => { e.style.display = 'none'; }, B.fadeDur);
+		if (status == 'out')
+			setTimeout(() => { e.style.display = display; }, B.fadeDur);
 	};
 
 	B.btnAnim = elem => {
@@ -82,7 +87,7 @@ window.addEventListener('load', function() {
 	}
 
 	B.makeNode = function(index, parent) {
-		const node = B.createElem('div', ['node', 'fade', 'hidden']);
+		const node = B.createElem('div', ['node', 'fade', 'hidden', 'display-none']);
 		node.dataset.index = index;
 		node.dataset.word = B.chains[B.currentChain][index].word;
 		node.dataset.syndex = B.chains[B.currentChain][index].syndex;
@@ -146,17 +151,18 @@ window.addEventListener('load', function() {
 		node.appendChild(modOptions);
 		node.appendChild(modOpen)
 
-		parent.insertBefore(node, parent.lastElementChild);
+		return node;
+		// parent.insertBefore(node, parent.lastElementChild);
 
-		setTimeout(() => {
-			node.classList.add('fade-in');
-		}, index * B.fadeDur);
+		// setTimeout(() => {
+		// 	B.fade(node, 'in', 'flex');
+		// }, index * B.fadeDur);
 	};
 
 	B.resultUI = function() {
 		document.getElementById('search').style.display = 'none';
 		document.getElementById('share-dek').textContent = `${B.startWord} -> ${B.endWord}`;
-		B.fade(document.getElementById('plus'), 'in', false);
+		B.fade(document.getElementById('plus'), 'in', 'inline-block');
 		document.getElementById('title').style.display = 'none';
 		document.getElementById('about-btn').style.display = 'none';
 		document.getElementById('home-btn').style.display = 'block';

@@ -81,22 +81,28 @@ window.addEventListener('load', function() {
 					}, waitTime + B.fadeDur);
 
 					/* remove old nodes */
-					const len = nodes.length - index - 2;
-					for (let i = 0; i < len; i++) {
-						setTimeout(() => {
-							nodes[nodes.length - 1].classList.replace('fade-grey', 'fade-out');
-							setTimeout(() => {
-								nodes[index + 1].remove();
-							}, B.fadeDur);
-						}, i * B.fadeDur);
-					}
+					(function fadeOutNode() {
+						const n = nodes[nodes.length - 2];
+						n.classList.replace('fade-grey', 'fade-out');
+						n.addEventListener('transitionend', () => { 
+							n.remove();
+							if (nodes.length - 2 == index) {
+								fadeInNode(index + 1); /* add new nodes */
+							} else {
+								fadeOutNode();
+							}
+						});
+					}());
 
-					/* add new nodes */
-					setTimeout(() => {
-						for (let i = index + 1; i < B.chains[B.currentChain].length - 1; i++) {
-							B.makeNode(i, node.parentNode);
-						}
-					}, len * B.fadeDur);
+					function fadeInNode(index) {
+						const n = B.makeNode(index);
+						node.parentNode.insertBefore(n, node.parentNode.lastElementChild);
+						B.fade(n, 'in', 'flex', () => {
+							if (index < B.chains[B.currentChain].length - 2) {
+								fadeInNode(++index);
+							}
+						});
+					}
 				}
 			}
 		});
