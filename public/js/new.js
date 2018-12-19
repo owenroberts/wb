@@ -81,8 +81,7 @@ window.addEventListener('load', function() {
 		B.startWord = B.chains[B.currentChain][0].word;
 		B.endWord = B.chains[B.currentChain][B.chains[B.currentChain].length - 1].word;
 
-		const chain = document.createElement("div");
-		chain.classList.add('chain', 'fade', 'visible');
+		const chain = B.createElem('div', ['chain', 'fade', 'visible']);
 		// chain.style.left = B.currentChain * window.innerWidth + 'px';
 		chain.id = "chain-" + B.currentChain;
 		
