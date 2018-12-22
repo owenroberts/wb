@@ -1,66 +1,113 @@
 <!-- search  -->
-<div id="main">
-	<header>
-		<div id="home">
-			<img src="/img/arrow_stop.svg">
-		</div>
-		<div id="plus">
-			<svg xmlns="http://www.w3.org/2000/svg" width="53" height="50">
-				<path d="M0 0h53v50H0V0z" fill="none" id="plusbkg"/>
-				<path fill="none" stroke="#070707" stroke-width="3" d="M17.312 25.005h18.377m-9.194 9.183V15.812"/>
-			</svg>
-		</div>
-		<div id="share">
-			<img src="/img/share.svg">
-		</div>
-	</header>
-	
-	<div id="report">
-		<div id="report-msg" class="msg">
-			<div id="report-txt" class="text"></div>
-			<div id="report-btn" class="btn"></div>
-			
-		</div>
-	</div>
+<div id="loader" class="fade">
+	<img src="/img/loader-white.svg" alt="">
+</div>
 
-	<div id="chains">
-		<div class="chain current" id="chain-0">
-			<div class="nodes">
-				{{#each data.chain}}
-					<div class="node fade" data-word={{this.word}} data-index={{@index}} data-syndex={{this.syndex}}>
-						{{#if @first}}
-							<div class="word def">{{this.word}}</div>
-						{{else if @last}}
-							<div class="word def">{{this.word}}</div>
-						{{else}}
-							<div class="word def">{{this.word}}</div>
-							<div class="mod-options">
-								<div class="mod-close">
-									<img src="/img/mod-close.svg">
-								</div>
-								<div class="mod-btn">
-									<img src="/img/mod-down-arrow.svg" alt="">
-								</div>
-								<div class="prev">
-									<img src="/img/mod-left-arrow.svg" alt="">
-								</div>
-								<div class="next">
-									<img src="/img/mod-right-arrow.svg" alt="">
-								</div>
-								
-							</div>
-							<div class="mod-open">
-								<img src="/img/Arrow-Right.svg" class="active">
-								<img src="/img/Arrow-Right-Disabled.svg" class="disabled">
-							</div>
-						{{/if}}
-					</div>
-				{{/each}}
-			</div>
+<div id="report" class="fade hidden">
+	<div id="report-msg" class="msg">
+		<div id="sorry" class="sorry fade hidden display-none">We couldn't find a path.  Sorry about that!</div>
+		<div id="report-txt" class="txt"></div>
+		<div id="report-btn" class="btn"></div>
+		<div id="report-dismiss" class="dismiss">
+			<img src="/img/dismiss.svg" alt="">
 		</div>
 	</div>
 </div>
 
-<script type='text/javascript'>
-	B.chain = {{{json data}}};
+<div id="share-menu" class="fade fade-out">
+	<div class="msg">
+		<p>Share Synomap</p>
+		<p id="share-dek"></p>
+		<div class="share-item" id="link">Copy Link</div>
+		<div class="share-item" id="email">Email</div>
+		<div class="share-item" id="fb">Facebook</div>
+		<div class="share-item" id="tw">Twitter</div>
+		<div class="dismiss">
+			<img src="/img/dismiss.svg" alt="">
+		</div>
+	</div>
+</div>
+
+<div id="header">
+	<div id="home-btn"><a href="/">home</a></div>
+	<div id="share-btn">share</div>
+	<div id="plus" class="fade">
+		<img src="/img/Fob+.svg">
+	</div>
+</div>
+
+<div id="chains">
+	<div class="chain current" id="chain-0">
+		<div class="nodes">
+			{{#each data.chain}}
+				<div class="node fade" data-word={{this.word}} data-index={{@index}} data-syndex={{this.syndex}}>
+					<div class="word">
+						<span onclick={B.getDef(this);}>{{this.word}}</span>
+					</div>
+					{{#unless @first}}
+						{{#unless @last}}
+						<div class="mod-options">
+							<div class="mod-close" onclick={B.closeModOptions(this,false);}>
+								<img src="/img/mod-close.svg">
+							</div>
+							<div class="mod-btn" onclick={B.modifyChain(this);B.btnAnim(this);}>
+								<img src="/img/mod-down-arrow.svg" alt="">
+							</div>
+							<div class="prev" onclick={B.newSyn(this);B.btnAnim(this);}>
+								<img src="/img/mod-left-arrow.svg" alt="">
+							</div>
+							<div class="next" onclick={B.newSyn(this);B.btnAnim(this);}>
+								<img src="/img/mod-right-arrow.svg" alt="">
+							</div>
+						</div>
+						<div class="mod-open" onclick={B.openModOptions(this)}>
+							<img src="/img/mod-open.svg" class="active">
+							<img src="/img/mod-open-disabled.svg" class="disabled">
+						</div>
+					{{/unless}}
+				{{/unless}}
+				</div>
+			{{/each}}
+		</div>
+	</div>
+</div>
+
+<div id="chain-nav">
+	<div id="inner-chain-nav">
+		<div id="prev-chain" class="chain-btn">
+			<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40">
+				<circle stroke="none" fill="none" cx="20" cy="20" r="20"/>
+				<path fill="none" stroke="#000" stroke-width="2" d="M24.43 13l-8 7 8 7"/>
+			</svg>
+		</div>
+		<div id="dots">
+			<div class="chain-dot" onclick={B.showChain(0)}></div>
+		</div>
+		<div id="next-chain" class="chain-btn">
+			<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40">
+				<circle stroke="none" fill="none" cx="20" cy="20" r="20"/>
+				<path fill="none" stroke="#000" stroke-width="2" d="M15.57 27l8-7-8-7"/>
+			</svg>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	B = {}; // need B for helpers
+</script>
+<script src="/js/helpers.js"></script>
+<script src="/js/search.js"></script>
+<script src="/js/new.js"></script>
+<script src="/js/mod.js"></script>
+<script src="/js/def.js"></script>
+<script src="/js/share.js"></script>
+<script type="text/javascript">
+	window.addEventListener('load', function() {
+		const d = {{{json data}}};
+		B.currentChain = 0;
+		B.chains[B.currentChain] = d.chain;
+		B.startWord = d.start;
+		B.endWord = d.end;
+		B.queryStrings.push(d.queryString);
+	});
 </script>

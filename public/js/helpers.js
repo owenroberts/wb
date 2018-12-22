@@ -2,7 +2,7 @@ window.addEventListener('load', function() {
 
 	B.debug = false; // true;
 	B.fadeDur = B.debug ? 100 : 300;
-	B.isAnimating =
+	B.isAnimating = false;
 
 	B.getRandomInt = (min, max) => {
 		return Math.floor(Math.random()* ( max - min + 1) + min);
@@ -94,7 +94,9 @@ window.addEventListener('load', function() {
 
 		const wordSpan = B.createElem('span', ['fade', 'visible'], B.chains[B.currentChain][index].word);
 		const word = B.createElem('div', ['word']);
-		wordSpan.addEventListener('click', B.getDef);
+		wordSpan.addEventListener('click', () => {
+			B.getDef(wordSpan);
+		});
 		word.appendChild(wordSpan);
 
 		const modOptions = B.createElem('div', ['mod-options']);
@@ -107,7 +109,7 @@ window.addEventListener('load', function() {
 
 		const modBtn = B.createElem('div', ['mod-btn'], undefined, '/img/mod-down-arrow.svg');
 		modBtn.addEventListener('click', ev => {
-			B.modifyChain(ev)
+			B.modifyChain(ev.currentTarget);
 			B.btnAnim(modBtn);
 		});
 
@@ -157,20 +159,5 @@ window.addEventListener('load', function() {
 		// setTimeout(() => {
 		// 	B.fade(node, 'in', 'flex');
 		// }, index * B.fadeDur);
-	};
-
-	B.resultUI = function() {
-		document.getElementById('search').style.display = 'none';
-		document.getElementById('share-dek').textContent = `${B.startWord} -> ${B.endWord}`;
-		B.fade(document.getElementById('plus'), 'in', 'inline-block');
-		document.getElementById('title').style.display = 'none';
-		document.getElementById('about-btn').style.display = 'none';
-		document.getElementById('home-btn').style.display = 'block';
-		document.getElementById('share-btn').style.display = 'block';
-	};
-
-	B.homeUI = function() {
-		document.getElementById('title').style.display = 'block';
-		document.getElementById('about-btn').style.display = 'block';
 	};
 });

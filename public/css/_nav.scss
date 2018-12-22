@@ -4,6 +4,7 @@
 	
 	height: 0px;
 	transition: height 500ms;
+	
 	&.slide-up { 
 		height: 60px; 
 		bottom: 0;
@@ -20,7 +21,7 @@
 	border-top: 3px solid $lightgray;
 	
 	#inner-chain-nav {
-		max-width: 560px;
+		max-width: 640px;
 		margin: 0 auto;
 		position: relative;
 	}
@@ -42,12 +43,14 @@
 	}
 
 	#dots {
-		display: inline-block;
+		display: flex;
+		justify-content: center;
 	}
 
 	.chain-btn {
 		display: inline-block;
 		position: absolute;
+		top: 0;
 		svg path { stroke: $gray; }
 		&.clickable svg path {
 			stroke: $black;

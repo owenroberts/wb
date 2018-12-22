@@ -1,10 +1,11 @@
 window.addEventListener('load', function() {
 
-	B.getDef = function() {
+	B.getDef = e => {
 		B.fade(B.loader, 'in', 'block');
-		const node = this.parentNode.parentNode;
+		const node = e.parentNode.parentNode;
 		const word = node.dataset.word;
 		const index = +node.dataset.index;
+		
 		// 0 of undefined
 		const synonym = index > 0 ? B.chains[B.currentChain][index - 1].word : B.chains[B.currentChain][index + 1].word;
 

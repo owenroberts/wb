@@ -40,7 +40,7 @@ window.addEventListener('load', function() {
 		} 
 	}
 
-	function showChain(index) {
+	B.showChain = index => {
 		if (index < B.chains.length && B.currentChain != index && index >= 0) {
 			B.currentChain = index;
 			setChainDepth();
@@ -78,9 +78,6 @@ window.addEventListener('load', function() {
 		B.chains.push(data.chain);
 		B.currentChain++;
 
-		B.startWord = B.chains[B.currentChain][0].word;
-		B.endWord = B.chains[B.currentChain][B.chains[B.currentChain].length - 1].word;
-
 		const chain = B.createElem('div', ['chain', 'fade', 'visible']);
 		// chain.style.left = B.currentChain * window.innerWidth + 'px';
 		chain.id = "chain-" + B.currentChain;
@@ -99,11 +96,11 @@ window.addEventListener('load', function() {
 		startWord.appendChild(startWordSpan);
 		startNode.appendChild(startWord);
 		nodes.append(startNode);
-		setTimeout(() => {
+		// setTimeout(() => {
 			B.fade(startNode, 'in', 'flex', () => {
 				fadeNode(1);
 			});
-		}, B.fadeDur);
+		// }, B.fadeDur);
 
 
 		const endNode = B.createElem('div', ['node', 'fade', 'hidden']);
@@ -136,9 +133,10 @@ window.addEventListener('load', function() {
 		dot.dataset.index = B.currentChain;
 		dot.classList.add('chain-dot');
 		dot.addEventListener('click', ev => {
-			showChain(ev.currentTarget.dataset.index);
+			B.showChain(ev.currentTarget.dataset.index);
 		});
 		document.getElementById('dots').appendChild(dot);
+
 		if (B.chains.length > 1)
 			document.getElementById('chain-nav').classList.add('slide-up');
 		setChainDepth();

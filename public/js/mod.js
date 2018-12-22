@@ -3,7 +3,7 @@ window.addEventListener('load', function() {
 	B.modIsOpen = false;
 
 	/* new syn */
-	B.newSyn = (e, dir) => {
+	B.newSyn = e => {
 		const node = e.parentNode.parentNode;
 		const wordSpan = node.children[0].children[0];
 		const index = +node.dataset.index;
@@ -11,6 +11,7 @@ window.addEventListener('load', function() {
 		const len = B.chains[B.currentChain][index].alts.length;
 
 		const word = node.dataset.word;
+		const dir = e.classList[0];
 		let newSyndex = syndex + (dir == 'prev' ? -1 : 1);
 		if (newSyndex == -1)
 			newSyndex = len - 1;
@@ -29,13 +30,14 @@ window.addEventListener('load', function() {
 	};
 
 	// ** modify chain ** //
-	B.modifyChain = ev => {
+	B.modifyChain = e => {
 
-		const node = ev.currentTarget.parentNode.parentNode;
+		console.log(e);
+
+		const node = e.parentNode.parentNode;
 		const index = +node.dataset.index;
 		const nodes = node.parentNode.children;
 		const alt = node.dataset.word;
-		const e = ev.currentTarget;
 
 		/* get all syns for new chain algorithm */
 		var usedSynonyms = [B.startWord, alt, B.endWord];
@@ -123,7 +125,7 @@ window.addEventListener('load', function() {
 		document.getElementsByClassName('nodes')[B.currentChain].classList.remove('mod-disabled'); // nodes
 
 		if (!isMod) {
-			/* change original work back */
+			/* change original word back */
 			node.dataset.word = node.children[0].children[0].textContent = B.chains[B.currentChain][index].word;
 
 			/* show other nodes */

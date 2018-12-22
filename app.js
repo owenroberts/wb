@@ -17,17 +17,7 @@ const cache = new NodeCache();
 
 const hbs = handlebars.create({
 	defaultLayout: "main",
-	helpers: {
-		json: function(content) {
-			return JSON.stringify(content);
-		},
-		lessThan: function(n1, n2, options) {
-			if (n1 < n2) 
-				return options.fn(this);
-			else 
-				return options.inverse(this);
-		}
-	}
+	helpers: { json: function(content) { return JSON.stringify(content); } }
 });
 
 // view engine setup
@@ -59,7 +49,7 @@ app.get('/search', function(req, res) {
 				errmsg: result.error
 			});
 		else
-			res.render('index', {
+			res.render('search', {
 				data: result
 			});
 	});

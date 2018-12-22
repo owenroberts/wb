@@ -172,20 +172,9 @@ select {
   display: flex; }
   #header #about-btn, #header #share-btn {
     text-decoration: underline; }
-  #header #about-btn {
-    display: none; }
-  #header #title {
-    width: inherit;
-    display: none;
-    /* font-size: 0.75em; */ }
   #header #home-btn {
     margin-right: 0.5em; }
-  #header #home-btn, #header #share-btn {
-    display: none; }
-  #header #home, #header #share, #header #plus {
-    /* display:inline-block; */ }
   #header #plus {
-    display: none;
     position: absolute;
     top: 10px;
     right: 20px;
@@ -205,6 +194,9 @@ select {
   #header #share {
     text-decoration: underline; }
 
+.index {
+  justify-content: space-between; }
+
 #search {
   margin-top: 1rem;
   padding: 0 1rem;
@@ -215,7 +207,6 @@ select {
     margin: 0;
     border-radius: 0;
     border-bottom: 3px solid black;
-    letter-spacing: 1px;
     font-size: 1em;
     display: block;
     padding-bottom: 8px;
@@ -491,7 +482,7 @@ select {
     height: 60px;
     bottom: 0; }
   #chain-nav #inner-chain-nav {
-    max-width: 560px;
+    max-width: 640px;
     margin: 0 auto;
     position: relative; }
   #chain-nav .chain-dot {
@@ -506,10 +497,12 @@ select {
     content: "\2022";
     font-size: 1.5em; }
   #chain-nav #dots {
-    display: inline-block; }
+    display: flex;
+    justify-content: center; }
   #chain-nav .chain-btn {
     display: inline-block;
-    position: absolute; }
+    position: absolute;
+    top: 0; }
     #chain-nav .chain-btn svg path {
       stroke: #C5C7C9; }
     #chain-nav .chain-btn.clickable svg path {
