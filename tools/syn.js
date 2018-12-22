@@ -9,6 +9,7 @@ var reg = /^[a-z]+$/;
 /*if (thesaurus.find(word).length > 0) console.log("yes");
 else console.log("no");*/
 var syns = thesaurus.find(word);
+console.log(syns);
 syns.forEach(function(syn) {
 	if (reg.test(syn)) console.log(syn);
-})
+});

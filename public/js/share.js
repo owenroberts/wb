@@ -25,20 +25,20 @@ window.addEventListener('load', function() {
 				switch(id) {
 					case 'link':
 						navigator.permissions.query({name: "clipboard-write"}).then(result => {
-  							if (result.state == "granted" || result.state == "prompt") {
-    							navigator.clipboard.writeText(link)
-    								.then(() => { B.report('Copied URL'); })
-    								.catch(error => { console.log(error); B.report('Unable to copy URL') });
-  							}
+								if (result.state == "granted" || result.state == "prompt") {
+									navigator.clipboard.writeText(link)
+										.then(() => { B.report('Copied URL'); })
+										.catch(error => { console.log(error); B.report('Unable to copy URL') });
+								}
 						});
 						break;
 					case 'email':
 						window.open("mailto:?body=" + title + " -- " + url + "&subject= word bridge", "_blank")
 						break;
-					case "tw":
+					case 'tw':
 						window.open("https://twitter.com/intent/tweet?text=" + title + " " + url, "_blank");
 						break;
-					case "fb":
+					case 'fb':
 						window.open("http://www.facebook.com/sharer.php?u=" + title + " " + url, "_blank");
 					break;
 				}

@@ -6,7 +6,6 @@ window.addEventListener('load', function() {
 		if (startWordInput.value.length > 0 && endWordInput.value.length > 0) {
 			bridge.classList.add('active');
 		} else {
-			console.log('remove')
 			bridge.classList.remove('active');
 		}
 	}

@@ -17,9 +17,9 @@ function makeChain(query, allSynonyms, callback) {
 		callback("Please enter single words with no spaces or special characters.");
 	} else if (startWord == endWord) {
 		callback("Please enter different words.");
-	} else if (thesaurus.find(startWord).length == 0) {
+	} else if (getSynonyms(startWord, []).length == 0) {
 		callback("The first word was not found.");
-	} else if (thesaurus.find(endWord).length == 0) {
+	} else if (getSynonyms(endWord, []).length == 0) {
 		callback("The second word was not found.");
 	} else {
 		getChain(); 
@@ -48,6 +48,7 @@ function makeChain(query, allSynonyms, callback) {
 		const synonyms = [];
 		for (let i = 0; i < tempSyns.length; i++) {
 			const syn = tempSyns[i];
+			console.log(allSynsCopy);
 			if (reg.test(syn)
 				&& allSynsCopy.indexOf(syn) == -1
 				&& allSynsCopy.indexOf(syn+"s") == -1
