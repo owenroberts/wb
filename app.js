@@ -72,7 +72,7 @@ app.post('/save', function(req, res) {
 		synonymLevel: req.body.sl,
 		searches: [{ date: new Date() }] /* location? */
 	}, function(err) {
-		if (err != undefined)console.log('err', err);
+		if (err != undefined) console.log('err', err);
 		else res.json({ msg: 'success' });
 	});
 });

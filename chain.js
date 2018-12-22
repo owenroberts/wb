@@ -48,7 +48,6 @@ function makeChain(query, allSynonyms, callback) {
 		const synonyms = [];
 		for (let i = 0; i < tempSyns.length; i++) {
 			const syn = tempSyns[i];
-			console.log(allSynsCopy);
 			if (reg.test(syn)
 				&& allSynsCopy.indexOf(syn) == -1
 				&& allSynsCopy.indexOf(syn+"s") == -1

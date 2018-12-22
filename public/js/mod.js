@@ -32,12 +32,11 @@ window.addEventListener('load', function() {
 	// ** modify chain ** //
 	B.modifyChain = e => {
 
-		console.log(e);
-
 		const node = e.parentNode.parentNode;
 		const index = +node.dataset.index;
 		const nodes = node.parentNode.children;
 		const alt = node.dataset.word;
+		B.closeModOptions(e, true);
 
 		/* get all syns for new chain algorithm */
 		var usedSynonyms = [B.startWord, alt, B.endWord];
@@ -55,6 +54,7 @@ window.addEventListener('load', function() {
 		fetch(url)
 			.then(response => { return response.json() })
 			.then(obj => {
+
 				if (obj.errormsg) {
 					/* report error */
 					const err = `We couldn't find a chain between ${alt} and ${B.endWord}.`;
@@ -95,6 +95,8 @@ window.addEventListener('load', function() {
 						B.fade(n, 'in', 'flex', () => {
 							if (index < B.chains[B.currentChain].length - 2) {
 								fadeInNode(++index);
+							} else {
+								B.modIsOpen = false;
 							}
 						});
 					}
@@ -121,13 +123,12 @@ window.addEventListener('load', function() {
 		const index = +node.dataset.index;
 		e.parentNode.style.display = 'none';
 		e.parentNode.nextElementSibling.style.display = 'inline-block';	
-		B.modIsOpen = false;
 		document.getElementsByClassName('nodes')[B.currentChain].classList.remove('mod-disabled'); // nodes
 
 		if (!isMod) {
 			/* change original word back */
 			node.dataset.word = node.children[0].children[0].textContent = B.chains[B.currentChain][index].word;
-
+			B.modIsOpen = false;
 			/* show other nodes */
 			const nodes = node.parentNode.children;
 			for (let i = index + 1; i < nodes.length - 1; i++) {
