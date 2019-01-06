@@ -17,6 +17,7 @@ const cache = new NodeCache();
 
 const hbs = handlebars.create({
 	defaultLayout: "main",
+	partialsDir: __dirname + '/views/partials/',
 	helpers: { json: function(content) { return JSON.stringify(content); } }
 });
 

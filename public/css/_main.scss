@@ -2,7 +2,8 @@
 
 #loader {
 	display: none;
-	position: fixed;
+	position: absolute;
+	width: 100%;
 	top: 0;
 	left: 0;
 	right: 0;
@@ -81,6 +82,7 @@
 		flex: 1 100px;
 		margin-right: 0.1em;
 		width: 100px;
+		span { cursor: pointer; }
 	}
 
 	.mod-open {
@@ -102,14 +104,7 @@
 		position: relative;
 	}
 
-	&:hover {
-		cursor: -webkit-grab; 
-		cursor: -moz-grab;
-		&:active {
-			cursor: -webkit-grabbing; 
-			cursor: -moz-grabbing;
-		}
-	}
+
 
 	.word, .next, .prev, .mod-btn, .mod-close {
 		height: 36px;
@@ -141,7 +136,6 @@
 		padding:0.25em 0;
 		display:block;
 		font-weight:600;
-		cursor:default;
 		text-transform: lowercase;
 		.node {  
 			-webkit-user-select: none;

@@ -14,12 +14,11 @@ body {
   font-family: Helvetica, sans-serif;
   margin: 0;
   width: 100%;
-  overflow-x: hidden;
-  /* background-color: #ededed; */ }
+  overflow-x: hidden; }
 
 #container {
   width: 100%;
-  max-width: 640px;
+  max-width: 1024px;
   margin: 0 auto;
   background-color: white;
   height: 100%;
@@ -33,7 +32,7 @@ a, .leftarrow, .rightarrow {
   /* text-decoration:none; */
   transition: color 500ms; }
   a:hover, .leftarrow:hover, .rightarrow:hover {
-    color: #f1f1f2; }
+    color: #f2f2f2; }
 
 ul, li {
   padding: 0;
@@ -171,7 +170,8 @@ select {
   height: 70px;
   display: flex; }
   #header #about-btn, #header #share-btn {
-    text-decoration: underline; }
+    text-decoration: underline;
+    cursor: pointer; }
   #header #home-btn {
     margin-right: 0.5em; }
   #header #plus {
@@ -238,7 +238,8 @@ select {
 
 #loader {
   display: none;
-  position: fixed;
+  position: absolute;
+  width: 100%;
   top: 0;
   left: 0;
   right: 0;
@@ -300,6 +301,8 @@ select {
     flex: 1 100px;
     margin-right: 0.1em;
     width: 100px; }
+    .node .word span {
+      cursor: pointer; }
   .node .mod-open {
     /* flex: 1 32px; */
     cursor: pointer;
@@ -317,12 +320,6 @@ select {
     background: white;
     z-index: 9;
     position: relative; }
-  .node:hover {
-    cursor: -webkit-grab;
-    cursor: -moz-grab; }
-    .node:hover:active {
-      cursor: -webkit-grabbing;
-      cursor: -moz-grabbing; }
   .node .word, .node .next, .node .prev, .node .mod-btn, .node .mod-close {
     height: 36px;
     display: inline-block; }
@@ -342,7 +339,6 @@ select {
     padding: 0.25em 0;
     display: block;
     font-weight: 600;
-    cursor: default;
     text-transform: lowercase; }
     .node:first-child .node, .node:last-child .node {
       -webkit-user-select: none;
@@ -386,11 +382,11 @@ select {
   padding: 32px;
   z-index: 3;
   font-size: 20px;
-  line-height: 1.45; }
+  line-height: 1.45;
+  max-width: 768px; }
   #error .msg, #about .msg, .definition .msg, #share-menu .msg, #report .msg {
     color: white;
-    overflow-y: scroll;
-    text-align: center; }
+    overflow-y: scroll; }
     #error .msg::-webkit-scrollbar, #about .msg::-webkit-scrollbar, .definition .msg::-webkit-scrollbar, #share-menu .msg::-webkit-scrollbar, #report .msg::-webkit-scrollbar {
       width: 0.25em; }
     #error .msg::-webkit-scrollbar-thumb, #about .msg::-webkit-scrollbar-thumb, .definition .msg::-webkit-scrollbar-thumb, #share-menu .msg::-webkit-scrollbar-thumb, #report .msg::-webkit-scrollbar-thumb {
@@ -408,7 +404,14 @@ select {
         background: white;
         color: black; }
     #error .msg .dismiss, #about .msg .dismiss, .definition .msg .dismiss, #share-menu .msg .dismiss, #report .msg .dismiss {
-      margin-top: 2em; }
+      cursor: pointer;
+      position: absolute;
+      top: 10px;
+      right: 20px; }
+      #error .msg .dismiss:hover circle, #about .msg .dismiss:hover circle, .definition .msg .dismiss:hover circle, #share-menu .msg .dismiss:hover circle, #report .msg .dismiss:hover circle {
+        fill: white; }
+      #error .msg .dismiss:hover path, #about .msg .dismiss:hover path, .definition .msg .dismiss:hover path, #share-menu .msg .dismiss:hover path, #report .msg .dismiss:hover path {
+        stroke: black; }
     #error .msg .word, #about .msg .word, .definition .msg .word, #share-menu .msg .word, #report .msg .word {
       text-transform: capitalize; }
     #error .msg .pos, #about .msg .pos, .definition .msg .pos, #share-menu .msg .pos, #report .msg .pos {
@@ -453,15 +456,14 @@ select {
 
 /*  media queries */
 /* desktop */
-@media only screen and (min-width: 800px) {
-  body {
-    /* font-size:30px; */ }
+@media only screen and (min-width: 1024px) {
+  #desktop-container {
+    background-color: #f2f2f2;
+    width: 100%;
+    height: 100%; }
 
-  header {
-    min-height: 52px; }
-
-  #sidebar li {
-    height: 52px; } }
+  #container {
+    box-shadow: 0 0 10px #C5C7C9; } }
 /*  phone  */
 @media screen and (max-device-width: 480px) {
   body {
@@ -477,7 +479,7 @@ select {
   right: 0;
   z-index: 3;
   background: white;
-  border-top: 3px solid #f1f1f2; }
+  border-top: 3px solid #f2f2f2; }
   #chain-nav.slide-up {
     height: 60px;
     bottom: 0; }

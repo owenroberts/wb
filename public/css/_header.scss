@@ -9,7 +9,10 @@
 	
 	display: flex;
 
-	#about-btn, #share-btn { text-decoration: underline; }
+	#about-btn, #share-btn { 
+		text-decoration: underline;
+		cursor: pointer;
+	}
 
 	#home-btn { margin-right: 0.5em; }
 

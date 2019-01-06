@@ -12,7 +12,16 @@ window.addEventListener('load', function() {
 	B.pos = { "n":"noun", "v":"verb", "a":"adjective", "s":"adjective", "r":"adverb" };
 
 	B.fade = (e, status, display, end) => {
+
+		if (end) {
+			e.addEventListener('transitionend', end);
+			e.addEventListener('transitionend', () => {
+				e.removeEventListener('transitionend', end);
+			});
+		}
+
 		const [addClass, removeClass] = status == 'in' ? ['fade-in', 'fade-out'] : ['fade-out', 'fade-in'];
+
 		if (status == 'in') {
 			e.style.display = display;
 		}
@@ -22,12 +31,7 @@ window.addEventListener('load', function() {
 				e.classList.replace(removeClass, addClass);
 			else
 				e.classList.add(addClass);
-			e.addEventListener('transitionend', end);
-			e.addEventListener('transitionend', () => {
-				e.removeEventListener('transitionend', end);
-			});
-
-		}, 1); // hacky anim/display fix
+		}, 5); // hacky anim/display fix
 		
 		if (status == 'out')
 			setTimeout(() => { e.style.display = display; }, B.fadeDur);

@@ -96,12 +96,6 @@ window.addEventListener('load', function() {
 		startWord.appendChild(startWordSpan);
 		startNode.appendChild(startWord);
 		nodes.append(startNode);
-		// setTimeout(() => {
-			B.fade(startNode, 'in', 'flex', () => {
-				fadeNode(1);
-			});
-		// }, B.fadeDur);
-
 
 		const endNode = B.createElem('div', ['node', 'fade', 'hidden']);
 		endNode.dataset.word = B.endWord;
@@ -112,12 +106,15 @@ window.addEventListener('load', function() {
 
 		endWord.appendChild(endWordSpan);
 		endNode.appendChild(endWord);
-		setTimeout(() => {
-			endNode.classList.add('fade-in');
-		}, B.fadeDur);
 		nodes.append(endNode);
 		
 		document.getElementById('chains').appendChild(chain);
+
+		B.fade(startNode, 'in', 'flex', () => {
+			console.log('fade in');
+			endNode.classList.add('fade-in');
+			fadeNode(1);
+		});
 
 		function fadeNode(index) {
 			const node = B.makeNode(index);

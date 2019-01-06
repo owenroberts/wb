@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="56px" height="56px" viewBox="0 0 56 56" enable-background="new 0 0 56 56" xml:space="preserve">
+<filter  width="129.2%" height="129.2%" id="filter-2" x="-14.6%" y="-10.4%" filterUnits="objectBoundingBox">
+	<feOffset  dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+	<feGaussianBlur  stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+	<feColorMatrix  type="matrix" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.25 0" in="shadowBlurOuter1"></feColorMatrix>
+</filter>
+<title>Group 5</title>
+<desc>Created with Sketch.</desc>
+<g id="Page-3">
+	<g id="Normal-Path" transform="translate(-254.000000, -35.000000)">
+		<g id="Group-5" transform="translate(258.000000, 37.000000)">
+			<g id="Oval-2">
+				<g display="none" filter="url(#filter-2)">
+					<circle id="path-1_3_" display="inline" cx="24" cy="26" r="24"/>
+				</g>
+				<g>
+					<circle id="path-1_1_" fill="#FFFFFF" stroke="#FFFFFF" cx="24" cy="26" r="24"/>
+				</g>
+			</g>
+			<g id="Group-2" transform="translate(15.000000, 14.000000)">
+				<path id="Line" stroke="#000000" stroke-width="3" d="M2.86,18.141L15.854,5.146"/>
+				<path id="Line_1_" stroke="#000000" stroke-width="3" d="M15.847,18.141L2.853,5.146"/>
+			</g>
+		</g>
+	</g>
+</g>
+</svg>
