@@ -6,6 +6,7 @@
 <div id="report" class="fade hidden">
 	<div id="report-msg" class="msg">
 		<div id="sorry" class="sorry fade hidden display-none">We couldn't find a path.  Sorry about that!</div>
+		<div id="report-title" class="title"></div>
 		<div id="report-txt" class="txt"></div>
 		<div id="report-btn" class="btn"></div>
 		<div id="report-dismiss" class="dismiss">
@@ -16,13 +17,12 @@
 
 <div id="share-menu" class="fade fade-out">
 	<div class="msg">
-		<p>Share Synomap</p>
-		<p id="share-dek"></p>
+		<p id="share-msg">Share this WordBridge between <span id="share-dek"></span></p>
 		{{!-- <input id="url" contenteditable=true readonly=false> --}}
-		<div class="share-item" id="link">Copy Link</div>
-		<div class="share-item" id="email">Email</div>
-		<div class="share-item" id="fb">Facebook</div>
-		<div class="share-item" id="tw">Twitter</div>
+		<div class="share-item" id="link"><span>Copy the link</span></div>
+		<div class="share-item" id="email"><span>Email the link</span></div>
+		{{!-- <div class="share-item" id="fb">Facebook</div> --}}
+		<div class="share-item" id="tw"><span>Share it on Twitter</span></div>
 		<div class="dismiss">
 			{{> dismiss-btn}}
 		</div>
@@ -43,7 +43,7 @@
 			{{#each data.chain}}
 				<div class="node fade" data-word={{this.word}} data-index={{@index}} data-syndex={{this.syndex}}>
 					<div class="word">
-						<span onclick={B.getDef(this);}>{{this.word}}</span>
+						<span onclick={B.getDef();}>{{this.word}}</span>
 					</div>
 					{{#unless @first}}
 						{{#unless @last}}
@@ -101,7 +101,6 @@
 <script src="/js/new.js"></script>
 <script src="/js/mod.js"></script>
 <script src="/js/def.js"></script>
-<script src="/js/share.js"></script>
 <script type="text/javascript">
 	window.addEventListener('load', function() {
 		const d = {{{json data}}};
@@ -112,3 +111,4 @@
 		B.queryStrings.push(d.queryString);
 	});
 </script>
+<script src="/js/share.js"></script>

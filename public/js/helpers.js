@@ -14,10 +14,11 @@ window.addEventListener('load', function() {
 	B.fade = (e, status, display, end) => {
 
 		if (end) {
-			e.addEventListener('transitionend', end);
-			e.addEventListener('transitionend', () => {
-				e.removeEventListener('transitionend', end);
-			});
+			// e.addEventListener('transitionend', end);
+			// e.addEventListener('transitionend', () => {
+			// 	e.removeEventListener('transitionend', end);
+			// }); // this fails sometimes
+			setTimeout(end, B.fadeDur);
 		}
 
 		const [addClass, removeClass] = status == 'in' ? ['fade-in', 'fade-out'] : ['fade-out', 'fade-in'];
@@ -46,14 +47,16 @@ window.addEventListener('load', function() {
 
 	const reportDiv = document.getElementById('report');
 	const reportMsg = document.getElementById('report-msg');
+	const reportTitle = document.getElementById('report-title');
 	const reportTxt = document.getElementById('report-txt');
 	const reportBtn = document.getElementById('report-btn');
 
-	B.report = function(msg, ok, callback, dismissBack) {
+	B.report = function(title, msg, ok, callback, dismissBack) {
 		B.fade(reportDiv, 'in', 'block');
 		reportDiv.scrollTop = 0;
 		reportMsg.scrollTop = 0;
 		reportTxt.innerHTML = msg;
+		reportTitle.textContent = title;
 		if (ok) {
 			reportBtn.style.display = 'block';
 			reportBtn.textContent = ok;

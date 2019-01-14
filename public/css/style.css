@@ -16,6 +16,9 @@ body {
   width: 100%;
   overflow-x: hidden; }
 
+#desktop-container {
+  height: 100%; }
+
 #container {
   width: 100%;
   max-width: 1024px;
@@ -173,7 +176,7 @@ select {
     text-decoration: underline;
     cursor: pointer; }
   #header #home-btn {
-    margin-right: 0.5em; }
+    margin-right: 16px; }
   #header #plus {
     position: absolute;
     top: 10px;
@@ -231,7 +234,10 @@ select {
     appearance: none; }
     #search input[type="submit"].active {
       background-color: #75b5ff;
-      color: black; }
+      color: black;
+      transition: background-color 300ms ease-in; }
+      #search input[type="submit"].active:hover {
+        background-color: #499CFC; }
 
 .fadein {
   opacity: 0; }
@@ -250,7 +256,7 @@ select {
   font-size: 20px;
   /*opacity: 0;*/ }
   #loader img {
-    width: 16%;
+    width: 2em;
     height: 75%; }
   #loader li a {
     padding: 0.5em;
@@ -313,6 +319,8 @@ select {
       display: inline-block; }
     .node .mod-open .disabled {
       display: none; }
+    .node .mod-open:hover {
+      background-color: #f2f2f2; }
   .node .mod-options {
     display: none;
     /* margin-right: 0.5em; */
@@ -368,10 +376,6 @@ select {
   .node.mod-error .word {
     color: #C5C7C9; }
 
-#report.swipe {
-  margin-top: 0;
-  top: 168px; }
-
 #error, #about, .definition, #share-menu, #report {
   display: none;
   position: absolute;
@@ -386,7 +390,8 @@ select {
   max-width: 768px; }
   #error .msg, #about .msg, .definition .msg, #share-menu .msg, #report .msg {
     color: white;
-    overflow-y: scroll; }
+    overflow-y: scroll;
+    max-width: 768px; }
     #error .msg::-webkit-scrollbar, #about .msg::-webkit-scrollbar, .definition .msg::-webkit-scrollbar, #share-menu .msg::-webkit-scrollbar, #report .msg::-webkit-scrollbar {
       width: 0.25em; }
     #error .msg::-webkit-scrollbar-thumb, #about .msg::-webkit-scrollbar-thumb, .definition .msg::-webkit-scrollbar-thumb, #share-menu .msg::-webkit-scrollbar-thumb, #report .msg::-webkit-scrollbar-thumb {
@@ -408,6 +413,8 @@ select {
       position: absolute;
       top: 10px;
       right: 20px; }
+      #error .msg .dismiss circle, #error .msg .dismiss path, #about .msg .dismiss circle, #about .msg .dismiss path, .definition .msg .dismiss circle, .definition .msg .dismiss path, #share-menu .msg .dismiss circle, #share-menu .msg .dismiss path, #report .msg .dismiss circle, #report .msg .dismiss path {
+        transition: all 300ms ease-in; }
       #error .msg .dismiss:hover circle, #about .msg .dismiss:hover circle, .definition .msg .dismiss:hover circle, #share-menu .msg .dismiss:hover circle, #report .msg .dismiss:hover circle {
         fill: white; }
       #error .msg .dismiss:hover path, #about .msg .dismiss:hover path, .definition .msg .dismiss:hover path, #share-menu .msg .dismiss:hover path, #report .msg .dismiss:hover path {
@@ -426,8 +433,22 @@ select {
       cursor: pointer;
       text-align: center; }
     #error .msg .share-item, #about .msg .share-item, .definition .msg .share-item, #share-menu .msg .share-item, #report .msg .share-item {
-      color: #6a75ff;
-      margin: 0.5em 0; }
+      color: black;
+      cursor: pointer;
+      margin-bottom: 1.2em; }
+      #error .msg .share-item span, #about .msg .share-item span, .definition .msg .share-item span, #share-menu .msg .share-item span, #report .msg .share-item span {
+        background-color: #75b5ff;
+        transition: background-color 300ms ease-in;
+        padding: 0.5em;
+        border-radius: 0.1em;
+        font-size: 0.9em; }
+        #error .msg .share-item span:hover, #about .msg .share-item span:hover, .definition .msg .share-item span:hover, #share-menu .msg .share-item span:hover, #report .msg .share-item span:hover {
+          background-color: #499CFC; }
+    #error .msg #share-msg, #error .msg #report-title, #error .msg .title, #about .msg #share-msg, #about .msg #report-title, #about .msg .title, .definition .msg #share-msg, .definition .msg #report-title, .definition .msg .title, #share-menu .msg #share-msg, #share-menu .msg #report-title, #share-menu .msg .title, #report .msg #share-msg, #report .msg #report-title, #report .msg .title {
+      margin-right: 2em;
+      font-size: 1.4em;
+      font-weight: 500;
+      margin-bottom: 1em; }
     #error .msg p, #about .msg p, .definition .msg p, #share-menu .msg p, #report .msg p {
       margin: 0.2em 0; }
 
@@ -463,11 +484,17 @@ select {
     height: 100%; }
 
   #container {
-    box-shadow: 0 0 10px #C5C7C9; } }
+    box-shadow: 0 0 10px #C5C7C9; }
+
+  /* #loader img { width: 2em; } */ }
 /*  phone  */
 @media screen and (max-device-width: 480px) {
   body {
     -webkit-text-size-adjust: none; } }
+/*  non phone   */
+@media screen and (min-device-width: 480px) {
+  .btn {
+    background: #81BBFF; } }
 #chain-nav {
   text-align: center;
   height: 0px;

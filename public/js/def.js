@@ -1,8 +1,8 @@
 window.addEventListener('load', function() {
 
-	B.getDef = e => {
+	B.getDef = function() {
 		B.fade(B.loader, 'in', 'block');
-		const node = e.parentNode.parentNode;
+		const node = event.currentTarget.parentNode.parentNode;
 		const word = node.dataset.word;
 		const index = +node.dataset.index;
 		
@@ -15,16 +15,16 @@ window.addEventListener('load', function() {
 			.then(response => { return response.json(); })
 			.then(result => {
 				B.fade(B.loader, 'out', 'none');
-				var msg = "";
-				msg += "<strong>" + word + "</strong><br><br>";
+				const title = `Definition for “${word}”`;
+				let msg = "";
 				const len = Math.min(result.data.length, 10);
 				for (let i = 0; i < len; i++) {
-					msg += B.pos[result.data[i].pos];
+					msg += `<strong>${B.pos[result.data[i].pos]}</strong>`;
 					msg += '<br>';
 					msg += result.data[i].def;
 					msg += '<br><br>';
 				}
-				B.report(msg);
+				B.report(title, msg);
 			});
 	};
 });

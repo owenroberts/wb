@@ -2,7 +2,10 @@ window.addEventListener('load', function() {
 	// ** share stuff **
 	const shareBtn = document.getElementById('share-btn');
 	const shareMenu = document.getElementById('share-menu');
+	const shareDek = document.getElementById('share-dek');
 	const shareItems = document.getElementsByClassName('share-item');
+
+	shareDek.textContent = `“${B.startWord}” & “${B.endWord}”`;
 
 	shareBtn.addEventListener('click', function() {
 		B.fade(shareMenu, 'in', 'block');
@@ -14,23 +17,35 @@ window.addEventListener('load', function() {
 
 	for (let i = 0; i < shareItems.length; i++) {
 		shareItems[i].addEventListener('click', function() {
+
+
 			const id = this.id;
 			const start = B.chains[B.currentChain][0].word
 			const end = B.chains[B.currentChain][B.chains[B.currentChain].length - 1].word;
-			const title = "Bridge: " + start + " ... " + end;
+			const title = "Word Bridge: " + start + " ... " + end;
 			const link = `${location.origin}/search?qs=${B.queryStrings[B.currentChain]}`;
 			const url = encodeURIComponent(link);
 
 			function share() {
 				switch(id) {
 					case 'link':
-						navigator.permissions.query({name: "clipboard-write"}).then(result => {
-								if (result.state == "granted" || result.state == "prompt") {
-									navigator.clipboard.writeText(link)
-										.then(() => { B.report('Copied URL'); })
-										.catch(error => { console.log(error); B.report('Unable to copy URL') });
-								}
-						});
+						if (navigator.permissions) {
+							navigator.permissions.query({name: "clipboard-write"}).then(result => {
+									if (result.state == "granted" || result.state == "prompt") {
+										navigator.clipboard.writeText(link)
+											.then(() => { B.report('Share', 'Copied URL'); })
+											.catch(error => { 
+												console.log(error); 
+												B.report('Share Error', 'Unable to copy URL');
+											});
+									} else {
+										B.report('Share Error', 'Unable to copy URL');
+									}
+
+							});
+						} else {
+							B.report('Share Error', 'Unable to copy URL');
+						}
 						break;
 					case 'email':
 						window.open("mailto:?body=" + title + " -- " + url + "&subject= word bridge", "_blank")
@@ -45,26 +60,20 @@ window.addEventListener('load', function() {
 			}
 
 			if (B.queryStrings[B.currentChain].includes('-')) {
-				$.ajax({
-					url: '/save',
-					type: 'post',
-					dataType:'json',
-					data: {
+				fetch('/save', {  method: 'POST',
+					headers: {'Content-Type': 'application/json'},
+ 					body: JSON.stringify({
 						qs: B.queryStrings[B.currentChain],
 						chain: JSON.stringify(B.chains[B.currentChain]),
 						s: B.startWord,
 						e: B.endWord,
 						sl: B.queryStrings[B.currentChain].split(/[a-z\\-]+/)[1],
 						nl: B.queryStrings[B.currentChain].split(/[a-z\\-]+/)[2]
-					}, /* just gets the first one ... */
-					success: function(obj) {
-						// console.log('success', obj);
-						/* wait until saved to share */
-						share();
-					},
-					error: function(err) {
-						console.log('err', err);
-					}
+					})
+				}).then(response => { 
+					share(); 
+				}).catch(error => { 
+					console.log('error', error); 
 				});
 			} else {
 				share();

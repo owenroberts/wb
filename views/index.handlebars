@@ -5,7 +5,8 @@
 
 <div id="about" class="fade hidden">
 	<div class="msg">
-		<div class="text">Synomap is ...</div>
+		<div class="title">About</div>
+		<div class="text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat commodi facere asperiores doloremque, minus accusamus! Incidunt libero nihil laboriosam temporibus quis error itaque tempora, iusto provident earum. Magnam, ut ad.</div>
 		<div class="dismiss">
 			{{> dismiss-btn}}
 		</div>
@@ -15,6 +16,7 @@
 <div id="report" class="fade hidden">
 	<div id="report-msg" class="msg">
 		<div id="sorry" class="sorry fade hidden display-none">We couldn't find a path.  Sorry about that!</div>
+		<div id="report-title" class="title"></div>
 		<div id="report-txt" class="txt"></div>
 		<div id="report-btn" class="btn"></div>
 		<div id="report-dismiss" class="dismiss">
@@ -29,12 +31,12 @@
 </div>
 
 <div id="search" class="fade">
-	<form action="/search" method="get">
-		<input type="text" id="start-word" name="s" class="query" placeholder="word 1">
-		<input type="text" id="end-word" name="e" class="query" placeholder="word 2">
+	<form action="/search" method="get" autocomplete="off">
+		<input type="text" id="start-word" name="s" class="query" placeholder="Enter word 1">
+		<input type="text" id="end-word" name="e" class="query" placeholder="Enter word 2">
 		<input type="hidden" value="10" name="nl">
 		<input type="hidden" value="10" name="sl">
-		<input type="submit" value="bridge" id="bridge">
+		<input type="submit" value="bridge" id="bridge" class="btn">
 		<div class="ldr" id="ldr">
 			<img src="/img/loader-black.svg" alt="">
 		</div>
@@ -51,7 +53,7 @@
 <script type="text/javascript">
 	window.addEventListener('load', function() {
 		if ("{{errmsg}}") 
-			B.report("{{errmsg}}");	
+			B.report("Error", "{{errmsg}}");	
 	});
 </script>
 

@@ -64,6 +64,7 @@ app.get('/chain', function(req, res) {
 });
 
 app.post('/save', function(req, res) {
+	console.log(req.body)
 	db.save({
 		queryString: req.body.qs,
 		chain: JSON.parse(req.body.chain),
@@ -80,6 +81,7 @@ app.post('/save', function(req, res) {
 
 
 app.get('/def', function(req,res) {
+
 	def.getDef(req.query.word, req.query.synonym, function(err, result) {
 		if (err) console.log(err);
 		else res.json({ data: result });

@@ -10,10 +10,20 @@
 	#container {
 		box-shadow: 0 0 10px $gray;
 	}
+
+	/* #loader img { width: 2em; } */
+	
 }
 
 /*  phone  */
 @media screen and (max-device-width: 480px){
 	body { -webkit-text-size-adjust: none; }
+}
+
+/*  non phone   */
+@media screen and (min-device-width: 480px){
+	.btn {
+		background: #81BBFF;
+	}
 }
 

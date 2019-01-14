@@ -111,8 +111,6 @@ window.addEventListener('load', function() {
 		document.getElementById('chains').appendChild(chain);
 
 		B.fade(startNode, 'in', 'flex', () => {
-			console.log('fade in');
-			endNode.classList.add('fade-in');
 			fadeNode(1);
 		});
 
@@ -120,8 +118,10 @@ window.addEventListener('load', function() {
 			const node = B.makeNode(index);
 			nodes.insertBefore(node, nodes.lastElementChild);
 			B.fade(node, 'in', 'flex', () => {
-				if (index < B.chains[B.currentChain].length - 2) {
+				if (index < B.chains[B.currentChain].length - 1) {
 					fadeNode(++index);
+				} else {
+					endNode.classList.add('fade-in');
 				}
 			});
 		}

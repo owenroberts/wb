@@ -15,7 +15,7 @@
 	/*opacity: 0;*/
 	
 	img { 
-		width: 16%;
+		width: 2em;
 		height: 75%;
 	}
 	
@@ -93,6 +93,7 @@
 		border-radius: 1em;
 		.active { display: inline-block; }
 		.disabled { display: none; }
+		&:hover { background-color: $lightgray; }
 	}
 
 	.mod-options {

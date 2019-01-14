@@ -35,6 +35,10 @@
 		&.active {
 			background-color: $active;
 			color: $black;
+			transition: background-color 300ms ease-in;
+			&:hover {
+				background-color: $hover;
+			}
 		}
 		border: none;
 		color: $gray;
