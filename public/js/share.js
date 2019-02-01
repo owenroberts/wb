@@ -1,9 +1,13 @@
 window.addEventListener('load', function() {
 	// ** share stuff **
 	const shareBtn = document.getElementById('share-btn');
-	const shareMenu = document.getElementById('share-menu');
+	const shareMenu = document.getElementById('share');
 	const shareDek = document.getElementById('share-dek');
 	const shareItems = document.getElementsByClassName('share-item');
+
+	if (!navigator.permissions) {
+		document.getElementById('link').style.display = 'none';
+	}
 
 	shareDek.textContent = `“${B.startWord}” & “${B.endWord}”`;
 
@@ -17,8 +21,6 @@ window.addEventListener('load', function() {
 
 	for (let i = 0; i < shareItems.length; i++) {
 		shareItems[i].addEventListener('click', function() {
-
-
 			const id = this.id;
 			const start = B.chains[B.currentChain][0].word
 			const end = B.chains[B.currentChain][B.chains[B.currentChain].length - 1].word;

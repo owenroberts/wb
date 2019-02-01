@@ -11,8 +11,12 @@
 		box-shadow: 0 0 10px $gray;
 	}
 
+	#chain-nav {
+		width: 100%;
+    	max-width: 1024px;
+   		margin: 0 auto;
+   	}
 	/* #loader img { width: 2em; } */
-	
 }
 
 /*  phone  */
@@ -25,5 +29,17 @@
 	.btn {
 		background: #81BBFF;
 	}
+	#container {
+		padding-top: 50px;
+	}
+	.overlay {
+		position: fixed;
+		top: 0;
+		padding-top: 50px;
+		.msg .dismiss {
+			top: 60px;
+		}
+	}
+	
 }
 

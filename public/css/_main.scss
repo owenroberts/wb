@@ -105,8 +105,6 @@
 		position: relative;
 	}
 
-
-
 	.word, .next, .prev, .mod-btn, .mod-close {
 		height: 36px;
 		display: inline-block;
@@ -130,8 +128,6 @@
 		border-radius: 1em;
 		transition: background-color 300ms;
 	}
-
-
 	
 	&:first-child, &:last-child {
 		padding:0.25em 0;

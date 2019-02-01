@@ -167,4 +167,15 @@ window.addEventListener('load', function() {
 		// 	B.fade(node, 'in', 'flex');
 		// }, index * B.fadeDur);
 	};
+
+	const dismissBtns = document.getElementsByClassName('dismiss');
+	for (const btn of dismissBtns) {
+		btn.addEventListener('touchstart', event => {
+			const elem = event.currentTarget;
+			elem.classList.add('active');
+			elem.addEventListener('transitionend', () => {
+				elem.classList.remove('active');
+			});
+		});
+	}
 });

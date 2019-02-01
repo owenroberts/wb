@@ -1,4 +1,4 @@
-#error, #about, .definition, #share-menu, #report {
+.overlay  {
 	
 	display: none;
 
@@ -14,7 +14,6 @@
 	line-height: 1.45;
 	
 	max-width: 768px;
-
 	
 	.msg {
 		color: $white;
@@ -53,12 +52,11 @@
 				transition: all 300ms ease-in;
 			}
 			
-			
-			&:hover circle {
+			&:hover circle, &.active circle {
 				fill: white;
 			}
 
-			&:hover path {
+			&:hover path, &.active path {
 				stroke: black;
 			}
 		}
@@ -99,5 +97,4 @@
 
 		p { margin: 0.2em 0; }
 	}
-	
 }
