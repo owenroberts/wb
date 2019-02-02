@@ -35,7 +35,8 @@ body {
 pre { font-size:12px; }
 a, .leftarrow, .rightarrow {
 	color: black;
-	/* text-decoration:none; */
+	text-decoration:none; 
+	border-bottom: 1px solid black;
 	transition: color 500ms;
 	&:hover { color:$lightgray; }
 }

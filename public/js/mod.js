@@ -37,7 +37,6 @@ window.addEventListener('load', function() {
 		const nodes = node.parentNode.children;
 		const alt = node.dataset.word;
 
-		console.log(  )
 
 		if (alt == B.chains[B.currentChain][index].word) {
 			B.report("Error", "This synonym is already in the chain.  Try the next or previous synonym.");
@@ -72,13 +71,10 @@ window.addEventListener('load', function() {
 							B.chains[B.currentChain].push(o) 
 						});
 
-						const waitTime = nodes.length * B.fadeDur/2;
-						setTimeout(() => {
-							noTouching = false;
-						}, waitTime + B.fadeDur);
+						if (index + 1 < nodes.length - 1) fadeOutNode();
+						else fadeInNode(index + 1);
 
-						/* remove old nodes */
-						(function fadeOutNode() {
+						function fadeOutNode() {
 							const n = nodes[nodes.length - 2];
 							n.classList.replace('fade-grey', 'fade-out');
 							n.addEventListener('transitionend', () => { 
@@ -89,7 +85,7 @@ window.addEventListener('load', function() {
 									fadeOutNode();
 								}
 							});
-						}());
+						}
 
 						function fadeInNode(index) {
 							const n = B.makeNode(index);
@@ -99,6 +95,7 @@ window.addEventListener('load', function() {
 									fadeInNode(++index);
 								} else {
 									B.modIsOpen = false;
+									noTouching = false;
 								}
 							});
 						}

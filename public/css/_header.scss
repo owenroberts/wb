@@ -9,8 +9,8 @@
 	
 	display: flex;
 
-	#about-btn, #share-btn { 
-		text-decoration: underline;
+	#about-btn span, #share-btn span { 
+		border-bottom: 1px solid black;
 		cursor: pointer;
 	}
 
@@ -38,12 +38,6 @@
 			}
 		}
 	}
-
-	#share {
-		text-decoration: underline;
-	}
-
-	
 }
 
 .index {

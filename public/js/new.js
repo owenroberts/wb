@@ -16,7 +16,8 @@ window.addEventListener('load', function() {
 
 	function setChainDepth() {
 		/* crap hack to close any open mod options while switching chains */
-		Array.from(document.getElementsByClassName('mod-options')).filter(e => e.style.display == 'inline-block').forEach(e => B.closeModOptions(e.children[0], false));
+		if (B.modIsOpen)
+			Array.from(document.getElementsByClassName('mod-options')).filter(e => e.style.display == 'inline-block').forEach(e => B.closeModOptions(e.children[0], false));
 
 		for (let i = 0; i < dots.length; i++) {
 			if (i == B.currentChain) {
