@@ -11,7 +11,7 @@
 		box-shadow: 0 0 10px $gray;
 	}
 
-	#chain-nav {
+	#chain-nav, .overlay {
 		width: 100%;
     	max-width: 1024px;
    		margin: 0 auto;
@@ -33,7 +33,7 @@
 		padding-top: 50px;
 	}
 	.overlay {
-		position: fixed;
+		/*position: fixed;*/
 		top: 0;
 		padding-top: 50px;
 		.msg .dismiss {

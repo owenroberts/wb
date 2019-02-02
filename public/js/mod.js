@@ -122,7 +122,7 @@ window.addEventListener('load', function() {
 	};
 	
 	B.closeModOptions = (e, isMod) => {
-		const node = e.parentNode.parentNode;
+		const node = e.parentNode.parentNode; /* the main node derived from the mod close btn */
 		const index = +node.dataset.index;
 		e.parentNode.style.display = 'none';
 		e.parentNode.nextElementSibling.style.display = 'inline-block';	

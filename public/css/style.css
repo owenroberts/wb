@@ -327,10 +327,13 @@ select {
     box-shadow: -5px 0px 10px white;
     background: white;
     z-index: 9;
-    position: relative; }
+    position: relative;
+    font-size: 0;
+    /* temp fix for first path chain mod options spacing */ }
   .node .word, .node .next, .node .prev, .node .mod-btn, .node .mod-close {
     height: 36px;
-    display: inline-block; }
+    display: inline-block;
+    font-size: 26px; }
   .node .next, .node .prev, .node .mod-btn, .node .mod-close, .node .mod-options, .node .mod-open {
     line-height: 0;
     cursor: pointer;
@@ -384,7 +387,7 @@ select {
   min-height: 100%;
   background-color: rgba(0, 0, 0, 0.95);
   padding: 32px;
-  z-index: 3;
+  z-index: 4;
   font-size: 20px;
   line-height: 1.45;
   max-width: 768px; }
@@ -486,7 +489,7 @@ select {
   #container {
     box-shadow: 0 0 10px #C5C7C9; }
 
-  #chain-nav {
+  #chain-nav, .overlay {
     width: 100%;
     max-width: 1024px;
     margin: 0 auto; }
@@ -505,7 +508,7 @@ select {
     padding-top: 50px; }
 
   .overlay {
-    position: fixed;
+    /*position: fixed;*/
     top: 0;
     padding-top: 50px; }
     .overlay .msg .dismiss {

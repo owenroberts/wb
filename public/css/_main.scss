@@ -103,11 +103,13 @@
 		background: white;
 		z-index: 9;
 		position: relative;
+		font-size: 0; /* temp fix for first path chain mod options spacing */
 	}
 
 	.word, .next, .prev, .mod-btn, .mod-close {
 		height: 36px;
 		display: inline-block;
+		font-size: 26px;
 	}
 
 	.next, .prev, .mod-btn, .mod-close, .mod-options, .mod-open {
