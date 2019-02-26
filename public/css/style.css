@@ -483,17 +483,41 @@ select {
   #desktop-container {
     background-color: #f2f2f2;
     width: 100%;
-    height: 100%; }
+    height: 100%;
+    position: fixed; }
 
   #container {
-    box-shadow: 0 0 10px #C5C7C9; }
+    box-shadow: 0 0 10px #C5C7C9;
+    overflow-y: scroll; }
+
+  #container::-webkit-scrollbar {
+    width: 0; }
 
   #chain-nav, .overlay {
     width: 100%;
-    max-width: 1024px;
+    max-width: 540px;
     margin: 0 auto; }
 
-  /* #loader img { width: 2em; } */ }
+  #prev-chain {
+    left: 0; }
+
+  #next-chain {
+    right: 0; }
+
+  /* #loader img { width: 2em; } */
+  .overlay {
+    overflow-y: scroll;
+    height: inherit; }
+
+  .overlay::-webkit-scrollbar {
+    width: 0.75rem; }
+
+  .overlay::-webkit-scrollbar-track {
+    -webkit-box-shadow: none; }
+
+  .overlay::-webkit-scrollbar-thumb {
+    background-color: white;
+    /*outline: 1px solid slategrey;*/ } }
 /*  phone  */
 @media screen and (max-device-width: 480px) {
   body {
