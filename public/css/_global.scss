@@ -15,7 +15,6 @@ body {
 	margin: 0;
 	width: 100%;
 	overflow-x: hidden;
-	
 }
 
 #desktop-container {
@@ -24,13 +23,12 @@ body {
 
 #container {
 	width: 100%;
-	max-width: 1024px;
+	max-width: $desktop-width;
 	margin: 0 auto;
 	background-color: white;
 	height: 100%;
 	position: relative;
 }
-
 
 pre { font-size:12px; }
 a, .leftarrow, .rightarrow {

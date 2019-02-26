@@ -26,5 +26,12 @@ window.addEventListener('load', function() {
 			}
 		});
 	}
-	fadeNode(0);
+	// fadeNode(0);
+
+	if (!localStorage.getItem('def-tip')) {
+		B.report('Word Definitions', 'Tap any word for the definition that is synonymous with previous word in the chain.', undefined, undefined, () => { fadeNode(0); });
+		localStorage.setItem('def-tip', true);
+	} else {
+		fadeNode(0);
+	}
 });

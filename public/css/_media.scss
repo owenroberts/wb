@@ -1,6 +1,6 @@
 /*  media queries */
 /* desktop */
-@media only screen and (min-width : 1024px) {
+@media only screen and (min-width : $desktop-width) {
 	#desktop-container {
 		background-color: $lightgray;
 		width: 100%;
@@ -26,19 +26,13 @@
 
 /*  non phone   */
 @media screen and (min-device-width: 480px){
-	.btn {
-		background: #81BBFF;
-	}
-	#container {
-		padding-top: 50px;
-	}
+	.btn { background: #81BBFF; }
+	#container { padding-top: 50px; }
 	.overlay {
 		/*position: fixed;*/
 		top: 0;
-		padding-top: 50px;
-		.msg .dismiss {
-			top: 60px;
-		}
+		padding-top: 60px;
+		.msg .dismiss { top: 60px; }
 	}
 	
 }

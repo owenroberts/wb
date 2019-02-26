@@ -21,7 +21,7 @@ body {
 
 #container {
   width: 100%;
-  max-width: 1024px;
+  max-width: 540px;
   margin: 0 auto;
   background-color: white;
   height: 100%;
@@ -479,7 +479,7 @@ select {
 
 /*  media queries */
 /* desktop */
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-width: 540px) {
   #desktop-container {
     background-color: #f2f2f2;
     width: 100%;
@@ -509,7 +509,7 @@ select {
   .overlay {
     /*position: fixed;*/
     top: 0;
-    padding-top: 50px; }
+    padding-top: 60px; }
     .overlay .msg .dismiss {
       top: 60px; } }
 #chain-nav {

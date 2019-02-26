@@ -68,7 +68,7 @@ window.addEventListener('load', function() {
 			B.fade(reportDiv, 'out', 'none');
 			document.body.style.overflow = 'auto';	
 			if (dismissBack)
-				dismissback();
+				dismissBack();
 			reportDiv.removeEventListener('click', dismissReport);
 		}
 		reportDiv.addEventListener('click', dismissReport);
