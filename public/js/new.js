@@ -162,7 +162,7 @@ window.addEventListener('load', function() {
 			}
 			B.nodeLimitArray.push(nodeLimit);
 
-			B.fade(B.loader, 'in', 'none');
+			// B.fade(B.loader, 'in', 'none');
 
 			const url = `/chain?s=${startWord}&e=${endWord}&sl=${synonymLevel}&nl=${nodeLimit}`;
 			fetch(url)
