@@ -5,6 +5,16 @@ var mongodb = require('mongodb')
 	,	Server = require('mongodb').Server
 	;
 
+/*
+	chains saved based on query strings
+	start word - node limit - end word - synonym limit
+	test10end10
+	or modified searches, add mods
+	test10end10-example7cool10
+	include chain w synonym alternatives
+	search time
+*/
+
 ChainDb = function(uri) {
 	if (uri == "localhost") {
 		this.db = new Db('bridge', new Server('localhost', 27017, {safe:false}, {auto_reconnect:true}, {}));

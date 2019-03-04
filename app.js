@@ -18,7 +18,7 @@ const cache = new NodeCache();
 const hbs = handlebars.create({
 	defaultLayout: "main",
 	partialsDir: __dirname + '/views/partials/',
-	helpers: { json: function(content) { return JSON.stringify(content); } }
+	helpers: { json: content => { return JSON.stringify(content); } }
 });
 
 // view engine setup
@@ -34,10 +34,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res) {
 	let err;
-	if (req.query.err instanceof Array) 
-		err = req.query.err[req.query.err.length - 1];
-	else 
-		err = req.query.err;
+	if (req.query.err instanceof Array) err = req.query.err[req.query.err.length - 1];
+	else err = req.query.err;
 	res.render('index', {
 		errmsg: err
 	});
@@ -64,7 +62,6 @@ app.get('/chain', function(req, res) {
 });
 
 app.post('/save', function(req, res) {
-	console.log(req.body)
 	db.save({
 		queryString: req.body.qs,
 		chain: JSON.parse(req.body.chain),
@@ -81,7 +78,6 @@ app.post('/save', function(req, res) {
 
 
 app.get('/def', function(req,res) {
-
 	def.getDef(req.query.word, req.query.synonym, function(err, result) {
 		if (err) console.log(err);
 		else res.json({ data: result });

@@ -9,10 +9,8 @@ function getDef(word, synonym, callback) {
 				data.push(results[i]);
 			}
 		}
-		if (data.length > 0) 
-			callback(null, data);
-		else
-			callback(null, results);
+		if (data.length > 0) callback(null, data);
+		else callback(null, results);
 	})
 }
 
