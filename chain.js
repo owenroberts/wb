@@ -66,13 +66,15 @@ function makeChain(query, allSynonyms, callback) {
 
 		const startIndex = startChain.length - 1;
 		const endIndex = endChain.length - 1;
-		const allSynsCopy = allSyns.slice(0);
+		let allSynsCopy = allSyns.slice(0);
 		
 		// get synonyms of last word in start chain 
 		startChain[startIndex].synonyms = getSynonyms(startChain[startIndex].word, allSynsCopy);
 
 		// add new syns to all syns
-		allSynsCopy = allSynsCopy.concat(startChain[startIndex].synonyms.map(s => s.word));
+		for (let i = 0; i < startChain[startIndex].synonyms.length; i++) {
+			allSynsCopy.push(startChain[startIndex].synonyms[i].word);
+		}
 
 		// test each new syn again the syns of last word in end chain
 		for (let i = 0; i < startChain[startIndex].synonyms.length; i++) {
