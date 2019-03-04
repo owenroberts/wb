@@ -225,9 +225,9 @@ select {
     font-size: 1em;
     cursor: pointer;
     padding: 0.25em 0.5em;
-    background-color: #cfe6ff;
+    /*background-color: $disabled;*/
     border: none;
-    color: #C5C7C9;
+    /*color: $gray;*/
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none; }
@@ -455,27 +455,28 @@ select {
       margin: 0.2em 0; }
 
 #tooltips {
-  background-color: #6a75ff;
-  color: white;
-  margin: 12px;
-  padding: 1em;
-  font-size: 0.75em;
-  margin-top: 60px;
-  height: 0;
-  transition: height 500ms; }
-  #tooltips.active {
-    height: 105px; }
-  #tooltips #count {
+  position: relative;
+  transition: height 300ms ease-out; }
+  #tooltips.closed {
+    height: 0; }
+  #tooltips.open {
+    height: 140px; }
+  #tooltips #tip-wrap-wrap {
+    padding: 1em; }
+  #tooltips #tip-wrap {
+    position: relative;
+    border: 1px solid black;
+    /*margin: 1rem;*/
+    padding: 1em 2em;
+    text-align: center;
+    line-height: 1.5;
+    font-size: 18px; }
+  #tooltips .tip-close {
     position: absolute;
-    right: 1.5em; }
-  #tooltips #tip_one, #tooltips #tip_two, #tooltips #tip_three {
-    width: 75%; }
-  #tooltips #tip_two {
-    display: none; }
-  #tooltips #tip_three {
-    display: none; }
-  #tooltips #next_btn {
-    text-align: right; }
+    top: 0;
+    right: 0; }
+  #tooltips .tip-text {
+    margin-top: 0.5em; }
 
 /*  media queries */
 /* desktop */

@@ -23,15 +23,19 @@ window.addEventListener('load', function() {
 				fadeNode(++index);
 			} else {
 				B.isAnimating = false;
+				checkTip();
 			}
 		});
 	}
-	// fadeNode(0);
+	fadeNode(0);
 
-	if (!localStorage.getItem('def-tip')) {
-		B.report('Word Definitions', 'Tap any word for the definition that is synonymous with previous word in the chain.', undefined, undefined, () => { fadeNode(0); });
-		localStorage.setItem('def-tip', true);
-	} else {
-		fadeNode(0);
+	function checkTip() {
+		if (!localStorage.getItem('def-tip')) {
+			// B.report('Tip:', 'You can tap any word to see its definition.');
+			document.getElementById('tooltips').classList.replace('closed', 'open');
+			localStorage.setItem('def-tip', true);
+		} else {
+			document.getElementById('tooltips').remove();
+		}
 	}
 });

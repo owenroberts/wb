@@ -1,29 +1,25 @@
 #tooltips {
-	background-color: $blue;
-	color: $white;
-	margin: 12px;
-	padding:1em;
-	font-size: 0.75em;
-	margin-top: 60px;
-	height: 0;
-	transition: height 500ms;
-	&.active {
-		height: 105px;
+	position: relative;
+	transition: height 300ms ease-out;
+	&.closed { height: 0; }
+	&.open { height: 140px; }
+	#tip-wrap-wrap {
+		padding: 1em;
 	}
-	#count {
-		position:absolute;
-		right: 1.5em;
+	#tip-wrap {
+		position: relative;
+		border: 1px solid black;
+		/*margin: 1rem;*/
+		padding: 1em 2em;
+		text-align: center;
+		line-height: 1.5;
+		font-size: 18px;
 	}
-	#tip_one, #tip_two, #tip_three {
-		width: 75%;
+	.tip-close {
+		position: absolute;
+		top: 0;
+		right: 0;
 	}
-	#tip_two {
-		display: none;
-	}
-	#tip_three {
-		display: none;
-	}
-	#next_btn {
-		text-align: right;
-	}
+	.tip-text { margin-top: 0.5em; }
 }
+

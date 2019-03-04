@@ -76,22 +76,17 @@ window.addEventListener('load', function() {
 
 	B.createElem = function(tag, classes, text, img) {
 		const elem = document.createElement(tag);
-		if (classes) {
-			classes.forEach(function(c) {
-				elem.classList.add(c);
-			});
-		}
-		if (text) {
-			elem.textContent = text;
-		}
+		classes.forEach(c => {
+			elem.classList.add(c);
+		});
+		if (text) elem.textContent = text;
 		if (img) {
 			const image = new Image();
-			// const image = document.createElement('embed');
 			image.src = img;
 			elem.appendChild(image);
 		}
 		return elem;
-	}
+	};
 
 	B.makeNode = function(index, parent) {
 		const node = B.createElem('div', ['node', 'fade', 'hidden', 'display-none']);

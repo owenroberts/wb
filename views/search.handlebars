@@ -9,9 +9,7 @@
 		<div id="report-title" class="title"></div>
 		<div id="report-txt" class="txt"></div>
 		<div id="report-btn" class="btn"></div>
-		<div id="report-dismiss" class="dismiss">
-			{{> dismiss-btn}}
-		</div>
+		<div id="report-dismiss" class="dismiss">{{> dismiss-btn}}</div>
 	</div>
 </div>
 
@@ -23,9 +21,7 @@
 		<div class="share-item" id="email"><span>Email the link</span></div>
 		{{!-- <div class="share-item" id="fb">Facebook</div> --}}
 		<div class="share-item" id="tw"><span>Share it on Twitter</span></div>
-		<div class="dismiss">
-			{{> dismiss-btn}}
-		</div>
+		<div class="dismiss">{{> dismiss-btn}}</div>
 	</div>
 </div>
 
@@ -37,13 +33,24 @@
 	</div>
 </div>
 
+<div id="tooltips" class="closed">
+	<div id="tip-wrap-wrap">
+		<div id="tip-wrap">
+			<div class="tip-close" onclick={closeTip()}>
+				<img src="/img/mod-close.svg">
+			</div>
+			<div class="tip-text">Tip: You can tap any word to see its definition.</div>
+		</div>
+	</div>
+</div>
+
 <div id="chains">
 	<div class="chain fade current" id="chain-0">
 		<div class="nodes">
 			{{#each data.chain}}
 				<div class="node fade" data-word={{this.word}} data-index={{@index}} data-syndex={{this.syndex}}>
 					<div class="word">
-						<span onclick={B.getDef();}>{{this.word}}</span>
+						<span class="fade visible" onclick={B.getDef();}>{{this.word}}</span>
 					</div>
 					{{#unless @first}}
 						{{#unless @last}}
@@ -110,5 +117,10 @@
 		B.endWord = d.end;
 		B.queryStrings.push(d.queryString);
 	});
+	function closeTip() {
+		const tt = document.getElementById('tooltips');
+		tt.classList.replace("open", "closed");
+		tt.addEventListener('transitionend', tt.remove);
+	}
 </script>
 <script src="/js/share.js"></script>

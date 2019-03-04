@@ -31,7 +31,7 @@
 		font-size: 1em;
 		cursor: pointer;
 		padding: 0.25em 0.5em;
-		background-color: $disabled;
+		/*background-color: $disabled;*/
 		&.active {
 			background-color: $active;
 			color: $black;
@@ -41,7 +41,7 @@
 			}
 		}
 		border: none;
-		color: $gray;
+		/*color: $gray;*/
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		appearance: none;  

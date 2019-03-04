@@ -80,7 +80,6 @@ function makeChain(query, allSynonyms, callback) {
 			for (let j = 0; j < endChain[endIndex].synonyms.length; j++) {
 				const endSyn = endChain[endIndex].synonyms[j];
 				attemptCount++;
-				// console.log('attempt', attemptCount);
 				if (startSyn.word == endSyn.word && !foundChain) {
 					foundChain = true;
 					for (let k = endChain.length-1; k >= 0; k--) {
@@ -104,14 +103,10 @@ function makeChain(query, allSynonyms, callback) {
 							chain[k].alts.push(alts[l].word);
 						}
 					}
-					// console.log(chain); /* the first working chain */
 					callback(null, chain);
 					return;
 				} 
 			}
-			//  console.log('word', startChain[startIndex].word, 'len', startCopy.length + endChain.length, 'nn', currentNodeNumber)
-			// might need an attempt limit re: green -> avocado, mod chromatic to party
-			
 			if (startCopy.length + endChain.length < currentNodeNumber && !foundChain) {
 				buildChain(startCopy, endChain, allSynsCopy); /* fastest ?*/
 			}
