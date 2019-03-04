@@ -226,6 +226,7 @@ select {
     cursor: pointer;
     padding: 0.25em 0.5em;
     /*background-color: $disabled;*/
+    background-color: #75b5ff;
     border: none;
     /*color: $gray;*/
     -webkit-appearance: none;

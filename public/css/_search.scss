@@ -32,6 +32,7 @@
 		cursor: pointer;
 		padding: 0.25em 0.5em;
 		/*background-color: $disabled;*/
+		background-color: $active;
 		&.active {
 			background-color: $active;
 			color: $black;
