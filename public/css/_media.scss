@@ -27,6 +27,7 @@
 	.overlay {
 		overflow-y: scroll;
 		height: inherit;
+		min-width: 0;
 	}
 
 	.overlay::-webkit-scrollbar {
