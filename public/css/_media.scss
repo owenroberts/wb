@@ -46,8 +46,9 @@
 }
 
 /*  phone  */
-@media screen and (max-device-width: 480px){
+@media screen and (max-device-width: 480px) {
 	body { -webkit-text-size-adjust: none; }
+	.overlay { position: absolute; }
 }
 
 /*  non phone   */
