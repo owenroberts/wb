@@ -26,17 +26,19 @@
 	<div id="about-btn"><span>about</span></div>
 </div>
 
+<div id="call">Create connections between words.</div>
+
 <div id="search" class="fade">
-	<form action="/search" method="get" autocomplete="off">
+	<form id="form" action="/bridge" method="get" autocomplete="off">
 		<input type="text" id="start-word" name="s" class="query" placeholder="Enter word 1">
 		<input type="text" id="end-word" name="e" class="query" placeholder="Enter word 2">
 		<input type="hidden" value="10" name="nl">
 		<input type="hidden" value="10" name="sl">
-		<input type="submit" value="Bridge" id="bridge" class="btn">
-		<div class="ldr" id="ldr">
-			<img src="/img/loader-black.svg" alt="">
-		</div>
 	</form>
+	<input type="submit" value="Bridge" id="bridge" class="btn">
+	<div class="ldr" id="ldr">
+		<img src="/img/loader-black.svg" alt="">
+	</div>
 </div>
 
 <script type="text/javascript">

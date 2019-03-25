@@ -16,7 +16,7 @@
 	left: 0;
 	right: 0;
 	z-index: 3;
-	background: $white;
+	background: $nav-bg;
 	
 	border-top: 3px solid $lightgray;
 	
@@ -30,11 +30,9 @@
 		display:inline-block;
 		margin:0 4px;
 		transition: color 300ms;
-		color: $gray;
+		color: $nav-dot;
 		cursor: pointer;
-		&.current { 
-			color: black; 
-		}
+		&.current { color: white; }
 	}
 
 	.chain-dot:before { 
@@ -51,24 +49,17 @@
 		display: inline-block;
 		position: absolute;
 		top: 0;
-		svg path { stroke: $gray; }
-		&.clickable svg path {
-			stroke: $black;
-		}
+		cursor: default;
+		svg path { stroke: $nav-btn; }
+		&.clickable { cursor: pointer; }
+		&.clickable svg path { stroke: white; }
 	}
 
 	#prev-chain, #next-chain {
-		cursor: pointer;
-		svg {
-			vertical-align: middle;
-		}
-		circle {
-			transition: fill 500ms ease-in-out;
-		}
+		svg { vertical-align: middle; }
+		circle { transition: fill 500ms ease-in-out; }
 		&.active {
-			circle {
-				fill: $tool;
-			}
+			circle { fill: $nav-btn; }
 		}
 	}
 

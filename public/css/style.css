@@ -199,6 +199,15 @@ select {
 .index {
   justify-content: space-between; }
 
+#title {
+  font-weight: bold; }
+
+#call {
+  padding: 0 1rem;
+  width: 50%;
+  margin-top: -1rem;
+  margin-bottom: 2rem; }
+
 #search {
   margin-top: 1rem;
   padding: 0 1rem;
@@ -214,9 +223,15 @@ select {
     padding-bottom: 8px;
     padding: 0.2em; }
     #search input[type="text"] {
-      width: 100%; }
+      width: 100%;
+      transition: border-color 300ms ease-in; }
       #search input[type="text"]::-webkit-input-placeholder {
-        color: #C5C7C9; }
+        color: #C5C7C9;
+        transition: color 300ms ease-in; }
+    #search input[type="text"].error {
+      border-color: #C40000; }
+      #search input[type="text"].error::-webkit-input-placeholder {
+        color: #EA6A6A; }
     #search input:focus {
       background: #C5C7C9;
       color: black; }
@@ -534,7 +549,7 @@ select {
   left: 0;
   right: 0;
   z-index: 3;
-  background: white;
+  background: #212121;
   border-top: 3px solid #f2f2f2; }
   #chain-nav.slide-up {
     height: 60px;
@@ -547,10 +562,10 @@ select {
     display: inline-block;
     margin: 0 4px;
     transition: color 300ms;
-    color: #C5C7C9;
+    color: #8D8D8D;
     cursor: pointer; }
     #chain-nav .chain-dot.current {
-      color: black; }
+      color: white; }
   #chain-nav .chain-dot:before {
     content: "\2022";
     font-size: 1.5em; }
@@ -560,19 +575,20 @@ select {
   #chain-nav .chain-btn {
     display: inline-block;
     position: absolute;
-    top: 0; }
+    top: 0;
+    cursor: default; }
     #chain-nav .chain-btn svg path {
-      stroke: #C5C7C9; }
+      stroke: #747474; }
+    #chain-nav .chain-btn.clickable {
+      cursor: pointer; }
     #chain-nav .chain-btn.clickable svg path {
-      stroke: black; }
-  #chain-nav #prev-chain, #chain-nav #next-chain {
-    cursor: pointer; }
-    #chain-nav #prev-chain svg, #chain-nav #next-chain svg {
-      vertical-align: middle; }
-    #chain-nav #prev-chain circle, #chain-nav #next-chain circle {
-      transition: fill 500ms ease-in-out; }
-    #chain-nav #prev-chain.active circle, #chain-nav #next-chain.active circle {
-      fill: #ebebeb; }
+      stroke: white; }
+  #chain-nav #prev-chain svg, #chain-nav #next-chain svg {
+    vertical-align: middle; }
+  #chain-nav #prev-chain circle, #chain-nav #next-chain circle {
+    transition: fill 500ms ease-in-out; }
+  #chain-nav #prev-chain.active circle, #chain-nav #next-chain.active circle {
+    fill: #747474; }
   #chain-nav #prev-chain {
     left: 1em; }
   #chain-nav #next-chain {

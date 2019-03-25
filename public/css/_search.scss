@@ -13,11 +13,19 @@
 		padding-bottom: 8px;
 		padding: 0.2em;
 		
+		
+
 		&[type="text"] {
 			width: 100%;
-			&::-webkit-input-placeholder {
-				color: $gray;
+			transition: border-color 300ms ease-in;
+			&::-webkit-input-placeholder { 
+				color: $gray; 
+				transition: color 300ms ease-in;
 			}
+		}
+		&[type="text"].error {
+			border-color: $error;
+			&::-webkit-input-placeholder { color: $error-text; }
 		}
 		&:focus {
 			background:$gray; 

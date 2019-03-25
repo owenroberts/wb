@@ -42,15 +42,13 @@ app.get('/', function(req, res) {
 });
 
 app.get('/search', function(req, res) {
+	res.redirect('/bridge?qs=' + makeQueryString(req.query));
+});
+
+app.get('/bridge', function(req, res) {
 	loadChain(req, function(result) { /* loadChain for production, makeChain to skip db/cache */
-		if (result.error)
-			res.render('index', {
-				errmsg: result.error
-			});
-		else
-			res.render('search', {
-				data: result
-			});
+		if (result.error) res.render('index', { errmsg: result.error });
+		else res.render('search', { data: result });
 	});
 });
 
@@ -75,7 +73,6 @@ app.post('/save', function(req, res) {
 		else res.json({ msg: 'success' });
 	});
 });
-
 
 app.get('/def', function(req,res) {
 	def.getDef(req.query.word, req.query.synonym, function(err, result) {
@@ -133,6 +130,7 @@ function makeChain(query, callback) {
 }
 
 function makeQueryString(query) {
+	console.log('mqs', query)
 	let startWord = query.s;
 	let endWord = query.e;
 	var string = startWord + query.nl + endWord + query.sl;
