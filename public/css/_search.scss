@@ -1,4 +1,4 @@
-#search {
+ #search {
 	margin-top: 1rem;
 	padding: 0 1rem;
 	font-size: 26px;
@@ -13,13 +13,12 @@
 		padding-bottom: 8px;
 		padding: 0.2em;
 		
-		
-
 		&[type="text"] {
+			font-weight: normal;			
 			width: 100%;
 			transition: border-color 300ms ease-in;
 			&::-webkit-input-placeholder { 
-				color: $gray; 
+				color:  $input-text; 
 				transition: color 300ms ease-in;
 			}
 		}
@@ -28,8 +27,8 @@
 			&::-webkit-input-placeholder { color: $error-text; }
 		}
 		&:focus {
-			background:$gray; 
-			color:$black;
+			background: $gray; 
+			color: $black;
 		}
 	}
 	
@@ -48,6 +47,9 @@
 			&:hover {
 				background-color: $hover;
 			}
+		}
+		&:focus {
+			outline: 1px solid black;
 		}
 		border: none;
 		/*color: $gray;*/

@@ -22,6 +22,9 @@ window.addEventListener('load', function() {
 			document.getElementById('form').submit();
 	}
 	bridge.addEventListener('click', submit);
+	document.addEventListener('keyup', ev => {
+		if (ev.which == 13) submit();
+	});
 
 	/* about */
 	const about = document.getElementById('about');

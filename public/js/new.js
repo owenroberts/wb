@@ -73,6 +73,11 @@ window.addEventListener('load', function() {
 
 	B.makeChain = data => {
 
+		/* crap hack to close any open mod options while switching chains 
+			no also not DRY !*/
+		if (B.modIsOpen)
+			Array.from(document.getElementsByClassName('mod-options')).filter(e => e.style.display == 'inline-block').forEach(e => B.closeModOptions(e.children[0], false));
+
 		B.isAnimating = true;
 		setTimeout(() => {
 			B.isAnimating = false;
@@ -162,9 +167,10 @@ window.addEventListener('load', function() {
 			}
 			B.nodeLimitArray.push(nodeLimit);
 
-			// B.fade(B.loader, 'in', 'none');
+			// ensure new results with first chosen syn - dont forget the search words !!
+			const syns = [B.startWord, B.endWord, ...B.chains.map(c => c[1].word)];
 
-			const url = `/chain?s=${startWord}&e=${endWord}&sl=${synonymLevel}&nl=${nodeLimit}`;
+			const url = `/chain?s=${startWord}&e=${endWord}&sl=${synonymLevel}&nl=${nodeLimit}&as=${syns}`;
 			fetch(url)
 				.then(response => { return response.json(); })
 				.then(obj => {

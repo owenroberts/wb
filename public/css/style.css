@@ -203,9 +203,10 @@ select {
   font-weight: bold; }
 
 #call {
+  font-size: 18px;
   padding: 0 1rem;
-  width: 50%;
-  margin-top: -1rem;
+  width: 260px;
+  margin-top: -1.9rem;
   margin-bottom: 2rem; }
 
 #search {
@@ -223,10 +224,11 @@ select {
     padding-bottom: 8px;
     padding: 0.2em; }
     #search input[type="text"] {
+      font-weight: normal;
       width: 100%;
       transition: border-color 300ms ease-in; }
       #search input[type="text"]::-webkit-input-placeholder {
-        color: #C5C7C9;
+        color: #919191;
         transition: color 300ms ease-in; }
     #search input[type="text"].error {
       border-color: #C40000; }
@@ -253,6 +255,8 @@ select {
       transition: background-color 300ms ease-in; }
       #search input[type="submit"].active:hover {
         background-color: #499CFC; }
+    #search input[type="submit"]:focus {
+      outline: 1px solid black; }
 
 .fadein {
   opacity: 0; }
@@ -337,7 +341,6 @@ select {
     border-radius: 1em;
     transition: background-color 300ms; }
   .node:first-child, .node:last-child {
-    padding: 0.25em 0;
     display: block;
     font-weight: 600;
     text-transform: lowercase; }
@@ -524,7 +527,10 @@ select {
     -webkit-text-size-adjust: none; }
 
   .overlay {
-    position: absolute; } }
+    position: absolute; }
+
+  .overlay .msg .dismiss {
+    position: fixed; } }
 /*  non phone   */
 @media screen and (min-device-width: 480px) {
   .btn {

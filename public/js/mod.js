@@ -29,7 +29,7 @@ window.addEventListener('load', function() {
 		}, B.fadeDur);
 	};
 
-	// ** modify chain ** //
+	/** modify chain **/
 	B.modifyChain = e => {
 
 		const node = e.parentNode.parentNode;
@@ -119,6 +119,7 @@ window.addEventListener('load', function() {
 	};
 	
 	B.closeModOptions = (e, isMod) => {
+		console.log(e);
 		const node = e.parentNode.parentNode; /* the main node derived from the mod close btn */
 		const index = +node.dataset.index;
 		e.parentNode.style.display = 'none';

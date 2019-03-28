@@ -46,14 +46,14 @@ app.get('/search', function(req, res) {
 });
 
 app.get('/bridge', function(req, res) {
-	loadChain(req, function(result) { /* loadChain for production, makeChain to skip db/cache */
+	makeChain(req.query, function(result) { /* loadChain w req for production, makeChain w req.query to skip db/cache */
 		if (result.error) res.render('index', { errmsg: result.error });
 		else res.render('search', { data: result });
 	});
 });
 
 app.get('/chain', function(req, res) {
-	loadChain(req, function(result) { /* loadChain for production, makeChain to skip db/cache */
+	makeChain(req.query, function(result) { /* loadChain for production, makeChain to skip db/cache */
 		if (result.error) res.json({ errormsg: result.error });
 		else res.json({ data: result });
 	});
@@ -109,7 +109,9 @@ function loadChain(req, callback) {
 }
 
 function makeChain(query, callback) {
+	console.log('query', query.as, query.s, query.e);
 	let syns = query.as ? query.as.split(',') : [query.s, query.e];
+	console.log('as', syns);
 	var query = {
 		queryString: makeQueryString(query),
 		start: query.s.replace(/ /g, ""),
@@ -130,7 +132,6 @@ function makeChain(query, callback) {
 }
 
 function makeQueryString(query) {
-	console.log('mqs', query)
 	let startWord = query.s;
 	let endWord = query.e;
 	var string = startWord + query.nl + endWord + query.sl;
