@@ -14,10 +14,15 @@ window.addEventListener('load', function() {
 		}
 	}
 
-	function setChainDepth() {
+	function closeMod() {
 		/* crap hack to close any open mod options while switching chains */
 		if (B.modIsOpen)
 			Array.from(document.getElementsByClassName('mod-options')).filter(e => e.style.display == 'inline-block').forEach(e => B.closeModOptions(e.children[0], false));
+	}
+
+	function setChainDepth() {
+		
+		closeMod();
 
 		for (let i = 0; i < dots.length; i++) {
 			if (i == B.currentChain) {
@@ -58,6 +63,7 @@ window.addEventListener('load', function() {
 
 	nextChainBtn.addEventListener('click', () => {
 		if (B.currentChain + 1 < B.chains.length && !B.isAnimating) {
+			closeMod();
 			B.currentChain = B.currentChain + 1;
 			setChainDepth();
 			B.btnAnim(nextChainBtn);
@@ -65,6 +71,7 @@ window.addEventListener('load', function() {
 	});
 	prevChainBtn.addEventListener('click', () => {
 		if (B.currentChain > 0 && !B.isAnimating) {
+			closeMod();
 			B.currentChain = B.currentChain - 1;
 			setChainDepth();
 			B.btnAnim(prevChainBtn);
@@ -73,10 +80,7 @@ window.addEventListener('load', function() {
 
 	B.makeChain = data => {
 
-		/* crap hack to close any open mod options while switching chains 
-			no also not DRY !*/
-		if (B.modIsOpen)
-			Array.from(document.getElementsByClassName('mod-options')).filter(e => e.style.display == 'inline-block').forEach(e => B.closeModOptions(e.children[0], false));
+		closeMod();
 
 		B.isAnimating = true;
 		setTimeout(() => {
@@ -169,7 +173,7 @@ window.addEventListener('load', function() {
 
 			// ensure new results with first chosen syn - dont forget the search words !!
 			const syns = [B.startWord, B.endWord, ...B.chains.map(c => c[1].word)];
-
+			console.log(syns);
 			const url = `/chain?s=${startWord}&e=${endWord}&sl=${synonymLevel}&nl=${nodeLimit}&as=${syns}`;
 			fetch(url)
 				.then(response => { return response.json(); })
