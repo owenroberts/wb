@@ -72,6 +72,9 @@ window.addEventListener('load', function() {
 			reportDiv.removeEventListener('click', dismissReport);
 		}
 		reportDiv.addEventListener('click', dismissReport);
+		addEventListener('keydown', ev => {
+			if (ev.which == 27 || ev.key == 'Escape') dismissReport()
+		});
 	};
 
 	B.createElem = function(tag, classes, text, img) {
