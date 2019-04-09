@@ -173,7 +173,6 @@ window.addEventListener('load', function() {
 
 			// ensure new results with first chosen syn - dont forget the search words !!
 			const syns = [B.startWord, B.endWord, ...B.chains.map(c => c[1].word)];
-			console.log(syns);
 			const url = `/chain?s=${startWord}&e=${endWord}&sl=${synonymLevel}&nl=${nodeLimit}&as=${syns}`;
 			fetch(url)
 				.then(response => { return response.json(); })
