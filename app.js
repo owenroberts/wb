@@ -46,14 +46,15 @@ app.get('/search', function(req, res) {
 });
 
 app.get('/bridge', function(req, res) {
-	loadChain(req, function(result) { /* loadChain w req for production, makeChain w req.query to skip db/cache */
+	/* loadChain w req for production, makeChain w req.query to skip db/cache */
+	loadChain(req, function(result) { 
 		if (result.error) res.render('index', { errmsg: result.error });
 		else res.render('search', { data: result });
 	});
 });
 
 app.get('/chain', function(req, res) {
-	loadChain(req, function(result) { /* loadChain for production, makeChain to skip db/cache */
+	loadChain(req, function(result) { 
 		if (result.error) res.json({ errormsg: result.error });
 		else res.json({ data: result });
 	});

@@ -256,7 +256,7 @@ select {
       #search input[type="submit"].active:hover {
         background-color: #499CFC; }
     #search input[type="submit"]:focus {
-      outline: 1px solid #C5C7C9; }
+      outline: 2px solid black; }
 
 .fadein {
   opacity: 0; }

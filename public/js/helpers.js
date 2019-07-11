@@ -23,9 +23,7 @@ window.addEventListener('load', function() {
 
 		const [addClass, removeClass] = status == 'in' ? ['fade-in', 'fade-out'] : ['fade-out', 'fade-in'];
 
-		if (status == 'in') {
-			e.style.display = display;
-		}
+		if (status == 'in') e.style.display = display;
 
 		setTimeout(() => {
 			if (e.classList.contains(removeClass))
