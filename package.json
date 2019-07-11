@@ -22,7 +22,8 @@
     "performance-now": "^2.1.0",
     "serve-favicon": "^2.5.0",
     "thesaurus": "0.0.0",
-    "wordnet": "0.1.2"
+    "wordnet": "0.1.2",
+    "wordnet-db": "^3.1.11"
   },
   "repository": {
     "type": "git",
