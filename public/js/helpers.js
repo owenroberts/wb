@@ -54,7 +54,7 @@ window.addEventListener('load', function() {
 		reportDiv.scrollTop = 0;
 		reportMsg.scrollTop = 0;
 		reportTxt.innerHTML = msg;
-		reportTitle.textContent = title;
+		reportTitle.innerHTML = title;
 		if (ok) {
 			reportBtn.style.display = 'block';
 			reportBtn.textContent = ok;

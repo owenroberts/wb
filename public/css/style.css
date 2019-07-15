@@ -280,17 +280,17 @@ select {
 }
 
 #about .sub-title {
-  font-size: 0.9em;
   font-weight: bold;
   margin: 0.5em 0;
 }
 #about .text {
-  font-size: 0.75em;
   margin: 0.25em 0;
+  margin-bottom: 2em;
 }
 #about a {
   color: #6a75ff;
   text-decoration: underline;
+  cursor: pointer;
 }
 
 #search {

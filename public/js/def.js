@@ -7,7 +7,12 @@ window.addEventListener('load', function() {
 		const index = +node.dataset.index;
 		
 		// 0 of undefined
-		const synonym = index > 0 ? B.chains[B.currentChain][index - 1].word : B.chains[B.currentChain][index + 1].word;
+		let synonym;
+		if (index == 0 || index == B.chains[B.currentChain].length - 2) {
+			synonym = B.chains[B.currentChain][index + 1].word;
+		} else {
+			synonym = B.chains[B.currentChain][index - 1].word;
+		}
 
 		const url = `/def?word=${word}&synonym=${synonym}`;
 		
@@ -15,7 +20,7 @@ window.addEventListener('load', function() {
 			.then(response => { return response.json(); })
 			.then(result => {
 				B.fade(B.loader, 'out', 'none');
-				const title = `Definition for “${word}”`;
+				const title = `Definition for “${word}” <br> (synonym of “${synonym}”)`;
 				let msg = "";
 				const len = Math.min(result.data.length, 10);
 				for (let i = 0; i < len; i++) {

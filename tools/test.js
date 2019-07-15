@@ -11,11 +11,11 @@ program
 var query = {
 	start: program.args[0],
 	end: program.args[1],
-	nodeLimit: 9,
+	nodeLimit: 10,
 	synonymLevel: 10
 };
 let start = now();
-chain.makeChain(query, [program.args[0], program.args[1], 'achromatic'], function(err, data) {
+chain.makeChain(query, [program.args[0], program.args[1]], function(err, data) {
 	if (err) console.log(err);
 	else {
 		console.log("time", now() - start);
