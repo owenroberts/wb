@@ -20,7 +20,7 @@ window.addEventListener('load', function() {
 			.then(response => { return response.json(); })
 			.then(result => {
 				B.fade(B.loader, 'out', 'none');
-				const title = `Definition for “${word}” <br> (synonym of “${synonym}”)`;
+				const title = `Definition for “${word}” <br> <span style="font-size:18px">(as a synonym of “${synonym}”)</span>`;
 				let msg = "";
 				const len = Math.min(result.data.length, 10);
 				for (let i = 0; i < len; i++) {
