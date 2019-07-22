@@ -12,6 +12,8 @@
 		&.current { 
 			z-index: 2; 
 			opacity: 1;
+			background-color: $white;
+			min-height: 400px;
 		}
 	}
 }

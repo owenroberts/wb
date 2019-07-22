@@ -371,6 +371,7 @@ select {
 #chains .chain.current {
   z-index: 2;
   opacity: 1;
+  background-color: white;
 }
 
 .nodes {
@@ -607,9 +608,10 @@ select {
 }
 #tooltips.closed {
   height: 0;
+  overflow: hidden;
 }
 #tooltips.open {
-  height: auto;
+  height: 140px;
 }
 #tooltips #tip-wrap-wrap {
   padding: 1em;
@@ -686,6 +688,11 @@ select {
   }
 }
 /*  phone  */
+@media screen and (max-device-width: 320px) {
+  #tooltips.open {
+    height: 180px;
+  }
+}
 @media screen and (max-device-width: 480px) {
   body {
     -webkit-text-size-adjust: none;
@@ -697,6 +704,10 @@ select {
 
   .overlay .msg .dismiss {
     position: fixed;
+  }
+
+  #tooltips #tip-wrap {
+    font-size: 16px;
   }
 }
 /*  non phone   */

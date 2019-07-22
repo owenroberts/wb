@@ -1,8 +1,11 @@
 #tooltips {
 	position: relative;
 	transition: height 300ms ease-out;
-	&.closed { height: 0; }
-	&.open { height: auto; }
+	&.closed { 
+		height: 0; 
+		overflow: hidden;
+	}
+	&.open { height: 140px; }
 	#tip-wrap-wrap {
 		padding: 1em;
 	}
