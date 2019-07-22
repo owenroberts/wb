@@ -33,9 +33,9 @@ window.addEventListener('load', function() {
 		if (!localStorage.getItem('def-tip')) {
 			// B.report('Tip:', 'You can tap any word to see its definition.');
 			document.getElementById('tooltips').classList.replace('closed', 'open');
-			// localStorage.setItem('def-tip', true);
+			localStorage.setItem('def-tip', true);
 		} else {
-			// document.getElementById('tooltips').remove();
+			document.getElementById('tooltips').remove();
 		}
 	}
 });
