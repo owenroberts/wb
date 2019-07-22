@@ -609,7 +609,7 @@ select {
   height: 0;
 }
 #tooltips.open {
-  height: 140px;
+  height: auto;
 }
 #tooltips #tip-wrap-wrap {
   padding: 1em;

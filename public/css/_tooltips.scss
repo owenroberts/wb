@@ -2,7 +2,7 @@
 	position: relative;
 	transition: height 300ms ease-out;
 	&.closed { height: 0; }
-	&.open { height: 140px; }
+	&.open { height: auto; }
 	#tip-wrap-wrap {
 		padding: 1em;
 	}

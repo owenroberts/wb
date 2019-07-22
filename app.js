@@ -110,9 +110,7 @@ function loadChain(req, callback) {
 }
 
 function makeChain(query, callback) {
-	console.log('query', query.as, query.s, query.e);
 	let syns = query.as ? query.as.split(',') : [query.s, query.e];
-	console.log('as', syns);
 	var query = {
 		queryString: makeQueryString(query),
 		start: query.s.replace(/ /g, ""),
