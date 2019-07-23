@@ -42,7 +42,8 @@ app.get('/', function(req, res) {
 });
 
 app.get('/search', function(req, res) {
-	res.redirect('/bridge?qs=' + makeQueryString(req.query));
+	if (req.query.qs) res.redirect('/bridge?qs=' + req.query.qs);
+	else res.redirect('/bridge?qs=' + makeQueryString(req.query));
 });
 
 app.get('/bridge', function(req, res) {
@@ -131,6 +132,7 @@ function makeChain(query, callback) {
 }
 
 function makeQueryString(query) {
+	console.log(query);
 	let startWord = query.s;
 	let endWord = query.e;
 	var string = startWord + query.nl + endWord + query.sl;

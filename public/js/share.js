@@ -5,9 +5,9 @@ window.addEventListener('load', function() {
 	const shareDek = document.getElementById('share-dek');
 	const shareItems = document.getElementsByClassName('share-item');
 
-	if (!navigator.permissions) {
-		document.getElementById('link').style.display = 'none';
-	}
+	// if (!navigator.permissions) {
+	// 	document.getElementById('link').style.display = 'none';
+	// }
 
 	shareDek.textContent = `“${B.startWord}” & “${B.endWord}”`;
 
@@ -25,29 +25,24 @@ window.addEventListener('load', function() {
 			const start = B.chains[B.currentChain][0].word
 			const end = B.chains[B.currentChain][B.chains[B.currentChain].length - 1].word;
 			const title = "Word Bridge: " + start + " ... " + end;
-			const link = `${location.origin}/search?qs=${B.queryStrings[B.currentChain]}`;
+			const link = `${location.origin}/bridge?qs=${B.queryStrings[B.currentChain]}`;
 			const url = encodeURIComponent(link);
 
 			function share() {
 				switch(id) {
 					case 'link':
-						if (navigator.permissions) {
-							navigator.permissions.query({name: "clipboard-write"}).then(result => {
-									if (result.state == "granted" || result.state == "prompt") {
-										navigator.clipboard.writeText(link)
-											.then(() => { B.report('Share', 'Copied URL'); })
-											.catch(error => { 
-												console.log(error); 
-												B.report('Share Error', 'Unable to copy URL');
-											});
-									} else {
-										B.report('Share Error', 'Unable to copy URL');
-									}
+						/* copy to clipboard */
+						const el = document.createElement('textarea');
+						el.value = link;
+						document.body.appendChild(el);
+						el.select();
+						document.execCommand('copy');
+						document.body.removeChild(el);
 
-							});
-						} else {
-							B.report('Share Error', 'Unable to copy URL');
-						}
+						B.report('Share', 'Copied URL');
+						// B.report('Share Error', 'Unable to copy URL');
+						
+						
 						break;
 					case 'email':
 						window.open("mailto:?body=" + title + " -- " + url + "&subject= word bridge", "_blank")
