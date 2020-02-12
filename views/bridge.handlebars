@@ -14,8 +14,8 @@
 
 <div id="header">
 	<div id="home-btn"><a class="big-btn" href="/">new</a></div>
-	<div id="re-bridge-btn"><a class="btn" href="#">re-bridge</a></div>
-	<div id="edit-bridge-btn"><a class="btn" href="#">edit-bridge</a></div>
+	<div id="re-bridge-btn"><a class="btn">re-bridge</a></div>
+	<div id="edit-bridge-btn"><a class="btn" >edit-bridge</a></div>
 </div>
 
 <div id="chains">
@@ -24,7 +24,7 @@
 			{{#each data.chain}}
 				<div class="node fade" data-word={{this.word}} data-index={{@index}} data-syndex={{this.syndex}}>
 					<div class="word">
-						<a href="#" class="fade visible" onclick={B.getDef();}>{{this.word}}</a>
+						<a class="fade visible" onclick={B.getDef();}>{{this.word}}</a>
 					</div>
 					{{#unless @first}}
 						{{#unless @last}}

@@ -89,14 +89,14 @@ window.addEventListener('load', function() {
 		return elem;
 	};
 
-	B.makeNode = function(index, parent) {
+	B.makeNode = function(index, editMode) {
 		const node = B.createElem('div', ['node', 'fade', 'hidden', 'display-none']);
 		node.dataset.index = index;
 		node.dataset.word = B.chains[B.currentChain][index].word;
 		node.dataset.syndex = B.chains[B.currentChain][index].syndex;
 
 		const wordSpan = B.createElem('a', ['fade', 'visible'], B.chains[B.currentChain][index].word);
-		wordSpan.href = '#';
+		// wordSpan.href = '#';
 		const word = B.createElem('div', ['word']);
 		wordSpan.addEventListener('click', () => {
 			B.getDef(wordSpan);
@@ -141,6 +141,9 @@ window.addEventListener('load', function() {
 				B.btnAnim(modOpen);
 			}
 		});
+		console.log(editMode);
+		if (editMode) modOpen.classList.add('edit');
+		console.log(modOpen);
 		
 		const openImg = new Image();
 		openImg.src = '/img/mod-open.svg';
@@ -158,11 +161,6 @@ window.addEventListener('load', function() {
 		node.appendChild(modOpen)
 
 		return node;
-		// parent.insertBefore(node, parent.lastElementChild);
-
-		// setTimeout(() => {
-		// 	B.fade(node, 'in', 'flex');
-		// }, index * B.fadeDur);
 	};
 
 	const dismissBtns = document.getElementsByClassName('dismiss');

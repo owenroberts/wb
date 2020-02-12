@@ -23,11 +23,7 @@ window.addEventListener('load', function() {
 	}
 	bridge.addEventListener('click', submit);
 	document.addEventListener('keyup', ev => {
-		console.log(ev);
-		if (ev.which == 13 && ev.target.id == "bridge") {
-			console.log('submit');
-			submit();
-		}
+		if (ev.which == 13 && ev.target.id == "bridge") submit();
 	});
 
 	/* about */

@@ -88,7 +88,7 @@ window.addEventListener('load', function() {
 						}
 
 						function fadeInNode(index) {
-							const n = B.makeNode(index);
+							const n = B.makeNode(index, true);
 							node.parentNode.insertBefore(n, node.parentNode.lastElementChild);
 							B.fade(n, 'in', 'flex', () => {
 								if (index < B.chains[B.currentChain].length - 2) {
