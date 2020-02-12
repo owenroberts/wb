@@ -23,7 +23,6 @@ window.addEventListener('load', function() {
 				fadeNode(++index);
 			} else {
 				B.isAnimating = false;
-				setTimeout(checkTip, 100);
 			}
 		});
 	}
