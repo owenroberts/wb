@@ -12,26 +12,28 @@
 	p {
 		margin: 0.25em 0;
 		margin-bottom: 2em;
-	}
 
-	a {
-		color: $blue;
-		text-decoration: underline;
-		cursor: pointer;
+		a {
+			color: $blue;
+			text-decoration: underline;
+			cursor: pointer;
 
-		&:focus {
-			border: none;
-			outline: 0;
-			box-shadow: 0 0 0 2px black,
-				0 0 0 4px white;
-			border-radius: 3px;
+			&:focus {
+				border: none;
+				outline: 0;
+				box-shadow: 0 0 0 2px black,
+					0 0 0 4px white;
+				border-radius: 3px;
+			}
 		}
 	}
 
-	.dismiss a {
-		width: 56px;
-  		height: 56px;
-    	display: inline-block;
-   		border-radius: 14px;
-	}
+	
+
+	// .dismiss a {
+	// 	width: 56px;
+	// 	height: 56px;
+	// 	display: inline-block;
+	// 	border-radius: 14px;
+	// }
 }

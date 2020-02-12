@@ -341,22 +341,16 @@ a:focus {
   margin: 0.25em 0;
   margin-bottom: 2em;
 }
-#about a {
+#about p a {
   color: #6a75ff;
   text-decoration: underline;
   cursor: pointer;
 }
-#about a:focus {
+#about p a:focus {
   border: none;
   outline: 0;
   box-shadow: 0 0 0 2px black, 0 0 0 4px white;
   border-radius: 3px;
-}
-#about .dismiss a {
-  width: 56px;
-  height: 56px;
-  display: inline-block;
-  border-radius: 14px;
 }
 
 .fadein {
@@ -416,6 +410,10 @@ a:focus {
 }
 .node .word a {
   border-bottom: 1px solid #AAAAAA;
+}
+.node .word a:focus {
+  box-shadow: 0 0 0 2px white, 0 0 0 4px black;
+  border-radius: 3px;
 }
 .node .mod-open {
   /* flex: 1 32px; */
@@ -565,11 +563,16 @@ a:focus {
 .overlay .msg .dismiss circle, .overlay .msg .dismiss path {
   transition: all 300ms ease-in;
 }
-.overlay .msg .dismiss:hover circle, .overlay .msg .dismiss.active circle {
+.overlay .msg .dismiss:hover circle, .overlay .msg .dismiss.active circle,
+.overlay .msg .dismiss a:focus circle {
   fill: white;
 }
-.overlay .msg .dismiss:hover path, .overlay .msg .dismiss.active path {
+.overlay .msg .dismiss:hover path, .overlay .msg .dismiss.active path,
+.overlay .msg .dismiss a:focus path {
   stroke: black;
+}
+.overlay .msg .dismiss a:focus {
+  border: none;
 }
 .overlay .msg .word {
   text-transform: capitalize;
