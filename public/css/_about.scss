@@ -18,22 +18,10 @@
 			text-decoration: underline;
 			cursor: pointer;
 
-			&:focus {
+			&:focus, &:active {
 				border: none;
-				outline: 0;
-				box-shadow: 0 0 0 2px black,
-					0 0 0 4px white;
-				border-radius: 3px;
 			}
 		}
 	}
 
-	
-
-	// .dismiss a {
-	// 	width: 56px;
-	// 	height: 56px;
-	// 	display: inline-block;
-	// 	border-radius: 14px;
-	// }
 }

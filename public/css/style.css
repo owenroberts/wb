@@ -346,11 +346,8 @@ a:focus {
   text-decoration: underline;
   cursor: pointer;
 }
-#about p a:focus {
+#about p a:focus, #about p a:active {
   border: none;
-  outline: 0;
-  box-shadow: 0 0 0 2px black, 0 0 0 4px white;
-  border-radius: 3px;
 }
 
 .fadein {
@@ -410,10 +407,6 @@ a:focus {
 }
 .node .word a {
   border-bottom: 1px solid #AAAAAA;
-}
-.node .word a:focus {
-  box-shadow: 0 0 0 2px white, 0 0 0 4px black;
-  border-radius: 3px;
 }
 .node .mod-open {
   /* flex: 1 32px; */

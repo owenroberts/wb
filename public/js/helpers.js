@@ -95,7 +95,8 @@ window.addEventListener('load', function() {
 		node.dataset.word = B.chains[B.currentChain][index].word;
 		node.dataset.syndex = B.chains[B.currentChain][index].syndex;
 
-		const wordSpan = B.createElem('span', ['fade', 'visible'], B.chains[B.currentChain][index].word);
+		const wordSpan = B.createElem('a', ['fade', 'visible'], B.chains[B.currentChain][index].word);
+		wordSpan.href = '#';
 		const word = B.createElem('div', ['word']);
 		wordSpan.addEventListener('click', () => {
 			B.getDef(wordSpan);
