@@ -2,7 +2,7 @@
 
 #chains {
 	position: relative;
-	font-size: 26px;
+	font-size: $base-font-size;
 	.chain {
 		position: absolute;
 		padding-bottom: 2em;

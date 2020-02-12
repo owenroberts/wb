@@ -100,6 +100,24 @@ select {
   width: 40px;
 }
 
+.big-btn {
+  margin-top: 1em;
+  font-size: 1em;
+  cursor: pointer;
+  padding: 0.25em 0.5em;
+  border: 2px solid black;
+  border-radius: 3px;
+  background: transparent;
+  font-weight: bold;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.big-btn.active, .big-btn:hover, .big-btn:focus {
+  background-color: black;
+  color: white;
+}
+
 /* svg loader dots animation */
 #dOne {
   animation-iteration-count: infinite;
@@ -232,33 +250,17 @@ select {
   position: relative;
   font-size: 18px;
   height: 70px;
+  margin-bottom: 1em;
   display: flex;
 }
-#header #about-btn span, #header #share-btn span {
-  cursor: pointer;
+#header #home-btn {
+  flex: 2;
 }
-#header #home-btn, #header #share-btn {
-  margin-right: 16px;
+#header #re-bridge-btn, #header #edit-bridge-btn {
+  flex: 1;
 }
-#header #plus {
-  position: absolute;
-  top: 10px;
-  right: 20px;
-  cursor: pointer;
-}
-#header #plus img {
-  display: block;
-  -webkit-transition: -webkit-transform 0;
-  -ms-transition: -ms-transform 0;
-  transition: transform 0;
-}
-#header #plus img.active {
-  -webkit-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
-  transform: rotate(90deg);
-  -webkit-transition: -webkit-transform 0.8s ease-in-out;
-  -ms-transition: -ms-transform 0.8s ease-in-out;
-  transition: transform 0.8s ease-in-out;
+#header #home-btn, #header #re-bridge-btn, #header #edit-bridge-btn {
+  font-size: 26px;
 }
 
 .index {
@@ -282,7 +284,6 @@ select {
   padding: 0 1rem;
   font-size: 26px;
   /* word inputs */
-  /* bridge button  */
 }
 #search input[type=text] {
   margin: 0;
@@ -311,23 +312,6 @@ select {
 #search input[type=text]:focus {
   background: #C5C7C9;
   color: black;
-}
-#search input[type=submit]#bridge {
-  margin-top: 1em;
-  font-size: 1em;
-  cursor: pointer;
-  padding: 0.25em 0.5em;
-  border: 2px solid black;
-  border-radius: 3px;
-  background: transparent;
-  font-weight: bold;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-}
-#search input[type=submit]#bridge.active, #search input[type=submit]#bridge:hover, #search input[type=submit]#bridge:focus {
-  background-color: black;
-  color: white;
 }
 
 #about .sub-title {

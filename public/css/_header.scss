@@ -6,36 +6,16 @@
 	position: relative;
 	font-size: 18px;
 	height: 70px;
+	margin-bottom: 1em;
 	
 	display: flex;
 
-	#about-btn span, #share-btn span { 
-		// border-bottom: 1px solid black;
-		cursor: pointer;
-	}
+	#home-btn { flex: 2; }
+	#re-bridge-btn, #edit-bridge-btn { flex: 1; }
 
-	#home-btn, #share-btn { margin-right: 16px; }
 
-	#plus {
-		position: absolute;
-		top: 10px;
-		right: 20px;
-		cursor: pointer;
-		
-		img { 
-			display: block; 
-			-webkit-transition: -webkit-transform 0;
-			-ms-transition: -ms-transform 0;
-			transition: transform 0;
-			&.active {
-				-webkit-transform: rotate(90deg);
-				-ms-transform: rotate(90deg);
-				transform: rotate(90deg);
-				-webkit-transition: -webkit-transform .8s ease-in-out;
-				-ms-transition: -ms-transform .8s ease-in-out;
-				transition: transform .8s ease-in-out;
-			}
-		}
+	#home-btn, #re-bridge-btn, #edit-bridge-btn { 
+		font-size: $base-font-size;
 	}
 }
 
