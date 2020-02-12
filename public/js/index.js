@@ -23,7 +23,11 @@ window.addEventListener('load', function() {
 	}
 	bridge.addEventListener('click', submit);
 	document.addEventListener('keyup', ev => {
-		if (ev.which == 13) submit();
+		console.log(ev);
+		if (ev.which == 13 && ev.target.id == "bridge") {
+			console.log('submit');
+			submit();
+		}
 	});
 
 	/* about */
@@ -32,7 +36,8 @@ window.addEventListener('load', function() {
 	aboutBtn.addEventListener('click', ev => {
 		B.fade(about, 'in', 'block'); 
 	});
-	about.addEventListener('click', () => {
+
+	B.aboutOut = function() {
 		B.fade(about, 'out', 'none');
-	});
+	};
 });

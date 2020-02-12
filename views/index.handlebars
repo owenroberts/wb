@@ -13,25 +13,27 @@
 		<div id="report-title" class="title"></div>
 		<div id="report-txt" class="txt"></div>
 		<div id="report-btn" class="btn"></div>
-		<div id="report-dismiss" class="dismiss">{{> dismiss-btn}}</div>
+		<div id="report-dismiss" class="dismiss"><a href="#" tabindex="4">{{> dismiss-btn}}</a></div>
 	</div>
 </div>
 
 <div id="header" class="index">
-	<div id="title">Word Bridge</div>
-	<div id="about-btn"><a class="btn">about</a></div>
+	<h1 id="title">Word Bridge</h1>
+	<div id="about-btn"><a href="#" class="btn">about</a></div>
 </div>
 
-<div id="call">Create connections between words.</div>
+<div id="call">
+	<p>Create connections between words.</p>
+</div>
 
 <div id="search" class="fade">
 	<form id="form" action="/bridge" method="get" autocomplete="off">
-		<input type="text" id="start-word" name="s" class="query" placeholder="Enter word 1">
-		<input type="text" id="end-word" name="e" class="query" placeholder="Enter word 2">
+		<input type="text" id="start-word" name="s" class="query" placeholder="Enter word 1" tabindex="1">
+		<input type="text" id="end-word" name="e" class="query" placeholder="Enter word 2" tabindex="2">
 		<input type="hidden" value="10" name="nl">
 		<input type="hidden" value="10" name="sl">
 	</form>
-	<input type="submit" value="Bridge" id="bridge" class="big-btn">
+	<input type="submit" value="Bridge" id="bridge" class="big-btn" tabindex="3">
 	<div class="ldr" id="ldr">
 		<img src="/img/loader-black.svg" alt="">
 	</div>

@@ -1,13 +1,15 @@
 #about {
 
-	.title {}
+	h1 {
+		font-size: $base-font-size;
+	}
 
-	.sub-title {
-		font-weight: bold;
+	h2 {
+		font-size: $menu-font-size;
 		margin: 0.5em 0;
 	}
 
-	.text {
+	p {
 		margin: 0.25em 0;
 		margin-bottom: 2em;
 	}
@@ -16,5 +18,20 @@
 		color: $blue;
 		text-decoration: underline;
 		cursor: pointer;
+
+		&:focus {
+			border: none;
+			outline: 0;
+			box-shadow: 0 0 0 2px black,
+				0 0 0 4px white;
+			border-radius: 3px;
+		}
+	}
+
+	.dismiss a {
+		width: 56px;
+  		height: 56px;
+    	display: inline-block;
+   		border-radius: 14px;
 	}
 }

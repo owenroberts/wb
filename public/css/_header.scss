@@ -1,12 +1,9 @@
 #header {
 	width: 100%;
-	transition: background-color 500ms;
-	/* padding: 0.25em; */
 	padding: 1rem;
 	position: relative;
-	font-size: 18px;
+	font-size: $menu-font-size;
 	height: 70px;
-	// margin-bottom: 1em;
 	
 	display: flex;
 	justify-content: space-between;
