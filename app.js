@@ -132,7 +132,6 @@ function makeChain(query, callback) {
 }
 
 function makeQueryString(query) {
-	console.log(query);
 	let startWord = query.s;
 	let endWord = query.e;
 	var string = startWord + query.nl + endWord + query.sl;
