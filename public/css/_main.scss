@@ -52,7 +52,13 @@
 		flex: 1 100px;
 		margin-right: 0.1em;
 		width: 100px;
-		span { cursor: pointer; }
+		a {
+			// text-decoration: underline;
+			// text-decoration-color: #AAAAAA;
+			// text-underline-position: under;
+			border-bottom: 1px solid #AAAAAA;
+		}
+		
 	}
 
 	.mod-open {
@@ -64,6 +70,11 @@
 		.active { display: inline-block; }
 		.disabled { display: none; }
 		&:hover { background-color: $lightgray; }
+		opacity: 0;
+		transition: opacity 300ms ease-in-out;
+		&.edit {
+			opacity: 1;
+		}
 	}
 
 	.mod-options {

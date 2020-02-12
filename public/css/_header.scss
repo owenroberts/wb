@@ -6,19 +6,40 @@
 	position: relative;
 	font-size: 18px;
 	height: 70px;
-	margin-bottom: 1em;
+	// margin-bottom: 1em;
 	
 	display: flex;
+	justify-content: space-between;
+	align-items: center;
 
-	#home-btn { flex: 2; }
-	#re-bridge-btn, #edit-bridge-btn { flex: 1; }
-
+	#home-btn { 
+		flex: 1; 
+		a {
+			display: inline-block; 
+			width: 62px; 
+			text-align: center;
+			height: 36px;
+		}
+	}
+	#re-bridge-btn, #edit-bridge-btn { flex-basis: 90px; }
 
 	#home-btn, #re-bridge-btn, #edit-bridge-btn { 
-		font-size: $base-font-size;
+		// font-size: $base-font-size;
+	}
+
+
+	.btn {
+		// padding-bottom: 3px;
+		&:hover, &:active {
+			// border-bottom: $btn-underline;
+			text-decoration: underline;
+			text-decoration-color: #AAAAAA;
+			text-underline-position: under;
+		}
 	}
 }
 
 .index {
 	justify-content: space-between;
 }
+

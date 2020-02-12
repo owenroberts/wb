@@ -50,6 +50,11 @@
 	#tooltips {
 		&.open { height: 180px; }
 	}
+	#header {
+		#home-btn {
+			flex: 1;
+		}
+	}
 }
 
 @media screen and (max-device-width: 480px) {

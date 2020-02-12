@@ -136,4 +136,20 @@ window.addEventListener('load', function() {
 			}
 		}
 	};
+
+	/* edit options */
+	const editBtn = document.getElementById('edit-bridge-btn');
+	editBtn.addEventListener('click', openEdit);
+	editBtn.addEventListener('tap', openEdit);
+
+	function openEdit() {
+		Array.from(document.getElementsByClassName('mod-open')).forEach(el => {
+			if (!B.modIsOpen && !B.isAnimating) {
+				if (el.classList.contains('edit'))
+					el.classList.remove('edit');
+				else
+					el.classList.add('edit');
+			}
+		});
+	}
 });

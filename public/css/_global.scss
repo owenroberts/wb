@@ -83,7 +83,7 @@ select { margin:1em; }
 }
 
 .big-btn {
-	margin-top: 1em;
+	
 	font-size: 1em;
 	cursor: pointer;
 	padding: 0.25em 0.5em;
@@ -91,7 +91,7 @@ select { margin:1em; }
 	border: 2px solid black;
 	border-radius: 3px;
 	background: transparent;
-	font-weight: bold;
+
 
 	&.active, &:hover, &:focus {
 		background-color: black;
