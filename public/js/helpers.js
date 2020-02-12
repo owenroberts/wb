@@ -175,13 +175,5 @@ window.addEventListener('load', function() {
 		});
 	}
 
-	/* about */
-	const about = document.getElementById('about');
-	const aboutBtn = document.getElementById('about-btn');
-	aboutBtn.addEventListener('click', ev => {
-		B.fade(about, 'in', 'block'); 
-	});
-	about.addEventListener('click', () => {
-		B.fade(about, 'out', 'none');
-	});
+	
 });

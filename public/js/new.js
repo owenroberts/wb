@@ -1,10 +1,10 @@
 window.addEventListener('load', function() {
 	
-	function getNewPath(ev) {
+	function getNewBridge(ev) {
 		ev.stopPropagation();
-		plusBtn.children[0].classList.add('active');
+		reBridgeBtn.children[0].classList.add('active');
 		setTimeout(() => {
-			plusBtn.children[0].classList.remove('active');
+			reBridgeBtn.children[0].classList.remove('active');
 		}, 800);
 		if (!B.noMorePaths) {
 			B.fade(B.loader, 'in', 'block');
@@ -199,7 +199,7 @@ window.addEventListener('load', function() {
 		}				
 	}
 
-	const plusBtn = document.getElementById('plus');
-	plusBtn.addEventListener('tap', getNewPath);
-	plusBtn.addEventListener('click', getNewPath);
+	const reBridgeBtn = document.getElementById('re-bridge-btn');
+	reBridgeBtn.addEventListener('tap', getNewBridge);
+	reBridgeBtn.addEventListener('click', getNewBridge);
 });

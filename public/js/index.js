@@ -25,4 +25,14 @@ window.addEventListener('load', function() {
 	document.addEventListener('keyup', ev => {
 		if (ev.which == 13) submit();
 	});
+
+	/* about */
+	const about = document.getElementById('about');
+	const aboutBtn = document.getElementById('about-btn');
+	aboutBtn.addEventListener('click', ev => {
+		B.fade(about, 'in', 'block'); 
+	});
+	about.addEventListener('click', () => {
+		B.fade(about, 'out', 'none');
+	});
 });
