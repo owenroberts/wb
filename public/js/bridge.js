@@ -28,14 +28,4 @@ window.addEventListener('load', function() {
 		});
 	}
 	fadeNode(0);
-
-	function checkTip() {
-		if (!localStorage.getItem('def-tip')) {
-			// B.report('Tip:', 'You can tap any word to see its definition.');
-			document.getElementById('tooltips').classList.replace('closed', 'open');
-			localStorage.setItem('def-tip', true);
-		} else {
-			document.getElementById('tooltips').remove();
-		}
-	}
 });
