@@ -50,7 +50,7 @@ app.get('/bridge', function(req, res) {
 	/* loadChain w req for production, makeChain w req.query to skip db/cache */
 	loadChain(req, function(result) { 
 		if (result.error) res.render('index', { errmsg: result.error });
-		else res.render('search', { data: result });
+		else res.render('bridge', { data: result });
 	});
 });
 

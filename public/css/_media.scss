@@ -46,7 +46,6 @@
 }
 
 /*  phone  */
-
 @media screen and (max-device-width: 320px) {
 	#tooltips {
 		&.open { height: 180px; }
@@ -65,7 +64,6 @@
 
 /*  non phone   */
 @media screen and (min-device-width: 480px){
-	.btn { background: #81BBFF; }
 	#container { padding-top: 50px; }
 	.overlay {
 		/*position: fixed;*/

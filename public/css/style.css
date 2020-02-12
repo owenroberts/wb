@@ -41,7 +41,6 @@ pre {
 a, .leftarrow, .rightarrow {
   color: black;
   text-decoration: none;
-  border-bottom: 1px solid black;
   transition: color 500ms;
 }
 a:hover, .leftarrow:hover, .rightarrow:hover {
@@ -236,7 +235,6 @@ select {
   display: flex;
 }
 #header #about-btn span, #header #share-btn span {
-  border-bottom: 1px solid black;
   cursor: pointer;
 }
 #header #home-btn, #header #share-btn {
@@ -279,6 +277,59 @@ select {
   margin-bottom: 2rem;
 }
 
+#search {
+  margin-top: 1rem;
+  padding: 0 1rem;
+  font-size: 26px;
+  /* word inputs */
+  /* bridge button  */
+}
+#search input[type=text] {
+  margin: 0;
+  border-radius: 0;
+  border-bottom: 3px solid black;
+  font-size: 1em;
+  display: block;
+  padding-bottom: 8px;
+  padding: 0.2em;
+}
+#search input[type=text][type=text] {
+  font-weight: normal;
+  width: 100%;
+  transition: border-color 300ms ease-in;
+}
+#search input[type=text][type=text]::-webkit-input-placeholder {
+  color: #919191;
+  transition: color 300ms ease-in;
+}
+#search input[type=text][type=text].error {
+  border-color: #C40000;
+}
+#search input[type=text][type=text].error::-webkit-input-placeholder {
+  color: #EA6A6A;
+}
+#search input[type=text]:focus {
+  background: #C5C7C9;
+  color: black;
+}
+#search input[type=submit]#bridge {
+  margin-top: 1em;
+  font-size: 1em;
+  cursor: pointer;
+  padding: 0.25em 0.5em;
+  border: 2px solid black;
+  border-radius: 3px;
+  background: transparent;
+  font-weight: bold;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+#search input[type=submit]#bridge.active, #search input[type=submit]#bridge:hover, #search input[type=submit]#bridge:focus {
+  background-color: black;
+  color: white;
+}
+
 #about .sub-title {
   font-weight: bold;
   margin: 0.5em 0;
@@ -291,66 +342,6 @@ select {
   color: #6a75ff;
   text-decoration: underline;
   cursor: pointer;
-}
-
-#search {
-  margin-top: 1rem;
-  padding: 0 1rem;
-  font-size: 26px;
-  /* word inputs */
-  /* bridge button  */
-}
-#search input {
-  margin: 0;
-  border-radius: 0;
-  border-bottom: 3px solid black;
-  font-size: 1em;
-  display: block;
-  padding-bottom: 8px;
-  padding: 0.2em;
-}
-#search input[type=text] {
-  font-weight: normal;
-  width: 100%;
-  transition: border-color 300ms ease-in;
-}
-#search input[type=text]::-webkit-input-placeholder {
-  color: #919191;
-  transition: color 300ms ease-in;
-}
-#search input[type=text].error {
-  border-color: #C40000;
-}
-#search input[type=text].error::-webkit-input-placeholder {
-  color: #EA6A6A;
-}
-#search input:focus {
-  background: #C5C7C9;
-  color: black;
-}
-#search input[type=submit] {
-  margin-top: 1em;
-  font-size: 1em;
-  cursor: pointer;
-  padding: 0.25em 0.5em;
-  /*background-color: $disabled;*/
-  background-color: #75b5ff;
-  border: none;
-  /*color: $gray;*/
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-}
-#search input[type=submit].active {
-  background-color: #75b5ff;
-  color: black;
-  transition: background-color 300ms ease-in;
-}
-#search input[type=submit].active:hover {
-  background-color: #499CFC;
-}
-#search input[type=submit]:focus {
-  outline: 2px solid black;
 }
 
 .fadein {
@@ -372,6 +363,7 @@ select {
   z-index: 2;
   opacity: 1;
   background-color: white;
+  min-height: 400px;
 }
 
 .nodes {
@@ -712,10 +704,6 @@ select {
 }
 /*  non phone   */
 @media screen and (min-device-width: 480px) {
-  .btn {
-    background: #81BBFF;
-  }
-
   #container {
     padding-top: 50px;
   }
