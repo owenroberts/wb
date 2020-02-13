@@ -347,8 +347,11 @@ a:focus {
   text-decoration: underline;
   cursor: pointer;
 }
-#about p a:focus, #about p a:active {
+#about p a:focus {
   border: none;
+  outline: 0;
+  box-shadow: 0 0 0 2px black, 0 0 0 4px white;
+  border-radius: 3px;
 }
 
 .fadein {
@@ -408,6 +411,9 @@ a:focus {
 }
 .node .word a {
   border-bottom: 1px solid #AAAAAA;
+}
+.node .word a:focus {
+  background: lightgray;
 }
 .node .mod-open {
   /* flex: 1 32px; */
@@ -767,7 +773,10 @@ a:focus {
 #chain-nav #prev-chain circle, #chain-nav #next-chain circle {
   transition: fill 500ms ease-in-out;
 }
-#chain-nav #prev-chain.active circle, #chain-nav #next-chain.active circle {
+#chain-nav #prev-chain.active, #chain-nav #prev-chain:focus, #chain-nav #next-chain.active, #chain-nav #next-chain:focus {
+  outline: 0;
+}
+#chain-nav #prev-chain.active circle, #chain-nav #prev-chain:focus circle, #chain-nav #next-chain.active circle, #chain-nav #next-chain:focus circle {
   fill: #747474;
 }
 #chain-nav #prev-chain {

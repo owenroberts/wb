@@ -49,8 +49,8 @@
 				color: $black;
 			}
 		}
+
 		.dismiss {
-			
 			cursor: pointer;
 			position: absolute;
 			top: 10px;
@@ -72,8 +72,8 @@
 			a:focus {
 				border: none;
 			}
-
 		}
+
 		.word { text-transform: capitalize; }
 		.pos {
 			margin-bottom:1em;

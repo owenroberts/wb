@@ -11,7 +11,7 @@ window.addEventListener('load', function() {
 	// http://wordnet.princeton.edu/wordnet/man/wndb.5WN.html#sect3
 	B.pos = { "n":"noun", "v":"verb", "a":"adjective", "s":"adjective", "r":"adverb" };
 
-	B.fade = (e, status, display, end) => {
+	B.fade = (elem, status, display, end) => {
 
 		if (end) {
 			// e.addEventListener('transitionend', end);
@@ -23,17 +23,17 @@ window.addEventListener('load', function() {
 
 		const [addClass, removeClass] = status == 'in' ? ['fade-in', 'fade-out'] : ['fade-out', 'fade-in'];
 
-		if (status == 'in') e.style.display = display;
+		if (status == 'in') elem.style.display = display;
 
 		setTimeout(() => {
-			if (e.classList.contains(removeClass))
-				e.classList.replace(removeClass, addClass);
+			if (elem.classList.contains(removeClass))
+				elem.classList.replace(removeClass, addClass);
 			else
-				e.classList.add(addClass);
+				elem.classList.add(addClass);
 		}, 5); // hacky anim/display fix
 		
 		if (status == 'out')
-			setTimeout(() => { e.style.display = display; }, B.fadeDur);
+			setTimeout(() => { elem.style.display = display; }, B.fadeDur);
 	};
 
 	B.btnAnim = elem => {
@@ -48,31 +48,33 @@ window.addEventListener('load', function() {
 	const reportTitle = document.getElementById('report-title');
 	const reportTxt = document.getElementById('report-txt');
 	const reportBtn = document.getElementById('report-btn');
+	let prevActive;
 
 	B.report = function(title, msg, ok, callback, dismissBack) {
-		B.fade(reportDiv, 'in', 'block');
+		B.fade(reportDiv, 'in', 'block', function() {
+			B.fade(B.loader, 'out', 'none');
+		});
+		
+		prevActive = document.activeElement;		
+		document.getElementById('fake-tab').focus();
+
 		reportDiv.scrollTop = 0;
 		reportMsg.scrollTop = 0;
 		reportTxt.innerHTML = msg;
 		reportTitle.innerHTML = title;
-		if (ok) {
-			reportBtn.style.display = 'block';
-			reportBtn.textContent = ok;
-			reportBtn.addEventListener('click', callback);
-		} else {
-			reportBtn.style.display = 'none';
-		}
-		function dismissReport() {
-			B.fade(reportDiv, 'out', 'none');
-			document.body.style.overflow = 'auto';	
-			if (dismissBack)
-				dismissBack();
-			reportDiv.removeEventListener('click', dismissReport);
-		}
-		reportDiv.addEventListener('click', dismissReport);
+
 		addEventListener('keydown', ev => {
-			if (ev.which == 27 || ev.key == 'Escape') dismissReport()
+			if (ev.which == 27 || ev.key == 'Escape') B.dismissReport();
 		});
+	};
+
+	B.dismissReport = function(ev, callback) {
+		console.log(prevActive);
+		prevActive.focus();
+		B.fade(reportDiv, 'out', 'none');
+		document.body.style.overflow = 'auto';	
+		if (callback) callback();
+		reportDiv.removeEventListener('click', B.dismissReport);
 	};
 
 	B.createElem = function(tag, classes, text, img) {
@@ -96,10 +98,13 @@ window.addEventListener('load', function() {
 		node.dataset.syndex = B.chains[B.currentChain][index].syndex;
 
 		const wordSpan = B.createElem('a', ['fade', 'visible'], B.chains[B.currentChain][index].word);
-		// wordSpan.href = '#';
 		const word = B.createElem('div', ['word']);
+		wordSpan.tabIndex = "0";
 		wordSpan.addEventListener('click', () => {
 			B.getDef(wordSpan);
+		});
+		wordSpan.addEventListener('keyup', ev => {
+			if (ev.which == 13) B.getDef(wordSpan);
 		});
 		word.appendChild(wordSpan);
 
@@ -141,9 +146,7 @@ window.addEventListener('load', function() {
 				B.btnAnim(modOpen);
 			}
 		});
-		console.log(editMode);
 		if (editMode) modOpen.classList.add('edit');
-		console.log(modOpen);
 		
 		const openImg = new Image();
 		openImg.src = '/img/mod-open.svg';
@@ -162,17 +165,4 @@ window.addEventListener('load', function() {
 
 		return node;
 	};
-
-	const dismissBtns = document.getElementsByClassName('dismiss');
-	for (const btn of dismissBtns) {
-		btn.addEventListener('touchstart', event => {
-			const elem = event.currentTarget;
-			elem.classList.add('active');
-			elem.addEventListener('transitionend', () => {
-				elem.classList.remove('active');
-			});
-		});
-	}
-
-	
 });

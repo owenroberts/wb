@@ -1,21 +1,11 @@
-<div id="loader" class="overlay fade">
-	<img src="/img/loader-white.svg" alt="">
-</div>
-
-<div id="report" class="overlay fade hidden">
-	<div id="report-msg" class="msg">
-		<div id="sorry" class="sorry fade hidden display-none">We couldn't find a path.  Sorry about that!</div>
-		<div id="report-title" class="title"></div>
-		<div id="report-txt" class="txt"></div>
-		<div id="report-btn" class="btn"></div>
-		<div id="report-dismiss" class="dismiss">{{> dismiss-btn}}</div>
-	</div>
-</div>
+<!--  bridge -->
+{{> loader}}
+{{> report}}
 
 <div id="header">
-	<div id="home-btn"><a class="big-btn" href="/">new</a></div>
-	<div id="re-bridge-btn"><a class="btn">re-bridge</a></div>
-	<div id="edit-bridge-btn"><a class="btn" >edit-bridge</a></div>
+	<div id="home-btn"><a class="big-btn" href="/" tabindex="1">new</a></div>
+	<div id="re-bridge-btn"><a class="btn" tabindex="2">re-bridge</a></div>
+	<div id="edit-bridge-btn"><a class="btn" tabindex="3">edit-bridge</a></div>
 </div>
 
 <div id="chains">
@@ -24,29 +14,29 @@
 			{{#each data.chain}}
 				<div class="node fade" data-word={{this.word}} data-index={{@index}} data-syndex={{this.syndex}}>
 					<div class="word">
-						<a class="fade visible" onclick={B.getDef();}>{{this.word}}</a>
+						<a tabindex="0" class="fade visible" onclick={B.getDef();} onkeypress={B.getDef();} >{{this.word}}</a>
 					</div>
 					{{#unless @first}}
 						{{#unless @last}}
-						<div class="mod-options">
-							<div class="mod-close" onclick={B.closeModOptions(this,false);}>
-								<img src="/img/mod-close.svg">
+							<div class="mod-options">
+								<div class="mod-close" onclick={B.closeModOptions(this,false);}>
+									<img src="/img/mod-close.svg">
+								</div>
+								<div class="mod-btn" onclick={B.modifyChain(this);B.btnAnim(this);}>
+									<img src="/img/mod-down-arrow.svg" alt="">
+								</div>
+								<div class="prev" onclick={B.newSyn(this);B.btnAnim(this);}>
+									<img src="/img/mod-left-arrow.svg" alt="">
+								</div>
+								<div class="next" onclick={B.newSyn(this);B.btnAnim(this);}>
+									<img src="/img/mod-right-arrow.svg" alt="">
+								</div>
 							</div>
-							<div class="mod-btn" onclick={B.modifyChain(this);B.btnAnim(this);}>
-								<img src="/img/mod-down-arrow.svg" alt="">
+							<div class="mod-open" onclick={B.openModOptions(this)}>
+								<img src="/img/mod-open.svg" class="active">
 							</div>
-							<div class="prev" onclick={B.newSyn(this);B.btnAnim(this);}>
-								<img src="/img/mod-left-arrow.svg" alt="">
-							</div>
-							<div class="next" onclick={B.newSyn(this);B.btnAnim(this);}>
-								<img src="/img/mod-right-arrow.svg" alt="">
-							</div>
-						</div>
-						<div class="mod-open" onclick={B.openModOptions(this)}>
-							<img src="/img/mod-open.svg" class="active">
-						</div>
+						{{/unless}}
 					{{/unless}}
-				{{/unless}}
 				</div>
 			{{/each}}
 		</div>
@@ -55,13 +45,13 @@
 
 <div id="chain-nav">
 	<div id="inner-chain-nav">
-		<div id="prev-chain" class="chain-btn">
+		<div id="prev-chain" class="chain-btn" tabindex="0">
 			{{> prev-arrow}}
 		</div>
 		<div id="dots">
 			<div class="chain-dot" onclick={B.showChain(0)}></div>
 		</div>
-		<div id="next-chain" class="chain-btn">
+		<div id="next-chain" class="chain-btn" tabindex="0">
 			{{> next-arrow}}
 		</div>
 	</div>
@@ -72,8 +62,8 @@
 </script>
 <script src="/js/helpers.js"></script>
 <script src="/js/bridge.js"></script>
-<script src="/js/new.js"></script>
-<script src="/js/mod.js"></script>
+<script src="/js/new.js"></script>  {{!-- "re-bridge" --}}
+<script src="/js/mod.js"></script> {{!-- "edit-bridge" --}}
 <script src="/js/def.js"></script>
 <script type="text/javascript">
 	window.addEventListener('load', function() {

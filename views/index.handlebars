@@ -1,25 +1,11 @@
 <!-- index  -->
-<div id="loader" class="overlay fade">
-	<img src="/img/loader-white.svg" alt="">
-</div>
-
-<div id="about" class="overlay fade hidden">
-	{{> about}}
-</div>
-
-<div id="report" class="overlay fade hidden">
-	<div id="report-msg" class="msg">
-		<div id="sorry" class="sorry fade hidden display-none">We couldn't find a path.  Sorry about that!</div>
-		<div id="report-title" class="title"></div>
-		<div id="report-txt" class="txt"></div>
-		<div id="report-btn" class="btn"></div>
-		<div id="report-dismiss" class="dismiss"><a href="#" tabindex="4">{{> dismiss-btn}}</a></div>
-	</div>
-</div>
+{{> loader}}
+{{> about }}
+{{> report }}
 
 <div id="header" class="index">
 	<h1 id="title">Word Bridge</h1>
-	<div id="about-btn"><a href="#" class="btn">about</a></div>
+	<div id="about-btn"><a tabindex="4" class="btn">about</a></div>
 </div>
 
 <div id="call">

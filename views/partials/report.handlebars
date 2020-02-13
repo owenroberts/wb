@@ -1,0 +1,11 @@
+<div id="report" class="overlay fade hidden">
+	<div id="report-msg" class="msg">
+		<div id="sorry" class="sorry fade hidden display-none">We couldn't find a path.  Sorry about that!</div>
+		<div id="report-title" class="title"></div>
+		<div id="report-txt" class="txt"></div>
+		<div id="report-dismiss" class="dismiss">
+			<a id="fake-tab" tabindex="7"></a>
+ 			<a tabindex="8" onclick={B.dismissReport()} onkeypress={B.dismissReport()}>{{> dismiss-btn}}</a>
+ 		</div>
+	</div>
+</div>

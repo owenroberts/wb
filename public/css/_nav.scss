@@ -58,7 +58,9 @@
 	#prev-chain, #next-chain {
 		svg { vertical-align: middle; }
 		circle { transition: fill 500ms ease-in-out; }
-		&.active {
+		&.active,
+		&:focus {
+			outline: 0;
 			circle { fill: $nav-btn; }
 		}
 	}

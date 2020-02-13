@@ -18,10 +18,13 @@
 			text-decoration: underline;
 			cursor: pointer;
 
-			&:focus, &:active {
+			&:focus {
 				border: none;
+				outline: 0;
+				box-shadow: 0 0 0 2px black,
+					0 0 0 4px white;
+				border-radius: 3px;
 			}
 		}
 	}
-
 }

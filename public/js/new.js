@@ -61,22 +61,33 @@ window.addEventListener('load', function() {
 	const dots = document.getElementsByClassName('chain-dot');
 	const chains = document.getElementsByClassName('chain');
 
-	nextChainBtn.addEventListener('click', () => {
+	nextChainBtn.addEventListener('click', nextChain);
+	nextChainBtn.addEventListener('keyup', ev => {
+		if (ev.which == 13) nextChain();
+	});
+
+	function nextChain() {
 		if (B.currentChain + 1 < B.chains.length && !B.isAnimating) {
 			closeMod();
 			B.currentChain = B.currentChain + 1;
 			setChainDepth();
 			B.btnAnim(nextChainBtn);
 		}
+	}
+
+	prevChainBtn.addEventListener('click', prevChain);
+	prevChainBtn.addEventListener('keyup', ev => {
+		if (ev.which == 13) prevChain();
 	});
-	prevChainBtn.addEventListener('click', () => {
+
+	function prevChain() {
 		if (B.currentChain > 0 && !B.isAnimating) {
 			closeMod();
 			B.currentChain = B.currentChain - 1;
 			setChainDepth();
 			B.btnAnim(prevChainBtn);
 		}
-	});
+	}
 
 	B.makeChain = data => {
 
@@ -202,4 +213,7 @@ window.addEventListener('load', function() {
 	const reBridgeBtn = document.getElementById('re-bridge-btn');
 	reBridgeBtn.addEventListener('tap', getNewBridge);
 	reBridgeBtn.addEventListener('click', getNewBridge);
+	reBridgeBtn.addEventListener('keyup', ev =>{
+		if (ev.which == 13) getNewBridge(ev);
+	});
 });

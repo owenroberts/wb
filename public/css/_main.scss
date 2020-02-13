@@ -58,6 +58,12 @@
 			// text-underline-position: under;
 			border-bottom: 1px solid #AAAAAA;
 		}
+
+		a:focus {
+			// box-shadow: 0 0 0 2px white, 0 0 0 4px black;
+			// border-radius: 3px;
+			background: lightgray;
+		}
 	}
 
 	.mod-open {
@@ -125,7 +131,9 @@
 		}
 		&:hover { background:none; }
 	}
+
 	.ldr { position:absolute; }
+
 	.arrow {
 		display:inline-block;
 		overflow:hidden;
@@ -139,9 +147,11 @@
 			vertical-align:middle;
 		}
 	}
+
 	.inner-nodes {
 		display:inline-block;
 		position:relative;
 	}
+
 	&.mod-error .word { color: $gray; }
 }

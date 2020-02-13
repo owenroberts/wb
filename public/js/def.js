@@ -19,7 +19,7 @@ window.addEventListener('load', function() {
 		fetch(url)
 			.then(response => { return response.json(); })
 			.then(result => {
-				B.fade(B.loader, 'out', 'none');
+				// B.fade(B.loader, 'out', 'none'); // in report
 				const title = `Definition for “${word}” <br> <span style="font-size:18px">(as a synonym of “${synonym}”)</span>`;
 				let msg = "";
 				const len = Math.min(result.data.length, 10);
