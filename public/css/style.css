@@ -93,8 +93,7 @@ button {
   border: none;
   padding: 0;
   cursor: pointer;
-  font-size: inherit;
-  font-weight: inherit;
+  font: inherit;
 }
 
 button:focus {
@@ -438,6 +437,7 @@ a:focus {
   background-color: white;
   border-radius: 1em;
   opacity: 0;
+  visibility: hidden;
   transition: opacity 300ms ease-in-out;
 }
 .node .mod-open .active {
@@ -451,6 +451,7 @@ a:focus {
 }
 .node .mod-open.edit {
   opacity: 1;
+  visibility: visible;
 }
 .node .mod-options {
   display: none;
@@ -722,23 +723,24 @@ a:focus {
   margin: 0 auto;
   position: relative;
 }
-#chain-nav .chain-dot {
+#chain-nav #dots {
+  display: flex;
+  justify-content: center;
+}
+#chain-nav #dots .chain-dot {
   display: inline-block;
   margin: 0 4px;
   transition: color 300ms;
   color: #8D8D8D;
   cursor: pointer;
+  /* accessibility */
 }
-#chain-nav .chain-dot.current {
+#chain-nav #dots .chain-dot.current {
   color: white;
 }
-#chain-nav .chain-dot:before {
+#chain-nav #dots .chain-dot:before {
   content: "•";
   font-size: 1.5em;
-}
-#chain-nav #dots {
-  display: flex;
-  justify-content: center;
 }
 #chain-nav .chain-btn {
   display: inline-block;
@@ -761,10 +763,10 @@ a:focus {
 #chain-nav #prev-chain circle, #chain-nav #next-chain circle {
   transition: fill 500ms ease-in-out;
 }
-#chain-nav #prev-chain.active, #chain-nav #prev-chain:focus, #chain-nav #next-chain.active, #chain-nav #next-chain:focus {
+#chain-nav #prev-chain:focus, #chain-nav #prev-chain.active, #chain-nav #next-chain:focus, #chain-nav #next-chain.active {
   outline: 0;
 }
-#chain-nav #prev-chain.active circle, #chain-nav #prev-chain:focus circle, #chain-nav #next-chain.active circle, #chain-nav #next-chain:focus circle {
+#chain-nav #prev-chain:focus circle, #chain-nav #prev-chain.active circle, #chain-nav #next-chain:focus circle, #chain-nav #next-chain.active circle {
   fill: #747474;
 }
 #chain-nav #prev-chain {

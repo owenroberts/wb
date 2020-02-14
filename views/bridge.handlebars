@@ -4,9 +4,9 @@
 
 <div id="header">
 	{{!--  insane bug?? can't use anchor here --}}
-	<button id="home-btn" class="big-btn" tabindex="1" onclick={location.href="/"}>new</button>	
-	<button id="re-bridge-btn" class="btn" tabindex="2">re-bridge</button>
-	<button id="edit-bridge-btn" class="btn" tabindex="3">edit-bridge</button>
+	<button id="home-btn" class="big-btn" onclick={location.href="/"}>new</button>	
+	<button id="re-bridge-btn" class="btn">re-bridge</button>
+	<button id="edit-bridge-btn" class="btn" >edit-bridge</button>
 </div>
 
 <div id="chains">
@@ -33,9 +33,9 @@
 									<img src="/img/mod-right-arrow.svg" alt="">
 								</div>
 							</div>
-							<div class="mod-open" onclick={B.openModOptions(this)}>
+							<button class="mod-open" onclick={B.openModOptions(this)}>
 								<img src="/img/mod-open.svg" class="active">
-							</div>
+							</button>
 						{{/unless}}
 					{{/unless}}
 				</div>
@@ -46,15 +46,15 @@
 
 <div id="chain-nav">
 	<div id="inner-chain-nav">
-		<div id="prev-chain" class="chain-btn" tabindex="0">
+		<button id="prev-chain" class="chain-btn">
 			{{> prev-arrow}}
-		</div>
+		</button>
 		<div id="dots">
-			<div class="chain-dot" onclick={B.showChain(0)}></div>
+			<button class="chain-dot" onclick={B.showChain(0)} tabindex="-1"></button>
 		</div>
-		<div id="next-chain" class="chain-btn" tabindex="0">
+		<button id="next-chain" class="chain-btn">
 			{{> next-arrow}}
-		</div>
+		</button>
 	</div>
 </div>
 

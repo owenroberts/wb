@@ -159,8 +159,9 @@ window.addEventListener('load', function() {
 			});
 		}
 		
-		const dot = document.createElement('div');
+		const dot = document.createElement('button');
 		dot.dataset.index = B.currentChain;
+		dot.tabIndex = "-1";
 		dot.classList.add('chain-dot');
 		dot.addEventListener('click', ev => {
 			B.showChain(ev.currentTarget.dataset.index);

@@ -1,6 +1,7 @@
 window.addEventListener('load', function() {
 
 	B.modIsOpen = false;
+	let editOpen = false;
 
 	/* new syn */
 	B.newSyn = e => {
@@ -144,12 +145,9 @@ window.addEventListener('load', function() {
 
 	function openEdit() {
 		Array.from(document.getElementsByClassName('mod-open')).forEach(el => {
-			if (!B.modIsOpen && !B.isAnimating) {
-				if (el.classList.contains('edit'))
-					el.classList.remove('edit');
-				else
-					el.classList.add('edit');
-			}
+			if (editOpen) el.classList.remove('edit');
+			else el.classList.add('edit');
 		});
+		editOpen = !editOpen;
 	}
 });

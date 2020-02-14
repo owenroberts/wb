@@ -77,11 +77,17 @@
 		border-radius: 1em;
 		.active { display: inline-block; }
 		.disabled { display: none; }
-		&:hover { background-color: $lightgray; }
+
+		// &:focus, /* accessibility */
+		&:hover { 
+			background-color: $lightgray; 
+		}
 		opacity: 0;
+		visibility: hidden;
 		transition: opacity 300ms ease-in-out;
 		&.edit {
 			opacity: 1;
+			visibility: visible;
 		}
 	}
 

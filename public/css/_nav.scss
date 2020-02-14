@@ -26,23 +26,29 @@
 		position: relative;
 	}
 
-	.chain-dot {
-		display:inline-block;
-		margin:0 4px;
-		transition: color 300ms;
-		color: $nav-dot;
-		cursor: pointer;
-		&.current { color: white; }
-	}
-
-	.chain-dot:before { 
-		content:"\2022"; 
-		font-size: 1.5em;
-	}
-
 	#dots {
 		display: flex;
 		justify-content: center;
+
+		.chain-dot {
+			display:inline-block;
+			margin:0 4px;
+			transition: color 300ms;
+			color: $nav-dot;
+			cursor: pointer;
+			&.current { color: white; }
+
+			/* accessibility */
+			// &:focus {
+			// 	box-shadow: 0 0 0 4px white,
+			// 		0 0 0 2px black;
+			// }
+		}
+
+		.chain-dot:before { 
+			content:"\2022"; 
+			font-size: 1.5em;
+		}
 	}
 
 	.chain-btn {
@@ -58,8 +64,9 @@
 	#prev-chain, #next-chain {
 		svg { vertical-align: middle; }
 		circle { transition: fill 500ms ease-in-out; }
-		&.active,
-		&:focus {
+		
+		&:focus, // accessibility doesn't work with mouse focus sticks
+		&.active {
 			outline: 0;
 			circle { fill: $nav-btn; }
 		}
