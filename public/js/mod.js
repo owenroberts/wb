@@ -1,7 +1,7 @@
 window.addEventListener('load', function() {
 
 	B.modIsOpen = false;
-	let editOpen = false;
+	B.editOpen = false;
 
 	/* new syn */
 	B.newSyn = e => {
@@ -105,16 +105,21 @@ window.addEventListener('load', function() {
 		}
 	};
 
-	B.openModOptions = e => {
+	B.openModOptions = elem => {
 		if (!B.modIsOpen && !B.isAnimating) {
-			e.style.display = 'none';
-			e.previousElementSibling.style.display = 'inline-block';
+			elem.style.display = 'none';
+			elem.previousElementSibling.style.display = 'inline-block';
 			B.modIsOpen = true;
 			document.getElementsByClassName('nodes')[B.currentChain].classList.add('mod-disabled'); // nodes
-			B.newSyn(e.parentNode.children[1].children[3]); // next syn
+			B.newSyn(elem.parentNode.children[1].children[3]); // next syn
+
+			/* focus next button */
+			elem.previousElementSibling.children[3].focus();
+		
+
 			/* hide other nodes */
-			for (let i = +e.parentNode.dataset.index + 1; i < e.parentNode.parentNode.children.length - 1; i++) {
-				e.parentNode.parentNode.children[i].classList.replace('fade-in', 'fade-grey');
+			for (let i = +elem.parentNode.dataset.index + 1; i < elem.parentNode.parentNode.children.length - 1; i++) {
+				elem.parentNode.parentNode.children[i].classList.replace('fade-in', 'fade-grey');
 			}
 		}
 	};
@@ -145,9 +150,12 @@ window.addEventListener('load', function() {
 
 	function openEdit() {
 		Array.from(document.getElementsByClassName('mod-open')).forEach(el => {
-			if (editOpen) el.classList.remove('edit');
-			else el.classList.add('edit');
+			/* ceheck that it's the visible chain*/
+			if (el.parentNode.parentNode.parentNode.classList.contains('current')) {
+				if (B.editOpen) el.classList.remove('edit');
+				else el.classList.add('edit');
+			}
 		});
-		editOpen = !editOpen;
+		B.editOpen = !B.editOpen;
 	}
 });

@@ -85,6 +85,10 @@ button {
 	font: inherit;
 }
 
+button:active {
+
+}
+
 button:focus {
 	outline: 0;
 }
@@ -117,7 +121,7 @@ button:focus {
 }
 
 input:focus {
-	outline: none;
+	outline: 0;
 }
 
 a:focus {

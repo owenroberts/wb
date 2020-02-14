@@ -55,16 +55,11 @@
 		margin-right: 0.1em;
 		width: 100px;
 		button {
-			// text-decoration: underline;
-			// text-decoration-color: #AAAAAA;
-			// text-underline-position: under;
 			border-bottom: 1px solid #AAAAAA;
 		}
 
 		/* accessibility */
 		button:focus {
-			// box-shadow: 0 0 0 2px white, 0 0 0 4px black;
-			// border-radius: 3px;
 			background: lightgray;
 		}
 	}
@@ -78,13 +73,20 @@
 		.active { display: inline-block; }
 		.disabled { display: none; }
 
-		// &:focus, /* accessibility */
+		&:focus, /* accessibility */
 		&:hover { 
-			background-color: $lightgray; 
+			background-color: $lightgray;
 		}
+			
+		&:focus {
+			box-shadow: 0 0 0 2px #AAAAAA;
+			border-radius: 18px;
+		}
+
 		opacity: 0;
 		visibility: hidden;
 		transition: opacity 300ms ease-in-out;
+		
 		&.edit {
 			opacity: 1;
 			visibility: visible;
@@ -99,6 +101,12 @@
 		z-index: 9;
 		position: relative;
 		font-size: 0; /* temp fix for first path chain mod options spacing */
+
+		button:focus {
+			background-color: $lightgray;
+			box-shadow: 0 0 0 2px #AAAAAA;
+			border-radius: 18px;
+		}
 	}
 
 	.word, .next, .prev, .mod-btn, .mod-close {
@@ -118,11 +126,12 @@
 
 	.next, .prev, .mod-btn, .mod-close {
 		margin-right: 6px;
+		border-radius: 1em;
 	}
 
 	.next, .prev, .mod-btn {
 		background-color: #ededed;
-		border-radius: 1em;
+		
 		transition: background-color 300ms;
 	}
 	

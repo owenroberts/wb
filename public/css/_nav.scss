@@ -39,10 +39,10 @@
 			&.current { color: white; }
 
 			/* accessibility */
-			// &:focus {
-			// 	box-shadow: 0 0 0 4px white,
-			// 		0 0 0 2px black;
-			// }
+			&:focus {
+				box-shadow: 0 0 0 4px white,
+					0 0 0 2px black;
+			}
 		}
 
 		.chain-dot:before { 

@@ -16,8 +16,19 @@ window.addEventListener('load', function() {
 
 	function closeMod() {
 		/* crap hack to close any open mod options while switching chains */
-		if (B.modIsOpen)
-			Array.from(document.getElementsByClassName('mod-options')).filter(e => e.style.display == 'inline-block').forEach(e => B.closeModOptions(e.children[0], false));
+		if (B.modIsOpen) {
+			Array.from(document.getElementsByClassName('mod-options'))
+				.filter(el => e.style.display == 'inline-block')
+				.forEach(el => B.closeModOptions(e.children[0], false));
+		}
+
+		if (B.editOpen) {
+			B.editOpen = false;
+			Array.from(document.getElementsByClassName('mod-open')).forEach(el => {
+				el.classList.remove('edit');
+			});
+		}
+
 	}
 
 	function setChainDepth() {

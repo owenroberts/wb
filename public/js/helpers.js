@@ -105,25 +105,25 @@ window.addEventListener('load', function() {
 
 		const modOptions = B.createElem('div', ['mod-options']);
 
-		const modClose = B.createElem('div', ['mod-close'], undefined, '/img/mod-close.svg');
+		const modClose = B.createElem('button', ['mod-close'], undefined, '/img/mod-close.svg');
 		modClose.addEventListener('click', ev => {
 			B.closeModOptions(ev.currentTarget, false);
 			B.btnAnim(modClose);
 		});
 
-		const modBtn = B.createElem('div', ['mod-btn'], undefined, '/img/mod-down-arrow.svg');
+		const modBtn = B.createElem('button', ['mod-btn'], undefined, '/img/mod-down-arrow.svg');
 		modBtn.addEventListener('click', ev => {
 			B.modifyChain(ev.currentTarget);
 			B.btnAnim(modBtn);
 		});
 
-		const prevBtn = B.createElem('div', ['prev'], undefined, '/img/mod-left-arrow.svg');
+		const prevBtn = B.createElem('button', ['prev'], undefined, '/img/mod-left-arrow.svg');
 		prevBtn.addEventListener('click', ev => {
 			B.newSyn(ev.currentTarget, 'prev');
 			B.btnAnim(prevBtn);
 		});
 
-		const nextBtn = B.createElem('div', ['next'], undefined, '/img/mod-right-arrow.svg');
+		const nextBtn = B.createElem('button', ['next'], undefined, '/img/mod-right-arrow.svg');
 		nextBtn.addEventListener('click', ev => {
 			B.newSyn(ev.currentTarget, 'next');
 			B.btnAnim(nextBtn);
@@ -134,7 +134,7 @@ window.addEventListener('load', function() {
 		modOptions.appendChild(prevBtn);
 		modOptions.appendChild(nextBtn);
 
-		const modOpen = B.createElem('div', ['mod-open']);
+		const modOpen = B.createElem('button', ['mod-open']);
 		modOpen.addEventListener('click', ev => {
 			if (!B.modIsOpen) {
 				B.openModOptions(ev.currentTarget);

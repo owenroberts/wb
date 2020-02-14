@@ -125,7 +125,7 @@ button:focus {
 }
 
 input:focus {
-  outline: none;
+  outline: 0;
 }
 
 a:focus {
@@ -366,6 +366,8 @@ a:focus {
 #about p a:focus {
   border: none;
   outline: 0;
+  color: white;
+  /* wait on joel */
 }
 
 .fadein {
@@ -446,8 +448,12 @@ a:focus {
 .node .mod-open .disabled {
   display: none;
 }
-.node .mod-open:hover {
+.node .mod-open:focus, .node .mod-open:hover {
   background-color: #f2f2f2;
+}
+.node .mod-open:focus {
+  box-shadow: 0 0 0 2px #AAAAAA;
+  border-radius: 18px;
 }
 .node .mod-open.edit {
   opacity: 1;
@@ -462,6 +468,11 @@ a:focus {
   position: relative;
   font-size: 0;
   /* temp fix for first path chain mod options spacing */
+}
+.node .mod-options button:focus {
+  background-color: #f2f2f2;
+  box-shadow: 0 0 0 2px #AAAAAA;
+  border-radius: 18px;
 }
 .node .word, .node .next, .node .prev, .node .mod-btn, .node .mod-close {
   height: 36px;
@@ -478,10 +489,10 @@ a:focus {
 }
 .node .next, .node .prev, .node .mod-btn, .node .mod-close {
   margin-right: 6px;
+  border-radius: 1em;
 }
 .node .next, .node .prev, .node .mod-btn {
   background-color: #ededed;
-  border-radius: 1em;
   transition: background-color 300ms;
 }
 .node:first-child, .node:last-child {
@@ -737,6 +748,9 @@ a:focus {
 }
 #chain-nav #dots .chain-dot.current {
   color: white;
+}
+#chain-nav #dots .chain-dot:focus {
+  box-shadow: 0 0 0 4px white, 0 0 0 2px black;
 }
 #chain-nav #dots .chain-dot:before {
   content: "•";

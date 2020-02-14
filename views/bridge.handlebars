@@ -6,7 +6,7 @@
 	{{!--  insane bug?? can't use anchor here --}}
 	<button id="home-btn" class="big-btn" onclick={location.href="/"}>new</button>	
 	<button id="re-bridge-btn" class="btn">re-bridge</button>
-	<button id="edit-bridge-btn" class="btn" >edit-bridge</button>
+	<button id="edit-bridge-btn" class="btn">edit-bridge</button>
 </div>
 
 <div id="chains">
@@ -20,18 +20,18 @@
 					{{#unless @first}}
 						{{#unless @last}}
 							<div class="mod-options">
-								<div class="mod-close" onclick={B.closeModOptions(this,false);}>
+								<button class="mod-close" onclick={B.closeModOptions(this,false);}>
 									<img src="/img/mod-close.svg">
-								</div>
-								<div class="mod-btn" onclick={B.modifyChain(this);B.btnAnim(this);}>
+								</button>
+								<button class="mod-btn" onclick={B.modifyChain(this);B.btnAnim(this);}>
 									<img src="/img/mod-down-arrow.svg" alt="">
-								</div>
-								<div class="prev" onclick={B.newSyn(this);B.btnAnim(this);}>
+								</button>
+								<button class="prev" onclick={B.newSyn(this);B.btnAnim(this);}>
 									<img src="/img/mod-left-arrow.svg" alt="">
-								</div>
-								<div class="next" onclick={B.newSyn(this);B.btnAnim(this);}>
+								</button>
+								<button class="next" onclick={B.newSyn(this);B.btnAnim(this);}>
 									<img src="/img/mod-right-arrow.svg" alt="">
-								</div>
+								</button>
 							</div>
 							<button class="mod-open" onclick={B.openModOptions(this)}>
 								<img src="/img/mod-open.svg" class="active">

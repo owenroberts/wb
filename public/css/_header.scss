@@ -28,9 +28,7 @@
 	}
 
 	.btn {
-		// padding-bottom: 3px;
 		&:hover, &:active, &:focus {
-			// border-bottom: $btn-underline;
 			text-decoration: underline;
 			text-decoration-color: #AAAAAA;
 			text-underline-position: under;
