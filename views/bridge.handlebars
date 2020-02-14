@@ -3,7 +3,8 @@
 {{> report}}
 
 <div id="header">
-	<a id="home-btn" class="big-btn" href="/" tabindex="1">new</a>
+	{{!--  insane bug?? can't use anchor here --}}
+	<button id="home-btn" class="big-btn" tabindex="1" onclick={location.href="/"}>new</button>	
 	<button id="re-bridge-btn" class="btn" tabindex="2">re-bridge</button>
 	<button id="edit-bridge-btn" class="btn" tabindex="3">edit-bridge</button>
 </div>

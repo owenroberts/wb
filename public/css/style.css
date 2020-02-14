@@ -273,12 +273,14 @@ a:focus {
   text-align: center;
   width: 62px;
   height: 36px;
+  order: 1;
 }
 #header #re-bridge-btn {
   margin-left: auto;
 }
 #header #re-bridge-btn,
 #header #edit-bridge-btn {
+  order: 2;
   flex-basis: 90px;
 }
 #header .btn:hover, #header .btn:active, #header .btn:focus {
