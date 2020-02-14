@@ -2,9 +2,9 @@ window.addEventListener('load', function() {
 	
 	function getNewBridge(ev) {
 		ev.stopPropagation();
-		reBridgeBtn.children[0].classList.add('active');
+		reBridgeBtn.classList.add('active');
 		setTimeout(() => {
-			reBridgeBtn.children[0].classList.remove('active');
+			reBridgeBtn.classList.remove('active');
 		}, 800);
 		if (!B.noMorePaths) {
 			B.fade(B.loader, 'in', 'block');
@@ -24,6 +24,10 @@ window.addEventListener('load', function() {
 		
 		closeMod();
 
+		for (let i = 0; i < chains.length; i++) {
+			chains[i].style.visibility = 'visible';
+		}
+
 		for (let i = 0; i < dots.length; i++) {
 			if (i == B.currentChain) {
 				dots[i].classList.add('current');
@@ -31,8 +35,13 @@ window.addEventListener('load', function() {
 			} else {
 				if (dots[i].classList.contains('current'))
 					dots[i].classList.remove('current');
-				if (chains[i].classList.contains('current'))
+				if (chains[i].classList.contains('current')) {
 					chains[i].classList.remove('current');
+					setTimeout(function() {
+						chains[i].style.visibility = 'hidden';
+					}, B.fadeDur * 2);
+				}
+
 			}
 		}
 
@@ -103,18 +112,18 @@ window.addEventListener('load', function() {
 		B.currentChain++;
 
 		const chain = B.createElem('div', ['chain', 'fade', 'visible']);
-		// chain.style.left = B.currentChain * window.innerWidth + 'px';
 		chain.id = "chain-" + B.currentChain;
 		
 		const nodes = document.createElement("div");
 		nodes.classList.add('nodes');
 		chain.append(nodes);
-		
+
+
 		const startNode = B.createElem('div', ['node', 'fade', 'hidden']);
 		startNode.dataset.word = B.startWord;
 		startNode.dataset.index = 0;
 		const startWord = B.createElem('div', ['word']);
-		const startWordSpan = B.createElem('span', [], B.startWord);
+		const startWordSpan = B.createElem('button', [], B.startWord);
 		startWordSpan.addEventListener('click', B.getDef);
 		
 		startWord.appendChild(startWordSpan);
@@ -125,7 +134,7 @@ window.addEventListener('load', function() {
 		endNode.dataset.word = B.endWord;
 		endNode.dataset.index = B.chains[B.currentChain].length - 1;
 		const endWord =  B.createElem('div', ['word']);
-		const endWordSpan = B.createElem('span', [], B.endWord);
+		const endWordSpan = B.createElem('button', [], B.endWord);
 		endWordSpan.addEventListener('click', B.getDef);
 
 		endWord.appendChild(endWordSpan);
@@ -213,7 +222,4 @@ window.addEventListener('load', function() {
 	const reBridgeBtn = document.getElementById('re-bridge-btn');
 	reBridgeBtn.addEventListener('tap', getNewBridge);
 	reBridgeBtn.addEventListener('click', getNewBridge);
-	reBridgeBtn.addEventListener('keyup', ev =>{
-		if (ev.which == 13) getNewBridge(ev);
-	});
 });

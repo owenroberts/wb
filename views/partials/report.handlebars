@@ -4,8 +4,10 @@
 		<div id="report-title" class="title"></div>
 		<div id="report-txt" class="txt"></div>
 		<div id="report-dismiss" class="dismiss">
-			<a id="fake-tab" tabindex="7"></a>
- 			<a tabindex="8" onclick={B.dismissReport()} onkeypress={B.dismissReport()}>{{> dismiss-btn}}</a>
+			<span id="fake-tab" tabindex="7"></span>
+ 			<button tabindex="8" onclick={B.dismissReport()} >
+ 				{{> dismiss-btn}}
+ 			</button>
  		</div>
 	</div>
 </div>

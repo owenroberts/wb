@@ -88,6 +88,19 @@ select {
   margin: 1em;
 }
 
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+button:focus {
+  outline: 0;
+}
+
 .ldr {
   font-size: 20px;
   display: none;
@@ -256,18 +269,19 @@ a:focus {
   align-items: center;
 }
 #header #home-btn {
-  flex: 1;
-}
-#header #home-btn a {
   display: inline-block;
-  width: 62px;
   text-align: center;
+  width: 62px;
   height: 36px;
 }
-#header #re-bridge-btn, #header #edit-bridge-btn {
+#header #re-bridge-btn {
+  margin-left: auto;
+}
+#header #re-bridge-btn,
+#header #edit-bridge-btn {
   flex-basis: 90px;
 }
-#header .btn:hover, #header .btn:active {
+#header .btn:hover, #header .btn:active, #header .btn:focus {
   text-decoration: underline;
   text-decoration-color: #AAAAAA;
   text-underline-position: under;
@@ -346,12 +360,11 @@ a:focus {
   color: #6a75ff;
   text-decoration: underline;
   cursor: pointer;
+  /* accessibility */
 }
 #about p a:focus {
   border: none;
   outline: 0;
-  box-shadow: 0 0 0 2px black, 0 0 0 4px white;
-  border-radius: 3px;
 }
 
 .fadein {
@@ -408,11 +421,12 @@ a:focus {
   flex: 1 100px;
   margin-right: 0.1em;
   width: 100px;
+  /* accessibility */
 }
-.node .word a {
+.node .word button {
   border-bottom: 1px solid #AAAAAA;
 }
-.node .word a:focus {
+.node .word button:focus {
   background: lightgray;
 }
 .node .mod-open {
@@ -541,6 +555,9 @@ a:focus {
   background-color: #6a75ff;
   border-radius: 0.5em;
 }
+.overlay .msg #report-title {
+  margin-bottom: 2em;
+}
 .overlay .msg .btn {
   border: 1px solid white;
   padding: 8px;
@@ -564,11 +581,11 @@ a:focus {
   transition: all 300ms ease-in;
 }
 .overlay .msg .dismiss:hover circle, .overlay .msg .dismiss.active circle,
-.overlay .msg .dismiss a:focus circle {
+.overlay .msg .dismiss button:focus circle {
   fill: white;
 }
 .overlay .msg .dismiss:hover path, .overlay .msg .dismiss.active path,
-.overlay .msg .dismiss a:focus path {
+.overlay .msg .dismiss button:focus path {
   stroke: black;
 }
 .overlay .msg .dismiss a:focus {
@@ -584,33 +601,6 @@ a:focus {
   content: ".";
 }
 .overlay .msg .sorry {
-  margin-bottom: 1em;
-}
-.overlay .msg .ok {
-  color: #6a75ff;
-  margin-top: 1.25em;
-  cursor: pointer;
-  text-align: center;
-}
-.overlay .msg .share-item {
-  color: black;
-  cursor: pointer;
-  margin-bottom: 1.2em;
-}
-.overlay .msg .share-item span {
-  background-color: #75b5ff;
-  transition: background-color 300ms ease-in;
-  padding: 0.5em;
-  border-radius: 0.1em;
-  font-size: 0.9em;
-}
-.overlay .msg .share-item span:hover {
-  background-color: #499CFC;
-}
-.overlay .msg #share-msg, .overlay .msg #report-title, .overlay .msg .title {
-  margin-right: 2em;
-  font-size: 1.4em;
-  font-weight: 500;
   margin-bottom: 1em;
 }
 .overlay .msg p {
@@ -674,10 +664,6 @@ a:focus {
 @media screen and (max-device-width: 320px) {
   #tooltips.open {
     height: 180px;
-  }
-
-  #header #home-btn {
-    flex: 1;
   }
 }
 @media screen and (max-device-width: 480px) {

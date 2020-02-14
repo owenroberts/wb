@@ -141,9 +141,6 @@ window.addEventListener('load', function() {
 	const editBtn = document.getElementById('edit-bridge-btn');
 	editBtn.addEventListener('click', openEdit);
 	editBtn.addEventListener('tap', openEdit);
-	editBtn.addEventListener('keyup', ev => {
-		if (ev.which == 13) openEdit();
-	});
 
 	function openEdit() {
 		Array.from(document.getElementsByClassName('mod-open')).forEach(el => {

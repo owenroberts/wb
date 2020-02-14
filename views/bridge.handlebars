@@ -3,9 +3,9 @@
 {{> report}}
 
 <div id="header">
-	<div id="home-btn"><a class="big-btn" href="/" tabindex="1">new</a></div>
-	<div id="re-bridge-btn"><a class="btn" tabindex="2">re-bridge</a></div>
-	<div id="edit-bridge-btn"><a class="btn" tabindex="3">edit-bridge</a></div>
+	<a id="home-btn" class="big-btn" href="/" tabindex="1">new</a>
+	<button id="re-bridge-btn" class="btn" tabindex="2">re-bridge</button>
+	<button id="edit-bridge-btn" class="btn" tabindex="3">edit-bridge</button>
 </div>
 
 <div id="chains">
@@ -14,7 +14,7 @@
 			{{#each data.chain}}
 				<div class="node fade" data-word={{this.word}} data-index={{@index}} data-syndex={{this.syndex}}>
 					<div class="word">
-						<a tabindex="0" class="fade visible" onclick={B.getDef();} onkeypress={B.getDef();} >{{this.word}}</a>
+						<button class="fade visible" onclick={B.getDef();}>{{this.word}}</button>
 					</div>
 					{{#unless @first}}
 						{{#unless @last}}
@@ -58,7 +58,7 @@
 </div>
 
 <script type="text/javascript">
-	B = {}; // need B for helpers
+	window.B = {}; // need B for helpers
 </script>
 <script src="/js/helpers.js"></script>
 <script src="/js/bridge.js"></script>

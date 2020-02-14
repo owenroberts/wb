@@ -1,6 +1,6 @@
 window.addEventListener('load', function() {
 
-	B.debug = false; // true;
+	B.debug = false;
 	B.fadeDur = B.debug ? 100 : 300;
 	B.isAnimating = false;
 
@@ -32,8 +32,7 @@ window.addEventListener('load', function() {
 				elem.classList.add(addClass);
 		}, 5); // hacky anim/display fix
 		
-		if (status == 'out')
-			setTimeout(() => { elem.style.display = display; }, B.fadeDur);
+		if (status == 'out') setTimeout(() => { elem.style.display = display; }, B.fadeDur);
 	};
 
 	B.btnAnim = elem => {
@@ -48,15 +47,16 @@ window.addEventListener('load', function() {
 	const reportTitle = document.getElementById('report-title');
 	const reportTxt = document.getElementById('report-txt');
 	const reportBtn = document.getElementById('report-btn');
+	const fakeTab = document.getElementById('fake-tab');
 	let prevActive;
 
 	B.report = function(title, msg, ok, callback, dismissBack) {
-		B.fade(reportDiv, 'in', 'block', function() {
-			B.fade(B.loader, 'out', 'none');
+		B.fade(reportDiv, 'in', 'block', () => {
+			if (B.loader) B.fade(B.loader, 'out', 'none');
 		});
-		
+
 		prevActive = document.activeElement;		
-		document.getElementById('fake-tab').focus();
+		fakeTab.focus();
 
 		reportDiv.scrollTop = 0;
 		reportMsg.scrollTop = 0;
@@ -69,7 +69,6 @@ window.addEventListener('load', function() {
 	};
 
 	B.dismissReport = function(ev, callback) {
-		console.log(prevActive);
 		prevActive.focus();
 		B.fade(reportDiv, 'out', 'none');
 		document.body.style.overflow = 'auto';	
@@ -97,14 +96,10 @@ window.addEventListener('load', function() {
 		node.dataset.word = B.chains[B.currentChain][index].word;
 		node.dataset.syndex = B.chains[B.currentChain][index].syndex;
 
-		const wordSpan = B.createElem('a', ['fade', 'visible'], B.chains[B.currentChain][index].word);
+		const wordSpan = B.createElem('button', ['fade', 'visible'], B.chains[B.currentChain][index].word);
 		const word = B.createElem('div', ['word']);
-		wordSpan.tabIndex = "0";
 		wordSpan.addEventListener('click', () => {
 			B.getDef(wordSpan);
-		});
-		wordSpan.addEventListener('keyup', ev => {
-			if (ev.which == 13) B.getDef(wordSpan);
 		});
 		word.appendChild(wordSpan);
 

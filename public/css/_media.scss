@@ -41,19 +41,12 @@
 		background-color: white;
 		/*outline: 1px solid slategrey;*/
 	}
-
-
 }
 
 /*  phone  */
 @media screen and (max-device-width: 320px) {
 	#tooltips {
 		&.open { height: 180px; }
-	}
-	#header {
-		#home-btn {
-			flex: 1;
-		}
 	}
 }
 

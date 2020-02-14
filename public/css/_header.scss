@@ -10,24 +10,24 @@
 	align-items: center;
 
 	#home-btn { 
-		flex: 1; 
-		a {
-			display: inline-block; 
-			width: 62px; 
-			text-align: center;
-			height: 36px;
-		}
-	}
-	#re-bridge-btn, #edit-bridge-btn { flex-basis: 90px; }
-
-	#home-btn, #re-bridge-btn, #edit-bridge-btn { 
-		// font-size: $base-font-size;
+		display: inline-block;
+		text-align: center;
+		width: 62px; 
+		height: 36px;
 	}
 
+	#re-bridge-btn {
+		margin-left: auto;
+	}
+
+	#re-bridge-btn, 
+	#edit-bridge-btn { 
+		flex-basis: 90px; 
+	}
 
 	.btn {
 		// padding-bottom: 3px;
-		&:hover, &:active {
+		&:hover, &:active, &:focus {
 			// border-bottom: $btn-underline;
 			text-decoration: underline;
 			text-decoration-color: #AAAAAA;

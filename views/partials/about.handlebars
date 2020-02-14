@@ -12,9 +12,10 @@
 		<h2>For any questions</h2>
 		<p>email us at: <a href="mailto:wordbridgeinfo@gmail.com" target="_blank">wordbridgeinfo@gmail.com</a></p>
 
-		<p>Word Bridge uses <a href="https://github.com/daizoru/node-thesaurus" target="_blank">node-thesaurus</a> and <a href="https://wordnet.princeton.edu/citing-wordnet" target="_blank">wordnet</a>.  
-	Princeton University "About WordNet." WordNet. Princeton University. 2010.</p>
+		<p>Word Bridge uses <a href="https://github.com/daizoru/node-thesaurus" target="_blank">node-thesaurus</a> and <a href="https://wordnet.princeton.edu/citing-wordnet" target="_blank">wordnet</a>. Princeton University "About WordNet." WordNet. Princeton University. 2010.</p>
 
-		<div class="dismiss"><a tabindex="0" onclick={B.aboutOut()} onkeypress={B.aboutOut()}>{{> dismiss-btn}}</a></div>
+		<div class="dismiss" id="about-dismiss">
+			<button onclick={B.aboutOut()}>{{> dismiss-btn}}</a>
+		</div>
 	</div>
 </div>

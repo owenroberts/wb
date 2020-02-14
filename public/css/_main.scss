@@ -9,11 +9,13 @@
 		width: 100%;
 		z-index: 0;
 		opacity: 0;
+		// display: none;
 		&.current { 
 			z-index: 2; 
 			opacity: 1;
 			background-color: $white;
 			min-height: 400px;
+			// display: block;
 		}
 	}
 }
@@ -52,14 +54,15 @@
 		flex: 1 100px;
 		margin-right: 0.1em;
 		width: 100px;
-		a {
+		button {
 			// text-decoration: underline;
 			// text-decoration-color: #AAAAAA;
 			// text-underline-position: under;
 			border-bottom: 1px solid #AAAAAA;
 		}
 
-		a:focus {
+		/* accessibility */
+		button:focus {
 			// box-shadow: 0 0 0 2px white, 0 0 0 4px black;
 			// border-radius: 3px;
 			background: lightgray;
