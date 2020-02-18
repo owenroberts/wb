@@ -75,6 +75,16 @@ a:hover {
 	color: $black;
 }
 
+a:focus {
+	outline: 0;
+	border-bottom: 1px solid #AAAAAA;
+}
+
+/* home page inputs are accessibility friendly */
+input:focus {
+	outline: 0;
+}
+
 select { margin:1em; }
 
 button {
@@ -83,10 +93,6 @@ button {
 	padding: 0;
 	cursor: pointer;
 	font: inherit;
-}
-
-button:active {
-
 }
 
 button:focus {
@@ -109,8 +115,9 @@ button:focus {
 	border-radius: 3px;
 	background: transparent;
 
-
-	&.active, &:hover, &:focus {
+	&:focus, /* accessibility */
+	&.active, 
+	&:hover {
 		background-color: black;
 		color: white;
 	}
@@ -119,13 +126,3 @@ button:focus {
 	-moz-appearance: none;
 	appearance: none;  
 }
-
-input:focus {
-	outline: 0;
-}
-
-a:focus {
-	outline: 0;
-	border-bottom: 1px solid #AAAAAA;
-}
-

@@ -59,7 +59,7 @@
 		}
 
 		/* accessibility */
-		button:focus {
+		.keyboard & button:focus {
 			background: lightgray;
 		}
 	}
@@ -73,12 +73,12 @@
 		.active { display: inline-block; }
 		.disabled { display: none; }
 
-		&:focus, /* accessibility */
+		.keyboard &:focus, /* accessibility */
 		&:hover { 
 			background-color: $lightgray;
 		}
 			
-		&:focus {
+		.keyboard &:focus { /* accessibility */
 			box-shadow: 0 0 0 2px #AAAAAA;
 			border-radius: 18px;
 		}
@@ -102,7 +102,7 @@
 		position: relative;
 		font-size: 0; /* temp fix for first path chain mod options spacing */
 
-		button:focus {
+		.keyboard & button:focus { /* accessibility */
 			background-color: $lightgray;
 			box-shadow: 0 0 0 2px #AAAAAA;
 			border-radius: 18px;

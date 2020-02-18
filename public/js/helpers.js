@@ -160,4 +160,13 @@ window.addEventListener('load', function() {
 
 		return node;
 	};
+
+	/* testing keyboard users */
+	document.addEventListener('keydown', ev => {
+		if (ev.which == 9) document.body.classList.add('keyboard');
+	});
+
+	document.addEventListener('mousedown', ev => {
+		document.body.classList.remove('keyboard');
+	});
 });

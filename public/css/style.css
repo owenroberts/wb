@@ -84,6 +84,16 @@ a:hover {
   color: black;
 }
 
+a:focus {
+  outline: 0;
+  border-bottom: 1px solid #AAAAAA;
+}
+
+/* home page inputs are accessibility friendly */
+input:focus {
+  outline: 0;
+}
+
 select {
   margin: 1em;
 }
@@ -119,18 +129,9 @@ button:focus {
   -moz-appearance: none;
   appearance: none;
 }
-.big-btn.active, .big-btn:hover, .big-btn:focus {
+.big-btn:focus, .big-btn.active, .big-btn:hover {
   background-color: black;
   color: white;
-}
-
-input:focus {
-  outline: 0;
-}
-
-a:focus {
-  outline: 0;
-  border-bottom: 1px solid #AAAAAA;
 }
 
 /* svg loader dots animation */
@@ -282,7 +283,7 @@ a:focus {
   order: 2;
   flex-basis: 90px;
 }
-#header .btn:hover, #header .btn:active, #header .btn:focus {
+.keyboard #header .btn:focus, #header .btn:hover, #header .btn:active {
   text-decoration: underline;
   text-decoration-color: #AAAAAA;
   text-underline-position: under;
@@ -363,11 +364,11 @@ a:focus {
   cursor: pointer;
   /* accessibility */
 }
-#about p a:focus {
+.keyboard #about p a:focus {
   border: none;
   outline: 0;
-  color: white;
-  /* wait on joel */
+  border-radius: 3px;
+  box-shadow: 0 0 0 2px black, 0 0 0 4px white;
 }
 
 .fadein {
@@ -429,7 +430,7 @@ a:focus {
 .node .word button {
   border-bottom: 1px solid #AAAAAA;
 }
-.node .word button:focus {
+.keyboard .node .word button:focus {
   background: lightgray;
 }
 .node .mod-open {
@@ -448,10 +449,11 @@ a:focus {
 .node .mod-open .disabled {
   display: none;
 }
-.node .mod-open:focus, .node .mod-open:hover {
+.keyboard .node .mod-open:focus, .node .mod-open:hover {
   background-color: #f2f2f2;
 }
-.node .mod-open:focus {
+.keyboard .node .mod-open:focus {
+  /* accessibility */
   box-shadow: 0 0 0 2px #AAAAAA;
   border-radius: 18px;
 }
@@ -469,7 +471,8 @@ a:focus {
   font-size: 0;
   /* temp fix for first path chain mod options spacing */
 }
-.node .mod-options button:focus {
+.keyboard .node .mod-options button:focus {
+  /* accessibility */
   background-color: #f2f2f2;
   box-shadow: 0 0 0 2px #AAAAAA;
   border-radius: 18px;
@@ -775,13 +778,13 @@ a:focus {
   vertical-align: middle;
 }
 #chain-nav #prev-chain circle, #chain-nav #next-chain circle {
-  transition: fill 500ms ease-in-out;
+  transition: fill 200ms ease-in-out;
 }
-#chain-nav #prev-chain:focus, #chain-nav #prev-chain.active, #chain-nav #next-chain:focus, #chain-nav #next-chain.active {
+.keyboard #chain-nav #prev-chain:focus, #chain-nav #prev-chain.active, .keyboard #chain-nav #next-chain:focus, #chain-nav #next-chain.active {
   outline: 0;
 }
-#chain-nav #prev-chain:focus circle, #chain-nav #prev-chain.active circle, #chain-nav #next-chain:focus circle, #chain-nav #next-chain.active circle {
-  fill: #747474;
+.keyboard #chain-nav #prev-chain:focus circle, #chain-nav #prev-chain.active circle, .keyboard #chain-nav #next-chain:focus circle, #chain-nav #next-chain.active circle {
+  fill: #AAAAAA;
 }
 #chain-nav #prev-chain {
   left: 1em;

@@ -19,10 +19,13 @@
 			cursor: pointer;
 
 			/* accessibility */
-			&:focus {
+			.keyboard &:focus {
 				border: none;
 				outline: 0;
-				color: white; /* wait on joel */
+				// simple color: white; /* wait on joel */
+				border-radius: 3px;
+				box-shadow: 0 0 0 2px black,
+					0 0 0 4px white;
 			}
 		}
 	}

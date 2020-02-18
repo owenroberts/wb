@@ -28,7 +28,9 @@
 	}
 
 	.btn {
-		&:hover, &:active, &:focus {
+		.keyboard &:focus, /* accesssibility */
+		&:hover, 
+		&:active {
 			text-decoration: underline;
 			text-decoration-color: #AAAAAA;
 			text-underline-position: under;

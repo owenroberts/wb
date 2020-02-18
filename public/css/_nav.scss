@@ -63,12 +63,12 @@
 
 	#prev-chain, #next-chain {
 		svg { vertical-align: middle; }
-		circle { transition: fill 500ms ease-in-out; }
+		circle { transition: fill 200ms ease-in-out; }
 		
-		&:focus, // accessibility doesn't work with mouse focus sticks
+		.keyboard &:focus, // accessibility doesn't work with mouse focus sticks
 		&.active {
 			outline: 0;
-			circle { fill: $nav-btn; }
+			circle { fill: #AAAAAA; }
 		}
 	}
 
