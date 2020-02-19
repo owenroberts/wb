@@ -77,14 +77,11 @@ window.addEventListener('load', function() {
 
 						function fadeOutNode() {
 							const n = nodes[nodes.length - 2];
-							n.classList.replace('fade-grey', 'fade-out');
-							n.addEventListener('transitionend', () => { 
+							B.fade(n, 'out', 'none', () => {
 								n.remove();
-								if (nodes.length - 2 == index) {
-									fadeInNode(index + 1); /* add new nodes */
-								} else {
-									fadeOutNode();
-								}
+								 /* add new nodes */
+								if (nodes.length - 2 == index) fadeInNode(index + 1);
+								else fadeOutNode();
 							});
 						}
 
@@ -100,7 +97,6 @@ window.addEventListener('load', function() {
 								}
 							});
 						}
-
 
 						location.hash = B.queryStrings[B.currentChain];
 
@@ -135,7 +131,6 @@ window.addEventListener('load', function() {
 
 			/* focus next button */
 			elem.previousElementSibling.children[3].focus();
-		
 
 			/* hide other nodes */
 			for (let i = +elem.parentNode.dataset.index + 1; i < elem.parentNode.parentNode.children.length - 1; i++) {
