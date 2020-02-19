@@ -304,6 +304,7 @@ button::-moz-focus-inner {
   padding: 0 1rem;
   width: 260px;
   margin-bottom: 2rem;
+  margin-top: -1em;
 }
 #call p {
   margin: 0;
@@ -591,10 +592,13 @@ button::-moz-focus-inner {
 }
 .overlay .msg #report-title {
   margin: 0;
-  margin-bottom: 1em;
 }
 .overlay .msg #report-title span {
   font-weight: normal;
+}
+.overlay .msg #sub-title {
+  margin: 0;
+  margin-bottom: 1em;
 }
 .overlay .msg .btn {
   border: 1px solid white;
@@ -720,7 +724,7 @@ button::-moz-focus-inner {
     padding-top: 3em;
   }
   #report #report-title {
-    font-size: 1.75em;
+    font-size: 1.5em;
   }
 }
 /*  non phone   */

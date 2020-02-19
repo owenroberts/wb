@@ -45,12 +45,13 @@ window.addEventListener('load', function() {
 	const reportDiv = document.getElementById('report');
 	const reportMsg = document.getElementById('report-msg');
 	const reportTitle = document.getElementById('report-title');
+	const reportSub = document.getElementById('sub-title');
 	const reportTxt = document.getElementById('report-txt');
 	const reportBtn = document.getElementById('report-btn');
 	const fakeTab = document.getElementById('fake-tab');
 	let prevActive;
 
-	B.report = function(title, msg, ok, callback, dismissBack) {
+	B.report = function(title, msg, sub, callback, dismissBack) {
 		B.fade(reportDiv, 'in', 'block', () => {
 			if (B.loader) B.fade(B.loader, 'out', 'none');
 		});
@@ -62,6 +63,7 @@ window.addEventListener('load', function() {
 		reportMsg.scrollTop = 0;
 		reportTxt.innerHTML = msg;
 		reportTitle.innerHTML = title;
+		reportSub.innerHTML = sub;
 
 		addEventListener('keydown', ev => {
 			if (ev.which == 27 || ev.key == 'Escape') B.dismissReport();

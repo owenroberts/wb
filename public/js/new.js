@@ -1,7 +1,6 @@
 window.addEventListener('load', function() {
 	
 	function getNewBridge(ev) {
-		console.log(ev);
 		ev.stopPropagation();
 		reBridgeBtn.classList.add('active');
 		setTimeout(() => {
@@ -15,26 +14,9 @@ window.addEventListener('load', function() {
 		}
 	}
 
-	function closeMod() {
-		/* crap hack to close any open mod options while switching chains */
-		if (B.modIsOpen) {
-			Array.from(document.getElementsByClassName('mod-options'))
-				.filter(el => e.style.display == 'inline-block')
-				.forEach(el => B.closeModOptions(e.children[0], false));
-		}
-
-		if (B.editOpen) {
-			B.editOpen = false;
-			Array.from(document.getElementsByClassName('mod-open')).forEach(el => {
-				el.classList.remove('edit');
-			});
-		}
-
-	}
-
 	function setChainDepth() {
 		
-		closeMod();
+		B.closeMod();
 
 		for (let i = 0; i < chains.length; i++) {
 			chains[i].style.visibility = 'visible';
@@ -89,7 +71,7 @@ window.addEventListener('load', function() {
 
 	function nextChain() {
 		if (B.currentChain + 1 < B.chains.length && !B.isAnimating) {
-			closeMod();
+			B.closeMod();
 			B.currentChain = B.currentChain + 1;
 			setChainDepth();
 			B.btnAnim(nextChainBtn);
@@ -103,7 +85,7 @@ window.addEventListener('load', function() {
 
 	function prevChain() {
 		if (B.currentChain > 0 && !B.isAnimating) {
-			closeMod();
+			B.closeMod();
 			B.currentChain = B.currentChain - 1;
 			setChainDepth();
 			B.btnAnim(prevChainBtn);
@@ -112,7 +94,7 @@ window.addEventListener('load', function() {
 
 	B.makeChain = data => {
 
-		closeMod();
+		B.closeMod();
 
 		B.isAnimating = true;
 		setTimeout(() => {

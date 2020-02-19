@@ -1,18 +1,18 @@
 window.addEventListener('load', function() {
 
-	B.modIsOpen = false;
-	B.editOpen = false;
+	let modIsOpen = false;
+	let editIsOpen = false;
 
 	/* new syn */
-	B.newSyn = e => {
-		const node = e.parentNode.parentNode;
+	B.newSyn = elem => {
+		const node = elem.parentNode.parentNode;
 		const wordSpan = node.children[0].children[0];
 		const index = +node.dataset.index;
 		const syndex = +node.dataset.syndex;
 		const len = B.chains[B.currentChain][index].alts.length;
 
 		const word = node.dataset.word;
-		const dir = e.classList[0];
+		const dir = elem.classList[0];
 		let newSyndex = syndex + (dir == 'prev' ? -1 : 1);
 		if (newSyndex == -1)
 			newSyndex = len - 1;
@@ -31,9 +31,9 @@ window.addEventListener('load', function() {
 	};
 
 	/** modify chain **/
-	B.modifyChain = e => {
+	B.modifyChain = elem => {
 
-		const node = e.parentNode.parentNode;
+		const node = elem.parentNode.parentNode;
 		const index = +node.dataset.index;
 		const nodes = node.parentNode.children;
 		const alt = node.dataset.word;
@@ -64,7 +64,7 @@ window.addEventListener('load', function() {
 						B.report("Error", `${err}<br><br>${option}`);
 						B.noTouching = false;
 					} else {
-						B.closeModOptions(e, true);
+						B.closeModOptions(elem, true);
 						B.queryStrings[B.currentChain] += '-' + obj.data.queryString;
 						B.chains[B.currentChain][index].word = alt;
 						B.chains[B.currentChain].splice(index + 1, B.chains[B.currentChain].length - 1);
@@ -95,7 +95,7 @@ window.addEventListener('load', function() {
 								if (index < B.chains[B.currentChain].length - 2) {
 									fadeInNode(++index);
 								} else {
-									B.modIsOpen = false;
+									modIsOpen = false;
 									noTouching = false;
 								}
 							});
@@ -106,10 +106,10 @@ window.addEventListener('load', function() {
 	};
 
 	B.openModOptions = elem => {
-		if (!B.modIsOpen && !B.isAnimating) {
+		if (!modIsOpen && !B.isAnimating) {
 			elem.style.display = 'none';
 			elem.previousElementSibling.style.display = 'inline-block';
-			B.modIsOpen = true;
+			modIsOpen = true;
 			document.getElementsByClassName('nodes')[B.currentChain].classList.add('mod-disabled'); // nodes
 			B.newSyn(elem.parentNode.children[1].children[3]); // next syn
 
@@ -124,17 +124,17 @@ window.addEventListener('load', function() {
 		}
 	};
 	
-	B.closeModOptions = (e, isMod) => {
-		const node = e.parentNode.parentNode; /* the main node derived from the mod close btn */
+	B.closeModOptions = (elem, isMod) => {
+		const node = elem.parentNode.parentNode; /* the main node derived from the mod close btn */
 		const index = +node.dataset.index;
-		e.parentNode.style.display = 'none';
-		e.parentNode.nextElementSibling.style.display = 'inline-block';	
+		elem.parentNode.style.display = 'none';
+		elem.parentNode.nextElementSibling.style.display = 'inline-block';	
 		document.getElementsByClassName('nodes')[B.currentChain].classList.remove('mod-disabled'); // nodes
 
 		if (!isMod) {
 			/* change original word back */
 			node.dataset.word = node.children[0].children[0].textContent = B.chains[B.currentChain][index].word;
-			B.modIsOpen = false;
+			modIsOpen = false;
 			/* show other nodes */
 			const nodes = node.parentNode.children;
 			for (let i = index + 1; i < nodes.length - 1; i++) {
@@ -143,19 +143,37 @@ window.addEventListener('load', function() {
 		}
 	};
 
+	B.closeMod = function() {
+		/* crap hack to close any open mod options while switching chains */
+		if (modIsOpen) {
+			modIsOpen = false;
+			Array.from(document.getElementsByClassName('mod-options'))
+				.filter(elem => elem.style.display == 'inline-block')
+				.forEach(elem => B.closeModOptions(elem.children[0], false));
+		}
+
+		if (editIsOpen) {
+			editOpen = false;
+			Array.from(document.getElementsByClassName('mod-open')).forEach(el => {
+				el.classList.remove('edit');
+			});
+		}
+	};
+
 	/* edit options */
 	const editBtn = document.getElementById('edit-bridge-btn');
-	editBtn.addEventListener('click', openEdit);
-	editBtn.addEventListener('tap', openEdit);
+	editBtn.addEventListener('click', toggleEdit);
+	editBtn.addEventListener('tap', toggleEdit);
 
-	function openEdit() {
+	function toggleEdit() {
+
 		Array.from(document.getElementsByClassName('mod-open')).forEach(el => {
-			/* ceheck that it's the visible chain*/
+			/* check that it's the visible chain*/
 			if (el.parentNode.parentNode.parentNode.classList.contains('current')) {
-				if (B.editOpen) el.classList.remove('edit');
+				if (editIsOpen) B.closeMod();
 				else el.classList.add('edit');
 			}
 		});
-		B.editOpen = !B.editOpen;
+		editIsOpen = !editIsOpen;
 	}
 });

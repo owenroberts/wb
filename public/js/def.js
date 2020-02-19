@@ -19,8 +19,8 @@ window.addEventListener('load', function() {
 		fetch(url)
 			.then(response => { return response.json(); })
 			.then(result => {
-				// B.fade(B.loader, 'out', 'none'); // in report
-				const title = `Definition for “${word}” <br> <span style="font-size:18px">(as a synonym of “${synonym}”)</span>`;
+				const title = `Definition for the word “${word}”`;
+				const sub = `used as a synonym of “${synonym}”`;
 				let msg = "";
 				const len = Math.min(result.data.length, 10);
 				for (let i = 0; i < len; i++) {
@@ -29,7 +29,7 @@ window.addEventListener('load', function() {
 					msg += result.data[i].def;
 					msg += '<br><br>';
 				}
-				B.report(title, msg);
+				B.report(title, msg, sub);
 			});
 	};
 });
