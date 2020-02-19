@@ -20,6 +20,10 @@
 			text-decoration: underline;
 			cursor: pointer;
 
+			&:focus {
+				border: none;
+			}
+
 			/* accessibility */
 			.keyboard &:focus {
 				border: none;

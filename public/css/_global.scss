@@ -27,19 +27,10 @@ body {
 	background-color: white;
 	height: 100%;
 	position: relative;
-	// scrollbar-width: none;
+	scrollbar-width: none;
 }
 
 pre { font-size:12px; } /* for error messages in express */
-
-a, .leftarrow, .rightarrow {
-	cursor: pointer;
-	color: black;
-	text-decoration:none; 
-	// border-bottom: 1px solid black;
-	transition: color 500ms;
-	&:hover { color:$lightgray; }
-}
 
 ul, li {
 	padding:0;
@@ -61,14 +52,14 @@ input {
 }
 
 svg.stroke {
-	* { transition: stroke 500ms; }
+	* { transition: stroke $fade-dur; }
 	&:hover {
 		* { stroke: $black; }
 	}
 }
 
 svg.fill {
-	path { transition: fill 500ms; }
+	path { transition: fill $fade-dur; }
 	&:hover {
 		path { fill: $black; }
 	}
@@ -101,6 +92,11 @@ button {
 
 button:focus {
 	outline: 0;
+}
+
+span::-moz-focus-inner,
+button::-moz-focus-inner {
+  border: 0;
 }
 
 .ldr {

@@ -29,10 +29,10 @@
 		&[type="text"] {
 			font-weight: normal;			
 			width: 100%;
-			transition: border-color 300ms ease-in;
+			transition: border-color $fade-dur ease-in;
 			&::-webkit-input-placeholder { 
 				color:  $input-text; 
-				transition: color 300ms ease-in;
+				transition: color $fade-dur ease-in;
 			}
 		}
 		&[type="text"].error {

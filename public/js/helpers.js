@@ -1,6 +1,6 @@
 window.addEventListener('load', function() {
 
-	B.debug = false;
+	B.debug = true;
 	B.fadeDur = B.debug ? 100 : 300;
 	B.isAnimating = false;
 

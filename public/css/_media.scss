@@ -12,6 +12,7 @@
 		box-shadow: 0 0 10px $gray;
 		overflow-y: scroll;
 	}
+	
 	#container::-webkit-scrollbar {
     	width: 0;
 	}
@@ -33,6 +34,7 @@
 	.overlay::-webkit-scrollbar {
 		width: 0.75rem;
 	}
+
 	.overlay::-webkit-scrollbar-track {
 		-webkit-box-shadow: none;
 	}

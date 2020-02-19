@@ -13,6 +13,17 @@
 	
 	max-width: $desktop-width;
 
+	&::-webkit-scrollbar {
+		width: 0.25em;
+	}
+	
+	&::-webkit-scrollbar-thumb {
+		background-color: $blue;
+		border-radius:0.5em;
+	}
+
+	scrollbar-width: 0;
+
 	&#loader {
 		background-color: rgba($black, 0.6);
 		text-align: center;
@@ -27,14 +38,15 @@
 		color: $white;
 		overflow-y: scroll;
 		max-width: 768px;
+		scrollbar-width: none;
 		
 		&::-webkit-scrollbar {
-   		 	width: 0.25em;
+			width: 0.25em;
 		}
 		
 		&::-webkit-scrollbar-thumb {
-		  background-color: $blue;
-		  border-radius:0.5em;
+			background-color: $blue;
+			border-radius:0.5em;
 		}
 
 		#report-title {
@@ -66,7 +78,7 @@
 			top: 10px;
 			right: 20px;
 			
-			circle, path { transition: all 300ms ease-in; }
+			circle, path { transition: all $fade-dur ease-in; }
 			&:hover circle, 
 			&.active circle,
 			button:focus circle  { 

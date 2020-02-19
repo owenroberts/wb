@@ -3,7 +3,7 @@
 	text-align: center;
 	
 	height: 0px;
-	transition: height 500ms;
+	transition: height $fade-dur;
 	
 	&.slide-up { 
 		height: 60px; 
@@ -33,7 +33,7 @@
 		.chain-dot {
 			display:inline-block;
 			margin:0 4px;
-			transition: color 300ms;
+			transition: color $fade-dur;
 			color: $nav-dot;
 			cursor: pointer;
 			&.current { color: white; }
@@ -63,7 +63,7 @@
 
 	#prev-chain, #next-chain {
 		svg { vertical-align: middle; }
-		circle { transition: fill 200ms ease-in-out; }
+		circle { transition: fill $fade-dur ease-in-out; }
 		
 		.keyboard &:focus, // accessibility doesn't work with mouse focus sticks
 		&.active {

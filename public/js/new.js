@@ -1,6 +1,7 @@
 window.addEventListener('load', function() {
 	
 	function getNewBridge(ev) {
+		console.log(ev);
 		ev.stopPropagation();
 		reBridgeBtn.classList.add('active');
 		setTimeout(() => {

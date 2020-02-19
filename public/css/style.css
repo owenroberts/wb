@@ -31,6 +31,7 @@ body {
   background-color: white;
   height: 100%;
   position: relative;
+  scrollbar-width: none;
 }
 
 pre {
@@ -38,16 +39,6 @@ pre {
 }
 
 /* for error messages in express */
-a, .leftarrow, .rightarrow {
-  cursor: pointer;
-  color: black;
-  text-decoration: none;
-  transition: color 500ms;
-}
-a:hover, .leftarrow:hover, .rightarrow:hover {
-  color: #f2f2f2;
-}
-
 ul, li {
   padding: 0;
   margin: 0;
@@ -68,14 +59,14 @@ input {
 }
 
 svg.stroke * {
-  transition: stroke 500ms;
+  transition: stroke 300ms;
 }
 svg.stroke:hover * {
   stroke: black;
 }
 
 svg.fill path {
-  transition: fill 500ms;
+  transition: fill 300ms;
 }
 svg.fill:hover path {
   fill: black;
@@ -110,6 +101,11 @@ button {
 
 button:focus {
   outline: 0;
+}
+
+span::-moz-focus-inner,
+button::-moz-focus-inner {
+  border: 0;
 }
 
 .ldr {
@@ -373,6 +369,9 @@ button:focus {
   cursor: pointer;
   /* accessibility */
 }
+#about p a:focus {
+  border: none;
+}
 .keyboard #about p a:focus {
   border: none;
   outline: 0;
@@ -405,7 +404,7 @@ button:focus {
 .nodes {
   position: relative;
   width: 100%;
-  transition: top 500ms;
+  transition: top 300ms;
   top: 0px;
   background-color: white;
   /* min-width: 260px;
@@ -494,7 +493,7 @@ button:focus {
 .node .next, .node .prev, .node .mod-btn, .node .mod-close, .node .mod-options, .node .mod-open {
   line-height: 0;
   cursor: pointer;
-  transition: background-color 500ms ease-in-out;
+  transition: background-color 300ms ease-in-out;
 }
 .node .next.active, .node .prev.active, .node .mod-btn.active, .node .mod-close.active, .node .mod-options.active, .node .mod-open.active {
   background-color: #6d6d6d;
@@ -559,6 +558,14 @@ button:focus {
   font-size: 20px;
   line-height: 1.45;
   max-width: 540px;
+  scrollbar-width: 0;
+}
+.overlay::-webkit-scrollbar {
+  width: 0.25em;
+}
+.overlay::-webkit-scrollbar-thumb {
+  background-color: #6a75ff;
+  border-radius: 0.5em;
 }
 .overlay#loader {
   background-color: rgba(0, 0, 0, 0.6);
@@ -573,6 +580,7 @@ button:focus {
   color: white;
   overflow-y: scroll;
   max-width: 768px;
+  scrollbar-width: none;
 }
 .overlay .msg::-webkit-scrollbar {
   width: 0.25em;
@@ -731,7 +739,7 @@ button:focus {
 #chain-nav {
   text-align: center;
   height: 0px;
-  transition: height 500ms;
+  transition: height 300ms;
   line-height: 55px;
   position: fixed;
   bottom: -3px;
@@ -791,7 +799,7 @@ button:focus {
   vertical-align: middle;
 }
 #chain-nav #prev-chain circle, #chain-nav #next-chain circle {
-  transition: fill 200ms ease-in-out;
+  transition: fill 300ms ease-in-out;
 }
 .keyboard #chain-nav #prev-chain:focus, #chain-nav #prev-chain.active, .keyboard #chain-nav #next-chain:focus, #chain-nav #next-chain.active {
   outline: 0;

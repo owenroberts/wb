@@ -24,7 +24,7 @@
 	
 	position: relative;
 	width: 100%;
-	transition: top 500ms;
+	transition: top $fade-dur;
 	top: 0px;
 	background-color: $white;
 	/* min-width: 260px;
@@ -85,7 +85,7 @@
 
 		opacity: 0;
 		visibility: hidden;
-		transition: opacity 300ms ease-in-out;
+		transition: opacity $fade-dur ease-in-out;
 		
 		&.edit {
 			opacity: 1;
@@ -118,7 +118,7 @@
 	.next, .prev, .mod-btn, .mod-close, .mod-options, .mod-open {
 		line-height: 0;
 		cursor: pointer;
-		transition: background-color 500ms ease-in-out;
+		transition: background-color $fade-dur ease-in-out;
 		&.active {
 			background-color: $btn;
 		}
@@ -132,7 +132,7 @@
 	.next, .prev, .mod-btn {
 		background-color: #ededed;
 		
-		transition: background-color 300ms;
+		transition: background-color $fade-dur;
 	}
 	
 	&:first-child, &:last-child {
