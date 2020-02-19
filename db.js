@@ -57,7 +57,7 @@ ChainDb.prototype.get = function(queryString, callback) {
 	this.getCollection(function(err, chain_collection) {
 		if (err) callback(err);
 		else {
-			chain_collection.findOne({queryString:queryString}, function(err, result) {
+			chain_collection.findOne({ queryString: queryString}, function(err, result) {
 				if (err) callback(err);
 				else callback(null, result);
 			});

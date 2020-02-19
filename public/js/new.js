@@ -49,10 +49,13 @@ window.addEventListener('load', function() {
 		}
 		if (B.currentChain == B.chains.length - 1) {
 			nextChainBtn.classList.remove('clickable');
-		} 
+		}
+
+		location.hash = B.queryStrings[B.currentChain];
 	}
 
 	function showChain(index) {
+		console.log(index);
 		if (index < B.chains.length && B.currentChain != index && index >= 0) {
 			B.currentChain = index;
 			setChainDepth();
@@ -165,7 +168,7 @@ window.addEventListener('load', function() {
 		if (B.chains.length > 1)
 			document.getElementById('chain-nav').classList.add('slide-up');
 		setChainDepth();
-	};
+	}
 
 	function newChain(params, callback) {
 		if (B.chains.length < 10) {

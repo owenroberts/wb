@@ -33,19 +33,21 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res) {
-	let err;
-	if (req.query.err instanceof Array) err = req.query.err[req.query.err.length - 1];
-	else err = req.query.err;
+	let err = req.query.err instanceof Array ?
+		req.query.err[req.query.err.length - 1] :
+		req.query.err;
 	res.render('index', {
 		errmsg: err
 	});
 });
 
+/* legacy url handler */
 app.get('/search', function(req, res) {
 	if (req.query.qs) res.redirect('/bridge?qs=' + req.query.qs);
 	else res.redirect('/bridge?qs=' + makeQueryString(req.query));
 });
 
+/* renders main bridge page */
 app.get('/bridge', function(req, res) {
 	/* loadChain w req for production, makeChain w req.query to skip db/cache */
 	loadChain(req, function(result) { 
@@ -54,6 +56,7 @@ app.get('/bridge', function(req, res) {
 	});
 });
 
+/* json request for mod chain, new chain */
 app.get('/chain', function(req, res) {
 	loadChain(req, function(result) { 
 		if (result.error) res.json({ errormsg: result.error });
@@ -84,8 +87,8 @@ app.get('/def', function(req,res) {
 });
 
 function loadChain(req, callback) {
-	var queryString = req.query.qs || makeQueryString(req.query);
-	var cacheSearch = cache.get(queryString);
+	const queryString = req.query.qs || makeQueryString(req.query);
+	const cacheSearch = cache.get(queryString);
 	if (cacheSearch == undefined) {
 		db.get(queryString, function(err, result) {
 			if (err) console.log(err);
@@ -110,14 +113,14 @@ function loadChain(req, callback) {
 	}
 }
 
-function makeChain(query, callback) {
-	let syns = query.as ? query.as.split(',') : [query.s, query.e];
-	var query = {
-		queryString: makeQueryString(query),
-		start: query.s.replace(/ /g, ""),
-		end: query.e.replace(/ /g, ""),
-		nodeLimit: query.nl,
-		synonymLevel: query.sl,
+function makeChain(_query, callback) {
+	let syns = _query.as ? _query.as.split(',') : [_query.s, _query.e];
+	const query = {
+		queryString: makeQueryString(_query),
+		start: _query.s.replace(/ /g, ""),
+		end: _query.e.replace(/ /g, ""),
+		nodeLimit: _query.nl,
+		synonymLevel: _query.sl,
 		searches: [{ date: new Date() }] /* location? */
 	};
 	chain.makeChain(query, syns, function(err, chain) {
@@ -134,18 +137,18 @@ function makeChain(query, callback) {
 function makeQueryString(query) {
 	let startWord = query.s;
 	let endWord = query.e;
-	var string = startWord + query.nl + endWord + query.sl;
+	let string = startWord + query.nl + endWord + query.sl;
 	string = string.toLowerCase().replace(/ /g, ""); // remove spaces 
 	return string;
 }
 
-var server = app.listen(3000, function() {
+const server = app.listen(3000, function() {
 	var host = server.address().host || 'localhost';
 	var port = server.address().port;
 	console.log('word bridge listening at http://%s:%s', host, port);
 });
 
-var mongoUri = process.env.MONGOLAB_URI || 
+const mongoUri = process.env.MONGOLAB_URI || 
   process.env.MONGOHQ_URL || 
   'localhost';
 const db = new ChainDb(mongoUri);

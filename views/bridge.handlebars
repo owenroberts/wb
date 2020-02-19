@@ -59,6 +59,10 @@
 </div>
 
 <script type="text/javascript">
+	/* check hash to reroute */
+	if (location.hash) {
+		location.href = `${location.origin}/bridge?qs=${location.hash.replace('#', '')}`;
+	}
 	window.B = {}; // need B for helpers
 </script>
 <script src="/js/helpers.js"></script>

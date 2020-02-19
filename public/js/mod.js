@@ -100,6 +100,26 @@ window.addEventListener('load', function() {
 								}
 							});
 						}
+
+
+						location.hash = B.queryStrings[B.currentChain];
+
+						/* save modded chain */
+						fetch('/save', {  method: 'POST',
+							headers: {'Content-Type': 'application/json'},
+		 					body: JSON.stringify({
+								qs: B.queryStrings[B.currentChain],
+								chain: JSON.stringify(B.chains[B.currentChain]),
+								s: B.startWord,
+								e: B.endWord,
+								sl: B.queryStrings[B.currentChain].split(/[a-z\\-]+/)[1],
+								nl: B.queryStrings[B.currentChain].split(/[a-z\\-]+/)[2]
+							})
+						}).then(response => { 
+							console.log('saved', B.queryStrings[B.currentChain]); 
+						}).catch(error => { 
+							console.log('error', error); 
+						});
 					}
 				});
 		}
