@@ -14,7 +14,7 @@ html, body {
 }
 
 body {
-  font-family: Helvetica, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   margin: 0;
   width: 100%;
   overflow-x: hidden;
@@ -37,6 +37,7 @@ pre {
   font-size: 12px;
 }
 
+/* for error messages in express */
 a, .leftarrow, .rightarrow {
   cursor: pointer;
   color: black;
@@ -63,6 +64,7 @@ hr {
 input {
   border: none;
   font-weight: 500;
+  font: inherit;
 }
 
 svg.stroke * {
@@ -278,15 +280,18 @@ button:focus {
 #header #re-bridge-btn {
   margin-left: auto;
 }
+#header #edit-bridge-btn {
+  margin-left: 1em;
+}
 #header #re-bridge-btn,
 #header #edit-bridge-btn {
   order: 2;
-  flex-basis: 90px;
+}
+#header .btn {
+  border-bottom: 1px solid transparent;
 }
 .keyboard #header .btn:focus, #header .btn:hover, #header .btn:active {
-  text-decoration: underline;
-  text-decoration-color: #AAAAAA;
-  text-underline-position: under;
+  border-bottom: 1px solid #AAAAAA;
 }
 
 .index {
@@ -347,6 +352,10 @@ button:focus {
   font-weight: bold;
 }
 
+#about {
+  scrollbar-width: none;
+  /* ff */
+}
 #about h1 {
   font-size: 26px;
 }
@@ -381,7 +390,7 @@ button:focus {
 }
 #chains .chain {
   position: absolute;
-  padding-bottom: 2em;
+  padding-bottom: 3em;
   width: 100%;
   z-index: 0;
   opacity: 0;
@@ -573,7 +582,11 @@ button:focus {
   border-radius: 0.5em;
 }
 .overlay .msg #report-title {
-  margin-bottom: 2em;
+  margin: 0;
+  margin-bottom: 1em;
+}
+.overlay .msg #report-title span {
+  font-weight: normal;
 }
 .overlay .msg .btn {
   border: 1px solid white;

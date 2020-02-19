@@ -31,13 +31,18 @@
 		&::-webkit-scrollbar {
    		 	width: 0.25em;
 		}
+		
 		&::-webkit-scrollbar-thumb {
 		  background-color: $blue;
 		  border-radius:0.5em;
 		}
 
 		#report-title {
-			margin-bottom: 2em;
+			margin: 0;
+			margin-bottom: 1em;
+			span {
+				font-weight: normal;
+			}
 		}
 
 		.btn {

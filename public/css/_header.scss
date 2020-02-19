@@ -21,19 +21,21 @@
 		margin-left: auto;
 	}
 
+	#edit-bridge-btn { 
+		margin-left: 1em;
+	}
+
 	#re-bridge-btn, 
 	#edit-bridge-btn { 
 		order: 2;
-		flex-basis: 90px; 
 	}
 
 	.btn {
+		border-bottom: 1px solid transparent;
 		.keyboard &:focus, /* accesssibility */
 		&:hover, 
 		&:active {
-			text-decoration: underline;
-			text-decoration-color: #AAAAAA;
-			text-underline-position: under;
+			border-bottom: 1px solid #AAAAAA;
 		}
 	}
 }
