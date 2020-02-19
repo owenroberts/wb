@@ -668,6 +668,10 @@ button::-moz-focus-inner {
     box-shadow: 0 0 10px #C5C7C9;
   }
 
+  .overlay {
+    min-width: 0;
+  }
+
   #chain-nav, .overlay {
     width: 100%;
     max-width: 540px;

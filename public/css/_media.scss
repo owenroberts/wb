@@ -11,6 +11,11 @@
 	#container {
 		box-shadow: 0 0 10px $gray;
 	}
+
+	.overlay {
+		min-width: 0;
+	}
+
 	#chain-nav, .overlay {
 		width: 100%;
     	max-width: $desktop-width;

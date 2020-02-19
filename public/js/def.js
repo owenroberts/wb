@@ -19,8 +19,8 @@ window.addEventListener('load', function() {
 		fetch(url)
 			.then(response => { return response.json(); })
 			.then(result => {
-				const title = `Definition for the word “${word}”`;
-				const sub = `used as a synonym of “${synonym}”`;
+				const title = `${word}`;
+				const sub = `synonym of “${synonym}`;
 				let msg = "";
 				const len = Math.min(result.data.length, 10);
 				for (let i = 0; i < len; i++) {
