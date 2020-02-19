@@ -47,9 +47,7 @@
 
 /*  phone  */
 @media screen and (max-device-width: 320px) {
-	#tooltips {
-		&.open { height: 180px; }
-	}
+
 }
 
 @media screen and (max-device-width: 480px) {
@@ -58,6 +56,14 @@
 	.overlay .msg .dismiss { position: fixed; }
 	#tooltips {
 		#tip-wrap { font-size: 16px; }
+	}
+
+	#report {
+		padding-top: 3em;
+
+		#report-title {
+			font-size: 1.75em;
+		}
 	}
 }
 
@@ -71,5 +77,18 @@
 		padding-top: 60px;
 		.msg .dismiss { top: 60px; }
 	}
+
+	// .overlay::-webkit-scrollbar {
+	// 	width: 0.75rem;
+	// }
+
+	// .overlay::-webkit-scrollbar-track {
+	// 	-webkit-box-shadow: none;
+	// }
+	
+	// .overlay::-webkit-scrollbar-thumb {
+	// 	background-color: white;
+	// 	/*outline: 1px solid slategrey;*/
+	// }
 }
 
