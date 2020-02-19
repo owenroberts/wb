@@ -13,16 +13,23 @@
 	
 	max-width: $desktop-width;
 
+	scrollbar-width: 0;
+
+	overflow-y: scroll;
+	height: inherit;
+	// min-width: 0;
+
 	&::-webkit-scrollbar {
-		width: 0.25em;
+		width: 0.75rem;
+	}
+
+	&::-webkit-scrollbar-track {
+		-webkit-box-shadow: none;
 	}
 	
 	&::-webkit-scrollbar-thumb {
-		background-color: $blue;
-		border-radius:0.5em;
+		background-color: white;
 	}
-
-	scrollbar-width: 0;
 
 	&#loader {
 		background-color: rgba($black, 0.6);
@@ -41,12 +48,7 @@
 		scrollbar-width: none;
 		
 		&::-webkit-scrollbar {
-			width: 0.25em;
-		}
-		
-		&::-webkit-scrollbar-thumb {
-			background-color: $blue;
-			border-radius:0.5em;
+			width: 0;
 		}
 
 		#report-title {

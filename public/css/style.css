@@ -32,6 +32,11 @@ body {
   height: 100%;
   position: relative;
   scrollbar-width: none;
+  overflow-y: scroll;
+}
+
+#container::-webkit-scrollbar {
+  width: 0;
 }
 
 pre {
@@ -560,13 +565,17 @@ button::-moz-focus-inner {
   line-height: 1.45;
   max-width: 540px;
   scrollbar-width: 0;
+  overflow-y: scroll;
+  height: inherit;
 }
 .overlay::-webkit-scrollbar {
-  width: 0.25em;
+  width: 0.75rem;
+}
+.overlay::-webkit-scrollbar-track {
+  -webkit-box-shadow: none;
 }
 .overlay::-webkit-scrollbar-thumb {
-  background-color: #6a75ff;
-  border-radius: 0.5em;
+  background-color: white;
 }
 .overlay#loader {
   background-color: rgba(0, 0, 0, 0.6);
@@ -584,11 +593,7 @@ button::-moz-focus-inner {
   scrollbar-width: none;
 }
 .overlay .msg::-webkit-scrollbar {
-  width: 0.25em;
-}
-.overlay .msg::-webkit-scrollbar-thumb {
-  background-color: #6a75ff;
-  border-radius: 0.5em;
+  width: 0;
 }
 .overlay .msg #report-title {
   margin: 0;
@@ -661,11 +666,6 @@ button::-moz-focus-inner {
 
   #container {
     box-shadow: 0 0 10px #C5C7C9;
-    overflow-y: scroll;
-  }
-
-  #container::-webkit-scrollbar {
-    width: 0;
   }
 
   #chain-nav, .overlay {
@@ -683,24 +683,6 @@ button::-moz-focus-inner {
   }
 
   /* #loader img { width: 2em; } */
-  .overlay {
-    overflow-y: scroll;
-    height: inherit;
-    min-width: 0;
-  }
-
-  .overlay::-webkit-scrollbar {
-    width: 0.75rem;
-  }
-
-  .overlay::-webkit-scrollbar-track {
-    -webkit-box-shadow: none;
-  }
-
-  .overlay::-webkit-scrollbar-thumb {
-    background-color: white;
-    /*outline: 1px solid slategrey;*/
-  }
 }
 /*  phone  */
 @media screen and (max-device-width: 480px) {
@@ -714,10 +696,6 @@ button::-moz-focus-inner {
 
   .overlay .msg .dismiss {
     position: fixed;
-  }
-
-  #tooltips #tip-wrap {
-    font-size: 16px;
   }
 
   #report {

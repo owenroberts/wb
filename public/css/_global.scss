@@ -28,6 +28,12 @@ body {
 	height: 100%;
 	position: relative;
 	scrollbar-width: none;
+
+	overflow-y: scroll;
+}
+
+#container::-webkit-scrollbar {
+	width: 0;
 }
 
 pre { font-size:12px; } /* for error messages in express */

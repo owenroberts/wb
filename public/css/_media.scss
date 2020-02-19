@@ -10,39 +10,16 @@
 
 	#container {
 		box-shadow: 0 0 10px $gray;
-		overflow-y: scroll;
 	}
-	
-	#container::-webkit-scrollbar {
-    	width: 0;
-	}
-
 	#chain-nav, .overlay {
 		width: 100%;
     	max-width: $desktop-width;
    		margin: 0 auto;
    	}
+   	
    	#prev-chain { left: 0; }
    	#next-chain { right: 0; }
 	/* #loader img { width: 2em; } */
-	.overlay {
-		overflow-y: scroll;
-		height: inherit;
-		min-width: 0;
-	}
-
-	.overlay::-webkit-scrollbar {
-		width: 0.75rem;
-	}
-
-	.overlay::-webkit-scrollbar-track {
-		-webkit-box-shadow: none;
-	}
-	
-	.overlay::-webkit-scrollbar-thumb {
-		background-color: white;
-		/*outline: 1px solid slategrey;*/
-	}
 }
 
 /*  phone  */
@@ -54,9 +31,6 @@
 	body {  -webkit-text-size-adjust: none; }
 	.overlay { position: absolute; }
 	.overlay .msg .dismiss { position: fixed; }
-	#tooltips {
-		#tip-wrap { font-size: 16px; }
-	}
 
 	#report {
 		padding-top: 3em;
@@ -77,18 +51,5 @@
 		padding-top: 60px;
 		.msg .dismiss { top: 60px; }
 	}
-
-	// .overlay::-webkit-scrollbar {
-	// 	width: 0.75rem;
-	// }
-
-	// .overlay::-webkit-scrollbar-track {
-	// 	-webkit-box-shadow: none;
-	// }
-	
-	// .overlay::-webkit-scrollbar-thumb {
-	// 	background-color: white;
-	// 	/*outline: 1px solid slategrey;*/
-	// }
 }
 
