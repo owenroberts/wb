@@ -165,7 +165,7 @@ window.addEventListener('load', function() {
 	editBtn.addEventListener('click', toggleEdit);
 	editBtn.addEventListener('tap', toggleEdit);
 
-	function toggleEdit() {
+	function toggleEdit() {	
 
 		Array.from(document.getElementsByClassName('mod-open')).forEach(el => {
 			/* check that it's the visible chain*/

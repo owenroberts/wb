@@ -8,7 +8,7 @@ window.addEventListener('load', function() {
 		}, 800);
 		if (!B.noMorePaths) {
 			B.fade(B.loader, 'in', 'block');
-			B.newChain();
+			newChain();
 		} else {
 			B.report("The algorithm is not able to generate more results based on the current parameters.");
 		}
@@ -52,7 +52,7 @@ window.addEventListener('load', function() {
 		} 
 	}
 
-	B.showChain = index => {
+	function showChain(index) {
 		if (index < B.chains.length && B.currentChain != index && index >= 0) {
 			B.currentChain = index;
 			setChainDepth();
@@ -92,7 +92,7 @@ window.addEventListener('load', function() {
 		}
 	}
 
-	B.makeChain = data => {
+	function makeChain(data) {
 
 		B.closeMod();
 
@@ -158,7 +158,7 @@ window.addEventListener('load', function() {
 		dot.tabIndex = "-1";
 		dot.classList.add('chain-dot');
 		dot.addEventListener('click', ev => {
-			B.showChain(ev.currentTarget.dataset.index);
+			showChain(ev.currentTarget.dataset.index);
 		});
 		document.getElementById('dots').appendChild(dot);
 
@@ -167,7 +167,7 @@ window.addEventListener('load', function() {
 		setChainDepth();
 	};
 
-	B.newChain = (params, callback) => {
+	function newChain(params, callback) {
 		if (B.chains.length < 10) {
 			let nodeLimit, synonymLevel, startWord, endWord;
 			if (params) {
@@ -195,7 +195,7 @@ window.addEventListener('load', function() {
 					B.fade(B.loader, 'in', 'block');
 					if (obj.errormsg) {
 						if (B.nodeLimitArray.length < 9) {
-							B.newChain(params, callback);
+							newChain(params, callback);
 						} else {
 							B.noMorePaths = true;
 							B.fade(B.loader, 'out', 'none');
@@ -204,7 +204,7 @@ window.addEventListener('load', function() {
 					} else {
 						if (callback)
 							callback();
-						B.makeChain(obj.data);
+						makeChain(obj.data);
 						B.fade(B.loader, 'out', 'none');
 					}
 				});
