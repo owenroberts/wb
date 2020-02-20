@@ -117,8 +117,8 @@ function makeChain(_query, callback) {
 	let syns = _query.as ? _query.as.split(',') : [_query.s, _query.e];
 	const query = {
 		queryString: makeQueryString(_query),
-		start: _query.s.replace(/ /g, ""),
-		end: _query.e.replace(/ /g, ""),
+		start: _query.s.replace(/ /g, "").toLowerCase(),
+		end: _query.e.replace(/ /g, "").toLowerCase(),
 		nodeLimit: _query.nl,
 		synonymLevel: _query.sl,
 		searches: [{ date: new Date() }] /* location? */
@@ -135,9 +135,7 @@ function makeChain(_query, callback) {
 }
 
 function makeQueryString(query) {
-	let startWord = query.s;
-	let endWord = query.e;
-	let string = startWord + query.nl + endWord + query.sl;
+	let string = query.s + query.nl + query.e + query.sl;
 	string = string.toLowerCase().replace(/ /g, ""); // remove spaces 
 	return string;
 }

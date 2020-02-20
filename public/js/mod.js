@@ -166,12 +166,10 @@ window.addEventListener('load', function() {
 				.forEach(elem => B.closeModOptions(elem.children[0], false));
 		}
 
-		console.log('edit open', editIsOpen);
 		if (editIsOpen) {
 			nodes[B.currentChain].classList.remove('edit');
 			editIsOpen = false;
 		}
-		console.log('edit open', editIsOpen);
 	};
 
 	/* edit options */
@@ -183,6 +181,5 @@ window.addEventListener('load', function() {
 		if (editIsOpen) B.closeMod();
 		else nodes[B.currentChain].classList.add('edit');
 		editIsOpen = !editIsOpen;
-		console.log('toggle', editIsOpen);
 	}
 });
