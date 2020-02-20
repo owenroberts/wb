@@ -367,7 +367,10 @@ button::-moz-focus-inner {
 }
 #about p {
   margin: 0.25em 0;
-  margin-bottom: 2em;
+  margin-bottom: 1em;
+}
+#about p + h2 {
+  margin-top: 2em;
 }
 #about p a {
   color: #6a75ff;
