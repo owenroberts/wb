@@ -1,5 +1,8 @@
 window.addEventListener('load', function() {
 
+	// http://wordnet.princeton.edu/wordnet/man/wndb.5WN.html#sect3
+	const pos = { "n":"noun", "v":"verb", "a":"adjective", "s":"adjective", "r":"adverb" };
+
 	B.getDef = function() {
 		B.fade(B.loader, 'in', 'block');
 		const node = event.currentTarget.parentNode.parentNode;
@@ -15,7 +18,6 @@ window.addEventListener('load', function() {
 		}
 
 		const url = `/def?word=${word}&synonym=${synonym}`;
-		
 		fetch(url)
 			.then(response => { return response.json(); })
 			.then(result => {
@@ -24,7 +26,7 @@ window.addEventListener('load', function() {
 				let msg = "";
 				const len = Math.min(result.data.length, 10);
 				for (let i = 0; i < len; i++) {
-					msg += `<strong>${B.pos[result.data[i].pos]}</strong>`;
+					msg += `<strong>${pos[result.data[i].pos]}</strong>`;
 					msg += '<br>';
 					msg += result.data[i].def;
 					msg += '<br><br>';

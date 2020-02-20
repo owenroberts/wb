@@ -1,6 +1,5 @@
 window.addEventListener('load', function() {
 	
-	B.noTouching = false;
 	B.nodeLimitArray = [];
 	B.queryStrings = [];
 
@@ -23,6 +22,9 @@ window.addEventListener('load', function() {
 				fadeNode(++index);
 			} else {
 				B.isAnimating = false;
+
+				// show disabled mod
+				document.getElementsByClassName('nodes')[B.currentChain].classList.remove('mod-disabled');
 			}
 		});
 	}

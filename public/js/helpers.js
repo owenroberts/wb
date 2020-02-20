@@ -8,9 +8,6 @@ window.addEventListener('load', function() {
 		return Math.floor(Math.random()* ( max - min + 1) + min);
 	};
 
-	// http://wordnet.princeton.edu/wordnet/man/wndb.5WN.html#sect3
-	B.pos = { "n":"noun", "v":"verb", "a":"adjective", "s":"adjective", "r":"adverb" };
-
 	B.fade = (elem, status, display, end) => {
 
 		if (end) {

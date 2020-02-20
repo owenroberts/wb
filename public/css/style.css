@@ -416,6 +416,12 @@ button::-moz-focus-inner {
   /* min-width: 260px;
   min-height: 500px; */
   padding: 0 1rem;
+  /* show edit */
+  /* opening mod tools, wait until chain is loaded */
+}
+.nodes.edit .mod-open {
+  opacity: 1;
+  visibility: visible;
 }
 .nodes.mod-disabled .mod-open .active {
   display: none;
@@ -470,10 +476,6 @@ button::-moz-focus-inner {
   /* accessibility */
   box-shadow: 0 0 0 2px #AAAAAA;
   border-radius: 18px;
-}
-.node .mod-open.edit {
-  opacity: 1;
-  visibility: visible;
 }
 .node .mod-options {
   display: none;

@@ -2,6 +2,7 @@ window.addEventListener('load', function() {
 
 	let modIsOpen = false;
 	let editIsOpen = false;
+	const nodes = document.getElementsByClassName('nodes');
 
 	/* new syn */
 	B.newSyn = elem => {
@@ -62,7 +63,6 @@ window.addEventListener('load', function() {
 						const err = `We couldn't find a chain between "${alt}" and "${B.endWord}".`;
 						const option = "Try the previous or next synonym.";
 						B.report("Error", `${err}<br><br>${option}`);
-						B.noTouching = false;
 					} else {
 						B.closeModOptions(elem, true);
 						B.queryStrings[B.currentChain] += '-' + obj.data.queryString;
@@ -93,7 +93,6 @@ window.addEventListener('load', function() {
 									fadeInNode(++index);
 								} else {
 									modIsOpen = false;
-									noTouching = false;
 								}
 							});
 						}
@@ -126,7 +125,7 @@ window.addEventListener('load', function() {
 			elem.style.display = 'none';
 			elem.previousElementSibling.style.display = 'inline-block';
 			modIsOpen = true;
-			document.getElementsByClassName('nodes')[B.currentChain].classList.add('mod-disabled'); // nodes
+			nodes[B.currentChain].classList.add('mod-disabled'); // nodes
 			B.newSyn(elem.parentNode.children[1].children[3]); // next syn
 
 			/* focus next button */
@@ -144,7 +143,7 @@ window.addEventListener('load', function() {
 		const index = +node.dataset.index;
 		elem.parentNode.style.display = 'none';
 		elem.parentNode.nextElementSibling.style.display = 'inline-block';	
-		document.getElementsByClassName('nodes')[B.currentChain].classList.remove('mod-disabled'); // nodes
+		nodes[B.currentChain].classList.remove('mod-disabled'); // nodes
 
 		if (!isMod) {
 			/* change original word back */
@@ -167,12 +166,12 @@ window.addEventListener('load', function() {
 				.forEach(elem => B.closeModOptions(elem.children[0], false));
 		}
 
+		console.log('edit open', editIsOpen);
 		if (editIsOpen) {
-			editOpen = false;
-			Array.from(document.getElementsByClassName('mod-open')).forEach(el => {
-				el.classList.remove('edit');
-			});
+			nodes[B.currentChain].classList.remove('edit');
+			editIsOpen = false;
 		}
+		console.log('edit open', editIsOpen);
 	};
 
 	/* edit options */
@@ -181,14 +180,9 @@ window.addEventListener('load', function() {
 	editBtn.addEventListener('tap', toggleEdit);
 
 	function toggleEdit() {	
-
-		Array.from(document.getElementsByClassName('mod-open')).forEach(el => {
-			/* check that it's the visible chain*/
-			if (el.parentNode.parentNode.parentNode.classList.contains('current')) {
-				if (editIsOpen) B.closeMod();
-				else el.classList.add('edit');
-			}
-		});
+		if (editIsOpen) B.closeMod();
+		else nodes[B.currentChain].classList.add('edit');
 		editIsOpen = !editIsOpen;
+		console.log('toggle', editIsOpen);
 	}
 });

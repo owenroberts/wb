@@ -113,6 +113,7 @@ window.addEventListener('load', function() {
 		
 		const nodes = document.createElement("div");
 		nodes.classList.add('nodes');
+		nodes.classList.add('mod-disabled');
 		chain.append(nodes);
 
 
@@ -152,6 +153,8 @@ window.addEventListener('load', function() {
 					fadeNode(++index);
 				} else {
 					endNode.classList.add('fade-in');
+					// show disabled mod
+					document.getElementsByClassName('nodes')[B.currentChain].classList.remove('mod-disabled');
 				}
 			});
 		}

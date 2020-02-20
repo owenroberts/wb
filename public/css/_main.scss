@@ -31,10 +31,19 @@
 	min-height: 500px; */
 	padding: 0 1rem;
 	
+	/* show edit */
+	&.edit .mod-open {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	/* opening mod tools, wait until chain is loaded */
 	&.mod-disabled {
 		.mod-open .active { display: none; }
 		.mod-open .disabled { display: inline-block; }	
 	}
+
+
 }
 
 .node {
@@ -70,6 +79,7 @@
 		margin-right: 6px;
 		background-color: white;
 		border-radius: 1em;
+
 		.active { display: inline-block; }
 		.disabled { display: none; }
 
@@ -86,11 +96,6 @@
 		opacity: 0;
 		visibility: hidden;
 		transition: opacity $fade-dur ease-in-out;
-		
-		&.edit {
-			opacity: 1;
-			visibility: visible;
-		}
 	}
 
 	.mod-options {
