@@ -1,4 +1,4 @@
-window.addEventListener('load', function() {
+	window.addEventListener('load', function() {
 
 	B.debug = false;
 	B.fadeDur = B.debug ? 100 : 300;
@@ -60,7 +60,7 @@ window.addEventListener('load', function() {
 		reportMsg.scrollTop = 0;
 		reportTxt.innerHTML = msg;
 		reportTitle.innerHTML = title;
-		reportSub.innerHTML = sub;
+		reportSub.innerHTML = sub ? sub : '';
 
 		addEventListener('keydown', ev => {
 			if (ev.which == 27 || ev.key == 'Escape') B.dismissReport();
