@@ -22,7 +22,7 @@ window.addEventListener('load', function() {
 			.then(response => { return response.json(); })
 			.then(result => {
 				const title = `${word}`;
-				const sub = `synonym of “${synonym}`;
+				const sub = `synonym of “${synonym}"`;
 				let msg = "";
 				const len = Math.min(result.data.length, 10);
 				for (let i = 0; i < len; i++) {
