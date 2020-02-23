@@ -3,6 +3,7 @@ const thesaurus = require('thesaurus'); /* based on wordnet.princeton.edu */
 function makeChain(query, allSynonyms, callback) {
 	const startWord = query.start.toLowerCase();
 	const endWord = query.end.toLowerCase();
+	console.log(startWord, endWord, allSynonyms);
 	const reg = /^[a-z]+$/; /* eliminate words with non-alpha chars */
 
 	const nodeNumberLimit = 20; // no chains more than this number of nodes
@@ -56,6 +57,9 @@ function makeChain(query, allSynonyms, callback) {
 				synonyms.push({ word: syn }); // tried as array but hurts performance not sure why 
 			}
 		}
+		// if (word == 'time') {
+		// 	console.log(word, synonyms, allSynsCopy);
+		// }
 		return synonyms;
 	}
 
@@ -131,4 +135,5 @@ function makeChain(query, allSynonyms, callback) {
 		}
 	}
 }
+
 exports.makeChain = makeChain;
