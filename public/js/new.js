@@ -10,7 +10,7 @@ window.addEventListener('load', function() {
 			B.fade(B.loader, 'in', 'block');
 			newChain();
 		} else {
-			B.report("The algorithm is not able to generate more results based on the current parameters.");
+			B.report('Error', "The algorithm is not able to generate more results based on the current parameters.");
 		}
 	}
 
@@ -205,7 +205,7 @@ window.addEventListener('load', function() {
 						} else {
 							B.noMorePaths = true;
 							B.fade(B.loader, 'out', 'none');
-							B.report(obj.errormsg);
+							B.report('Error', obj.errormsg);
 						}
 					} else {
 						if (callback)
@@ -216,7 +216,7 @@ window.addEventListener('load', function() {
 				});
 		} else {
 			B.fade(B.loader, 'out', 'none');
-			B.report('You have reached the maximum number of chains.');
+			B.report('Error', 'You have reached the maximum number of chains.');
 		}				
 	}
 
