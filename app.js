@@ -88,7 +88,7 @@ app.get('/def', function(req,res) {
 
 function loadChain(req, callback) {
 	const queryString = req.query.qs || makeQueryString(req.query);
-	const cacheSearch = undefined; // cache.get(queryString);
+	const cacheSearch = cache.get(queryString);
 	if (cacheSearch == undefined) {
 		db.get(queryString, function(err, result) {
 			if (err) console.log(err);
@@ -125,7 +125,7 @@ function makeChain(_query, callback) {
 		synonymLevel: _query.sl,
 		searches: [{ date: new Date() }] /* location? */
 	};
-	
+
 	chain.makeChain(query, syns, function(err, chain) {
 		if (err) query.error = err;
 		else query.chain = chain;
