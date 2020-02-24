@@ -17,12 +17,13 @@ const mongodb = require('mongodb')
 */
 
 ChainDb = function(uri) {
-	console.log(uri);
+	console.log('uri', uri);
 	const that = this;
 	const options = { useUnifiedTopology: true };
 	MongoClient.connect(uri, options, function (err, client) {
 		assert.equal(null, err);
-		that.db = client.db('bridge');
+		that.db = client.db();
+		console.log(that.db);
 	});
 }
 
@@ -33,7 +34,7 @@ ChainDb.prototype.save = function(chain, callback) {
 			chain_collection.findOne({ queryString: chain.queryString }, function(err, result) {
 				if (err) console.log(err);
 				else if (result == null) {
-					chain_collection.insert(chain, function(err) {
+					chain_collection.insertOne(chain, function(err) {
 						if (err) console.log(err);
 						else callback();
 					});

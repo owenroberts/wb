@@ -149,13 +149,10 @@ const server = app.listen(3000, function() {
 	console.log('word bridge listening at http://%s:%s', host, port);
 });
 
-console.log(process.env.MONGODB_URI, process.env.MONGOLAB_URI , process.env.MONGOHQ_URL);
-
 const mongoUri = 
 	process.env.MONGODB_URI ||
 	process.env.MONGOLAB_URI || 
-	process.env.MONGOHQ_URL || 
-	'mongodb://localhost:27017';
+	'mongodb://localhost:27017/bridge';
 const db = new ChainDb(mongoUri);
     
 // error handlers
