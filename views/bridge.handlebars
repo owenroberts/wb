@@ -1,0 +1,83 @@
+<!--  bridge -->
+{{> loader}}
+{{> report}}
+
+<div id="header">
+	{{!--  insane bug?? can't use anchor here --}}
+	<button id="home-btn" class="big-btn" onclick={location.href="/"}>new</button>	
+	<button id="re-bridge-btn" class="btn">re-bridge</button>
+	<button id="edit-bridge-btn" class="btn">edit-bridge</button>
+</div>
+
+<div id="chains">
+	<div class="chain fade current" id="chain-0">
+		<div class="nodes mod-disabled">
+			{{#each data.chain}}
+				<div class="node fade" data-word={{this.word}} data-index={{@index}} data-syndex={{this.syndex}}>
+					<div class="word">
+						<button class="fade visible" onclick={B.getDef();}>{{this.word}}</button>
+					</div>
+					{{#unless @first}}
+						{{#unless @last}}
+							<div class="mod-options">
+								<button class="mod-close" onclick={B.closeModOptions(this,false);}>
+									<img src="/img/mod-close.svg">
+								</button>
+								<button class="mod-btn" onclick={B.modifyChain(this);B.btnAnim(this);}>
+									<img src="/img/mod-down-arrow.svg" alt="">
+								</button>
+								<button class="prev" onclick={B.newSyn(this);B.btnAnim(this);}>
+									<img src="/img/mod-left-arrow.svg" alt="">
+								</button>
+								<button class="next" onclick={B.newSyn(this);B.btnAnim(this);}>
+									<img src="/img/mod-right-arrow.svg" alt="">
+								</button>
+							</div>
+							<button class="mod-open" onclick={B.openModOptions(this)}>
+								<img src="/img/mod-open.svg" class="active">
+								<img src="/img/mod-open-disabled.svg" class="disabled">
+							</button>
+						{{/unless}}
+					{{/unless}}
+				</div>
+			{{/each}}
+		</div>
+	</div>
+</div>
+
+<div id="chain-nav">
+	<div id="inner-chain-nav">
+		<button id="prev-chain" class="chain-btn">
+			{{> prev-arrow}}
+		</button>
+		<div id="dots">
+			<button class="chain-dot" onclick={B.showChain(0)} tabindex="-1"></button>
+		</div>
+		<button id="next-chain" class="chain-btn">
+			{{> next-arrow}}
+		</button>
+	</div>
+</div>
+
+<script type="text/javascript">
+	/* check hash to reroute */
+	if (location.hash) {
+		location.href = `${location.origin}/bridge?qs=${location.hash.replace('#', '')}`;
+	}
+	window.B = {}; // need B for helpers
+</script>
+<script src="/js/helpers.js"></script>
+<script src="/js/bridge.js"></script>
+<script src="/js/new.js"></script>  {{!-- "re-bridge" --}}
+<script src="/js/mod.js"></script> {{!-- "edit-bridge" --}}
+<script src="/js/def.js"></script>
+<script type="text/javascript">
+	window.addEventListener('load', function() {
+		const d = {{{json data}}};
+		B.currentChain = 0;
+		B.chains[B.currentChain] = d.chain;
+		B.startWord = d.start;
+		B.endWord = d.end;
+		B.queryStrings.push(d.queryString);
+	});
+</script>

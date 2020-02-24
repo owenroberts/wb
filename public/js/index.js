@@ -22,7 +22,27 @@ window.addEventListener('load', function() {
 			document.getElementById('form').submit();
 	}
 	bridge.addEventListener('click', submit);
-	document.addEventListener('keyup', ev => {
+	bridge.addEventListener('keyup', ev => {
 		if (ev.which == 13) submit();
 	});
+
+	/* about */
+	const about = document.getElementById('about');
+	const aboutBtn = document.getElementById('about-btn');
+	aboutBtn.addEventListener('click', aboutIn);
+	aboutBtn.addEventListener('keyup', ev => {
+		if (ev.which == 13) aboutIn();
+	});
+
+	document.addEventListener('keyup', ev => {
+		if (ev.which == 27) B.aboutOut();
+	})
+
+	function aboutIn() {
+		B.fade(about, 'in', 'block'); 
+	}
+
+	B.aboutOut = function() {
+		B.fade(about, 'out', 'none');
+	};
 });

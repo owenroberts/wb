@@ -15,7 +15,7 @@ var query = {
 	synonymLevel: 10
 };
 let start = now();
-chain.makeChain(query, [program.args[0], program.args[1]], function(err, data) {
+chain.makeChain(query, [program.args[0].toLowerCase(), program.args[1].toLowerCase()], function(err, data) {
 	if (err) console.log(err);
 	else {
 		console.log("time", now() - start);

@@ -45,15 +45,20 @@ function makeChain(query, allSynonyms, callback) {
 	/* get synonyms of word up to synonym limit 
 		except synonyms already used */
 	function getSynonyms(word, allSynsCopy) {
-		const tempSyns = thesaurus.find(word);
+		const temp = thesaurus.find(word);
 		const synonyms = [];
-		for (let i = 0; i < tempSyns.length; i++) {
-			const syn = tempSyns[i];
-			if (reg.test(syn)
+		for (let i = 0; i < temp.length; i++) {
+			const syn = temp[i];
+			if (
+				// various tests, play w these
+				reg.test(syn)
+				&& !syn.includes(word)
+				&& !word.includes(syn)
 				&& allSynsCopy.indexOf(syn) == -1
 				&& allSynsCopy.indexOf(syn + "s") == -1
-				&& synonyms.length < 10) {
-				synonyms.push({ word: syn }); // tried as array but hurts performance not sure why 
+				&& synonyms.length < 10
+				) {
+				synonyms.push({ word: syn }); 
 			}
 		}
 		return synonyms;
@@ -131,4 +136,5 @@ function makeChain(query, allSynonyms, callback) {
 		}
 	}
 }
+
 exports.makeChain = makeChain;

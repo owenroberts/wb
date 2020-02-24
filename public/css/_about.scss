@@ -1,20 +1,42 @@
 #about {
 
-	.title {}
+	scrollbar-width: none; /* ff */
 
-	.sub-title {
-		font-weight: bold;
+	h1 {
+		font-size: $base-font-size;
+	}
+
+	h2 {
+		font-size: $menu-font-size;
 		margin: 0.5em 0;
 	}
 
-	.text {
+	p {
 		margin: 0.25em 0;
-		margin-bottom: 2em;
-	}
+		margin-bottom: 1em;
 
-	a {
-		color: $blue;
-		text-decoration: underline;
-		cursor: pointer;
+		& + h2 {
+			margin-top: 2em;
+		}
+
+		a {
+			color: $blue;
+			text-decoration: underline;
+			cursor: pointer;
+
+			&:focus {
+				border: none;
+			}
+
+			/* accessibility */
+			.keyboard &:focus {
+				border: none;
+				outline: 0;
+				// simple color: white; /* wait on joel */
+				border-radius: 3px;
+				box-shadow: 0 0 0 2px black,
+					0 0 0 4px white;
+			}
+		}
 	}
 }

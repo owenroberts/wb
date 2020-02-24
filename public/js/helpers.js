@@ -1,6 +1,6 @@
-window.addEventListener('load', function() {
+	window.addEventListener('load', function() {
 
-	B.debug = false; // true;
+	B.debug = false;
 	B.fadeDur = B.debug ? 100 : 300;
 	B.isAnimating = false;
 
@@ -8,10 +8,7 @@ window.addEventListener('load', function() {
 		return Math.floor(Math.random()* ( max - min + 1) + min);
 	};
 
-	// http://wordnet.princeton.edu/wordnet/man/wndb.5WN.html#sect3
-	B.pos = { "n":"noun", "v":"verb", "a":"adjective", "s":"adjective", "r":"adverb" };
-
-	B.fade = (e, status, display, end) => {
+	B.fade = (elem, status, display, end) => {
 
 		if (end) {
 			// e.addEventListener('transitionend', end);
@@ -23,17 +20,16 @@ window.addEventListener('load', function() {
 
 		const [addClass, removeClass] = status == 'in' ? ['fade-in', 'fade-out'] : ['fade-out', 'fade-in'];
 
-		if (status == 'in') e.style.display = display;
+		if (status == 'in') elem.style.display = display;
 
 		setTimeout(() => {
-			if (e.classList.contains(removeClass))
-				e.classList.replace(removeClass, addClass);
+			if (elem.classList.contains(removeClass))
+				elem.classList.replace(removeClass, addClass);
 			else
-				e.classList.add(addClass);
+				elem.classList.add(addClass);
 		}, 5); // hacky anim/display fix
 		
-		if (status == 'out')
-			setTimeout(() => { e.style.display = display; }, B.fadeDur);
+		if (status == 'out') setTimeout(() => { elem.style.display = display; }, B.fadeDur);
 	};
 
 	B.btnAnim = elem => {
@@ -46,33 +42,37 @@ window.addEventListener('load', function() {
 	const reportDiv = document.getElementById('report');
 	const reportMsg = document.getElementById('report-msg');
 	const reportTitle = document.getElementById('report-title');
+	const reportSub = document.getElementById('sub-title');
 	const reportTxt = document.getElementById('report-txt');
 	const reportBtn = document.getElementById('report-btn');
+	const fakeTab = document.getElementById('fake-tab');
+	let prevActive;
 
-	B.report = function(title, msg, ok, callback, dismissBack) {
-		B.fade(reportDiv, 'in', 'block');
+	B.report = function(title, msg, sub, callback, dismissBack) {
+		B.fade(reportDiv, 'in', 'block', () => {
+			if (B.loader) B.fade(B.loader, 'out', 'none');
+		});
+
+		prevActive = document.activeElement;		
+		fakeTab.focus();
+
 		reportDiv.scrollTop = 0;
 		reportMsg.scrollTop = 0;
 		reportTxt.innerHTML = msg;
 		reportTitle.innerHTML = title;
-		if (ok) {
-			reportBtn.style.display = 'block';
-			reportBtn.textContent = ok;
-			reportBtn.addEventListener('click', callback);
-		} else {
-			reportBtn.style.display = 'none';
-		}
-		function dismissReport() {
-			B.fade(reportDiv, 'out', 'none');
-			document.body.style.overflow = 'auto';	
-			if (dismissBack)
-				dismissBack();
-			reportDiv.removeEventListener('click', dismissReport);
-		}
-		reportDiv.addEventListener('click', dismissReport);
+		reportSub.innerHTML = sub ? sub : '';
+
 		addEventListener('keydown', ev => {
-			if (ev.which == 27 || ev.key == 'Escape') dismissReport()
+			if (ev.which == 27 || ev.key == 'Escape') B.dismissReport();
 		});
+	};
+
+	B.dismissReport = function(ev, callback) {
+		prevActive.focus();
+		B.fade(reportDiv, 'out', 'none');
+		document.body.style.overflow = 'auto';	
+		if (callback) callback();
+		reportDiv.removeEventListener('click', B.dismissReport);
 	};
 
 	B.createElem = function(tag, classes, text, img) {
@@ -89,13 +89,13 @@ window.addEventListener('load', function() {
 		return elem;
 	};
 
-	B.makeNode = function(index, parent) {
+	B.makeNode = function(index, editMode) {
 		const node = B.createElem('div', ['node', 'fade', 'hidden', 'display-none']);
 		node.dataset.index = index;
 		node.dataset.word = B.chains[B.currentChain][index].word;
 		node.dataset.syndex = B.chains[B.currentChain][index].syndex;
 
-		const wordSpan = B.createElem('span', ['fade', 'visible'], B.chains[B.currentChain][index].word);
+		const wordSpan = B.createElem('button', ['fade', 'visible'], B.chains[B.currentChain][index].word);
 		const word = B.createElem('div', ['word']);
 		wordSpan.addEventListener('click', () => {
 			B.getDef(wordSpan);
@@ -104,25 +104,25 @@ window.addEventListener('load', function() {
 
 		const modOptions = B.createElem('div', ['mod-options']);
 
-		const modClose = B.createElem('div', ['mod-close'], undefined, '/img/mod-close.svg');
+		const modClose = B.createElem('button', ['mod-close'], undefined, '/img/mod-close.svg');
 		modClose.addEventListener('click', ev => {
 			B.closeModOptions(ev.currentTarget, false);
 			B.btnAnim(modClose);
 		});
 
-		const modBtn = B.createElem('div', ['mod-btn'], undefined, '/img/mod-down-arrow.svg');
+		const modBtn = B.createElem('button', ['mod-btn'], undefined, '/img/mod-down-arrow.svg');
 		modBtn.addEventListener('click', ev => {
 			B.modifyChain(ev.currentTarget);
 			B.btnAnim(modBtn);
 		});
 
-		const prevBtn = B.createElem('div', ['prev'], undefined, '/img/mod-left-arrow.svg');
+		const prevBtn = B.createElem('button', ['prev'], undefined, '/img/mod-left-arrow.svg');
 		prevBtn.addEventListener('click', ev => {
 			B.newSyn(ev.currentTarget, 'prev');
 			B.btnAnim(prevBtn);
 		});
 
-		const nextBtn = B.createElem('div', ['next'], undefined, '/img/mod-right-arrow.svg');
+		const nextBtn = B.createElem('button', ['next'], undefined, '/img/mod-right-arrow.svg');
 		nextBtn.addEventListener('click', ev => {
 			B.newSyn(ev.currentTarget, 'next');
 			B.btnAnim(nextBtn);
@@ -133,13 +133,14 @@ window.addEventListener('load', function() {
 		modOptions.appendChild(prevBtn);
 		modOptions.appendChild(nextBtn);
 
-		const modOpen = B.createElem('div', ['mod-open']);
+		const modOpen = B.createElem('button', ['mod-open']);
 		modOpen.addEventListener('click', ev => {
 			if (!B.modIsOpen) {
 				B.openModOptions(ev.currentTarget);
 				B.btnAnim(modOpen);
 			}
 		});
+		if (editMode) modOpen.classList.add('edit');
 		
 		const openImg = new Image();
 		openImg.src = '/img/mod-open.svg';
@@ -157,31 +158,14 @@ window.addEventListener('load', function() {
 		node.appendChild(modOpen)
 
 		return node;
-		// parent.insertBefore(node, parent.lastElementChild);
-
-		// setTimeout(() => {
-		// 	B.fade(node, 'in', 'flex');
-		// }, index * B.fadeDur);
 	};
 
-	const dismissBtns = document.getElementsByClassName('dismiss');
-	for (const btn of dismissBtns) {
-		btn.addEventListener('touchstart', event => {
-			const elem = event.currentTarget;
-			elem.classList.add('active');
-			elem.addEventListener('transitionend', () => {
-				elem.classList.remove('active');
-			});
-		});
-	}
-
-	/* about */
-	const about = document.getElementById('about');
-	const aboutBtn = document.getElementById('about-btn');
-	aboutBtn.addEventListener('click', ev => {
-		B.fade(about, 'in', 'block'); 
+	/* testing keyboard users */
+	document.addEventListener('keydown', ev => {
+		if (ev.which == 9) document.body.classList.add('keyboard');
 	});
-	about.addEventListener('click', () => {
-		B.fade(about, 'out', 'none');
+
+	document.addEventListener('mousedown', ev => {
+		document.body.classList.remove('keyboard');
 	});
 });

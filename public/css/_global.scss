@@ -10,8 +10,7 @@ html, body {
 }
 
 body {
-	font-size: 20px;
-	font-family: Helvetica, sans-serif;
+	font-family: Helvetica, Arial, sans-serif;
 	margin: 0;
 	width: 100%;
 	overflow-x: hidden;
@@ -28,16 +27,17 @@ body {
 	background-color: white;
 	height: 100%;
 	position: relative;
+	scrollbar-width: none;
+
+	overflow-y: scroll;
 }
 
-pre { font-size:12px; }
-a, .leftarrow, .rightarrow {
-	color: black;
-	text-decoration:none; 
-	border-bottom: 1px solid black;
-	transition: color 500ms;
-	&:hover { color:$lightgray; }
+#container::-webkit-scrollbar {
+	width: 0;
 }
+
+pre { font-size:12px; } /* for error messages in express */
+
 ul, li {
 	padding:0;
 	margin:0;
@@ -51,30 +51,59 @@ hr {
 	margin:0;
 }
 
-input:focus { outline:none; }
-
 input {
 	border:none;
 	font-weight:500;
+	font: inherit;
 }
+
 svg.stroke {
-	* { transition: stroke 500ms; }
+	* { transition: stroke $fade-dur; }
 	&:hover {
 		* { stroke: $black; }
 	}
 }
+
 svg.fill {
-	path { transition: fill 500ms; }
+	path { transition: fill $fade-dur; }
 	&:hover {
 		path { fill: $black; }
 	}
 }
+
 a:hover {
 	cursor: pointer;
 	color: $black;
 }
 
+a:focus {
+	outline: 0;
+	border-bottom: 1px solid #AAAAAA;
+}
+
+/* home page inputs are accessibility friendly */
+input:focus {
+	outline: 0;
+}
+
 select { margin:1em; }
+
+button {
+	background: none;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+	font: inherit;
+}
+
+button:focus {
+	outline: 0;
+}
+
+span::-moz-focus-inner,
+button::-moz-focus-inner {
+  border: 0;
+}
 
 .ldr {
 	font-size:20px;
@@ -82,3 +111,24 @@ select { margin:1em; }
 	img { width:40px; }
 }
 
+.big-btn {
+	
+	font-size: 1em;
+	cursor: pointer;
+	padding: 0.25em 0.5em;
+	
+	border: 2px solid black;
+	border-radius: 3px;
+	background: transparent;
+
+	&:focus, /* accessibility */
+	&.active, 
+	&:hover {
+		background-color: black;
+		color: white;
+	}
+
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;  
+}

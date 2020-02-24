@@ -1,17 +1,19 @@
 window.addEventListener('load', function() {
 
-	B.modIsOpen = false;
+	let modIsOpen = false;
+	let editIsOpen = false;
+	const nodes = document.getElementsByClassName('nodes');
 
 	/* new syn */
-	B.newSyn = e => {
-		const node = e.parentNode.parentNode;
+	B.newSyn = elem => {
+		const node = elem.parentNode.parentNode;
 		const wordSpan = node.children[0].children[0];
 		const index = +node.dataset.index;
 		const syndex = +node.dataset.syndex;
 		const len = B.chains[B.currentChain][index].alts.length;
 
 		const word = node.dataset.word;
-		const dir = e.classList[0];
+		const dir = elem.classList[0];
 		let newSyndex = syndex + (dir == 'prev' ? -1 : 1);
 		if (newSyndex == -1)
 			newSyndex = len - 1;
@@ -30,9 +32,9 @@ window.addEventListener('load', function() {
 	};
 
 	/** modify chain **/
-	B.modifyChain = e => {
+	B.modifyChain = elem => {
 
-		const node = e.parentNode.parentNode;
+		const node = elem.parentNode.parentNode;
 		const index = +node.dataset.index;
 		const nodes = node.parentNode.children;
 		const alt = node.dataset.word;
@@ -61,9 +63,8 @@ window.addEventListener('load', function() {
 						const err = `We couldn't find a chain between "${alt}" and "${B.endWord}".`;
 						const option = "Try the previous or next synonym.";
 						B.report("Error", `${err}<br><br>${option}`);
-						B.noTouching = false;
 					} else {
-						B.closeModOptions(e, true);
+						B.closeModOptions(elem, true);
 						B.queryStrings[B.currentChain] += '-' + obj.data.queryString;
 						B.chains[B.currentChain][index].word = alt;
 						B.chains[B.currentChain].splice(index + 1, B.chains[B.currentChain].length - 1);
@@ -76,59 +77,78 @@ window.addEventListener('load', function() {
 
 						function fadeOutNode() {
 							const n = nodes[nodes.length - 2];
-							n.classList.replace('fade-grey', 'fade-out');
-							n.addEventListener('transitionend', () => { 
+							B.fade(n, 'out', 'none', () => {
 								n.remove();
-								if (nodes.length - 2 == index) {
-									fadeInNode(index + 1); /* add new nodes */
-								} else {
-									fadeOutNode();
-								}
+								 /* add new nodes */
+								if (nodes.length - 2 == index) fadeInNode(index + 1);
+								else fadeOutNode();
 							});
 						}
 
 						function fadeInNode(index) {
-							const n = B.makeNode(index);
+							const n = B.makeNode(index, true);
 							node.parentNode.insertBefore(n, node.parentNode.lastElementChild);
 							B.fade(n, 'in', 'flex', () => {
 								if (index < B.chains[B.currentChain].length - 2) {
 									fadeInNode(++index);
 								} else {
-									B.modIsOpen = false;
-									noTouching = false;
+									modIsOpen = false;
 								}
 							});
 						}
+
+						location.hash = B.queryStrings[B.currentChain];
+
+						/* save modded chain */
+						fetch('/save', {  method: 'POST',
+							headers: {'Content-Type': 'application/json'},
+		 					body: JSON.stringify({
+								qs: B.queryStrings[B.currentChain],
+								chain: JSON.stringify(B.chains[B.currentChain]),
+								s: B.startWord,
+								e: B.endWord,
+								sl: B.queryStrings[B.currentChain].split(/[a-z\\-]+/)[1],
+								nl: B.queryStrings[B.currentChain].split(/[a-z\\-]+/)[2]
+							})
+						}).then(response => { 
+							console.log('saved', B.queryStrings[B.currentChain]); 
+						}).catch(error => { 
+							console.log('error', error); 
+						});
 					}
 				});
 		}
 	};
 
-	B.openModOptions = e => {
-		if (!B.modIsOpen && !B.isAnimating) {
-			e.style.display = 'none';
-			e.previousElementSibling.style.display = 'inline-block';
-			B.modIsOpen = true;
-			document.getElementsByClassName('nodes')[B.currentChain].classList.add('mod-disabled'); // nodes
-			B.newSyn(e.parentNode.children[1].children[3]); // next syn
+	B.openModOptions = elem => {
+		if (!modIsOpen && !B.isAnimating) {
+			elem.style.display = 'none';
+			elem.previousElementSibling.style.display = 'inline-block';
+			modIsOpen = true;
+			nodes[B.currentChain].classList.add('mod-disabled'); // nodes
+			B.newSyn(elem.parentNode.children[1].children[3]); // next syn
+
+			/* focus next button */
+			elem.previousElementSibling.children[3].focus();
+
 			/* hide other nodes */
-			for (let i = +e.parentNode.dataset.index + 1; i < e.parentNode.parentNode.children.length - 1; i++) {
-				e.parentNode.parentNode.children[i].classList.replace('fade-in', 'fade-grey');
+			for (let i = +elem.parentNode.dataset.index + 1; i < elem.parentNode.parentNode.children.length - 1; i++) {
+				elem.parentNode.parentNode.children[i].classList.replace('fade-in', 'fade-grey');
 			}
 		}
 	};
 	
-	B.closeModOptions = (e, isMod) => {
-		const node = e.parentNode.parentNode; /* the main node derived from the mod close btn */
+	B.closeModOptions = (elem, isMod) => {
+		const node = elem.parentNode.parentNode; /* the main node derived from the mod close btn */
 		const index = +node.dataset.index;
-		e.parentNode.style.display = 'none';
-		e.parentNode.nextElementSibling.style.display = 'inline-block';	
-		document.getElementsByClassName('nodes')[B.currentChain].classList.remove('mod-disabled'); // nodes
+		elem.parentNode.style.display = 'none';
+		elem.parentNode.nextElementSibling.style.display = 'inline-block';	
+		nodes[B.currentChain].classList.remove('mod-disabled'); // nodes
 
 		if (!isMod) {
 			/* change original word back */
 			node.dataset.word = node.children[0].children[0].textContent = B.chains[B.currentChain][index].word;
-			B.modIsOpen = false;
+			modIsOpen = false;
 			/* show other nodes */
 			const nodes = node.parentNode.children;
 			for (let i = index + 1; i < nodes.length - 1; i++) {
@@ -136,4 +156,30 @@ window.addEventListener('load', function() {
 			}
 		}
 	};
+
+	B.closeMod = function() {
+		/* crap hack to close any open mod options while switching chains */
+		if (modIsOpen) {
+			modIsOpen = false;
+			Array.from(document.getElementsByClassName('mod-options'))
+				.filter(elem => elem.style.display == 'inline-block')
+				.forEach(elem => B.closeModOptions(elem.children[0], false));
+		}
+
+		if (editIsOpen) {
+			nodes[B.currentChain].classList.remove('edit');
+			editIsOpen = false;
+		}
+	};
+
+	/* edit options */
+	const editBtn = document.getElementById('edit-bridge-btn');
+	editBtn.addEventListener('click', toggleEdit);
+	editBtn.addEventListener('tap', toggleEdit);
+
+	function toggleEdit() {	
+		if (editIsOpen) B.closeMod();
+		else nodes[B.currentChain].classList.add('edit');
+		editIsOpen = !editIsOpen;
+	}
 });

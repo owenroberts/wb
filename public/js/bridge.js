@@ -1,6 +1,5 @@
 window.addEventListener('load', function() {
 	
-	B.noTouching = false;
 	B.nodeLimitArray = [];
 	B.queryStrings = [];
 
@@ -23,19 +22,11 @@ window.addEventListener('load', function() {
 				fadeNode(++index);
 			} else {
 				B.isAnimating = false;
-				setTimeout(checkTip, 100);
+
+				// show disabled mod
+				document.getElementsByClassName('nodes')[B.currentChain].classList.remove('mod-disabled');
 			}
 		});
 	}
 	fadeNode(0);
-
-	function checkTip() {
-		if (!localStorage.getItem('def-tip')) {
-			// B.report('Tip:', 'You can tap any word to see its definition.');
-			document.getElementById('tooltips').classList.replace('closed', 'open');
-			localStorage.setItem('def-tip', true);
-		} else {
-			document.getElementById('tooltips').remove();
-		}
-	}
 });

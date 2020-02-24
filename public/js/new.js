@@ -1,28 +1,26 @@
 window.addEventListener('load', function() {
 	
-	function getNewPath(ev) {
+	function getNewBridge(ev) {
 		ev.stopPropagation();
-		plusBtn.children[0].classList.add('active');
+		reBridgeBtn.classList.add('active');
 		setTimeout(() => {
-			plusBtn.children[0].classList.remove('active');
+			reBridgeBtn.classList.remove('active');
 		}, 800);
 		if (!B.noMorePaths) {
 			B.fade(B.loader, 'in', 'block');
-			B.newChain();
+			newChain();
 		} else {
-			B.report("The algorithm is not able to generate more results based on the current parameters.");
+			B.report('Error', "The algorithm is not able to generate more results based on the current parameters.");
 		}
-	}
-
-	function closeMod() {
-		/* crap hack to close any open mod options while switching chains */
-		if (B.modIsOpen)
-			Array.from(document.getElementsByClassName('mod-options')).filter(e => e.style.display == 'inline-block').forEach(e => B.closeModOptions(e.children[0], false));
 	}
 
 	function setChainDepth() {
 		
-		closeMod();
+		B.closeMod();
+
+		for (let i = 0; i < chains.length; i++) {
+			chains[i].style.visibility = 'visible';
+		}
 
 		for (let i = 0; i < dots.length; i++) {
 			if (i == B.currentChain) {
@@ -31,8 +29,13 @@ window.addEventListener('load', function() {
 			} else {
 				if (dots[i].classList.contains('current'))
 					dots[i].classList.remove('current');
-				if (chains[i].classList.contains('current'))
+				if (chains[i].classList.contains('current')) {
 					chains[i].classList.remove('current');
+					setTimeout(function() {
+						chains[i].style.visibility = 'hidden';
+					}, B.fadeDur * 2);
+				}
+
 			}
 		}
 
@@ -46,10 +49,13 @@ window.addEventListener('load', function() {
 		}
 		if (B.currentChain == B.chains.length - 1) {
 			nextChainBtn.classList.remove('clickable');
-		} 
+		}
+
+		location.hash = B.queryStrings[B.currentChain];
 	}
 
-	B.showChain = index => {
+	function showChain(index) {
+		console.log(index);
 		if (index < B.chains.length && B.currentChain != index && index >= 0) {
 			B.currentChain = index;
 			setChainDepth();
@@ -61,26 +67,37 @@ window.addEventListener('load', function() {
 	const dots = document.getElementsByClassName('chain-dot');
 	const chains = document.getElementsByClassName('chain');
 
-	nextChainBtn.addEventListener('click', () => {
+	nextChainBtn.addEventListener('click', nextChain);
+	nextChainBtn.addEventListener('keyup', ev => {
+		if (ev.which == 13) nextChain();
+	});
+
+	function nextChain() {
 		if (B.currentChain + 1 < B.chains.length && !B.isAnimating) {
-			closeMod();
+			B.closeMod();
 			B.currentChain = B.currentChain + 1;
 			setChainDepth();
 			B.btnAnim(nextChainBtn);
 		}
+	}
+
+	prevChainBtn.addEventListener('click', prevChain);
+	prevChainBtn.addEventListener('keyup', ev => {
+		if (ev.which == 13) prevChain();
 	});
-	prevChainBtn.addEventListener('click', () => {
+
+	function prevChain() {
 		if (B.currentChain > 0 && !B.isAnimating) {
-			closeMod();
+			B.closeMod();
 			B.currentChain = B.currentChain - 1;
 			setChainDepth();
 			B.btnAnim(prevChainBtn);
 		}
-	});
+	}
 
-	B.makeChain = data => {
+	function makeChain(data) {
 
-		closeMod();
+		B.closeMod();
 
 		B.isAnimating = true;
 		setTimeout(() => {
@@ -92,18 +109,19 @@ window.addEventListener('load', function() {
 		B.currentChain++;
 
 		const chain = B.createElem('div', ['chain', 'fade', 'visible']);
-		// chain.style.left = B.currentChain * window.innerWidth + 'px';
 		chain.id = "chain-" + B.currentChain;
 		
 		const nodes = document.createElement("div");
 		nodes.classList.add('nodes');
+		nodes.classList.add('mod-disabled');
 		chain.append(nodes);
-		
+
+
 		const startNode = B.createElem('div', ['node', 'fade', 'hidden']);
 		startNode.dataset.word = B.startWord;
 		startNode.dataset.index = 0;
 		const startWord = B.createElem('div', ['word']);
-		const startWordSpan = B.createElem('span', [], B.startWord);
+		const startWordSpan = B.createElem('button', [], B.startWord);
 		startWordSpan.addEventListener('click', B.getDef);
 		
 		startWord.appendChild(startWordSpan);
@@ -114,7 +132,7 @@ window.addEventListener('load', function() {
 		endNode.dataset.word = B.endWord;
 		endNode.dataset.index = B.chains[B.currentChain].length - 1;
 		const endWord =  B.createElem('div', ['word']);
-		const endWordSpan = B.createElem('span', [], B.endWord);
+		const endWordSpan = B.createElem('button', [], B.endWord);
 		endWordSpan.addEventListener('click', B.getDef);
 
 		endWord.appendChild(endWordSpan);
@@ -135,24 +153,27 @@ window.addEventListener('load', function() {
 					fadeNode(++index);
 				} else {
 					endNode.classList.add('fade-in');
+					// show disabled mod
+					document.getElementsByClassName('nodes')[B.currentChain].classList.remove('mod-disabled');
 				}
 			});
 		}
 		
-		const dot = document.createElement('div');
+		const dot = document.createElement('button');
 		dot.dataset.index = B.currentChain;
+		dot.tabIndex = "-1";
 		dot.classList.add('chain-dot');
 		dot.addEventListener('click', ev => {
-			B.showChain(ev.currentTarget.dataset.index);
+			showChain(ev.currentTarget.dataset.index);
 		});
 		document.getElementById('dots').appendChild(dot);
 
 		if (B.chains.length > 1)
 			document.getElementById('chain-nav').classList.add('slide-up');
 		setChainDepth();
-	};
+	}
 
-	B.newChain = (params, callback) => {
+	function newChain(params, callback) {
 		if (B.chains.length < 10) {
 			let nodeLimit, synonymLevel, startWord, endWord;
 			if (params) {
@@ -180,26 +201,26 @@ window.addEventListener('load', function() {
 					B.fade(B.loader, 'in', 'block');
 					if (obj.errormsg) {
 						if (B.nodeLimitArray.length < 9) {
-							B.newChain(params, callback);
+							newChain(params, callback);
 						} else {
 							B.noMorePaths = true;
 							B.fade(B.loader, 'out', 'none');
-							B.report(obj.errormsg);
+							B.report('Error', obj.errormsg);
 						}
 					} else {
 						if (callback)
 							callback();
-						B.makeChain(obj.data);
+						makeChain(obj.data);
 						B.fade(B.loader, 'out', 'none');
 					}
 				});
 		} else {
 			B.fade(B.loader, 'out', 'none');
-			B.report('You have reached the maximum number of chains.');
+			B.report('Error', 'You have reached the maximum number of chains.');
 		}				
 	}
 
-	const plusBtn = document.getElementById('plus');
-	plusBtn.addEventListener('tap', getNewPath);
-	plusBtn.addEventListener('click', getNewPath);
+	const reBridgeBtn = document.getElementById('re-bridge-btn');
+	reBridgeBtn.addEventListener('tap', getNewBridge);
+	reBridgeBtn.addEventListener('click', getNewBridge);
 });

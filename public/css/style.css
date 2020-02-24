@@ -14,8 +14,7 @@ html, body {
 }
 
 body {
-  font-size: 20px;
-  font-family: Helvetica, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   margin: 0;
   width: 100%;
   overflow-x: hidden;
@@ -32,22 +31,19 @@ body {
   background-color: white;
   height: 100%;
   position: relative;
+  scrollbar-width: none;
+  overflow-y: scroll;
+}
+
+#container::-webkit-scrollbar {
+  width: 0;
 }
 
 pre {
   font-size: 12px;
 }
 
-a, .leftarrow, .rightarrow {
-  color: black;
-  text-decoration: none;
-  border-bottom: 1px solid black;
-  transition: color 500ms;
-}
-a:hover, .leftarrow:hover, .rightarrow:hover {
-  color: #f2f2f2;
-}
-
+/* for error messages in express */
 ul, li {
   padding: 0;
   margin: 0;
@@ -61,24 +57,21 @@ hr {
   margin: 0;
 }
 
-input:focus {
-  outline: none;
-}
-
 input {
   border: none;
   font-weight: 500;
+  font: inherit;
 }
 
 svg.stroke * {
-  transition: stroke 500ms;
+  transition: stroke 300ms;
 }
 svg.stroke:hover * {
   stroke: black;
 }
 
 svg.fill path {
-  transition: fill 500ms;
+  transition: fill 300ms;
 }
 svg.fill:hover path {
   fill: black;
@@ -89,8 +82,35 @@ a:hover {
   color: black;
 }
 
+a:focus {
+  outline: 0;
+  border-bottom: 1px solid #AAAAAA;
+}
+
+/* home page inputs are accessibility friendly */
+input:focus {
+  outline: 0;
+}
+
 select {
   margin: 1em;
+}
+
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+}
+
+button:focus {
+  outline: 0;
+}
+
+span::-moz-focus-inner,
+button::-moz-focus-inner {
+  border: 0;
 }
 
 .ldr {
@@ -99,6 +119,22 @@ select {
 }
 .ldr img {
   width: 40px;
+}
+
+.big-btn {
+  font-size: 1em;
+  cursor: pointer;
+  padding: 0.25em 0.5em;
+  border: 2px solid black;
+  border-radius: 3px;
+  background: transparent;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.big-btn:focus, .big-btn.active, .big-btn:hover {
+  background-color: black;
+  color: white;
 }
 
 /* svg loader dots animation */
@@ -227,40 +263,36 @@ select {
 }
 #header {
   width: 100%;
-  transition: background-color 500ms;
-  /* padding: 0.25em; */
   padding: 1rem;
   position: relative;
   font-size: 18px;
   height: 70px;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-#header #about-btn span, #header #share-btn span {
-  border-bottom: 1px solid black;
-  cursor: pointer;
+#header #home-btn {
+  display: inline-block;
+  text-align: center;
+  width: 62px;
+  height: 36px;
+  order: 1;
 }
-#header #home-btn, #header #share-btn {
-  margin-right: 16px;
+#header #re-bridge-btn {
+  margin-left: auto;
 }
-#header #plus {
-  position: absolute;
-  top: 10px;
-  right: 20px;
-  cursor: pointer;
+#header #edit-bridge-btn {
+  margin-left: 1em;
 }
-#header #plus img {
-  display: block;
-  -webkit-transition: -webkit-transform 0;
-  -ms-transition: -ms-transform 0;
-  transition: transform 0;
+#header #re-bridge-btn,
+#header #edit-bridge-btn {
+  order: 2;
 }
-#header #plus img.active {
-  -webkit-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
-  transform: rotate(90deg);
-  -webkit-transition: -webkit-transform 0.8s ease-in-out;
-  -ms-transition: -ms-transform 0.8s ease-in-out;
-  transition: transform 0.8s ease-in-out;
+#header .btn {
+  border-bottom: 1px solid transparent;
+}
+.keyboard #header .btn:focus, #header .btn:hover, #header .btn:active {
+  border-bottom: 1px solid #AAAAAA;
 }
 
 .index {
@@ -268,6 +300,7 @@ select {
 }
 
 #title {
+  font-size: inherit;
   font-weight: bold;
 }
 
@@ -275,22 +308,11 @@ select {
   font-size: 18px;
   padding: 0 1rem;
   width: 260px;
-  margin-top: -1.9rem;
   margin-bottom: 2rem;
+  margin-top: -1em;
 }
-
-#about .sub-title {
-  font-weight: bold;
-  margin: 0.5em 0;
-}
-#about .text {
-  margin: 0.25em 0;
-  margin-bottom: 2em;
-}
-#about a {
-  color: #6a75ff;
-  text-decoration: underline;
-  cursor: pointer;
+#call p {
+  margin: 0;
 }
 
 #search {
@@ -298,9 +320,8 @@ select {
   padding: 0 1rem;
   font-size: 26px;
   /* word inputs */
-  /* bridge button  */
 }
-#search input {
+#search input[type=text] {
   margin: 0;
   border-radius: 0;
   border-bottom: 3px solid black;
@@ -309,48 +330,62 @@ select {
   padding-bottom: 8px;
   padding: 0.2em;
 }
-#search input[type=text] {
+#search input[type=text][type=text] {
   font-weight: normal;
   width: 100%;
   transition: border-color 300ms ease-in;
 }
-#search input[type=text]::-webkit-input-placeholder {
+#search input[type=text][type=text]::-webkit-input-placeholder {
   color: #919191;
   transition: color 300ms ease-in;
 }
-#search input[type=text].error {
+#search input[type=text][type=text].error {
   border-color: #C40000;
 }
-#search input[type=text].error::-webkit-input-placeholder {
+#search input[type=text][type=text].error::-webkit-input-placeholder {
   color: #EA6A6A;
 }
-#search input:focus {
+#search input[type=text]:focus {
   background: #C5C7C9;
   color: black;
 }
-#search input[type=submit] {
+#search #bridge {
   margin-top: 1em;
-  font-size: 1em;
+  font-weight: bold;
+}
+
+#about {
+  scrollbar-width: none;
+  /* ff */
+}
+#about h1 {
+  font-size: 26px;
+}
+#about h2 {
+  font-size: 18px;
+  margin: 0.5em 0;
+}
+#about p {
+  margin: 0.25em 0;
+  margin-bottom: 1em;
+}
+#about p + h2 {
+  margin-top: 2em;
+}
+#about p a {
+  color: #6a75ff;
+  text-decoration: underline;
   cursor: pointer;
-  padding: 0.25em 0.5em;
-  /*background-color: $disabled;*/
-  background-color: #75b5ff;
+  /* accessibility */
+}
+#about p a:focus {
   border: none;
-  /*color: $gray;*/
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
 }
-#search input[type=submit].active {
-  background-color: #75b5ff;
-  color: black;
-  transition: background-color 300ms ease-in;
-}
-#search input[type=submit].active:hover {
-  background-color: #499CFC;
-}
-#search input[type=submit]:focus {
-  outline: 2px solid black;
+.keyboard #about p a:focus {
+  border: none;
+  outline: 0;
+  border-radius: 3px;
+  box-shadow: 0 0 0 2px black, 0 0 0 4px white;
 }
 
 .fadein {
@@ -363,7 +398,7 @@ select {
 }
 #chains .chain {
   position: absolute;
-  padding-bottom: 2em;
+  padding-bottom: 3em;
   width: 100%;
   z-index: 0;
   opacity: 0;
@@ -378,12 +413,18 @@ select {
 .nodes {
   position: relative;
   width: 100%;
-  transition: top 500ms;
+  transition: top 300ms;
   top: 0px;
   background-color: white;
   /* min-width: 260px;
   min-height: 500px; */
   padding: 0 1rem;
+  /* show edit */
+  /* opening mod tools, wait until chain is loaded */
+}
+.nodes.edit .mod-open {
+  opacity: 1;
+  visibility: visible;
 }
 .nodes.mod-disabled .mod-open .active {
   display: none;
@@ -407,9 +448,13 @@ select {
   flex: 1 100px;
   margin-right: 0.1em;
   width: 100px;
+  /* accessibility */
 }
-.node .word span {
-  cursor: pointer;
+.node .word button {
+  border-bottom: 1px solid #AAAAAA;
+}
+.keyboard .node .word button:focus {
+  background: lightgray;
 }
 .node .mod-open {
   /* flex: 1 32px; */
@@ -417,6 +462,9 @@ select {
   margin-right: 6px;
   background-color: white;
   border-radius: 1em;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 300ms ease-in-out;
 }
 .node .mod-open .active {
   display: inline-block;
@@ -424,8 +472,13 @@ select {
 .node .mod-open .disabled {
   display: none;
 }
-.node .mod-open:hover {
+.keyboard .node .mod-open:focus, .node .mod-open:hover {
   background-color: #f2f2f2;
+}
+.keyboard .node .mod-open:focus {
+  /* accessibility */
+  box-shadow: 0 0 0 2px #AAAAAA;
+  border-radius: 18px;
 }
 .node .mod-options {
   display: none;
@@ -437,6 +490,12 @@ select {
   font-size: 0;
   /* temp fix for first path chain mod options spacing */
 }
+.keyboard .node .mod-options button:focus {
+  /* accessibility */
+  background-color: #f2f2f2;
+  box-shadow: 0 0 0 2px #AAAAAA;
+  border-radius: 18px;
+}
 .node .word, .node .next, .node .prev, .node .mod-btn, .node .mod-close {
   height: 36px;
   display: inline-block;
@@ -445,17 +504,17 @@ select {
 .node .next, .node .prev, .node .mod-btn, .node .mod-close, .node .mod-options, .node .mod-open {
   line-height: 0;
   cursor: pointer;
-  transition: background-color 500ms ease-in-out;
+  transition: background-color 300ms ease-in-out;
 }
 .node .next.active, .node .prev.active, .node .mod-btn.active, .node .mod-close.active, .node .mod-options.active, .node .mod-open.active {
   background-color: #6d6d6d;
 }
 .node .next, .node .prev, .node .mod-btn, .node .mod-close {
   margin-right: 6px;
+  border-radius: 1em;
 }
 .node .next, .node .prev, .node .mod-btn {
   background-color: #ededed;
-  border-radius: 1em;
   transition: background-color 300ms;
 }
 .node:first-child, .node:last-child {
@@ -510,6 +569,18 @@ select {
   font-size: 20px;
   line-height: 1.45;
   max-width: 540px;
+  scrollbar-width: 0;
+  overflow-y: scroll;
+  height: inherit;
+}
+.overlay::-webkit-scrollbar {
+  width: 0.75rem;
+}
+.overlay::-webkit-scrollbar-track {
+  -webkit-box-shadow: none;
+}
+.overlay::-webkit-scrollbar-thumb {
+  background-color: white;
 }
 .overlay#loader {
   background-color: rgba(0, 0, 0, 0.6);
@@ -524,13 +595,20 @@ select {
   color: white;
   overflow-y: scroll;
   max-width: 768px;
+  scrollbar-width: none;
 }
 .overlay .msg::-webkit-scrollbar {
-  width: 0.25em;
+  width: 0;
 }
-.overlay .msg::-webkit-scrollbar-thumb {
-  background-color: #6a75ff;
-  border-radius: 0.5em;
+.overlay .msg #report-title {
+  margin: 0;
+}
+.overlay .msg #report-title span {
+  font-weight: normal;
+}
+.overlay .msg #sub-title {
+  margin: 0;
+  margin-bottom: 1em;
 }
 .overlay .msg .btn {
   border: 1px solid white;
@@ -554,11 +632,16 @@ select {
 .overlay .msg .dismiss circle, .overlay .msg .dismiss path {
   transition: all 300ms ease-in;
 }
-.overlay .msg .dismiss:hover circle, .overlay .msg .dismiss.active circle {
+.overlay .msg .dismiss:hover circle, .overlay .msg .dismiss.active circle,
+.overlay .msg .dismiss button:focus circle {
   fill: white;
 }
-.overlay .msg .dismiss:hover path, .overlay .msg .dismiss.active path {
+.overlay .msg .dismiss:hover path, .overlay .msg .dismiss.active path,
+.overlay .msg .dismiss button:focus path {
   stroke: black;
+}
+.overlay .msg .dismiss a:focus {
+  border: none;
 }
 .overlay .msg .word {
   text-transform: capitalize;
@@ -572,67 +655,8 @@ select {
 .overlay .msg .sorry {
   margin-bottom: 1em;
 }
-.overlay .msg .ok {
-  color: #6a75ff;
-  margin-top: 1.25em;
-  cursor: pointer;
-  text-align: center;
-}
-.overlay .msg .share-item {
-  color: black;
-  cursor: pointer;
-  margin-bottom: 1.2em;
-}
-.overlay .msg .share-item span {
-  background-color: #75b5ff;
-  transition: background-color 300ms ease-in;
-  padding: 0.5em;
-  border-radius: 0.1em;
-  font-size: 0.9em;
-}
-.overlay .msg .share-item span:hover {
-  background-color: #499CFC;
-}
-.overlay .msg #share-msg, .overlay .msg #report-title, .overlay .msg .title {
-  margin-right: 2em;
-  font-size: 1.4em;
-  font-weight: 500;
-  margin-bottom: 1em;
-}
 .overlay .msg p {
   margin: 0.2em 0;
-}
-
-#tooltips {
-  position: relative;
-  transition: height 300ms ease-out;
-}
-#tooltips.closed {
-  height: 0;
-  overflow: hidden;
-}
-#tooltips.open {
-  height: 140px;
-}
-#tooltips #tip-wrap-wrap {
-  padding: 1em;
-}
-#tooltips #tip-wrap {
-  position: relative;
-  border: 1px solid black;
-  /*margin: 1rem;*/
-  padding: 1em 2em;
-  text-align: center;
-  line-height: 1.5;
-  font-size: 18px;
-}
-#tooltips .tip-close {
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-#tooltips .tip-text {
-  margin-top: 0.5em;
 }
 
 /*  media queries */
@@ -647,11 +671,10 @@ select {
 
   #container {
     box-shadow: 0 0 10px #C5C7C9;
-    overflow-y: scroll;
   }
 
-  #container::-webkit-scrollbar {
-    width: 0;
+  .overlay {
+    min-width: 0;
   }
 
   #chain-nav, .overlay {
@@ -669,31 +692,8 @@ select {
   }
 
   /* #loader img { width: 2em; } */
-  .overlay {
-    overflow-y: scroll;
-    height: inherit;
-    min-width: 0;
-  }
-
-  .overlay::-webkit-scrollbar {
-    width: 0.75rem;
-  }
-
-  .overlay::-webkit-scrollbar-track {
-    -webkit-box-shadow: none;
-  }
-
-  .overlay::-webkit-scrollbar-thumb {
-    background-color: white;
-    /*outline: 1px solid slategrey;*/
-  }
 }
 /*  phone  */
-@media screen and (max-device-width: 320px) {
-  #tooltips.open {
-    height: 180px;
-  }
-}
 @media screen and (max-device-width: 480px) {
   body {
     -webkit-text-size-adjust: none;
@@ -707,16 +707,15 @@ select {
     position: fixed;
   }
 
-  #tooltips #tip-wrap {
-    font-size: 16px;
+  #report {
+    padding-top: 3em;
+  }
+  #report #report-title {
+    font-size: 1.5em;
   }
 }
 /*  non phone   */
 @media screen and (min-device-width: 480px) {
-  .btn {
-    background: #81BBFF;
-  }
-
   #container {
     padding-top: 50px;
   }
@@ -733,7 +732,7 @@ select {
 #chain-nav {
   text-align: center;
   height: 0px;
-  transition: height 500ms;
+  transition: height 300ms;
   line-height: 55px;
   position: fixed;
   bottom: -3px;
@@ -752,23 +751,27 @@ select {
   margin: 0 auto;
   position: relative;
 }
-#chain-nav .chain-dot {
+#chain-nav #dots {
+  display: flex;
+  justify-content: center;
+}
+#chain-nav #dots .chain-dot {
   display: inline-block;
   margin: 0 4px;
   transition: color 300ms;
   color: #8D8D8D;
   cursor: pointer;
+  /* accessibility */
 }
-#chain-nav .chain-dot.current {
+#chain-nav #dots .chain-dot.current {
   color: white;
 }
-#chain-nav .chain-dot:before {
+#chain-nav #dots .chain-dot:focus {
+  box-shadow: 0 0 0 4px white, 0 0 0 2px black;
+}
+#chain-nav #dots .chain-dot:before {
   content: "•";
   font-size: 1.5em;
-}
-#chain-nav #dots {
-  display: flex;
-  justify-content: center;
 }
 #chain-nav .chain-btn {
   display: inline-block;
@@ -789,10 +792,13 @@ select {
   vertical-align: middle;
 }
 #chain-nav #prev-chain circle, #chain-nav #next-chain circle {
-  transition: fill 500ms ease-in-out;
+  transition: fill 300ms ease-in-out;
 }
-#chain-nav #prev-chain.active circle, #chain-nav #next-chain.active circle {
-  fill: #747474;
+.keyboard #chain-nav #prev-chain:focus, #chain-nav #prev-chain.active, .keyboard #chain-nav #next-chain:focus, #chain-nav #next-chain.active {
+  outline: 0;
+}
+.keyboard #chain-nav #prev-chain:focus circle, #chain-nav #prev-chain.active circle, .keyboard #chain-nav #next-chain:focus circle, #chain-nav #next-chain.active circle {
+  fill: #AAAAAA;
 }
 #chain-nav #prev-chain {
   left: 1em;

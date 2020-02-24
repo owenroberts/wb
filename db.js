@@ -1,8 +1,9 @@
-var mongodb = require('mongodb')
+const mongodb = require('mongodb')
 	,	MongoClient = require('mongodb').MongoClient
 	,	Db = require('mongodb').Db
 	,	Connection = require('mongodb').Connection
 	,	Server = require('mongodb').Server
+	,	assert = require('assert')
 	;
 
 /*
@@ -16,16 +17,12 @@ var mongodb = require('mongodb')
 */
 
 ChainDb = function(uri) {
-	if (uri == "localhost") {
-		this.db = new Db('bridge', new Server('localhost', 27017, {safe:false}, {auto_reconnect:true}, {}));
-		this.db.open(function(){});
-	} else {
-		var that = this;
-  		mongodb.MongoClient.connect(uri, { server: { auto_reconnect: true } }, function (error, database) {
-    		if (error) console.log(error);
-    		that.db = database;
-  		});
-	}
+	const that = this;
+	const options = { useUnifiedTopology: true };
+	MongoClient.connect(uri, options, function (err, client) {
+		assert.equal(null, err);
+		that.db = client.db();
+	});
 }
 
 ChainDb.prototype.save = function(chain, callback) {
@@ -35,7 +32,7 @@ ChainDb.prototype.save = function(chain, callback) {
 			chain_collection.findOne({ queryString: chain.queryString }, function(err, result) {
 				if (err) console.log(err);
 				else if (result == null) {
-					chain_collection.insert(chain, function(err) {
+					chain_collection.insertOne(chain, function(err) {
 						if (err) console.log(err);
 						else callback();
 					});
@@ -57,7 +54,7 @@ ChainDb.prototype.get = function(queryString, callback) {
 	this.getCollection(function(err, chain_collection) {
 		if (err) callback(err);
 		else {
-			chain_collection.findOne({queryString:queryString}, function(err, result) {
+			chain_collection.findOne({ queryString: queryString}, function(err, result) {
 				if (err) callback(err);
 				else callback(null, result);
 			});

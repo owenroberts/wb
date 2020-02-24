@@ -2,18 +2,20 @@
 
 #chains {
 	position: relative;
-	font-size: 26px;
+	font-size: $base-font-size;
 	.chain {
 		position: absolute;
-		padding-bottom: 2em;
+		padding-bottom: 3em;
 		width: 100%;
 		z-index: 0;
 		opacity: 0;
+		// display: none;
 		&.current { 
 			z-index: 2; 
 			opacity: 1;
 			background-color: $white;
 			min-height: 400px;
+			// display: block;
 		}
 	}
 }
@@ -22,17 +24,26 @@
 	
 	position: relative;
 	width: 100%;
-	transition: top 500ms;
+	transition: top $fade-dur;
 	top: 0px;
 	background-color: $white;
 	/* min-width: 260px;
 	min-height: 500px; */
 	padding: 0 1rem;
 	
+	/* show edit */
+	&.edit .mod-open {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	/* opening mod tools, wait until chain is loaded */
 	&.mod-disabled {
 		.mod-open .active { display: none; }
 		.mod-open .disabled { display: inline-block; }	
 	}
+
+
 }
 
 .node {
@@ -52,7 +63,14 @@
 		flex: 1 100px;
 		margin-right: 0.1em;
 		width: 100px;
-		span { cursor: pointer; }
+		button {
+			border-bottom: 1px solid #AAAAAA;
+		}
+
+		/* accessibility */
+		.keyboard & button:focus {
+			background: lightgray;
+		}
 	}
 
 	.mod-open {
@@ -61,9 +79,23 @@
 		margin-right: 6px;
 		background-color: white;
 		border-radius: 1em;
+
 		.active { display: inline-block; }
 		.disabled { display: none; }
-		&:hover { background-color: $lightgray; }
+
+		.keyboard &:focus, /* accessibility */
+		&:hover { 
+			background-color: $lightgray;
+		}
+			
+		.keyboard &:focus { /* accessibility */
+			box-shadow: 0 0 0 2px #AAAAAA;
+			border-radius: 18px;
+		}
+
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity $fade-dur ease-in-out;
 	}
 
 	.mod-options {
@@ -74,6 +106,12 @@
 		z-index: 9;
 		position: relative;
 		font-size: 0; /* temp fix for first path chain mod options spacing */
+
+		.keyboard & button:focus { /* accessibility */
+			background-color: $lightgray;
+			box-shadow: 0 0 0 2px #AAAAAA;
+			border-radius: 18px;
+		}
 	}
 
 	.word, .next, .prev, .mod-btn, .mod-close {
@@ -85,7 +123,7 @@
 	.next, .prev, .mod-btn, .mod-close, .mod-options, .mod-open {
 		line-height: 0;
 		cursor: pointer;
-		transition: background-color 500ms ease-in-out;
+		transition: background-color $fade-dur ease-in-out;
 		&.active {
 			background-color: $btn;
 		}
@@ -93,12 +131,13 @@
 
 	.next, .prev, .mod-btn, .mod-close {
 		margin-right: 6px;
+		border-radius: 1em;
 	}
 
 	.next, .prev, .mod-btn {
 		background-color: #ededed;
-		border-radius: 1em;
-		transition: background-color 300ms;
+		
+		transition: background-color $fade-dur;
 	}
 	
 	&:first-child, &:last-child {
@@ -115,7 +154,9 @@
 		}
 		&:hover { background:none; }
 	}
+
 	.ldr { position:absolute; }
+
 	.arrow {
 		display:inline-block;
 		overflow:hidden;
@@ -129,9 +170,11 @@
 			vertical-align:middle;
 		}
 	}
+
 	.inner-nodes {
 		display:inline-block;
 		position:relative;
 	}
+
 	&.mod-error .word { color: $gray; }
 }
