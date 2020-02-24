@@ -11,5 +11,5 @@ else console.log("no");*/
 var syns = thesaurus.find(word);
 console.log(syns);
 syns.forEach(function(syn) {
-	if (reg.test(syn)) console.log(syn);
+	// if (reg.test(syn)) console.log(syn);
 });
