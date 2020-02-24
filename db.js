@@ -17,6 +17,7 @@ const mongodb = require('mongodb')
 */
 
 ChainDb = function(uri) {
+	console.log(uri);
 	const that = this;
 	const options = { useUnifiedTopology: true };
 	MongoClient.connect(uri, options, function (err, client) {
