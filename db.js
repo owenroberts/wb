@@ -17,13 +17,11 @@ const mongodb = require('mongodb')
 */
 
 ChainDb = function(uri) {
-	console.log('uri', uri);
 	const that = this;
 	const options = { useUnifiedTopology: true };
 	MongoClient.connect(uri, options, function (err, client) {
 		assert.equal(null, err);
 		that.db = client.db();
-		console.log(that.db);
 	});
 }
 
