@@ -144,14 +144,14 @@ function makeQueryString(query) {
 }
 
 const server = app.listen(3000, function() {
-	var host = server.address().host || 'localhost';
-	var port = server.address().port;
+	const host = server.address().host || 'localhost';
+	const port = server.address().port;
 	console.log('word bridge listening at http://%s:%s', host, port);
 });
 
 const mongoUri = process.env.MONGOLAB_URI || 
-  process.env.MONGOHQ_URL || 
-  'localhost';
+	process.env.MONGOHQ_URL || 
+	'mongodb://localhost:27017';
 const db = new ChainDb(mongoUri);
     
 // error handlers

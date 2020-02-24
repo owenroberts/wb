@@ -1,8 +1,9 @@
-var mongodb = require('mongodb')
+const mongodb = require('mongodb')
 	,	MongoClient = require('mongodb').MongoClient
 	,	Db = require('mongodb').Db
 	,	Connection = require('mongodb').Connection
 	,	Server = require('mongodb').Server
+	,	assert = require('assert')
 	;
 
 /*
@@ -16,16 +17,12 @@ var mongodb = require('mongodb')
 */
 
 ChainDb = function(uri) {
-	if (uri == "localhost") {
-		this.db = new Db('bridge', new Server('localhost', 27017, {safe:false}, {auto_reconnect:true}, {}));
-		this.db.open(function(){});
-	} else {
-		var that = this;
-  		mongodb.MongoClient.connect(uri, { server: { auto_reconnect: true } }, function (error, database) {
-    		if (error) console.log(error);
-    		that.db = database;
-  		});
-	}
+	const that = this;
+	const options = { useUnifiedTopology: true };
+	MongoClient.connect(uri, options, function (err, client) {
+		assert.equal(null, err);
+		that.db = client.db('bridge');
+	});
 }
 
 ChainDb.prototype.save = function(chain, callback) {
