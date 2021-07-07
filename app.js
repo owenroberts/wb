@@ -151,8 +151,6 @@ const server = app.listen(3000, function() {
 
 const mongoUri = 
 	process.env.DB_URI ||
-	process.env.MONGODB_URI ||
-	process.env.MONGOLAB_URI || 
 	'mongodb://localhost:27017/bridge';
 const db = new ChainDb(mongoUri);
     
