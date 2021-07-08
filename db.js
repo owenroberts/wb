@@ -16,12 +16,16 @@ const mongodb = require('mongodb')
 	search time
 */
 
-ChainDb = function(uri) {
-	const that = this;
-	const options = { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true };
+ChainDb = function(uri, callback) {
+	this.isConnected = false;
+	const self = this;
+	const options = { useNewUrlParser: true, useUnifiedTopology: true };
 	MongoClient.connect(uri, options, function (err, client) {
-		assert.equal(null, err);
-		that.db = client.db();
+		if (err) console.log(err);
+		else {
+			self.isConnected = true;
+			self.db = client.db();
+		}
 	});
 }
 
@@ -37,7 +41,7 @@ ChainDb.prototype.save = function(chain, callback) {
 						else callback();
 					});
 				} else {
-					chain_collection.update(
+					chain_collection.updateOne(
 						{ queryString: chain.queryString }, 
 						{ $push: { searches: chain.searches } }
 					, function(err, result) {
@@ -68,7 +72,7 @@ ChainDb.prototype.addSearchTime = function(queryString, callback) {
 		else {
 			// add location ?
 			var search = { date: new Date()};
-			chain_collection.update(
+			chain_collection.updateOne(
 				{ queryString: queryString },
 				{ $push: { searches: search } }
 			);

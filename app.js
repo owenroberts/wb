@@ -87,13 +87,18 @@ app.get('/def', function(req,res) {
 });
 
 function loadChain(req, callback) {
+	console.log('db connected', db.isConnected);
 	const queryString = req.query.qs || makeQueryString(req.query);
 	const cacheSearch = cache.get(queryString);
-	if (cacheSearch == undefined) {
+	console.log('cache', cacheSearch);
+	if (cacheSearch && false) callback(cacheSearch);
+	else if (!db.isConnected) makeChain(req.query, callback);
+	else {
+		console.log('db get', queryString);
 		db.get(queryString, function(err, result) {
 			if (err) console.log(err);
 			else {
-				if (result == null) {
+				if (result === null) {
 					if (!req.query.s) {
 						req.query.s = queryString.split(/[0-9]+/)[0];
 						req.query.e = queryString.split(/[0-9]+/)[1];
@@ -108,12 +113,11 @@ function loadChain(req, callback) {
 				}
 			}
 		});
-	} else {
-		callback(cacheSearch);
 	}
 }
 
 function makeChain(_query, callback) {
+	console.log('make', _query);
 	let syns = _query.as ? _query.as.split(',') : [_query.s, _query.e];
 	syns = syns.map(syn => syn.toLowerCase());
 
@@ -129,9 +133,11 @@ function makeChain(_query, callback) {
 	chain.makeChain(query, syns, function(err, chain) {
 		if (err) query.error = err;
 		else query.chain = chain;
-		db.save(query, function(err) { 
-			if (err) console.log(err);
-		});
+		if (db.isConnected) {
+			db.save(query, function(err) { 
+				if (err) console.log(err);
+			});
+		}
 		cache.set(query.queryString, query);
 		callback(query);
 	});
@@ -152,7 +158,9 @@ const server = app.listen(3000, function() {
 const mongoUri = 
 	process.env.DB_URI ||
 	'mongodb://localhost:27017/bridge';
+
 const db = new ChainDb(mongoUri);
+console.log(db, db.isConnected);
     
 // error handlers
 
