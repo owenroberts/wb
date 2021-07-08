@@ -87,14 +87,11 @@ app.get('/def', function(req,res) {
 });
 
 function loadChain(req, callback) {
-	console.log('db connected', db.isConnected);
 	const queryString = req.query.qs || makeQueryString(req.query);
 	const cacheSearch = cache.get(queryString);
-	console.log('cache', cacheSearch);
-	if (cacheSearch && false) callback(cacheSearch);
+	if (cacheSearch) callback(cacheSearch);
 	else if (!db.isConnected) makeChain(req.query, callback);
 	else {
-		console.log('db get', queryString);
 		db.get(queryString, function(err, result) {
 			if (err) console.log(err);
 			else {
@@ -117,7 +114,6 @@ function loadChain(req, callback) {
 }
 
 function makeChain(_query, callback) {
-	console.log('make', _query);
 	let syns = _query.as ? _query.as.split(',') : [_query.s, _query.e];
 	syns = syns.map(syn => syn.toLowerCase());
 
@@ -160,8 +156,6 @@ const mongoUri =
 	'mongodb://localhost:27017/bridge';
 
 const db = new ChainDb(mongoUri);
-console.log(db, db.isConnected);
-    
 // error handlers
 
 // development error handler
