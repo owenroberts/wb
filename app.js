@@ -89,7 +89,11 @@ app.get('/def', function(req,res) {
 function loadChain(req, callback) {
 	const queryString = req.query.qs || makeQueryString(req.query);
 	const cacheSearch = cache.get(queryString);
-	if (cacheSearch) callback(cacheSearch);
+	if (cacheSearch) {
+		callback(cacheSearch);
+		console.log('cached');
+		db.addTweeted(queryString, function(err) { console.log(err) } );
+	}
 	else if (!db.isConnected) makeChain(req.query, callback);
 	else {
 		db.get(queryString, function(err, result) {
@@ -105,6 +109,7 @@ function loadChain(req, callback) {
 					makeChain(req.query, callback);
 				} else {
 				 	db.addSearchTime(queryString, function(err) { console.log(err) } );
+				 	db.addTweeted(queryString, function(err) { console.log(err) } );
 				 	cache.set(queryString, result);
 				 	callback(result);
 				}

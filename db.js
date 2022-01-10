@@ -16,7 +16,7 @@ const mongodb = require('mongodb')
 	search time
 */
 
-ChainDb = function(uri, callback) {
+const ChainDb = function(uri, callback) {
 	this.isConnected = false;
 	const self = this;
 	const options = { useNewUrlParser: true, useUnifiedTopology: true };
@@ -25,9 +25,17 @@ ChainDb = function(uri, callback) {
 		else {
 			self.isConnected = true;
 			self.db = client.db();
+			if (callback) callback();
 		}
 	});
 }
+
+ChainDb.prototype.getCollection = function(callback) {
+	this.db.collection('chains', function(err, chain_collection) {
+		if (err) return callback(err);
+		callback(null, chain_collection);
+	});
+};
 
 ChainDb.prototype.save = function(chain, callback) {
 	this.getCollection(function(err, chain_collection) {
@@ -71,7 +79,7 @@ ChainDb.prototype.addSearchTime = function(queryString, callback) {
 		if (err) callback(err);
 		else {
 			// add location ?
-			var search = { date: new Date()};
+			const search = { date: new Date()};
 			chain_collection.updateOne(
 				{ queryString: queryString },
 				{ $push: { searches: search } }
@@ -80,11 +88,23 @@ ChainDb.prototype.addSearchTime = function(queryString, callback) {
 	});
 };
 
-ChainDb.prototype.getCollection = function(callback) {
-	this.db.collection('chains', function(err, chain_collection) {
-		if (err) callback(err);
-		else callback(null, chain_collection);
+
+// bot stuff
+ChainDb.prototype.addTweeted = function(queryString, callback) {
+	this.getCollection(function(err, chain_collection) {
+		if (err) return callback(err);
+		console.log('tweeted', queryString)
+		const tweetDate = new Date();
+		chain_collection.update(
+			{ queryString: queryString },
+			{ $set: { tweeted: tweetDate } }
+		);
 	});
 };
+
+
+
+
+
 
 exports.ChainDb = ChainDb;
