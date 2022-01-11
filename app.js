@@ -1,16 +1,15 @@
-const express = require('express')
-	,	path = require('path')
-	,	favicon = require('serve-favicon')
-	,	logger = require('morgan')
-	,	bodyParser = require('body-parser')
-	,	wordnet = require('wordnet')
-	,	NodeCache = require('node-cache')
-	,	ChainDb = require('./db').ChainDb
-	,	chain = require('./chain')
-	,	def = require('./def')
-	,	url = require('url')
-	,	handlebars = require('express-handlebars')
-	;
+const express = require('express'),	
+	path = require('path'),	
+	favicon = require('serve-favicon'),	
+	logger = require('morgan'),	
+	bodyParser = require('body-parser'),	
+	wordnet = require('wordnet'),	
+	NodeCache = require('node-cache'),	
+	ChainDb = require('./db').ChainDb,	
+	chain = require('./chain'),	
+	def = require('./def'),	
+	url = require('url'),	
+	handlebars = require('express-handlebars');
 
 const app = express();
 const cache = new NodeCache();
@@ -50,7 +49,7 @@ app.get('/search', function(req, res) {
 /* renders main bridge page */
 app.get('/bridge', function(req, res) {
 	/* loadChain w req for production, makeChain w req.query to skip db/cache */
-	loadChain(req, function(result) { 
+	loadChain(req, function(result) {
 		if (result.error) res.render('index', { errmsg: result.error });
 		else res.render('bridge', { data: result });
 	});
@@ -73,46 +72,39 @@ app.post('/save', function(req, res) {
 		nodeLimit: req.body.nl,
 		synonymLevel: req.body.sl,
 		searches: [{ date: new Date() }] /* location? */
-	}, function(err) {
-		if (err != undefined) console.log('err', err);
-		else res.json({ msg: 'success' });
+	}, err => {
+		if (err !== undefined) return console.log('err', err);
+		res.json({ msg: 'success' });
 	});
 });
 
 app.get('/def', function(req,res) {
-	def.getDef(req.query.word, req.query.synonym, function(err, result) {
-		if (err) console.log(err);
-		else res.json({ data: result });
+	def.getDef(req.query.word, req.query.synonym, (err, result) => {
+		if (err) return console.log(err);
+		res.json({ data: result });
 	})
 });
 
 function loadChain(req, callback) {
 	const queryString = req.query.qs || makeQueryString(req.query);
 	const cacheSearch = cache.get(queryString);
-	if (cacheSearch) {
-		callback(cacheSearch);
-		console.log('cached');
-		db.addTweeted(queryString, function(err) { console.log(err) } );
-	}
+	if (cacheSearch) callback(cacheSearch);
 	else if (!db.isConnected) makeChain(req.query, callback);
 	else {
-		db.get(queryString, function(err, result) {
-			if (err) console.log(err);
-			else {
-				if (result === null) {
-					if (!req.query.s) {
-						req.query.s = queryString.split(/[0-9]+/)[0];
-						req.query.e = queryString.split(/[0-9]+/)[1];
-						req.query.nl = queryString.split(/[a-z]+/)[1];
-						req.query.sl = queryString.split(/[a-z]+/)[2];
-					} /* if db is fucked up, what about hyphen searches ... */
-					makeChain(req.query, callback);
-				} else {
-				 	db.addSearchTime(queryString, function(err) { console.log(err) } );
-				 	db.addTweeted(queryString, function(err) { console.log(err) } );
-				 	cache.set(queryString, result);
-				 	callback(result);
-				}
+		db.get(queryString, (err, result) => {
+			if (err) return console.log(err);
+			if (result === null) {
+				if (!req.query.s) {
+					req.query.s = queryString.split(/[0-9]+/)[0];
+					req.query.e = queryString.split(/[0-9]+/)[1];
+					req.query.nl = queryString.split(/[a-z]+/)[1];
+					req.query.sl = queryString.split(/[a-z]+/)[2];
+				} /* if db is fucked up, what about hyphen searches ... */
+				makeChain(req.query, callback);
+			} else {
+			 	db.addSearchTime(queryString, err => { console.log(err) });
+			 	cache.set(queryString, result);
+			 	callback(result);
 			}
 		});
 	}
@@ -131,11 +123,11 @@ function makeChain(_query, callback) {
 		searches: [{ date: new Date() }] /* location? */
 	};
 
-	chain.makeChain(query, syns, function(err, chain) {
+	chain.makeChain(query, syns, (err, chain) => {
 		if (err) query.error = err;
 		else query.chain = chain;
 		if (db.isConnected) {
-			db.save(query, function(err) { 
+			db.save(query, (err) => { 
 				if (err) console.log(err);
 			});
 		}
@@ -158,9 +150,10 @@ const server = app.listen(3000, function() {
 
 const mongoUri = 
 	process.env.DB_URI ||
-	'mongodb://localhost:27017/bridge';
+	'mongodb://localhost:27017/';
+const collection = 'bridge'; // check this online ... 
 
-const db = new ChainDb(mongoUri);
+const db = new ChainDb(mongoUri, collection);
 // error handlers
 
 // development error handler

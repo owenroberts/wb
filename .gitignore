@@ -8,3 +8,5 @@ npm-debug.log
 synopath
 synopath.pub
 notes.txt
+public/badwords.txt
+bot_tests/

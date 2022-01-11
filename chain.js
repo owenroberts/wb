@@ -16,7 +16,7 @@ function makeChain(query, allSynonyms, callback) {
 		callback("Please enter two search words.");
 	} else if (!reg.test(startWord) || !reg.test(endWord)) {
 		callback("Please enter single words with no spaces or special characters.");
-	} else if (startWord == endWord) {
+	} else if (startWord === endWord) {
 		callback("Please enter different words.");
 	} else if (getSynonyms(startWord, []).length == 0) {
 		callback("The first word was not found.");
@@ -54,8 +54,8 @@ function makeChain(query, allSynonyms, callback) {
 				reg.test(syn)
 				&& !syn.includes(word)
 				&& !word.includes(syn)
-				&& allSynsCopy.indexOf(syn) == -1
-				&& allSynsCopy.indexOf(syn + "s") == -1
+				&& allSynsCopy.indexOf(syn) === -1
+				&& allSynsCopy.indexOf(syn + "s") === -1
 				&& synonyms.length < 10
 				) {
 				synonyms.push({ word: syn }); 

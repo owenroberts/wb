@@ -16,95 +16,60 @@ const mongodb = require('mongodb')
 	search time
 */
 
-const ChainDb = function(uri, callback) {
+const ChainDb = function(uri, dbName, callback) {
 	this.isConnected = false;
 	const self = this;
 	const options = { useNewUrlParser: true, useUnifiedTopology: true };
 	MongoClient.connect(uri, options, function (err, client) {
-		if (err) console.log(err);
-		else {
-			self.isConnected = true;
-			self.db = client.db();
-			if (callback) callback();
-		}
+		if (err) return console.log(err);
+		self.isConnected = true;
+		self.client = client;
+		self.db = client.db(dbName);
+		if (callback) callback();
 	});
 }
 
-ChainDb.prototype.getCollection = function(callback) {
-	this.db.collection('chains', function(err, chain_collection) {
+ChainDb.prototype.save = function(chain, callback) {
+
+	let collection = this.db.collection('chains');
+	collection.findOne({ queryString: chain.queryString}, (err, result) => {
 		if (err) return callback(err);
-		callback(null, chain_collection);
+		if (result === null) {
+			collection.insertOne(chain, err => {
+				if (err) return callback(err);
+				callback(null);
+			});
+		} else {
+			collection.updateOne(
+				{ queryString: chain.queryString }, 
+				{ $push: { searches: chain.searches } },
+				(err, result) => {
+					if (err) return callback(err);
+					else callback(null);
+				});
+		}
 	});
 };
 
-ChainDb.prototype.save = function(chain, callback) {
-	this.getCollection(function(err, chain_collection) {
-		if (err) callback(err);
-		else {
-			chain_collection.findOne({ queryString: chain.queryString }, function(err, result) {
-				if (err) console.log(err);
-				else if (result == null) {
-					chain_collection.insertOne(chain, function(err) {
-						if (err) console.log(err);
-						else callback();
-					});
-				} else {
-					chain_collection.updateOne(
-						{ queryString: chain.queryString }, 
-						{ $push: { searches: chain.searches } }
-					, function(err, result) {
-						if (err) console.log(err);
-						else callback(null);
-					});
-				}
-			});
-		}
-	})
-};
-
 ChainDb.prototype.get = function(queryString, callback) {
-	this.getCollection(function(err, chain_collection) {
-		if (err) callback(err);
-		else {
-			chain_collection.findOne({ queryString: queryString}, function(err, result) {
-				if (err) callback(err);
-				else callback(null, result);
-			});
-		}
+	let collection = this.db.collection('chains');
+	collection.findOne({ queryString: queryString}, (err, result) => {
+		if (err) return callback(err);
+		callback(null, result);
 	});
 };
 
 ChainDb.prototype.addSearchTime = function(queryString, callback) {
-	this.getCollection(function(err, chain_collection) {
-		if (err) callback(err);
-		else {
-			// add location ?
-			const search = { date: new Date()};
-			chain_collection.updateOne(
-				{ queryString: queryString },
-				{ $push: { searches: search } }
-			);
+	let collection = this.db.collection('chains');
+	const search = { date: new Date()};
+	collection.updateOne(
+		{ queryString: queryString },
+		{ $push: { searches: search } },
+		(err) => {
+			if (err) callback(err);
+			else callback(null);
 		}
-	});
+	);
 };
-
-
-// bot stuff
-ChainDb.prototype.addTweeted = function(queryString, callback) {
-	this.getCollection(function(err, chain_collection) {
-		if (err) return callback(err);
-		console.log('tweeted', queryString)
-		const tweetDate = new Date();
-		chain_collection.update(
-			{ queryString: queryString },
-			{ $set: { tweeted: tweetDate } }
-		);
-	});
-};
-
-
-
-
-
 
 exports.ChainDb = ChainDb;

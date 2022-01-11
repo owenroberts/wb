@@ -13,11 +13,19 @@
 
 const ChainDb = require('./db').ChainDb;
 const fs = require('fs');
-const { createCanvas } = require('canvas')
-
+const { createCanvas } = require('canvas');
+const natural = require('natural');
+// const wordnet = new natural.WordNet();
+const wordnet = require('wordnet');
+const thesaurus = require('thesaurus');
+const chain = require('./chain')
 
 function coinFlip() {
 	return Math.random() > 0.5;
+}
+
+function choice(array) {
+	return array[Math.floor(Math.random() * array.length)];
 }
 
 let db;
@@ -28,55 +36,89 @@ const WordBridgeBot = function(appDB, callback) {
 	} else {
 		const mongoUri = 
 			process.env.DB_URI ||
-			'mongodb://localhost:27017/bridge';
-		db = new ChainDb(mongoUri, function() {
+			'mongodb://localhost:27017/';
+		db = new ChainDb(mongoUri, 'bridge', function() {
 			callback();
-			db.addTweeted('test10cluster10', function(err) { console.log(err) } );
 		});
-
 	}
 };
 
-WordBridgeBot.prototype.update = function() {
+WordBridgeBot.prototype.update = async function() {
 
-	// get random db
-	// console.log(db.addTweeted);
-	db.getCollection((err, chain_collection) => {
-		if (err) return console.log(err);
-		chain_collection.aggregate([{ $match: { tweeted: null }}, { $sample: { size: 1 } }], (err, cursor) => {
-			if (err) return console.log(err);
-			cursor.get((err, results) => {
-				if (err) return console.log(err);
+	const collection = db.db.collection('chains');
 
-				if (results.length > 0) {
-					makeImage(results[0]);
-					// console.log('queryString', results[0].queryString);
-					// console.log(chain_collection.findOne);
-					// console.log(db);
-					console.log('bot', results[0].queryString)
-					// db.addSearchTime(results[0].queryString, function(err) { console.log(err) });
-					// db.addTweeted(results[0].queryString, function(err) { console.log(err) } );
-					// db.addTweeted(results[0].queryString, err => console.log(err));
-					// const tweetDate = new Date();
-					// const q = { queryString: results[0].queryString };
-					// chain_collection.updateOne(
-					// 		{ queryString: results[0].queryString }, 
-					// 		{ $set: { tweeted: tweetDate }}, 
-					// 		function(err, response) {
-					// 	console.log(err, response);
-					// });
-				} else {
-					// generate soemthing else
-					console.log('no results');
-				}
-				process.exit();
-			});
-		});
+	simplePipeline(db.db, function () {
+		db.client.close();
 	});
+
+	async function simplePipeline(db) {
+		const doc =  await collection.aggregate([{ $match: { tweeted: null }}, { $sample: { size: 1 } }]).toArray();
+		if (doc.length > 0) {
+			makeImage(doc[0]);
+			collection.updateOne(
+				{ queryString: doc[0].queryString }, 
+				{ $set: { tweeted: new Date() }},
+				(err) => {
+					if (err) return console.log(err);
+					process.exit();
+				}
+			);
+		} else {
+			generateSearch();
+		}
+	}
 };
 
+async function generateSearch() {
+
+	// get two random words
+	const badWords = fs.readFileSync('./public/badwords.txt').toString('UTF8').split('\n');
+	await wordnet.init();
+	let list = await wordnet.list();
+	let startWord, endWord;
+
+	function getWord() {
+		let w = choice(list);
+		while (	badWords.includes[w] || w === startWord || w === endWord || 
+				thesaurus.find(w).length === 0 || w.includes(' ') || w.includes('-')) {
+			w = choice(list);
+		}
+		return w;
+	}
+
+	startWord = getWord();
+	endWord = getWord();
+
+	let qs = `${startWord}10${endWord}10`;
+	db.get(qs, function(err, result){
+		if (err) return console.log(err);
+		if (!result) {
+			const q = {
+				queryString: qs,
+				start: startWord,
+				end: endWord,
+				nodeLimit: 10,
+				synonymLevel: 10,
+				searches: []
+			};
+			chain.makeChain(q, [], (err, chain) => {
+				// try again if error .... ?
+				if (err) q.error = err;
+				else q.chain = chain;
+				q.tweeted = new Date();
+				db.save(q, err => {
+					if (err) console.log(err);
+					makeImage(q);
+					process.exit();
+				});
+			});
+		}
+	});
+}
+
 function makeImage(chain) {
-	
+	if (chain.error) return console.log('error', chain.error);
+
 	let x = 40;
 	let sy = 40;
 	let y = 40;
@@ -110,7 +152,6 @@ function makeImage(chain) {
 
 	const buffer = canvas.toBuffer('image/png');
 	fs.writeFileSync(`./bot_tests/${chain.start}-${chain.end}.png`, buffer);
-
 }
 
 exports.WordBridgeBot = WordBridgeBot;

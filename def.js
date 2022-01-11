@@ -11,7 +11,7 @@ function getDef(word, synonym, callback) {
 		}
 		if (data.length > 0) callback(null, data);
 		else callback(null, results);
-	})
+	});
 }
 
 exports.getDef = getDef;
