@@ -20,12 +20,17 @@ const ChainDb = function(uri, dbName, callback) {
 	this.isConnected = false;
 	const self = this;
 	const options = { useNewUrlParser: true, useUnifiedTopology: true };
-	MongoClient.connect(uri, options, function (err, client) {
-		if (err) return console.log(err);
-		self.isConnected = true;
-		self.client = client;
-		self.db = client.db(dbName);
-		if (callback) callback();
+	if (process.env.NODE_ENV === 'development') {
+		options.serverSelectionTimeoutMS =  5000;
+	}
+	MongoClient.connect(uri, options, (err, client) => {
+		if (err) console.log(err);
+		else {
+			self.isConnected = true;
+			self.client = client;
+			self.db = client.db(dbName);
+			if (callback) callback();
+		}
 	});
 }
 
@@ -33,10 +38,10 @@ ChainDb.prototype.save = function(chain, callback) {
 
 	let collection = this.db.collection('chains');
 	collection.findOne({ queryString: chain.queryString}, (err, result) => {
-		if (err) return callback(err);
-		if (result === null) {
+		if (err) callback(err);
+		else if (result === null) {
 			collection.insertOne(chain, err => {
-				if (err) return callback(err);
+				if (err) callback(err);
 				callback(null);
 			});
 		} else {
@@ -44,7 +49,7 @@ ChainDb.prototype.save = function(chain, callback) {
 				{ queryString: chain.queryString }, 
 				{ $push: { searches: chain.searches } },
 				(err, result) => {
-					if (err) return callback(err);
+					if (err) callback(err);
 					else callback(null);
 				});
 		}
@@ -54,8 +59,8 @@ ChainDb.prototype.save = function(chain, callback) {
 ChainDb.prototype.get = function(queryString, callback) {
 	let collection = this.db.collection('chains');
 	collection.findOne({ queryString: queryString}, (err, result) => {
-		if (err) return callback(err);
-		callback(null, result);
+		if (err) callback(err);
+		else callback(null, result);
 	});
 };
 

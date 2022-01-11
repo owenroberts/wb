@@ -1,24 +1,32 @@
-// get random db entry or 
-	// db.chains.aggregate([ { $sample: { size: 1 }  } ])
-	// db.chains.updateOne( { "queryString" : "untenable10fear10" }, { $set: { tweeted: true } } )
-	// db.chains.aggregate( [ { $match: { tweeted: null } }, { $sample: { size: 1 } }] ).forEach(function(doc) { print(doc.queryString); });
-// generate random search
-	// get two random words from wordnet
-	// no bad words -- test regular search too
-	// add tweeted to document
-// create an image
-	// how??
-// post to twitter .... fuck me
-	// really wish i made this in python ...
+// okay! now make a worker and try heroku scheduler?
 
 const ChainDb = require('./db').ChainDb;
 const fs = require('fs');
 const { createCanvas } = require('canvas');
 const natural = require('natural');
-// const wordnet = new natural.WordNet();
 const wordnet = require('wordnet');
 const thesaurus = require('thesaurus');
-const chain = require('./chain')
+const chain = require('./chain');
+const Twit = require('twit');
+const dotenv = require('dotenv');
+
+const result = dotenv.config();
+
+let envs; // https://newbedev.com/node-js-environment-variables-and-heroku-deployment
+if (!('error' in result)) {
+  envs = result.parsed;
+} else {
+  envs = {};
+  _.each(process.env, (value, key) => envs[key] = value);
+}
+
+const T = new Twit({
+	consumer_key:         envs.API_KEY, // API_KEY
+	consumer_secret:      envs.API_SECRET, // API_SECRET
+	access_token:         envs.ACCESS_TOKEN, // ACCESS_TOKEN
+	access_token_secret:  envs.ACCESS_SECRET, // ACCESS_SECRET
+	timeout_ms:           60*1000,  // optional HTTP request timeout to apply to all requests.
+});
 
 function coinFlip() {
 	return Math.random() > 0.5;
@@ -45,26 +53,33 @@ const WordBridgeBot = function(appDB, callback) {
 
 WordBridgeBot.prototype.update = async function() {
 
-	const collection = db.db.collection('chains');
+	// coin flip just invent a serarch
+	if (coinFlip()) {
+		generateSearch();
+	} else {
 
-	simplePipeline(db.db, function () {
-		db.client.close();
-	});
+		// look for something from the database
+		const collection = db.db.collection('chains');
 
-	async function simplePipeline(db) {
-		const doc =  await collection.aggregate([{ $match: { tweeted: null }}, { $sample: { size: 1 } }]).toArray();
-		if (doc.length > 0) {
-			makeImage(doc[0]);
-			collection.updateOne(
-				{ queryString: doc[0].queryString }, 
-				{ $set: { tweeted: new Date() }},
-				(err) => {
-					if (err) return console.log(err);
-					process.exit();
-				}
-			);
-		} else {
-			generateSearch();
+		simplePipeline(db.db, function () {
+			db.client.close();
+		});
+
+		async function simplePipeline(db) {
+			const doc =  await collection.aggregate([{ $match: { tweeted: null }}, { $sample: { size: 1 } }]).toArray();
+			if (doc.length > 0) {
+				makeImage(doc[0]);
+				collection.updateOne(
+					{ queryString: doc[0].queryString }, 
+					{ $set: { tweeted: new Date() }},
+					(err) => {
+						if (err) console.log(err);
+						// process.exit();
+					}
+				);
+			} else {
+				generateSearch();
+			}
 		}
 	}
 };
@@ -91,8 +106,8 @@ async function generateSearch() {
 
 	let qs = `${startWord}10${endWord}10`;
 	db.get(qs, function(err, result){
-		if (err) return console.log(err);
-		if (!result) {
+		if (err) console.log(err);
+		else if (!result) {
 			const q = {
 				queryString: qs,
 				start: startWord,
@@ -109,7 +124,7 @@ async function generateSearch() {
 				db.save(q, err => {
 					if (err) console.log(err);
 					makeImage(q);
-					process.exit();
+					// process.exit();
 				});
 			});
 		}
@@ -117,41 +132,77 @@ async function generateSearch() {
 }
 
 function makeImage(chain) {
-	if (chain.error) return console.log('error', chain.error);
+	if (chain.error) {
+		console.log('error', chain.queryString, chain.error);
+		if (process.env.NODE_ENV === 'development') process.exit();
+	} else {
+		let x = 40;
+		let sy = 40;
+		let y = 40;
 
-	let x = 40;
-	let sy = 40;
-	let y = 40;
+		const width = 400;
+		const height = sy * 3 + y * (chain.chain.length);
 
-	const width = 400;
-	const height = sy * 3 + y * (chain.chain.length);
+		const canvas = createCanvas(width, height);
+		const ctx = canvas.getContext('2d');
 
-	const canvas = createCanvas(width, height);
-	const ctx = canvas.getContext('2d');
+		ctx.fillStyle = '#ffffff';
+		ctx.fillRect(0, 0, width, height);
 
-	ctx.fillStyle = '#ffffff';
-	ctx.fillRect(0, 0, width, height);
-
-	ctx.font = 'bold 30px Arial';
-	ctx.fillStyle = '#000000';
+		ctx.font = 'bold 30px Arial';
+		ctx.fillStyle = '#000000';
 
 
-	ctx.fillText(chain.start, x, sy + y);
-	ctx.fillText(chain.end, x, sy + y * (chain.chain.length - 1));
+		ctx.fillText(chain.start, x, sy + y);
+		ctx.fillText(chain.end, x, sy + y * (chain.chain.length - 1));
 
-	ctx.font = '30px Arial';
-	for (let i = 1; i < chain.chain.length - 2; i++) {
-		y += 40;
-		ctx.fillText(chain.chain[i].word, x, sy + y);
+		ctx.font = '30px Arial';
+		for (let i = 1; i < chain.chain.length - 2; i++) {
+			y += 40;
+			ctx.fillText(chain.chain[i].word, x, sy + y);
+		}
+
+		ctx.font = '20px Arial';
+		let wb = 'wordbridge.link';
+		let w = ctx.measureText(wb).width;
+		ctx.fillText(wb, width / 2 - w / 2, height - sy / 2);
+
+		const url = `https://www.wordbridge.link/bridge?s=${chain.start}&e=${chain.end}&nl=10&sl=10`;
+		const message = `${chain.start} --> ${chain.end}: ${url}`;
+		const alt = 'word bridge: ' + chain.chain.map(node => node.word).join(' -> ');
+		// fs.writeFileSync(`./bot_tests/${chain.start}-${chain.end}.png`, buffer);
+		// console.log('finna tweet', message);
+
+		const buffer = canvas.toBuffer('image/jpeg');
+		const buff = new Buffer.from(buffer);
+		const base64 = buff.toString('base64')
+		
+		// first we must post the media to Twitter
+		T.post('media/upload', { media_data: base64 }, function (err, data, response) {
+			if (err) console.log(err);
+			else {
+				// now we can assign alt text to the media, for use by screen readers and
+				// other text-based presentations and interpreters
+				const mediaIdStr = data.media_id_string
+				const altText = alt;
+				const meta_params = { media_id: mediaIdStr, alt_text: { text: altText } }
+
+				T.post('media/metadata/create', meta_params, function (err, data, response) {
+					if (err) console.log(err);
+					else {
+						// now we can reference the media and post a tweet (media will attach to the tweet)
+						const params = { status: message, media_ids: [mediaIdStr] }
+						T.post('statuses/update', params, function (err, data, response) {
+							if (err) console.log(err);
+							else {
+								if (process.env.NODE_ENV === 'development') process.exit();
+							}
+						});
+					}
+				});
+			}
+		});
 	}
-
-	ctx.font = '20px Arial';
-	let wb = 'wordbridge.link';
-	let w = ctx.measureText(wb).width;
-	ctx.fillText(wb, width / 2 - w / 2, height - sy / 2);
-
-	const buffer = canvas.toBuffer('image/png');
-	fs.writeFileSync(`./bot_tests/${chain.start}-${chain.end}.png`, buffer);
 }
 
 exports.WordBridgeBot = WordBridgeBot;

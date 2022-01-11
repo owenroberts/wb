@@ -73,15 +73,15 @@ app.post('/save', function(req, res) {
 		synonymLevel: req.body.sl,
 		searches: [{ date: new Date() }] /* location? */
 	}, err => {
-		if (err !== undefined) return console.log('err', err);
-		res.json({ msg: 'success' });
+		if (err !== undefined) console.log('err', err);
+		else res.json({ msg: 'success' });
 	});
 });
 
 app.get('/def', function(req,res) {
 	def.getDef(req.query.word, req.query.synonym, (err, result) => {
-		if (err) return console.log(err);
-		res.json({ data: result });
+		if (err) console.log(err);
+		else res.json({ data: result });
 	})
 });
 
@@ -92,8 +92,8 @@ function loadChain(req, callback) {
 	else if (!db.isConnected) makeChain(req.query, callback);
 	else {
 		db.get(queryString, (err, result) => {
-			if (err) return console.log(err);
-			if (result === null) {
+			if (err) console.log(err);
+			else if (result === null) {
 				if (!req.query.s) {
 					req.query.s = queryString.split(/[0-9]+/)[0];
 					req.query.e = queryString.split(/[0-9]+/)[1];
