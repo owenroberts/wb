@@ -37,8 +37,9 @@ function choice(array) {
 }
 
 const mongoUri = 
-	process.env.DB_URI ||
-	'mongodb://localhost:27017/';
+// test
+	// process.env.DB_URI ||
+	// 'mongodb://localhost:27017/';
 
 const db = new ChainDb(mongoUri, 'bridge', startBot);
 const debug = process.env.NODE_ENV === 'development';
