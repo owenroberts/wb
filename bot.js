@@ -14,10 +14,10 @@ const result = dotenv.config();
 
 let envs; // https://newbedev.com/node-js-environment-variables-and-heroku-deployment
 if (!('error' in result)) {
-  envs = result.parsed;
+	envs = result.parsed;
 } else {
-  envs = {};
-  _.each(process.env, (value, key) => envs[key] = value);
+	envs = {};
+	_.each(process.env, (value, key) => envs[key] = value);
 }
 
 const T = new Twit({
@@ -36,53 +36,45 @@ function choice(array) {
 	return array[Math.floor(Math.random() * array.length)];
 }
 
-let db;
+const mongoUri = 
+	process.env.DB_URI ||
+	'mongodb://localhost:27017/';
 
-const WordBridgeBot = function(appDB, callback) {
-	if (appDB) {
-		db = appDB;
-	} else {
-		const mongoUri = 
-			process.env.DB_URI ||
-			'mongodb://localhost:27017/';
-		db = new ChainDb(mongoUri, 'bridge', function() {
-			callback();
-		});
-	}
-};
+const db = new ChainDb(mongoUri, 'bridge', startBot);
+const debug = process.env.NODE_ENV === 'development';
 
-WordBridgeBot.prototype.update = async function() {
-
-	// coin flip just invent a serarch
+function startBot() {
 	if (coinFlip()) {
 		generateSearch();
 	} else {
+		getSearchFromDatabase()
+	}
+}
 
-		// look for something from the database
-		const collection = db.db.collection('chains');
+async function getSearchFromDatabase() {
+	const collection = db.db.collection('chains');
 
-		simplePipeline(db.db, function () {
-			db.client.close();
-		});
+	simplePipeline(db.db, function () {
+		db.client.close();
+	});
 
-		async function simplePipeline(db) {
-			const doc =  await collection.aggregate([{ $match: { tweeted: null }}, { $sample: { size: 1 } }]).toArray();
-			if (doc.length > 0) {
-				makeImage(doc[0]);
-				collection.updateOne(
-					{ queryString: doc[0].queryString }, 
-					{ $set: { tweeted: new Date() }},
-					(err) => {
-						if (err) console.log(err);
-						// process.exit();
-					}
-				);
-			} else {
-				generateSearch();
-			}
+	async function simplePipeline(db) {
+		const doc =  await collection.aggregate([{ $match: { tweeted: null }}, { $sample: { size: 1 } }]).toArray();
+		if (doc.length > 0) {
+			makeTweet(doc[0]);
+			collection.updateOne(
+				{ queryString: doc[0].queryString }, 
+				{ $set: { tweeted: new Date() }},
+				(err) => {
+					if (err) console.log(err);
+					// process.exit();
+				}
+			);
+		} else {
+			generateSearch();
 		}
 	}
-};
+}
 
 async function generateSearch() {
 
@@ -94,7 +86,7 @@ async function generateSearch() {
 
 	function getWord() {
 		let w = choice(list);
-		while (	badWords.includes[w] || w === startWord || w === endWord || 
+		while (badWords.includes[w] || w === startWord || w === endWord || 
 				thesaurus.find(w).length === 0 || w.includes(' ') || w.includes('-')) {
 			w = choice(list);
 		}
@@ -123,7 +115,7 @@ async function generateSearch() {
 				q.tweeted = new Date();
 				db.save(q, err => {
 					if (err) console.log(err);
-					makeImage(q);
+					makeTweet(q);
 					// process.exit();
 				});
 			});
@@ -131,10 +123,10 @@ async function generateSearch() {
 	});
 }
 
-function makeImage(chain) {
+function makeTweet(chain) {
 	if (chain.error) {
 		console.log('error', chain.queryString, chain.error);
-		if (process.env.NODE_ENV === 'development') process.exit();
+		if (debug) process.exit();
 	} else {
 		let x = 40;
 		let sy = 40;
@@ -168,7 +160,7 @@ function makeImage(chain) {
 		ctx.fillText(wb, width / 2 - w / 2, height - sy / 2);
 
 		const url = `https://www.wordbridge.link/bridge?s=${chain.start}&e=${chain.end}&nl=10&sl=10`;
-		const message = `${chain.start} --> ${chain.end}: ${url}`;
+		const message = `${chain.start} → ${chain.end}: ${url}`;
 		const alt = 'word bridge: ' + chain.chain.map(node => node.word).join(' -> ');
 		// fs.writeFileSync(`./bot_tests/${chain.start}-${chain.end}.png`, buffer);
 		// console.log('finna tweet', message);
@@ -204,5 +196,3 @@ function makeImage(chain) {
 		});
 	}
 }
-
-exports.WordBridgeBot = WordBridgeBot;
