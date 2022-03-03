@@ -11,6 +11,7 @@ const Twit = require('twit');
 const dotenv = require('dotenv');
 
 const result = dotenv.config();
+const badWords = fs.readFileSync('./public/badwords.txt').toString('UTF8').split('\n');
 
 let envs; // https://newbedev.com/node-js-environment-variables-and-heroku-deployment
 if (!('error' in result)) {
@@ -83,7 +84,7 @@ async function getSearchFromDatabase() {
 async function generateSearch() {
 
 	// get two random words
-	const badWords = fs.readFileSync('./public/badwords.txt').toString('UTF8').split('\n');
+	
 	await wordnet.init();
 	let list = await wordnet.list();
 	let startWord, endWord;
