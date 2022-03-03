@@ -16,15 +16,12 @@ let envs; // https://newbedev.com/node-js-environment-variables-and-heroku-deplo
 if (!('error' in result)) {
 	envs = result.parsed;
 } else {
-	console.log('_', process.env);
 	envs = {};
 	// _.each(process.env, (value, key) => envs[key] = value);
 	for (const k in process.env) {
 		envs[k] = process.env[k];
 	}
 }
-
-console.log('envs', envs);
 
 const T = new Twit({
 	consumer_key:         envs.API_KEY, // API_KEY
