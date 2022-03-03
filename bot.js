@@ -192,9 +192,7 @@ function makeTweet(chain) {
 						const params = { status: message, media_ids: [mediaIdStr] }
 						T.post('statuses/update', params, function (err, data, response) {
 							if (err) console.log(err);
-							else {
-								if (process.env.NODE_ENV === 'development') process.exit();
-							}
+							process.exit();
 						});
 					}
 				});
