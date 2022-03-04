@@ -28,7 +28,7 @@
 		padding: 0.2em;
 		
 		&[type="text"] {
-			font-weight: normal;			
+			font-weight: normal;
 			width: 100%;
 			transition: border-color $fade-dur ease-in;
 			&::-webkit-input-placeholder { 
@@ -36,10 +36,12 @@
 				transition: color $fade-dur ease-in;
 			}
 		}
+
 		&[type="text"].error {
 			border-color: $error;
 			&::-webkit-input-placeholder { color: $error-text; }
 		}
+
 		&:focus {
 			background: $gray; 
 			color: $black;

@@ -1,0 +1,128 @@
+<!--  bridgle -->
+{{> loader}}
+{{> report}}
+
+<div id="header">
+	<h1>Word Bridgle</h1>
+	<button id="home-btn" class="big-btn bridgle" onclick={location.href="/"}>Home</button>	
+</div>
+
+<div id="bridgle">
+	<div id="nodes">
+		{{#each chain.chain}}
+		<div class="node" data-index={{@index}} >
+			<div class="word">
+				<span class="dot">
+					{{#if @first}}→
+					{{else}}{{#if @last}}→
+					{{else}}•{{/if}}{{/if}}
+				</span>
+				<button class="fade visible" onclick={B.getDef();}>
+					{{#if @first}}{{word}}{{/if}}
+					{{#if @last}}{{word}}{{/if}}
+				</button>
+			</div>
+		</div>
+		{{/each}}
+
+	</div>
+	<div id="trash">
+		<div class="trash-node"><strong>Trash</strong></div>
+	</div>
+	<div id="input">
+		<input id="guess-input" type="text" placeholder="Guess a synonym">
+		<button class="big-btn" id="guess-button">Submit</button>
+		<button class="big-btn" id="hint-button">Hint</button>
+	</div>
+</div>
+
+<script type="text/javascript">
+	/* check hash to reroute */
+	if (location.hash) {
+		location.href = `${location.origin}/bridge?qs=${location.hash.replace('#', '')}`;
+	}
+	window.B = {}; // need B for helpers
+	B.isBridgle = true;
+
+</script>
+<script src="/js/helpers.js"></script>
+<script src="/js/bridge.js"></script>
+<script src="/js/def.js"></script>
+<script type="text/javascript">
+	const d = {{{json chain}}};
+	window.addEventListener('load', function() {
+		console.log(d);		
+		B.currentChain = 0;
+		B.chains[B.currentChain] = d.chain;
+		B.startWord = d.start;
+		B.endWord = d.end;
+		B.queryStrings.push(d.queryString);
+
+		const chain = d.chain;
+		const nodes = document.getElementsByClassName('node');
+		const guessInput = document.getElementById('guess-input');
+		const guessButton = document.getElementById('guess-button');
+		const hintButton = document.getElementById('hint-button');
+		const trash = document.getElementById('trash');
+		const reg = /^[a-z]+$/;
+		const prevGuesses = [];
+
+		guessInput.addEventListener('keyup', ev => {
+			if (ev.key === 'Enter') submitGuess();
+		});
+		guessButton.addEventListener('click', submitGuess);
+		hintButton.addEventListener('click', getHint);
+
+		function getHint() {
+			let n = B.choice(Array.from(nodes).filter(n => !n.dataset.correct));
+			let index = n.dataset.index;
+			let alts = chain[index].alts.filter(a => a !== chain[index].word);
+			let i = B.getRandomInt(0, alts.length - 1);
+			n.children[0].children[1].textContent = alts[i];
+			n.classList.add('close');
+		}
+
+
+		function submitGuess() {
+			let guess = guessInput.value.trim();
+			
+			if (!guess || !reg.test(guess) || guess in prevGuesses) {
+				guessInput.classList.add('error');
+			} else {
+				prevGuesses.push(guess);
+				guessInput.classList.remove('error');
+				guessInput.value = '';
+
+				// check for matches 
+				let hasMatch = false;
+				for (let i = 1; i < chain.length - 2; i++) {
+					if (guess === chain[i].word) {
+						nodes[i].children[0].children[1].textContent = guess;
+						nodes[i].classList.add('correct');
+						nodes[i].classList.remove('close');
+						nodes[i].dataset.correct = true;
+						hasMatch = true;
+					} else if (!nodes[i].dataset.correct) {
+						for (let j = 0; j < chain[i].alts.length; j++) {
+							if (guess === chain[i].alts[j]) {
+								nodes[i].children[0].children[1].textContent = guess;
+								nodes[i].classList.add('close');
+								hasMatch = true;
+							}
+						}
+					}
+				}
+				if (!hasMatch) {
+					const trashElem = document.createElement('div');
+					trashElem.classList.add('trash-node');
+					trashElem.textContent = guess;
+					trash.appendChild(trashElem);
+				}
+			}
+		}
+	});
+
+</script>
+
+
+

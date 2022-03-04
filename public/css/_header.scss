@@ -15,6 +15,10 @@
 		width: 62px; 
 		height: 36px;
 		order: 1;
+		
+		&.bridgle {
+			width: auto;
+		}
 	}
 
 	#re-bridge-btn {

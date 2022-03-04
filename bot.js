@@ -63,6 +63,7 @@ async function getSearchFromDatabase() {
 	});
 
 	async function simplePipeline(db) {
+		// add error null
 		const doc =  await collection.aggregate([{ $match: { tweeted: null }}, { $sample: { size: 1 } }]).toArray();
 		if (doc.length > 0) {
 			makeTweet(doc[0]);

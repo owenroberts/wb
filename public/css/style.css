@@ -278,6 +278,9 @@ button::-moz-focus-inner {
   height: 36px;
   order: 1;
 }
+#header #home-btn.bridgle {
+  width: auto;
+}
 #header #re-bridge-btn {
   margin-left: auto;
 }
@@ -833,6 +836,68 @@ button::-moz-focus-inner {
 
 .display-none {
   display: none;
+}
+
+#bridgle {
+  display: grid;
+  grid-template-columns: 50vw auto;
+  grid-template-areas: "nodes trash" "input input";
+}
+#bridgle #nodes {
+  margin-left: 1em;
+  grid-area: nodes;
+}
+#bridgle .node {
+  opacity: 1;
+}
+#bridgle .node .word {
+  width: auto;
+}
+#bridgle .node.correct button {
+  color: green;
+}
+#bridgle .node.close button {
+  color: orange;
+}
+#bridgle #trash {
+  grid-area: trash;
+}
+#bridgle #input {
+  grid-area: input;
+  margin-top: 1rem;
+  padding: 0 1rem;
+  font-size: 26px;
+}
+#bridgle #input #guess-button {
+  margin-top: 1rem;
+}
+#bridgle #input input {
+  margin: 0;
+  border-radius: 0;
+  border-bottom: 3px solid black;
+  font-size: 1em;
+  display: block;
+  padding-bottom: 8px;
+  padding: 0.2em;
+}
+#bridgle #input input[type=text] {
+  font-weight: normal;
+  width: 100%;
+  transition: border-color 300ms ease-in;
+}
+#bridgle #input input[type=text]::-webkit-input-placeholder {
+  color: #919191;
+  transition: color 300ms ease-in;
+}
+#bridgle #input input[type=text].error {
+  border-color: #C40000;
+}
+#bridgle #input input[type=text].error::-webkit-input-placeholder {
+  color: #EA6A6A;
+}
+#bridgle #input input:focus {
+  background: #C5C7C9;
+  color: black;
 }
 
 /*# sourceMappingURL=style.css.map */

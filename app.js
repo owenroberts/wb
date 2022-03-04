@@ -55,6 +55,16 @@ app.get('/bridge', function(req, res) {
 	});
 });
 
+app.get('/bridgle', async function(req, res) {
+	const collection = db.db.collection('chains');
+	const doc = await collection.aggregate([{ $match: { error: null }}, { $sample: { size: 1 } }]).toArray();
+	if (doc.length > 0) {
+		res.render('bridgle', { chain: doc[0] });
+	} else {
+		res.render('index', { errmsg: 'Could not find a bridge.' });
+	}
+});
+
 /* json request for mod chain, new chain */
 app.get('/chain', function(req, res) {
 	loadChain(req, function(result) { 

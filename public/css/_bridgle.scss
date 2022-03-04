@@ -1,0 +1,78 @@
+#bridgle {
+
+	display: grid;
+    grid-template-columns: 50vw auto;
+    grid-template-areas:
+        "nodes trash"
+        "input input";
+
+	#nodes {
+		margin-left: 1em;
+		grid-area: nodes;
+	}
+	
+	.node {
+		opacity: 1;
+
+		.word {
+			width: auto;
+		}
+
+		&.correct button {
+			color: green;
+		}
+
+		&.close button {
+			color: orange;
+		}
+	}
+
+	#trash {
+		grid-area: trash;
+	}
+
+	#input {
+
+		grid-area: input;
+
+		margin-top: 1rem;
+		padding: 0 1rem;
+		font-size: 26px;
+		
+
+		#guess-button {
+			margin-top: 1rem;
+
+		}
+
+		input {
+			margin: 0;
+			border-radius: 0;
+			border-bottom: 3px solid $black;
+			font-size: 1em;
+			display: block;
+			padding-bottom: 8px;
+			padding: 0.2em;
+
+			&[type="text"] {
+				font-weight: normal;
+				width: 100%;
+				transition: border-color $fade-dur ease-in;
+				&::-webkit-input-placeholder { 
+					color:  $input-text; 
+					transition: color $fade-dur ease-in;
+				}
+			}
+
+			&[type="text"].error {
+				border-color: $error;
+				&::-webkit-input-placeholder { color: $error-text; }
+			}
+
+			&:focus {
+				background: $gray; 
+				color: $black;
+			}
+		}
+	}
+}

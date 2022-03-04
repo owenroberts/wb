@@ -28,5 +28,5 @@ window.addEventListener('load', function() {
 			}
 		});
 	}
-	fadeNode(0);
+	if (!B.isBridgle) fadeNode(0);
 });

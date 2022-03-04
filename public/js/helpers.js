@@ -1,4 +1,4 @@
-	window.addEventListener('load', function() {
+window.addEventListener('load', function() {
 
 	B.debug = false;
 	B.fadeDur = B.debug ? 100 : 300;
@@ -6,6 +6,10 @@
 
 	B.getRandomInt = (min, max) => {
 		return Math.floor(Math.random()* ( max - min + 1) + min);
+	};
+
+	B.choice = (array) => {
+		return array[Math.floor(Math.random() * (array.length - 1))];
 	};
 
 	B.fade = (elem, status, display, end) => {
