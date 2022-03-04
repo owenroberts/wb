@@ -123,9 +123,12 @@ async function generateSearch() {
 			};
 			chain.makeChain(q, [startWord, endWord], (err, chain) => {
 				// try again if error .... ?
-				if (err) q.error = err;
-				else q.chain = chain;
-				q.tweeted = new Date();
+				if (err) {
+					q.error = err;
+				} else {
+					q.chain = chain;
+					q.tweeted = new Date();
+				}
 				db.save(q, err => {
 					if (err) console.log(err);
 					makeTweet(q);
