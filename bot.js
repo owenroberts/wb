@@ -64,10 +64,15 @@ async function getSearchFromDatabase() {
 
 	async function simplePipeline(db) {
 		// add error null
-		const doc =  await collection.aggregate([{ $match: { tweeted: null }}, { $sample: { size: 1 } }]).toArray();
+		const doc =  await collection.aggregate([
+				// $match: { tweeted: null }}, 
+				{ $match: { error: null, tweeted: null }},
+				{ $sample: { size: 1 }}
+			])
+			.toArray();
 		if (doc.length > 0) {
 			makeTweet(doc[0]);
-			console.log('from db', doc[0].queryString);
+			console.log('from db', doc[0].queryString, doc[0].error, doc[0].tweeted);
 			collection.updateOne(
 				{ queryString: doc[0].queryString }, 
 				{ $set: { tweeted: new Date() }},
@@ -132,8 +137,8 @@ async function generateSearch() {
 				}
 				db.save(q, err => {
 					if (err) console.log(err);
-					makeTweet(q);
 					console.log('new bridge', q.queryString);
+					makeTweet(q);
 					// process.exit();
 				});
 			});
