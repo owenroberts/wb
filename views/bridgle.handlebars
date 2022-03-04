@@ -73,7 +73,8 @@
 		hintButton.addEventListener('click', getHint);
 
 		function getHint() {
-			let n = B.choice(Array.from(nodes).filter(n => !n.dataset.correct));
+			let n = B.choice(Array.from(nodes).filter(n => !n.dataset.correct && n.dataset.index > 0 && n.dataset.index < chain.length));
+			console.log(Array.from(nodes).filter(n => !n.dataset.correct), n)
 			let index = n.dataset.index;
 			let alts = chain[index].alts.filter(a => a !== chain[index].word);
 			let i = B.getRandomInt(0, alts.length - 1);
