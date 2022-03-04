@@ -37,13 +37,12 @@ function coinFlip() {
 }
 
 function choice(array) {
-	return array[Math.floor(Math.random() * array.length)];
+	return array[Math.floor(Math.random() * (array.length - 1))];
 }
 
 const mongoUri = 
-// test
-	// process.env.DB_URI ||
-	// 'mongodb://localhost:27017/';
+	process.env.DB_URI ||
+	'mongodb://localhost:27017/';
 
 const db = new ChainDb(mongoUri, 'bridge', startBot);
 const debug = process.env.NODE_ENV === 'development';
@@ -52,7 +51,7 @@ function startBot() {
 	if (coinFlip()) {
 		generateSearch();
 	} else {
-		getSearchFromDatabase()
+		getSearchFromDatabase();
 	}
 }
 
@@ -67,6 +66,7 @@ async function getSearchFromDatabase() {
 		const doc =  await collection.aggregate([{ $match: { tweeted: null }}, { $sample: { size: 1 } }]).toArray();
 		if (doc.length > 0) {
 			makeTweet(doc[0]);
+			console.log('from db', doc[0].queryString);
 			collection.updateOne(
 				{ queryString: doc[0].queryString }, 
 				{ $set: { tweeted: new Date() }},
@@ -84,22 +84,30 @@ async function getSearchFromDatabase() {
 async function generateSearch() {
 
 	// get two random words
-	
 	await wordnet.init();
 	let list = await wordnet.list();
 	let startWord, endWord;
 
-	function getWord() {
+	async function getWord() {
 		let w = choice(list);
-		while (badWords.includes[w] || w === startWord || w === endWord || 
+
+		// check simple issues first
+		if (badWords.includes[w] || w === startWord || w === endWord || 
 				thesaurus.find(w).length === 0 || w.includes(' ') || w.includes('-')) {
-			w = choice(list);
+			return getWord();
 		}
-		return w;
+
+		// check for proper nouns
+		let defs = await wordnet.lookup(w)
+		if (defs.filter(d => d.meta.words.filter(w => w.word.charAt(0) === w.word.charAt(0).toUpperCase()).length).length > 0) {
+			return getWord();
+		} else {
+			return w;	
+		}
 	}
 
-	startWord = getWord();
-	endWord = getWord();
+	startWord = await getWord();
+	endWord = await getWord();
 
 	let qs = `${startWord}10${endWord}10`;
 	db.get(qs, function(err, result){
@@ -111,9 +119,9 @@ async function generateSearch() {
 				end: endWord,
 				nodeLimit: 10,
 				synonymLevel: 10,
-				searches: []
+				searches: [{ date: new Date() }]
 			};
-			chain.makeChain(q, [], (err, chain) => {
+			chain.makeChain(q, [startWord, endWord], (err, chain) => {
 				// try again if error .... ?
 				if (err) q.error = err;
 				else q.chain = chain;
@@ -121,6 +129,7 @@ async function generateSearch() {
 				db.save(q, err => {
 					if (err) console.log(err);
 					makeTweet(q);
+					console.log('new bridge', q.queryString);
 					// process.exit();
 				});
 			});
