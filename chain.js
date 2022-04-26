@@ -31,8 +31,8 @@ function makeChain(query, allSynonyms, callback) {
 			currentNodeNumber++; // for next chain
 			if (!foundChain) {
 				buildChain(
-					[{word:startWord}], 
-					[{ word:endWord, synonyms: getSynonyms(endWord, allSynonyms.slice(0)) }], 
+					[{ word: startWord }], 
+					[{ word: endWord, synonyms: getSynonyms(endWord, allSynonyms.slice(0)) }], 
 					allSynonyms.slice(0)
 				);
 				if (!foundChain) getChain();
@@ -96,7 +96,7 @@ function makeChain(query, allSynonyms, callback) {
 
 					// if chain is found, add endchain to start chain in reverse order
 					for (let k = endChain.length - 1; k >= 0; k--) {
-						startCopy.push( endChain[k] );
+						startCopy.push(endChain[k]);
 					}
 
 					// format data for front end
@@ -119,6 +119,7 @@ function makeChain(query, allSynonyms, callback) {
 					return;
 				} 
 			}
+
 			// if chain hasn't been found keep building chains
 			if (startCopy.length + endChain.length < currentNodeNumber && !foundChain) {
 				buildChain(startCopy, endChain, allSynsCopy); /* fastest ?*/

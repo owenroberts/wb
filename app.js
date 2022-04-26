@@ -9,7 +9,8 @@ const express = require('express'),
 	chain = require('./chain'),	
 	def = require('./def'),	
 	url = require('url'),	
-	handlebars = require('express-handlebars');
+	handlebars = require('express-handlebars'),
+	thesaurus = require('thesaurus');
 
 const app = express();
 const cache = new NodeCache();
@@ -58,8 +59,24 @@ app.get('/bridge', function(req, res) {
 app.get('/bridgle', async function(req, res) {
 	const collection = db.db.collection('chains');
 	const doc = await collection.aggregate([{ $match: { error: null }}, { $sample: { size: 1 } }]).toArray();
+
+	const { start, end } = doc[0];
+	// random words like bot? -- make sure not the same word
+
+	function getSyns(word) {
+		return thesaurus.find(word)
+			.filter(s => s.match(/^[a-z]+$/))
+			.filter(s => s !== word)
+			.filter(s => !s.includes(word) && !word.includes(s))
+			.filter(s => s.substring(0, s.length - 1) !== word)
+			.filter(s => word.substring(0, word.length - 1) !== s);
+	}
+
+	const startSynonyms = getSyns(start)
+	const endSyonyms = getSyns(end);
+
 	if (doc.length > 0) {
-		res.render('bridgle', { chain: doc[0] });
+		res.render('bridgle', { start: start, end: end, startSynonyms: startSynonyms, endSyonyms: endSyonyms });
 	} else {
 		res.render('index', { errmsg: 'Could not find a bridge.' });
 	}
@@ -92,8 +109,23 @@ app.get('/def', function(req,res) {
 	def.getDef(req.query.word, req.query.synonym, (err, result) => {
 		if (err) console.log(err);
 		else res.json({ data: result });
-	})
+	});
 });
+
+app.get('/bridgle-selection', function(req,res) {
+	let synonyms = getSyns(req.query.word, [req.query.end, ...req.query.used.split(',')]);
+	res.json({ synonyms: synonyms });
+});
+
+function getSyns(word, filter) {
+	return thesaurus.find(word)
+		.filter(s => !filter.includes(s))
+		.filter(s => s.match(/^[a-z]+$/))
+		.filter(s => s !== word)
+		.filter(s => !s.includes(word) && !word.includes(s))
+		.filter(s => s.substring(0, s.length - 1) !== word)
+		.filter(s => word.substring(0, word.length - 1) !== s);
+}
 
 function loadChain(req, callback) {
 	const queryString = req.query.qs || makeQueryString(req.query);

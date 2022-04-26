@@ -3,18 +3,22 @@ window.addEventListener('load', function() {
 	// http://wordnet.princeton.edu/wordnet/man/wndb.5WN.html#sect3
 	const pos = { "n":"noun", "v":"verb", "a":"adjective", "s":"adjective", "r":"adverb" };
 
-	B.getDef = function() {
+	B.getDef = function(self) {
 		B.fade(B.loader, 'in', 'block');
-		const node = event.currentTarget.parentNode.parentNode;
+		const node = self || event.currentTarget.parentNode.parentNode;
 		const word = node.dataset.word;
 		const index = +node.dataset.index;
+		let synonym = node.dataset.synonym;
+
+		console.log(synonym);
 		
 		// 0 of undefined
-		let synonym;
-		if (index == 0 || index == B.chains[B.currentChain].length - 2) {
-			synonym = B.chains[B.currentChain][index + 1].word;
-		} else {
-			synonym = B.chains[B.currentChain][index - 1].word;
+		if (!synonym) {
+			if (index == 0 || index == B.chains[B.currentChain].length - 2) {
+				synonym = B.chains[B.currentChain][index + 1].word;
+			} else {
+				synonym = B.chains[B.currentChain][index - 1].word;
+			}
 		}
 
 		const url = `/def?word=${word}&synonym=${synonym}`;

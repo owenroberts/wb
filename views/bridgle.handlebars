@@ -9,30 +9,39 @@
 
 <div id="bridgle">
 	<div id="nodes">
-		{{#each chain.chain}}
-		<div class="node" data-index={{@index}} >
+		<div class="node" id="remove-first-node">
 			<div class="word">
-				<span class="dot">
-					{{#if @first}}→
-					{{else}}{{#if @last}}→
-					{{else}}•{{/if}}{{/if}}
-				</span>
-				<button class="fade visible" onclick={B.getDef();}>
-					{{#if @first}}{{word}}{{/if}}
-					{{#if @last}}{{word}}{{/if}}
-				</button>
+				{{start}} → {{end}}
 			</div>
 		</div>
-		{{/each}}
+	</div>
 
+	<p id="synonym-instructions">Choose a synonym of {{start}}.  Click synonyms for definitions.</p>
+
+	<div id="synonyms">
+		{{#each startSynonyms}}
+		<button class="word big-btn synonym" data-word="{{this}}" data-synonym="{{../start}}" onclick={B.getDef(this);}>
+			{{this}}
+		</button>
+		{{/each}}
 	</div>
-	<div id="trash">
-		<div class="trash-node"><strong>Trash</strong></div>
+
+	<div id="end-nodes">
+		
 	</div>
+
+	
+	<p id="game-instructions">Connect these two words using synonyms.  Press play to begin.</p>
+	<button class="big-btn" id="play-button">Play</button>
+
 	<div id="input">
-		<input id="guess-input" type="text" placeholder="Guess a synonym">
-		<button class="big-btn" id="guess-button">Submit</button>
-		<button class="big-btn" id="hint-button">Hint</button>
+		<button class="big-btn" id="select-button">Select</button>
+		<button class="prev" id="prev-button">
+			<img src="/img/mod-left-arrow.svg" alt="">
+		</button>
+		<button class="next" id="next-button">
+			<img src="/img/mod-right-arrow.svg" alt="">
+		</button>
 	</div>
 </div>
 
@@ -43,84 +52,125 @@
 	}
 	window.B = {}; // need B for helpers
 	B.isBridgle = true;
-
 </script>
 <script src="/js/helpers.js"></script>
 <script src="/js/bridge.js"></script>
 <script src="/js/def.js"></script>
 <script type="text/javascript">
-	const d = {{{json chain}}};
 	window.addEventListener('load', function() {
-		B.currentChain = 0;
-		B.chains[B.currentChain] = d.chain;
-		B.startWord = d.start;
-		B.endWord = d.end;
-		B.queryStrings.push(d.queryString);
+		const start = "{{{start}}}";
+		const end = "{{{end}}}";
+		const chain = [start];
+		const matches = '{{{endSyonyms}}}'.split(',');
 
-		const chain = d.chain;
-		const nodes = document.getElementsByClassName('node');
-		const guessInput = document.getElementById('guess-input');
-		const guessButton = document.getElementById('guess-button');
-		const hintButton = document.getElementById('hint-button');
-		const trash = document.getElementById('trash');
-		const reg = /^[a-z]+$/;
-		const prevGuesses = [];
+		const playButton = document.getElementById('play-button');
+		playButton.addEventListener('click', startBridgle);
 
-		guessInput.addEventListener('keyup', ev => {
-			if (ev.key === 'Enter') submitGuess();
-		});
-		guessButton.addEventListener('click', submitGuess);
-		hintButton.addEventListener('click', getHint);
+		const input = document.getElementById('input');
+		const nodes = document.getElementById('nodes');
+		const endNodes = document.getElementById('end-nodes');
+		const synonyms = document.getElementById('synonyms');
+		const choices = document.getElementsByClassName('synonym');
+		
+		const instructions = document.getElementById('synonym-instructions');
 
-		function getHint() {
-			let n = B.choice(Array.from(nodes).filter(n => !n.dataset.correct && n.dataset.index > 0 && n.dataset.index < chain.length));
-			let index = n.dataset.index;
-			let alts = chain[index].alts.filter(a => a !== chain[index].word);
-			let i = B.getRandomInt(0, alts.length - 1);
-			n.children[0].children[1].textContent = alts[i];
-			n.classList.add('close');
+		const nextButton = document.getElementById('next-button');
+		nextButton.addEventListener('click', next);
+
+		const prevButton = document.getElementById('prev-button');
+		prevButton.addEventListener('click', prev);
+
+		const selectButton = document.getElementById('select-button');
+		selectButton.addEventListener('click', select);
+
+		let currentChoiceIndex = 0;
+
+
+		function startBridgle() {
+			// remove intro
+			playButton.style.display = 'none';
+			document.getElementById('game-instructions').style.display = 'none';
+			document.getElementById('remove-first-node').remove();
+
+			nodes.appendChild(addNode(start + ' → '));
+			endNodes.appendChild(addNode('→ ' + end));
+
+			input.style.display = 'flex';
+			synonyms.style.display = 'flex';
+			instructions.style.display = 'block';
+
+			choices[currentChoiceIndex].classList.add('selected');
+			selectButton.textContent = `select ${choices[0].dataset.word}`;
 		}
 
+		function next() {
+			choices[currentChoiceIndex].classList.remove('selected');
+			currentChoiceIndex++;
+			if (currentChoiceIndex >= choices.length) currentChoiceIndex = 0;
+			choices[currentChoiceIndex].classList.add('selected');
+			selectButton.textContent = `select ${choices[currentChoiceIndex].dataset.word}`;
+		}
 
-		function submitGuess() {
-			let guess = guessInput.value.trim();
+		function prev() {
+			choices[currentChoiceIndex].classList.remove('selected');
+			currentChoiceIndex--;
+			if (currentChoiceIndex < 0) currentChoiceIndex = choices.length - 1;;
+			choices[currentChoiceIndex].classList.add('selected');
+			selectButton.textContent = `select ${choices[currentChoiceIndex].dataset.word}`;
+		}
+
+		function select() {
 			
-			if (!guess || !reg.test(guess) || guess in prevGuesses) {
-				guessInput.classList.add('error');
-			} else {
-				prevGuesses.push(guess);
-				guessInput.classList.remove('error');
-				guessInput.value = '';
-
-				// check for matches 
-				let hasMatch = false;
-				for (let i = 1; i < chain.length - 2; i++) {
-					if (guess === chain[i].word) {
-						nodes[i].children[0].children[1].textContent = guess;
-						nodes[i].classList.add('correct');
-						nodes[i].classList.remove('close');
-						nodes[i].dataset.correct = true;
-						hasMatch = true;
-					} else if (!nodes[i].dataset.correct) {
-						for (let j = 0; j < chain[i].alts.length; j++) {
-							if (guess === chain[i].alts[j]) {
-								nodes[i].children[0].children[1].textContent = guess;
-								nodes[i].classList.add('close');
-								hasMatch = true;
-							}
-						}
-					}
-				}
-				if (!hasMatch) {
-					const trashElem = document.createElement('div');
-					trashElem.classList.add('trash-node');
-					trashElem.textContent = guess;
-					trash.appendChild(trashElem);
-				}
+			let selection = choices[currentChoiceIndex].dataset.word;
+			
+			// check if it is a match
+			if (matches.includes(selection)) {
+				console.log('you win!');
+				return;
 			}
+
+			// get syns
+			const url = `/bridgle-selection?word=${selection}&end=${end}&used=${chain}`;
+			fetch(url)
+				.then(response => { return response.json(); })
+				.then(result => {
+					console.log(result);
+
+					chain.push(selection);
+					nodes.appendChild(addSelection(selection + ' → '));
+					// const title = `${word}`;
+					// const sub = B.isBridgle ? '' : `synonym of “${synonym}”`;
+					// let msg = "";
+					// const len = Math.min(result.data.length, 10);
+					// for (let i = 0; i < len; i++) {
+					// 	msg += `<strong>${pos[result.data[i].pos]}</strong>`;
+					// 	msg += '<br>';
+					// 	msg += result.data[i].def;
+					// 	msg += '<br><br>';
+					// }
+					// B.report(title, msg, sub);
+				});
+
+			// use chain to check if it's possible?
+
+
+			synonyms.innerHTML = '';
+		}
+
+		function addSelection(text) {
+			const node = B.createElem('div', ['node', 'selection']);
+			const word = B.createElem('div', ['word'], text);
+			node.appendChild(word);
+			return node;
+		}
+
+		function addNode(text) {
+			const node = B.createElem('div', ['node']);
+			const word = B.createElem('div', ['word'], text);
+			node.appendChild(word);
+			return node;
 		}
 	});
-
 </script>
 
 

@@ -839,19 +839,25 @@ button::-moz-focus-inner {
 }
 
 #bridgle {
-  display: grid;
-  grid-template-columns: 75% auto;
-  grid-template-areas: "nodes trash" "input input";
+  margin: 0 1em;
+  margin-top: 2em;
+}
+#bridgle #nodes, #bridgle #synonyms, #bridgle #end-nodes {
+  margin: 1em 0;
 }
 #bridgle #nodes {
-  margin-left: 1em;
-  grid-area: nodes;
+  display: flex;
+  flex-wrap: wrap;
 }
 #bridgle .node {
   opacity: 1;
+  width: auto;
 }
 #bridgle .node .word {
   width: auto;
+}
+#bridgle .node.selection .word {
+  font-weight: normal;
 }
 #bridgle .node.correct button {
   color: green;
@@ -859,45 +865,62 @@ button::-moz-focus-inner {
 #bridgle .node.close button {
   color: orange;
 }
-#bridgle #trash {
-  grid-area: trash;
+#bridgle #synonym-instructions {
+  display: none;
+}
+#bridgle #game-instructions {
+  font-size: 1.5em;
+}
+#bridgle #synonyms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  display: none;
+}
+#bridgle #synonyms button {
+  font-size: 1.5em;
+}
+#bridgle #synonyms .selected {
+  background-color: lightgreen;
+}
+#bridgle #play-button {
+  text-align: center;
+  font-size: 1.5em;
 }
 #bridgle #input {
-  grid-area: input;
-  margin-top: 1rem;
-  padding: 0 1rem;
-  font-size: 26px;
+  display: none;
 }
 #bridgle #input #guess-button {
   margin-top: 1rem;
 }
-#bridgle #input input {
-  margin: 0;
-  border-radius: 0;
-  border-bottom: 3px solid black;
-  font-size: 1em;
-  display: block;
-  padding-bottom: 8px;
-  padding: 0.2em;
+#bridgle #input .next, #bridgle #input .prev {
+  height: 36px;
+  display: inline-block;
+  font-size: 26px;
+  line-height: 0;
+  cursor: pointer;
+  transition: background-color 300ms ease-in-out;
+  margin-right: 6px;
+  border-radius: 1em;
+  background-color: #ededed;
+  transition: background-color 300ms;
+  width: 48px;
+  height: 48px;
 }
-#bridgle #input input[type=text] {
-  font-weight: normal;
-  width: 100%;
-  transition: border-color 300ms ease-in;
+#bridgle #input .next.active, #bridgle #input .prev.active {
+  background-color: #6d6d6d;
 }
-#bridgle #input input[type=text]::-webkit-input-placeholder {
-  color: #919191;
-  transition: color 300ms ease-in;
+#bridgle #input .prev {
+  margin-left: auto;
 }
-#bridgle #input input[type=text].error {
-  border-color: #C40000;
+#bridgle #input #select-button {
+  font-size: 1.25em;
 }
-#bridgle #input input[type=text].error::-webkit-input-placeholder {
-  color: #EA6A6A;
-}
-#bridgle #input input:focus {
-  background: #C5C7C9;
-  color: black;
+.keyboard #bridgle .prev:focus, .keyboard #bridgle .next:focus {
+  /* accessibility */
+  background-color: #f2f2f2;
+  box-shadow: 0 0 0 2px #AAAAAA;
+  border-radius: 18px;
 }
 
 /*# sourceMappingURL=style.css.map */
