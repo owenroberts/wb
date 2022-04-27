@@ -1,7 +1,7 @@
 window.addEventListener('load', function() {
 
 	// http://wordnet.princeton.edu/wordnet/man/wndb.5WN.html#sect3
-	const pos = { "n":"noun", "v":"verb", "a":"adjective", "s":"adjective", "r":"adverb" };
+	const pos = { "n": "noun", "v": "verb", "a": "adjective", "s": "adjective", "r": "adverb" };
 
 	B.getDef = function(self) {
 		B.fade(B.loader, 'in', 'block');
@@ -9,8 +9,6 @@ window.addEventListener('load', function() {
 		const word = node.dataset.word;
 		const index = +node.dataset.index;
 		let synonym = node.dataset.synonym;
-
-		console.log(synonym);
 		
 		// 0 of undefined
 		if (!synonym) {

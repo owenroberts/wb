@@ -33,12 +33,17 @@
 		}
 	}
 
+	#choose {
+		font-weight: bold;
+		font-size: 1.125em;
+	}
+
 	#synonym-instructions {
 		display: none;
 	}
 
 	#game-instructions {
-		font-size: 1.5em;
+		font-size: 1.25em;
 	}
 
 	#synonyms {
@@ -51,12 +56,14 @@
 			font-size: 1.5em;
 		}
 
+		button:hover {
+			background-color: black;
+		}
+
 		.selected {
 			background-color: lightgreen;
 		}
 	}
-
-
 
 	#play-button {
 		text-align: center;
@@ -79,12 +86,15 @@
 			cursor: pointer;
 			transition: background-color $fade-dur ease-in-out;
 
+			&:hover {
+				background-color: lightgreen;
+			}
 
-			&.active {
+			&.active, &:active {
 				background-color: $btn;
 			}
 
-			margin-right: 6px;
+			margin-left: 6px;
 			border-radius: 1em;
 			background-color: #ededed;
 			transition: background-color $fade-dur;
@@ -102,11 +112,11 @@
 			font-size: 1.25em;
 			
 		}
-
 	}
 
+	/* accessibility */
 	.keyboard & .prev:focus,
-	.keyboard & .next:focus, { /* accessibility */
+	.keyboard & .next:focus, { 
 		background-color: $lightgray;
 		box-shadow: 0 0 0 2px #AAAAAA;
 		border-radius: 18px;

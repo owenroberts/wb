@@ -10,6 +10,7 @@ const express = require('express'),
 	def = require('./def'),	
 	url = require('url'),	
 	handlebars = require('express-handlebars'),
+	lev = require('fast-levenshtein'),
 	thesaurus = require('thesaurus');
 
 const app = express();
@@ -18,7 +19,9 @@ const cache = new NodeCache();
 const hbs = handlebars.create({
 	defaultLayout: "main",
 	partialsDir: __dirname + '/views/partials/',
-	helpers: { json: content => { return JSON.stringify(content); } }
+	helpers: { 
+		json: content => { return JSON.stringify(content); },
+	}
 });
 
 // view engine setup
@@ -62,21 +65,15 @@ app.get('/bridgle', async function(req, res) {
 
 	const { start, end } = doc[0];
 	// random words like bot? -- make sure not the same word
-
-	function getSyns(word) {
-		return thesaurus.find(word)
-			.filter(s => s.match(/^[a-z]+$/))
-			.filter(s => s !== word)
-			.filter(s => !s.includes(word) && !word.includes(s))
-			.filter(s => s.substring(0, s.length - 1) !== word)
-			.filter(s => word.substring(0, word.length - 1) !== s);
-	}
-
-	const startSynonyms = getSyns(start)
+	const startSynonyms = getSyns(start);
+	const startSynSyns = {};
+	startSynonyms.forEach(syn => {
+		startSynSyns[syn] = getSyns(syn);
+	});
 	const endSyonyms = getSyns(end);
 
 	if (doc.length > 0) {
-		res.render('bridgle', { start: start, end: end, startSynonyms: startSynonyms, endSyonyms: endSyonyms });
+		res.render('bridgle', { start: start, end: end, startSynonyms: startSynonyms, endSyonyms: endSyonyms, startSynSyns: startSynSyns });
 	} else {
 		res.render('index', { errmsg: 'Could not find a bridge.' });
 	}
@@ -112,19 +109,22 @@ app.get('/def', function(req,res) {
 	});
 });
 
-app.get('/bridgle-selection', function(req,res) {
+app.get('/bridgle-selection', function(req, res) {
 	let synonyms = getSyns(req.query.word, [req.query.end, ...req.query.used.split(',')]);
 	res.json({ synonyms: synonyms });
 });
 
 function getSyns(word, filter) {
+	filter = filter ? filter : [];
 	return thesaurus.find(word)
+		.filter(s => lev.get(word, s) > 1)
 		.filter(s => !filter.includes(s))
 		.filter(s => s.match(/^[a-z]+$/))
 		.filter(s => s !== word)
 		.filter(s => !s.includes(word) && !word.includes(s))
 		.filter(s => s.substring(0, s.length - 1) !== word)
-		.filter(s => word.substring(0, word.length - 1) !== s);
+		.filter(s => word.substring(0, word.length - 1) !== s)
+		.slice(0, 12); // limit to 12 results
 }
 
 function loadChain(req, callback) {

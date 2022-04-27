@@ -293,6 +293,8 @@ button::-moz-focus-inner {
 }
 #header .btn {
   border-bottom: 1px solid transparent;
+  color: black;
+  text-decoration: none;
 }
 .keyboard #header .btn:focus, #header .btn:hover, #header .btn:active {
   border-bottom: 1px solid #AAAAAA;
@@ -841,6 +843,7 @@ button::-moz-focus-inner {
 #bridgle {
   margin: 0 1em;
   margin-top: 2em;
+  /* accessibility */
 }
 #bridgle #nodes, #bridgle #synonyms, #bridgle #end-nodes {
   margin: 1em 0;
@@ -865,11 +868,15 @@ button::-moz-focus-inner {
 #bridgle .node.close button {
   color: orange;
 }
+#bridgle #choose {
+  font-weight: bold;
+  font-size: 1.125em;
+}
 #bridgle #synonym-instructions {
   display: none;
 }
 #bridgle #game-instructions {
-  font-size: 1.5em;
+  font-size: 1.25em;
 }
 #bridgle #synonyms {
   display: flex;
@@ -879,6 +886,9 @@ button::-moz-focus-inner {
 }
 #bridgle #synonyms button {
   font-size: 1.5em;
+}
+#bridgle #synonyms button:hover {
+  background-color: black;
 }
 #bridgle #synonyms .selected {
   background-color: lightgreen;
@@ -900,14 +910,17 @@ button::-moz-focus-inner {
   line-height: 0;
   cursor: pointer;
   transition: background-color 300ms ease-in-out;
-  margin-right: 6px;
+  margin-left: 6px;
   border-radius: 1em;
   background-color: #ededed;
   transition: background-color 300ms;
   width: 48px;
   height: 48px;
 }
-#bridgle #input .next.active, #bridgle #input .prev.active {
+#bridgle #input .next:hover, #bridgle #input .prev:hover {
+  background-color: lightgreen;
+}
+#bridgle #input .next.active, #bridgle #input .next:active, #bridgle #input .prev.active, #bridgle #input .prev:active {
   background-color: #6d6d6d;
 }
 #bridgle #input .prev {
@@ -917,7 +930,6 @@ button::-moz-focus-inner {
   font-size: 1.25em;
 }
 .keyboard #bridgle .prev:focus, .keyboard #bridgle .next:focus {
-  /* accessibility */
   background-color: #f2f2f2;
   box-shadow: 0 0 0 2px #AAAAAA;
   border-radius: 18px;
