@@ -1,9 +1,12 @@
 window.addEventListener('load', function() {
 
 	const playButton = document.getElementById('play-button');
-	playButton.addEventListener('click', startBridgle);
+	playButton.addEventListener('click', start);
 
-	const input = document.getElementById('input');
+	const startOverButton = document.getElementById('start-over');
+	startOverButton.addEventListener('click', startOver);
+
+	const input = document.getElementById('bridgle-input');
 	const nodes = document.getElementById('nodes');
 	const endNodes = document.getElementById('end-nodes');
 	const synonyms = document.getElementById('synonyms');
@@ -21,22 +24,54 @@ window.addEventListener('load', function() {
 	const selectButton = document.getElementById('select-button');
 	selectButton.addEventListener('click', select);
 
-	let currentChoiceIndex = 0;
-	const chain = [B.start];
-	console.log('matches', B.matches);
+	const nextSynonyms = document.getElementById('next-synonyms');
+	const endGame = document.getElementById('end-game');
+	const shareBridgle = document.getElementById('share-bridgle');
 
-	function startBridgle() {
+	let currentChoiceIndex = 0;
+	let chain = [B.start];
+	console.log('matches', B.matches);
+	addNextSynonyms();
+
+	function startOver() {
+		chain = [B.start];
+		synonyms.innerHTML = '';
+		
+		// remove nodes
+		while (nodes.children.length > 1) {
+			nodes.removeChild(nodes.lastChild);
+		}
+
+		// recreate original selections
+		B.startSynonyms.forEach(syn => {
+			const synonym = addSynonym(syn, B.start);
+			synonyms.appendChild(synonym);
+		});
+
+		// reset selection
+		currentChoiceIndex = 0;
+		choices[currentChoiceIndex].classList.add('selected');
+		selectButton.textContent = `select ${choices[0].dataset.word}`;
+
+		// add syn syns
+		B.synonymSynonyms = { ...B.startSynSyns };
+		addNextSynonyms();
+	}
+
+	function start() {
 		// remove intro
 		playButton.style.display = 'none';
 		document.getElementById('game-instructions').style.display = 'none';
 		document.getElementById('remove-first-node').remove();
 
-		nodes.appendChild(addNode(B.start + ' → '));
-		endNodes.appendChild(addNode('→ ' + B.end));
+		nodes.appendChild(addNode(B.start + ' → ', B.start));
+		endNodes.appendChild(addNode('→ ' + B.end, B.end));
 
 		input.style.display = 'flex';
 		synonyms.style.display = 'flex';
 		instructions.style.display = 'block';
+		nextSynonyms.style.display = 'block';
+		
 
 		choices[currentChoiceIndex].classList.add('selected');
 		selectButton.textContent = `select ${choices[0].dataset.word}`;
@@ -48,6 +83,7 @@ window.addEventListener('load', function() {
 		if (currentChoiceIndex >= choices.length) currentChoiceIndex = 0;
 		choices[currentChoiceIndex].classList.add('selected');
 		selectButton.textContent = `select ${choices[currentChoiceIndex].dataset.word}`;
+		addNextSynonyms();
 	}
 
 	function prev() {
@@ -56,6 +92,22 @@ window.addEventListener('load', function() {
 		if (currentChoiceIndex < 0) currentChoiceIndex = choices.length - 1;;
 		choices[currentChoiceIndex].classList.add('selected');
 		selectButton.textContent = `select ${choices[currentChoiceIndex].dataset.word}`;
+		addNextSynonyms();
+	}
+
+	function winGame() {
+		// hide a bunch of stuff
+		input.style.display = 'none';
+		synonyms.style.display = 'none';
+		instructions.style.display = 'none';
+		nextSynonyms.style.display = 'none';
+
+		// show share menu
+		endGame.style.display = 'block';
+
+		// save to db -- use separate collection? bridgles?
+
+		// save some stats, number of restarts, length of bridge
 	}
 
 	function select() {
@@ -64,7 +116,8 @@ window.addEventListener('load', function() {
 		
 		// check if it is a match
 		if (B.matches.includes(selection)) {
-			console.log('you win!');
+			nodes.appendChild(addSelection(selection));
+			winGame();
 			return;
 		}
 
@@ -74,8 +127,7 @@ window.addEventListener('load', function() {
 		fetch(url)
 			.then(response => { return response.json(); })
 			.then(result => {
-				console.log(result);
-
+				startOverButton.style.display = 'inline-block';
 				chain.push(selection);
 				nodes.appendChild(addSelection(selection + ' → '));
 
@@ -94,17 +146,17 @@ window.addEventListener('load', function() {
 				currentChoiceIndex = 0;
 				choices[currentChoiceIndex].classList.add('selected');
 				selectButton.textContent = `select ${choices[0].dataset.word}`;
+				B.synonymSynonyms = { ...result.synonymSynonyms };
+				addNextSynonyms();
 
 			});
 
 		// use chain to check if it's possible?
-
-		
 	}
 
-	function addSynonym(text, selection) {
-		const button = B.createElem('button', ['word', 'big-btn', 'synonym'], text);
-		button.dataset.word = text;
+	function addSynonym(word, selection) {
+		const button = B.createElem('button', ['word', 'big-btn', 'synonym'], word);
+		button.dataset.word = word;
 		button.dataset.synonym = selection;
 		button.onclick = function() {
 			B.getDef(button);
@@ -119,10 +171,33 @@ window.addEventListener('load', function() {
 		return node;
 	}
 
-	function addNode(text) {
-		const node = B.createElem('div', ['node']);
-		const word = B.createElem('div', ['word'], text);
-		node.appendChild(word);
+	function addNode(text, word) {
+		const node = B.createElem('button', ['node']);
+		const w = B.createElem('div', ['word'], text);
+		w.dataset.word = word;
+		w.dataset.synonym = '$';
+		w.onclick = function() {
+			B.getDef(w);
+		};
+		node.appendChild(w);
 		return node;
+	}
+
+	function addNextSynonyms() {
+		nextSynonyms.innerHTML = '';
+		let selection = choices[currentChoiceIndex].dataset.word;
+		nextSynonyms.innerHTML += `synonyms of <strong>${selection}</strong>: `;
+		const nextSyns = B.synonymSynonyms[selection];
+		nextSyns.forEach((syn, i) => {
+			let nextSyn = addSynonym(syn , selection);
+			nextSyn.classList.remove('big-btn');
+			nextSyn.classList.remove('synonym');
+			nextSynonyms.appendChild(nextSyn);
+			if (i < nextSyns.length - 1) {
+				let span = document.createElement('span');
+				span.textContent = ', ';
+				nextSynonyms.appendChild(span);
+			}
+		});
 	}
 });

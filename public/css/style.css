@@ -840,6 +840,17 @@ button::-moz-focus-inner {
   display: none;
 }
 
+#header.bridgle-header {
+  justify-content: start;
+}
+#header.bridgle-header #header-buttons {
+  margin-left: auto;
+}
+#header.bridgle-header #start-over {
+  display: none;
+  margin-right: 1em;
+}
+
 #bridgle {
   margin: 0 1em;
   margin-top: 2em;
@@ -855,6 +866,7 @@ button::-moz-focus-inner {
 #bridgle .node {
   opacity: 1;
   width: auto;
+  font-size: 26px;
 }
 #bridgle .node .word {
   width: auto;
@@ -875,9 +887,6 @@ button::-moz-focus-inner {
 #bridgle #synonym-instructions {
   display: none;
 }
-#bridgle #game-instructions {
-  font-size: 1.25em;
-}
 #bridgle #synonyms {
   display: flex;
   flex-wrap: wrap;
@@ -893,17 +902,40 @@ button::-moz-focus-inner {
 #bridgle #synonyms .selected {
   background-color: lightgreen;
 }
+#bridgle #next-synonyms {
+  display: none;
+}
+#bridgle #next-synonyms button {
+  border-bottom: 1px solid #C5C7C9;
+}
+#bridgle #game-instructions {
+  font-size: 1.25em;
+}
 #bridgle #play-button {
   text-align: center;
   font-size: 1.5em;
 }
-#bridgle #input {
+.keyboard #bridgle .prev:focus, .keyboard #bridgle .next:focus {
+  background-color: #f2f2f2;
+  box-shadow: 0 0 0 2px #AAAAAA;
+  border-radius: 18px;
+}
+
+#end-game {
   display: none;
 }
-#bridgle #input #guess-button {
+
+#bridgle-input {
+  display: none;
+  margin: 0 1em;
+  width: calc(100% - 2em);
+  position: absolute;
+  bottom: 2em;
+}
+#bridgle-input #guess-button {
   margin-top: 1rem;
 }
-#bridgle #input .next, #bridgle #input .prev {
+#bridgle-input .next, #bridgle-input .prev {
   height: 36px;
   display: inline-block;
   font-size: 26px;
@@ -917,22 +949,17 @@ button::-moz-focus-inner {
   width: 48px;
   height: 48px;
 }
-#bridgle #input .next:hover, #bridgle #input .prev:hover {
+#bridgle-input .next:hover, #bridgle-input .prev:hover {
   background-color: lightgreen;
 }
-#bridgle #input .next.active, #bridgle #input .next:active, #bridgle #input .prev.active, #bridgle #input .prev:active {
+#bridgle-input .next.active, #bridgle-input .next:active, #bridgle-input .prev.active, #bridgle-input .prev:active {
   background-color: #6d6d6d;
 }
-#bridgle #input .prev {
+#bridgle-input .prev {
   margin-left: auto;
 }
-#bridgle #input #select-button {
+#bridgle-input #select-button {
   font-size: 1.25em;
-}
-.keyboard #bridgle .prev:focus, .keyboard #bridgle .next:focus {
-  background-color: #f2f2f2;
-  box-shadow: 0 0 0 2px #AAAAAA;
-  border-radius: 18px;
 }
 
 /*# sourceMappingURL=style.css.map */

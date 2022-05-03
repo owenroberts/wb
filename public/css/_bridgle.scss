@@ -1,3 +1,19 @@
+#header.bridgle-header {
+
+	justify-content: start;
+
+	#header-buttons {
+		margin-left: auto;
+	}
+
+	#start-over {
+		display: none;
+		margin-right: 1em;
+	}
+
+}
+
+
 #bridgle {
 
 	margin: 0 1em;
@@ -15,6 +31,8 @@
 	.node {
 		opacity: 1;
 		width: auto;
+
+		font-size: 26px;
 
 		.word {
 			width: auto;
@@ -42,10 +60,6 @@
 		display: none;
 	}
 
-	#game-instructions {
-		font-size: 1.25em;
-	}
-
 	#synonyms {
 		display: flex;
 		flex-wrap: wrap;
@@ -65,53 +79,20 @@
 		}
 	}
 
+	#next-synonyms {
+		display: none;
+		button {
+			border-bottom: 1px solid $gray;
+		}
+	}
+
+	#game-instructions {
+		font-size: 1.25em;
+	}
+
 	#play-button {
 		text-align: center;
 		font-size: 1.5em;
-	}
-
-	#input {
-		
-		display: none;
-
-		#guess-button {
-			margin-top: 1rem;
-		}
-
-		.next, .prev {
-			height: 36px;
-			display: inline-block;
-			font-size: 26px;
-			line-height: 0;
-			cursor: pointer;
-			transition: background-color $fade-dur ease-in-out;
-
-			&:hover {
-				background-color: lightgreen;
-			}
-
-			&.active, &:active {
-				background-color: $btn;
-			}
-
-			margin-left: 6px;
-			border-radius: 1em;
-			background-color: #ededed;
-			transition: background-color $fade-dur;
-
-			width: 48px;
-			height: 48px;
-
-		}
-
-		.prev {
-			margin-left: auto;
-		}
-
-		#select-button {
-			font-size: 1.25em;
-			
-		}
 	}
 
 	/* accessibility */
@@ -122,4 +103,57 @@
 		border-radius: 18px;
 	}
 
+}
+
+#end-game {
+	display: none;
+	
+}
+
+#bridgle-input {
+	
+	display: none;
+	margin: 0 1em;
+	width: calc(100% - 2em);
+	position: absolute;
+	bottom: 2em;
+
+	#guess-button {
+		margin-top: 1rem;
+	}
+
+	.next, .prev {
+		height: 36px;
+		display: inline-block;
+		font-size: 26px;
+		line-height: 0;
+		cursor: pointer;
+		transition: background-color $fade-dur ease-in-out;
+
+		&:hover {
+			background-color: lightgreen;
+		}
+
+		&.active, &:active {
+			background-color: $btn;
+		}
+
+		margin-left: 6px;
+		border-radius: 1em;
+		background-color: #ededed;
+		transition: background-color $fade-dur;
+
+		width: 48px;
+		height: 48px;
+
+	}
+
+	.prev {
+		margin-left: auto;
+	}
+
+	#select-button {
+		font-size: 1.25em;
+		
+	}
 }

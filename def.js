@@ -5,7 +5,7 @@ function getDef(word, synonym, callback) {
 	wordnet.lookup(word, function(results) {
 		var data = [];
 		for (let i = 0; i < results.length; i++) {
-			if (results[i].synonyms.indexOf(synonym) != -1) {
+			if (results[i].synonyms.includes(synonym)) {
 				data.push(results[i]);
 			}
 		}

@@ -21,6 +21,7 @@ const hbs = handlebars.create({
 	partialsDir: __dirname + '/views/partials/',
 	helpers: { 
 		json: content => { return JSON.stringify(content); },
+		assign: value => { }
 	}
 });
 
@@ -59,25 +60,7 @@ app.get('/bridge', function(req, res) {
 	});
 });
 
-app.get('/bridgle', async function(req, res) {
-	const collection = db.db.collection('chains');
-	const doc = await collection.aggregate([{ $match: { error: null }}, { $sample: { size: 1 } }]).toArray();
 
-	const { start, end } = doc[0];
-	// random words like bot? -- make sure not the same word
-	const startSynonyms = getSyns(start);
-	const startSynSyns = {};
-	startSynonyms.forEach(syn => {
-		startSynSyns[syn] = getSyns(syn);
-	});
-	const endSyonyms = getSyns(end);
-
-	if (doc.length > 0) {
-		res.render('bridgle', { start: start, end: end, startSynonyms: startSynonyms, endSyonyms: endSyonyms, startSynSyns: startSynSyns });
-	} else {
-		res.render('index', { errmsg: 'Could not find a bridge.' });
-	}
-});
 
 /* json request for mod chain, new chain */
 app.get('/chain', function(req, res) {
@@ -109,9 +92,34 @@ app.get('/def', function(req,res) {
 	});
 });
 
+app.get('/bridgle', async function(req, res) {
+	const collection = db.db.collection('chains');
+	const doc = await collection.aggregate([{ $match: { error: null }}, { $sample: { size: 1 } }]).toArray();
+
+	const { start, end } = doc[0];
+	// random words like bot? -- make sure not the same word
+	const startSynonyms = getSyns(start);
+	const startSynSyns = {};
+	startSynonyms.forEach(syn => {
+		startSynSyns[syn] = getSyns(syn);
+	});
+	const endSyonyms = getSyns(end);
+
+	if (doc.length > 0) {
+		res.render('bridgle', { start: start, end: end, startSynonyms: startSynonyms, endSyonyms: endSyonyms, startSynSyns: startSynSyns });
+	} else {
+		res.render('index', { errmsg: 'Could not find a bridge.' });
+	}
+});
+
 app.get('/bridgle-selection', function(req, res) {
-	let synonyms = getSyns(req.query.word, [req.query.end, ...req.query.used.split(',')]);
-	res.json({ synonyms: synonyms });
+	let usedSynonyms = [req.query.word, req.query.end, ...req.query.used.split(',')];
+	let synonyms = getSyns(req.query.word, usedSynonyms);
+	let synonymSynonyms = {};
+	synonyms.forEach(syn => {
+		synonymSynonyms[syn] = getSyns(syn, usedSynonyms);
+	})
+	res.json({ synonyms: synonyms, synonymSynonyms: synonymSynonyms });
 });
 
 function getSyns(word, filter) {

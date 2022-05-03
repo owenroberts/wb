@@ -2,18 +2,25 @@
 {{> loader}}
 {{> report}}
 
-<div id="header">
+<div id="header" class="bridgle-header">
 	<h1 id="title">Word Bridgle</h1>
 	{{!-- <button id="home-btn" class="big-btn bridgle" onclick={location.href="/"}>home</button> --}}
-	<a href="/" class="btn">home</a>
+	<div id="header-buttons">
+		<button id="start-over" class="btn">start over</button>
+		<a href="/" class="btn">home</a>
+	</div>
 </div>
 
 <div id="bridgle">
 	<div id="nodes">
 		<div class="node" id="remove-first-node">
-			<div class="word">
-				{{start}} → {{end}}
-			</div>
+			<button class="word" data-word="{{start}}" data-synonym="$" onclick={B.getDef(this);}>
+				{{start}}
+			</button>
+			 → 
+			<button class="word" data-word="{{end}}" data-synonym="$" onclick={B.getDef(this);}>
+				{{end}}
+			</button>
 		</div>
 	</div>
 
@@ -28,12 +35,16 @@
 	</div>
 
 	<div id="next-synonyms">
-		synonyms of "{{startSynonyms.[0]}}": 
-		{{#with (lookup startSynSyns startSynonyms.[0]) as |syns|}}
-			{{#each syns}}
-				<button class="word big-btn synonym" data-word="{{this}}" data-synonym="{{../startSynonyms.[0]}}" 	onclick={B.getDef(this);}>{{this}}</button>
-			{{/each}}
-		{{/with}}
+{{!-- 		{{#each startSynonyms }}
+			<div id="next-synonyms-{{this}}">
+			synonyms of "{{this}}":
+			{{#with (lookup ../startSynSyns this)}}
+				{{#each this}}
+					<button class="word synonym" data-word="{{this}}" data-synonym="" onclick={B.getDef(this);}>{{this}}{{#unless @last}}, {{/unless}}</button>
+				{{/each}}
+			{{/with}}
+			</div>
+		{{/each}} --}}
 	</div>
 
 	<div id="end-nodes"></div>
@@ -41,15 +52,22 @@
 	<p id="game-instructions">Connect these two words using synonyms. <br> Press play to begin.</p>
 	<button class="big-btn" id="play-button">Play</button>
 
-	<div id="input">
-		<button class="big-btn" id="select-button">Select</button>
-		<button class="prev" id="prev-button">
-			<img src="/img/mod-left-arrow.svg" alt="">
-		</button>
-		<button class="next" id="next-button">
-			<img src="/img/mod-right-arrow.svg" alt="">
-		</button>
-	</div>
+	
+</div>
+
+<div id="end-game">
+	<p>You win!</p>
+	<button id="share-bridgle">Share your Word Bridge</button>
+</div>
+
+<div id="bridgle-input">
+	<button class="big-btn" id="select-button">Select</button>
+	<button class="prev" id="prev-button">
+		<img src="/img/mod-left-arrow.svg" alt="">
+	</button>
+	<button class="next" id="next-button">
+		<img src="/img/mod-right-arrow.svg" alt="">
+	</button>
 </div>
 
 <script type="text/javascript">
@@ -62,6 +80,9 @@
 	B.start = "{{{start}}}";
 	B.end = "{{{end}}}";
 	B.matches = '{{{endSyonyms}}}'.split(',');
+	B.startSynonyms = '{{{startSynonyms}}}'.split(',');
+	B.startSynSyns = {{{ json startSynSyns }}};
+	B.synonymSynonyms = {{{ json startSynSyns }}};
 </script>
 <script src="/js/helpers.js"></script>
 <script src="/js/bridge.js"></script>
