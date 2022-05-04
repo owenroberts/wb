@@ -20,8 +20,7 @@ const hbs = handlebars.create({
 	defaultLayout: "main",
 	partialsDir: __dirname + '/views/partials/',
 	helpers: { 
-		json: content => { return JSON.stringify(content); },
-		assign: value => { }
+		json: content => { return JSON.stringify(content); }
 	}
 });
 
@@ -59,8 +58,6 @@ app.get('/bridge', function(req, res) {
 		else res.render('bridge', { data: result });
 	});
 });
-
-
 
 /* json request for mod chain, new chain */
 app.get('/chain', function(req, res) {
