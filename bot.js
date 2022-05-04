@@ -72,7 +72,6 @@ async function getSearchFromDatabase() {
 			.toArray();
 		if (doc.length > 0) {
 			makeTweet(doc[0]);
-			console.log('from db', doc[0].queryString, doc[0].error, doc[0].tweeted);
 			collection.updateOne(
 				{ queryString: doc[0].queryString }, 
 				{ $set: { tweeted: new Date() }},
@@ -87,39 +86,34 @@ async function getSearchFromDatabase() {
 	}
 }
 
-async function generateSearch() {
+function generateSearch() {
 
 	// get two random words
-	await wordnet.init();
-	let list = await wordnet.list();
+	// await wordnet.init();
+	// let list = await wordnet.list();
+	
 	let startWord, endWord;
+	const list = fs.readFileSync('./public/3esl-filtered.txt')
+		.toString('UTF8').split('\n')
+		.filter(w => !badWords.includes(w));
 
-	async function getWord() {
-		let w = choice(list);
-
+	function getWord() {
+		let word = choice(list);
 		// check simple issues first
-		if (badWords.includes[w] || w === startWord || w === endWord || 
-				thesaurus.find(w).length === 0 || w.includes(' ') || w.includes('-')) {
+		if (word === startWord || thesaurus.find(word).length === 0) {
 			return getWord();
 		}
-
-		// check for proper nouns
-		let defs = await wordnet.lookup(w)
-		if (defs.filter(d => d.meta.words.filter(w => w.word.charAt(0) === w.word.charAt(0).toUpperCase()).length).length > 0) {
-			return getWord();
-		} else {
-			return w;	
-		}
+		return word;
 	}
 
-	startWord = await getWord();
-	endWord = await getWord();
+	startWord = getWord();
+	endWord = getWord(startWord);
 
 	let qs = `${startWord}10${endWord}10`;
 	db.get(qs, function(err, result){
 		if (err) console.log(err);
 		else if (!result) {
-			const q = {
+			const query = {
 				queryString: qs,
 				start: startWord,
 				end: endWord,
@@ -127,18 +121,18 @@ async function generateSearch() {
 				synonymLevel: 10,
 				searches: [{ date: new Date() }]
 			};
-			chain.makeChain(q, [startWord, endWord], (err, chain) => {
+			chain.makeChain(query, [startWord, endWord], (err, chain) => {
 				// try again if error .... ?
 				if (err) {
-					q.error = err;
+					query.error = err;
 				} else {
-					q.chain = chain;
-					q.tweeted = new Date();
+					query.chain = chain;
+					query.tweeted = new Date();
 				}
-				db.save(q, err => {
+				db.save(query, err => {
 					if (err) console.log(err);
-					console.log('new bridge', q.queryString);
-					makeTweet(q);
+					console.log('new bridge', query.queryString);
+					makeTweet(query);
 					// process.exit();
 				});
 			});
@@ -147,6 +141,7 @@ async function generateSearch() {
 }
 
 function makeTweet(chain) {
+
 	if (chain.error) {
 		console.log('make tweet error', chain.queryString, chain.error);
 		if (debug) process.exit();
@@ -178,16 +173,14 @@ function makeTweet(chain) {
 			ctx.fillText(chain.chain[i].word, x, sy + y);
 		}
 
-		ctx.font = '20px Arial';
-		let wb = 'wordbridge.link';
+		ctx.font = 'bold 20px Arial';
+		let wb = '@wordbridge_link';
 		let w = ctx.measureText(wb).width;
-		ctx.fillText(wb, width / 2 - w / 2, height - sy / 2);
+		ctx.fillText(wb, x, height - sy);
 
 		const url = `https://www.wordbridge.link/bridge?s=${chain.start}&e=${chain.end}&nl=10&sl=10`;
 		const message = `${chain.start} → ${chain.end}: ${url}`;
 		const alt = 'word bridge: ' + chain.chain.map(node => node.word).join(' -> ');
-		// fs.writeFileSync(`./bot_tests/${chain.start}-${chain.end}.png`, buffer);
-		// console.log('finna tweet', message);
 
 		const buffer = canvas.toBuffer('image/jpeg');
 		const buff = new Buffer.from(buffer);
