@@ -1,4 +1,9 @@
-const thesaurus = require('thesaurus'); /* based on wordnet.princeton.edu */
+/* 
+	based on MyThes, 
+	generated from wordnet.princeton.edu, 
+	http://www.danielnaber.de/wn2ooo/ 
+*/
+const thesaurus = require('thesaurus'); 
 
 function makeChain(query, allSynonyms, callback) {
 	const startWord = query.start.toLowerCase();
