@@ -5,6 +5,8 @@
 	thesaurus based on MyThes, 
 	generated from wordnet.princeton.edu, 
 	http://www.danielnaber.de/wn2ooo/ 
+
+	lev is slow but useful for eliminating similar words ... 
 */
 const thesaurus = require('thesaurus');
 const lev = require('fast-levenshtein');
@@ -16,7 +18,7 @@ function getSynonyms(word, filter) {
 	const synonyms = [];
 	const temp = thesaurus.find(word);
 	for (let i = 0; i < temp.length; i++) {
-		if (synonyms.length > 10) break;
+		if (synonyms.length > 10) return synonyms;
 		if (!nonAlphaFilterRegex.test(temp[i])) continue;
 		if (lev.get(word, temp[i]) <= 1) continue;
 		if (filter.includes(temp[i])) continue;
@@ -61,14 +63,13 @@ function getChain(query, usedWords, callback) {
 		if (currentNodeLimit >= nodeLimit) {
 			return callback(`Your search was not able to be performed with the current parameters. ${attemptCount} attempts.`);
 		}
-		console.log('start', currentNodeLimit)
 		
 		if (foundChain) return;
 		/*
 			this struture is weird, not sure why i need an object for this
 			can i just have end syns from the beginning, who cares what the end word is ...
 		*/
-		build([startWord], [...usedWords]); // copy of usedWords -- perf test here
+		build([startWord], usedWords.slice()); // copy of usedWords -- perf test here
 		if (!foundChain) {
 			currentNodeLimit++; // for next chain if not found
 			start();
@@ -85,24 +86,29 @@ function getChain(query, usedWords, callback) {
 		maybe get syns later
 	*/
 	function build(chain, usedWords) {
-		const clone = [...chain]; // clone chain
-		const synonyms = getSynonyms(chain[chain.length - 1], usedWords);
-		usedWords = usedWords.concat(synonyms); // add syns here ... -- perf test with for loop
-
-		for (let i = 0; i < synonyms.length; i++) {
+		if (foundChain) return;
+		const chainClone = chain.slice(); // clone chain
+		const usedClone = usedWords.slice();
+		const synonyms = getSynonyms(chainClone[chainClone.length - 1], usedClone);
+		const len = synonyms.length;
+		for (let i = 0; i < len; i++) {
+			usedClone.push(synonyms[i]);
+		}
+		
+		for (let i = 0; i < len; i++) {
 			attemptCount++;
 			if (terminals.includes(synonyms[i])) {
 				foundChain = true;
-				clone.push(synonyms[i]);
-				returnChain(chain);
-				break;
+				chainClone.push(synonyms[i]);
+				returnChain(chainClone);
+				return;
 			}
 
 			// here's the recursive part, start a new chain with each synonym
-			if (clone.length < currentNodeLimit - 1) {
-				clone.push(synonyms[i]);
-				// console.log(chain);
-				build(clone, [...usedWords]); // perf test
+			if (chainClone.length < currentNodeLimit) {
+				const newClone = chainClone.slice();
+				newClone.push(synonyms[i]);
+				build(newClone, usedClone); // perf test
 			}
 		}
 

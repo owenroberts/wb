@@ -3,7 +3,8 @@
 	generated from wordnet.princeton.edu, 
 	http://www.danielnaber.de/wn2ooo/ 
 */
-const thesaurus = require('thesaurus'); 
+const thesaurus = require('thesaurus');
+const lev = require('fast-levenshtein');
 
 function makeChain(query, allSynonyms, callback) {
 	const startWord = query.start.toLowerCase();

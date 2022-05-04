@@ -3,6 +3,7 @@ var program = require('commander');
 var chain = require('./../chain');
 var n = require('./../new.js');
 var now = require('performance-now');
+const lev = require('fast-levenshtein');
 
 program
 	.version('0.0.1')
@@ -19,7 +20,7 @@ var query = {
 let start = now();
 let usedWords = [program.args[0].toLowerCase(), program.args[1].toLowerCase()];
 chain.makeChain(query, usedWords, (err, data) => {
-	console.log("time", now() - start);
+	console.log("chain time", (now() - start));
 	if (err) console.log(err);
 	else {
 		console.log(data.map(n => n.word).join(' > '));
@@ -28,10 +29,9 @@ chain.makeChain(query, usedWords, (err, data) => {
 
 start = now();
 n.getChain(query, usedWords, (err, data) => {
-	console.log("time", now() - start);
+	console.log("n time", now() - start);
 	if (err) console.log(err);
 	else {
-		console.log(data.map(n => n.word).join(' > '));
+		console.log(data);
 	}
 });
-
