@@ -27,15 +27,24 @@ window.addEventListener('load', function() {
 	const nextSynonyms = document.getElementById('next-synonyms');
 	const endGame = document.getElementById('end-game');
 	const shareBridgle = document.getElementById('share-bridgle');
+	const seeBridgeButton = document.getElementById('see-bridge');
+	seeBridgeButton.addEventListener('click', seeBridge);
 
 	let currentChoiceIndex = 0;
 	let chain = [B.start];
 	console.log('matches', B.matches);
 	addNextSynonyms();
 
+	function seeBridge() {
+		B.report('Go to bridge?', 'This will reveal one path that connects the bridge, but others are possible.  Click to go to bridge.', undefined, () => {
+			location.href = seeBridgeButton.dataset.url;
+		})
+	}
+
 	function startOver() {
 		chain = [B.start];
 		synonyms.innerHTML = '';
+		choose.textContent = `Choose a synonym of "${B.start}".`;
 		
 		// remove nodes
 		while (nodes.children.length > 1) {
@@ -101,6 +110,9 @@ window.addEventListener('load', function() {
 		synonyms.style.display = 'none';
 		instructions.style.display = 'none';
 		nextSynonyms.style.display = 'none';
+		endNodes.style.display = 'none';
+
+		nodes.appendChild(addNode(B.end, B.end));
 
 		// show share menu
 		endGame.style.display = 'block';

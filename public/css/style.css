@@ -136,6 +136,14 @@ button::-moz-focus-inner {
   background-color: black;
   color: white;
 }
+.big-btn.white {
+  color: white;
+  border-color: white;
+}
+.big-btn.white:hover {
+  background: white;
+  color: black;
+}
 
 /* svg loader dots animation */
 #dOne {
@@ -601,6 +609,7 @@ button::-moz-focus-inner {
   overflow-y: scroll;
   max-width: 768px;
   scrollbar-width: none;
+  margin-bottom: 1em;
 }
 .overlay .msg::-webkit-scrollbar {
   width: 0;
@@ -846,9 +855,11 @@ button::-moz-focus-inner {
 #header.bridgle-header #header-buttons {
   margin-left: auto;
 }
+#header.bridgle-header #header-buttons * {
+  margin-left: 0.5em;
+}
 #header.bridgle-header #start-over {
   display: none;
-  margin-right: 1em;
 }
 
 #bridgle {
@@ -923,6 +934,8 @@ button::-moz-focus-inner {
 
 #end-game {
   display: none;
+  margin: 0 1em;
+  font-size: 26px;
 }
 
 #bridgle-input {

@@ -96,7 +96,7 @@ app.get('/bridgle', async function(req, res) {
 	const collection = db.db.collection('chains');
 	const doc = await collection.aggregate([{ $match: { error: null }}, { $sample: { size: 1 } }]).toArray();
 
-	const { start, end } = doc[0];
+	const { start, end, queryString } = doc[0];
 	// random words like bot? -- make sure not the same word
 	const startSynonyms = getSyns(start);
 	const startSynSyns = {};
@@ -106,7 +106,7 @@ app.get('/bridgle', async function(req, res) {
 	const endSyonyms = getSyns(end);
 
 	if (doc.length > 0) {
-		res.render('bridgle', { start: start, end: end, startSynonyms: startSynonyms, endSyonyms: endSyonyms, startSynSyns: startSynSyns });
+		res.render('bridgle', { start: start, end: end, startSynonyms: startSynonyms, endSyonyms: endSyonyms, startSynSyns: startSynSyns, queryString: queryString });
 	} else {
 		res.render('index', { errmsg: 'Could not find a bridge.' });
 	}

@@ -49,6 +49,7 @@ window.addEventListener('load', function() {
 	const reportSub = document.getElementById('sub-title');
 	const reportTxt = document.getElementById('report-txt');
 	const reportBtn = document.getElementById('report-btn');
+	const reportAccept = document.getElementById('report-accept');
 	const fakeTab = document.getElementById('fake-tab');
 	let prevActive;
 
@@ -65,6 +66,12 @@ window.addEventListener('load', function() {
 		reportTxt.innerHTML = msg;
 		reportTitle.innerHTML = title;
 		reportSub.innerHTML = sub ? sub : '';
+
+		if (callback) {
+			reportAccept.onclick = function() {
+				callback();
+			};
+		}
 
 		addEventListener('keydown', ev => {
 			if (ev.which == 27 || ev.key == 'Escape') B.dismissReport();

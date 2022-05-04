@@ -7,6 +7,7 @@
 	{{!-- <button id="home-btn" class="big-btn bridgle" onclick={location.href="/"}>home</button> --}}
 	<div id="header-buttons">
 		<button id="start-over" class="btn">start over</button>
+		<button id="see-bridge" class="btn" data-url="/bridge?qs={{queryString}}">see bridge</button>
 		<a href="/" class="btn">home</a>
 	</div>
 </div>
@@ -24,7 +25,7 @@
 		</div>
 	</div>
 
-	<p id="synonym-instructions"><span id="choose">Choose a synonym of "{{start}}".</span>  <br>Click synonyms for definitions.</p>
+	<p id="synonym-instructions"><span id="choose">Choose a synonym of "{{start}}".</span>  <br>Click words for definitions.</p>
 
 	<div id="synonyms">
 		{{#each startSynonyms}}
@@ -57,7 +58,7 @@
 
 <div id="end-game">
 	<p>You win!</p>
-	<button id="share-bridgle">Share your Word Bridge</button>
+	<button class="big-btn" id="share-bridgle">Share your Word Bridge</button>
 </div>
 
 <div id="bridgle-input">

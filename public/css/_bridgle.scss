@@ -6,9 +6,12 @@
 		margin-left: auto;
 	}
 
+	#header-buttons * {
+		margin-left: 0.5em;
+	}
+
 	#start-over {
 		display: none;
-		margin-right: 1em;
 	}
 
 }
@@ -107,7 +110,8 @@
 
 #end-game {
 	display: none;
-	
+	margin: 0 1em;
+	font-size: 26px;
 }
 
 #bridgle-input {
