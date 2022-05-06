@@ -133,6 +133,7 @@ function getSyns(word, filter) {
 }
 
 function loadChain(req, callback) {
+	console.log(req.query);
 	const queryString = req.query.qs || makeQueryString(req.query);
 	const cacheSearch = cache.get(queryString);
 	if (cacheSearch) callback(cacheSearch);
@@ -147,6 +148,7 @@ function loadChain(req, callback) {
 					req.query.nl = queryString.split(/[a-z]+/)[1];
 					req.query.sl = queryString.split(/[a-z]+/)[2];
 				} /* if db is fucked up, what about hyphen searches ... */
+				console.log('make', req.query);
 				makeChain(req.query, callback);
 			} else {
 			 	db.addSearchTime(queryString, err => { console.log(err) });
