@@ -124,7 +124,7 @@ function getChain(query, usedWords, callback) {
 	function returnChain(chain) {
 		const data = [{ word: startWord }];
 		for (let i = 1; i < chain.length - 1; i++) {
-			const alts = getSynonyms(chain[i - 1], chain);
+			const alts = getSynonyms(chain[i - 1], chain.slice(0, i - 1));
 			const syndex = 
 			data[i] = { 
 				word: chain[i],

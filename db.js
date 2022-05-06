@@ -1,10 +1,9 @@
-const mongodb = require('mongodb')
-	,	MongoClient = require('mongodb').MongoClient
-	,	Db = require('mongodb').Db
-	,	Connection = require('mongodb').Connection
-	,	Server = require('mongodb').Server
-	,	assert = require('assert')
-	;
+const mongodb = require('mongodb'),
+	MongoClient = require('mongodb').MongoClient,
+	Db = require('mongodb').Db,
+	Connection = require('mongodb').Connection,
+	Server = require('mongodb').Server,
+	assert = require('assert');
 
 /*
 	chains saved based on query strings

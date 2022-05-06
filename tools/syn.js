@@ -11,10 +11,7 @@ const word = program.args[0];
 
 console.log('from thesaurus', thesaurus.find(word));
 const lemmas = [];
-const handleGet = (word) => {
-	console.log(word);
-	lemmas.push(word);
-}
+
 
 wordnet.lookup(word, results => {
 	console.log('from nltk', results.flatMap(r => r.synonyms));
