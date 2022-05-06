@@ -135,6 +135,7 @@ function getSyns(word, filter) {
 function loadChain(req, callback) {
 	console.log(req.query);
 	const queryString = req.query.qs || makeQueryString(req.query);
+	console.log('qs', queryString);
 	const cacheSearch = cache.get(queryString);
 	if (cacheSearch) callback(cacheSearch);
 	else if (!db.isConnected) makeChain(req.query, callback);
@@ -151,6 +152,7 @@ function loadChain(req, callback) {
 				console.log('make', req.query);
 				makeChain(req.query, callback);
 			} else {
+				console.log('add', queryString);
 			 	db.addSearchTime(queryString, err => { console.log(err) });
 			 	cache.set(queryString, result);
 			 	callback(result);
