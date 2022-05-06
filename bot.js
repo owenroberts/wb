@@ -1,5 +1,3 @@
-// okay! now make a worker and try heroku scheduler?
-
 const ChainDb = require('./db').ChainDb;
 const fs = require('fs');
 const { createCanvas } = require('canvas');
@@ -11,7 +9,7 @@ const Twit = require('twit');
 const dotenv = require('dotenv');
 
 const result = dotenv.config();
-const badWords = fs.readFileSync('./public/badwords.txt').toString('UTF8').split('\n');
+// const badWords = fs.readFileSync('./public/badwords.txt').toString('UTF8').split('\n');
 
 let envs; // https://newbedev.com/node-js-environment-variables-and-heroku-deployment
 if (!('error' in result)) {
@@ -87,15 +85,11 @@ async function getSearchFromDatabase() {
 }
 
 function generateSearch() {
-
-	// get two random words
-	// await wordnet.init();
-	// let list = await wordnet.list();
 	
 	let startWord, endWord;
 	const list = fs.readFileSync('./public/3esl-filtered.txt')
-		.toString('UTF8').split('\n')
-		.filter(w => !badWords.includes(w));
+		.toString('UTF8').split('\n');
+		// .filter(w => !badWords.includes(w)); bad words prefiltered in 3esl
 
 	function getWord() {
 		let word = choice(list);
@@ -107,7 +101,7 @@ function generateSearch() {
 	}
 
 	startWord = getWord();
-	endWord = getWord(startWord);
+	endWord = getWord();
 
 	let qs = `${startWord}10${endWord}10`;
 	db.get(qs, function(err, result){
@@ -131,9 +125,12 @@ function generateSearch() {
 				}
 				db.save(query, err => {
 					if (err) console.log(err);
-					console.log('new bridge', query.queryString);
-					makeTweet(query);
-					// process.exit();
+					if (query.error) {
+						if (debug) process.exit();
+						generateSearch(); // try again
+					} else {
+						makeTweet(query)
+					}
 				});
 			});
 		}
@@ -142,72 +139,66 @@ function generateSearch() {
 
 function makeTweet(chain) {
 
-	if (chain.error) {
-		console.log('make tweet error', chain.queryString, chain.error);
-		if (debug) process.exit();
-		else generateSearch(); // try again
-	} else {
-		let x = 40;
-		let sy = 40;
-		let y = 40;
+	let x = 40;
+	let sy = 40;
+	let y = 40;
 
-		const width = 400;
-		const height = sy * 3 + y * (chain.chain.length);
+	const width = 400;
+	const height = sy * 3 + y * (chain.chain.length);
 
-		const canvas = createCanvas(width, height);
-		const ctx = canvas.getContext('2d');
+	const canvas = createCanvas(width, height);
+	const ctx = canvas.getContext('2d');
 
-		ctx.fillStyle = '#ffffff';
-		ctx.fillRect(0, 0, width, height);
+	ctx.fillStyle = '#ffffff';
+	ctx.fillRect(0, 0, width, height);
 
-		ctx.font = 'bold 30px Arial';
-		ctx.fillStyle = '#000000';
+	ctx.font = 'bold 30px Arial';
+	ctx.fillStyle = '#000000';
 
 
-		ctx.fillText(chain.start, x, sy + y);
-		ctx.fillText(chain.end, x, sy + y * (chain.chain.length - 1));
+	ctx.fillText(chain.start, x, sy + y);
+	ctx.fillText(chain.end, x, sy + y * (chain.chain.length - 1));
 
-		ctx.font = '30px Arial';
-		for (let i = 1; i < chain.chain.length - 2; i++) {
-			y += 40;
-			ctx.fillText(chain.chain[i].word, x, sy + y);
-		}
-
-		ctx.font = 'bold 20px Arial';
-		let wb = '@wordbridge_link';
-		let w = ctx.measureText(wb).width;
-		ctx.fillText(wb, x, height - sy);
-
-		const url = `https://www.wordbridge.link/bridge?s=${chain.start}&e=${chain.end}&nl=10&sl=10`;
-		const message = `${chain.start} → ${chain.end}: ${url}`;
-		const alt = 'word bridge: ' + chain.chain.map(node => node.word).join(' -> ');
-
-		const buffer = canvas.toBuffer('image/jpeg');
-		const buff = new Buffer.from(buffer);
-		const base64 = buff.toString('base64')
-		
-		// first we must post the media to Twitter
-		T.post('media/upload', { media_data: base64 }, function (err, data, response) {
-			if (err) console.log(err);
-			else {
-				// now we can assign alt text to the media, for use by screen readers and
-				// other text-based presentations and interpreters
-				const mediaIdStr = data.media_id_string
-				const altText = alt;
-				const meta_params = { media_id: mediaIdStr, alt_text: { text: altText } }
-
-				T.post('media/metadata/create', meta_params, function (err, data, response) {
-					if (err) console.log(err);
-					else {
-						// now we can reference the media and post a tweet (media will attach to the tweet)
-						const params = { status: message, media_ids: [mediaIdStr] }
-						T.post('statuses/update', params, function (err, data, response) {
-							if (err) console.log(err);
-							process.exit();
-						});
-					}
-				});
-			}
-		});
+	ctx.font = '30px Arial';
+	for (let i = 1; i < chain.chain.length - 2; i++) {
+		y += 40;
+		ctx.fillText(chain.chain[i].word, x, sy + y);
 	}
+
+	ctx.font = 'bold 20px Arial';
+	let wb = '@wordbridge_link';
+	let w = ctx.measureText(wb).width;
+	ctx.fillText(wb, x, height - sy);
+
+	const url = `https://www.wordbridge.link/bridge?s=${chain.start}&e=${chain.end}&nl=10&sl=10`;
+	const message = `${chain.start} → ${chain.end}: ${url}`;
+	const alt = 'word bridge: ' + chain.chain.map(node => node.word).join(' -> ');
+
+	const buffer = canvas.toBuffer('image/jpeg');
+	const buff = new Buffer.from(buffer);
+	const base64 = buff.toString('base64');
+	
+	// first we must post the media to Twitter
+	T.post('media/upload', { media_data: base64 }, function (err, data, response) {
+		if (err) console.log(err);
+		else {
+			// now we can assign alt text to the media, for use by screen readers and
+			// other text-based presentations and interpreters
+			const mediaIdStr = data.media_id_string
+			const altText = alt;
+			const meta_params = { media_id: mediaIdStr, alt_text: { text: altText } }
+
+			T.post('media/metadata/create', meta_params, function (err, data, response) {
+				if (err) console.log(err);
+				else {
+					// now we can reference the media and post a tweet (media will attach to the tweet)
+					const params = { status: message, media_ids: [mediaIdStr] }
+					T.post('statuses/update', params, function (err, data, response) {
+						if (err) console.log(err);
+						process.exit();
+					});
+				}
+			});
+		}
+	});
 }
