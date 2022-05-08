@@ -46,7 +46,7 @@ const db = new ChainDb(mongoUri, 'bridge', startBot);
 const debug = process.env.NODE_ENV === 'development';
 
 function startBot() {
-	if (false && coinFlip()) {
+	if (coinFlip()) {
 		generateSearch();
 	} else {
 		getSearchFromDatabase();
@@ -54,7 +54,6 @@ function startBot() {
 }
 
 async function getSearchFromDatabase() {
-	console.log('get search from db');
 	const collection = db.db.collection('chains');
 
 	simplePipeline(db.db, function () {
@@ -70,7 +69,6 @@ async function getSearchFromDatabase() {
 			])
 			.toArray();
 		if (doc.length > 0) {
-			console.log('doc', doc[0])
 			makeTweet(doc[0]);
 			collection.updateOne(
 				{ queryString: doc[0].queryString },
@@ -87,7 +85,6 @@ async function getSearchFromDatabase() {
 }
 
 function generateSearch() {
-	console.log('generate search')
 	
 	let startWord, endWord;
 	const list = fs.readFileSync('./public/3esl-filtered.txt')
@@ -172,13 +169,9 @@ function makeTweet(chain) {
 	let w = ctx.measureText(wb).width;
 	ctx.fillText(wb, x, height - sy);
 
-	console.log(chain.start);
-
 	const url = `https://www.wordbridge.link/bridge?s=${chain.start}&e=${chain.end}&nl=10&sl=10`;
 	const message = `${chain.start} → ${chain.end}: ${url}`;
 	const alt = 'word bridge: ' + chain.chain.map(node => node.word).join(' -> ');
-
-	console.log(url);
 
 	const buffer = canvas.toBuffer('image/jpeg');
 	const buff = new Buffer.from(buffer);

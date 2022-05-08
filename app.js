@@ -52,7 +52,6 @@ app.get('/search', function(req, res) {
 
 /* renders main bridge page */
 app.get('/bridge', function(req, res) {
-	console.log('get', req.query);
 	/* loadChain w req for production, makeChain w req.query to skip db/cache */
 	loadChain(req, function(result) {
 		if (result.error) res.render('index', { errmsg: result.error });
@@ -134,12 +133,12 @@ function getSyns(word, filter) {
 }
 
 function loadChain(req, callback) {
-	if (!req.query.s) {
-		console.log('** no start ** ');
+	if (!req.query.qs && (!req.query.s || req.query.e)) {
+		return callback({ error: 'Query is missing start or end parameter.' });
 	}
-	console.log('load', req.query);
+
 	const queryString = req.query.qs || makeQueryString(req.query);
-	console.log('qs', queryString);
+	
 	const cacheSearch = cache.get(queryString);
 	if (cacheSearch) callback(cacheSearch);
 	else if (!db.isConnected) makeChain(req.query, callback);
@@ -153,10 +152,8 @@ function loadChain(req, callback) {
 					req.query.nl = queryString.split(/[a-z]+/)[1];
 					req.query.sl = queryString.split(/[a-z]+/)[2];
 				} /* if db is fucked up, what about hyphen searches ... */
-				console.log('make', req.query);
 				makeChain(req.query, callback);
 			} else {
-				console.log('add', queryString);
 			 	db.addSearchTime(queryString, err => { if (err) console.log(err) });
 			 	cache.set(queryString, result);
 			 	callback(result);
@@ -192,7 +189,7 @@ function makeChain(_query, callback) {
 }
 
 function makeQueryString(query) {
-	let string = query.s + query.nl + query.e + query.sl;
+	let string = query.s + (query.nl || 10) + query.e + (query.sl || 10);
 	string = string.toLowerCase().replace(/ /g, ""); // remove spaces 
 	return string;
 }
