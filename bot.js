@@ -54,6 +54,7 @@ function startBot() {
 }
 
 async function getSearchFromDatabase() {
+	console.log('get search from db');
 	const collection = db.db.collection('chains');
 
 	simplePipeline(db.db, function () {
@@ -86,6 +87,7 @@ async function getSearchFromDatabase() {
 }
 
 function generateSearch() {
+	console.log('generate search')
 	
 	let startWord, endWord;
 	const list = fs.readFileSync('./public/3esl-filtered.txt')
