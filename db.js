@@ -56,7 +56,6 @@ ChainDb.prototype.save = function(chain, callback) {
 };
 
 ChainDb.prototype.get = function(queryString, callback) {
-	console.log('db get', queryString);
 	let collection = this.db.collection('chains');
 	collection.findOne({ queryString: queryString}, (err, result) => {
 		if (err) callback(err);
@@ -65,7 +64,6 @@ ChainDb.prototype.get = function(queryString, callback) {
 };
 
 ChainDb.prototype.addSearchTime = function(queryString, callback) {
-	console.log('db add', queryString);
 	let collection = this.db.collection('chains');
 	const search = { date: new Date()};
 	collection.updateOne(
