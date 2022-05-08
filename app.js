@@ -134,6 +134,11 @@ function getSyns(word, filter) {
 }
 
 function loadChain(req, callback) {
+	if (!req.query.s) {
+		console.log('** no start ** ');
+		console.trace()
+		console.log(req)
+	}
 	console.log('load', req.query);
 	const queryString = req.query.qs || makeQueryString(req.query);
 	console.log('qs', queryString);
