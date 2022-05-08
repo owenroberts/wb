@@ -71,6 +71,10 @@ window.addEventListener('load', function() {
 			reportAccept.onclick = function() {
 				callback();
 			};
+		} else {
+			reportAccept.onclick = function() {
+				B.dismissReport();
+			};
 		}
 
 		addEventListener('keydown', ev => {
