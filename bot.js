@@ -130,7 +130,7 @@ function generateSearch() {
 						if (debug) process.exit();
 						generateSearch(); // try again
 					} else {
-						makeTweet(query)
+						makeTweet(query);
 					}
 				});
 			});

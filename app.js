@@ -52,6 +52,7 @@ app.get('/search', function(req, res) {
 
 /* renders main bridge page */
 app.get('/bridge', function(req, res) {
+	console.log('get', req.query);
 	/* loadChain w req for production, makeChain w req.query to skip db/cache */
 	loadChain(req, function(result) {
 		if (result.error) res.render('index', { errmsg: result.error });
@@ -133,7 +134,7 @@ function getSyns(word, filter) {
 }
 
 function loadChain(req, callback) {
-	console.log(req.query);
+	console.log('load', req.query);
 	const queryString = req.query.qs || makeQueryString(req.query);
 	console.log('qs', queryString);
 	const cacheSearch = cache.get(queryString);
