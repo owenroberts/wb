@@ -133,7 +133,7 @@ function getSyns(word, filter) {
 }
 
 function loadChain(req, callback) {
-	if (!req.query.qs && (!req.query.s || req.query.e)) {
+	if (!req.query.qs && (!req.query.s || !req.query.e)) {
 		return callback({ error: 'Query is missing start or end parameter.' });
 	}
 
