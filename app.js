@@ -154,7 +154,7 @@ function loadChain(req, callback) {
 				makeChain(req.query, callback);
 			} else {
 				console.log('add', queryString);
-			 	db.addSearchTime(queryString, err => { console.log(err) });
+			 	db.addSearchTime(queryString, err => { if (err) console.log(err) });
 			 	cache.set(queryString, result);
 			 	callback(result);
 			}
