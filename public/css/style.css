@@ -882,6 +882,9 @@ button::-moz-focus-inner {
 #bridgle .node .word {
   width: auto;
 }
+#bridgle .node .word:focus {
+  border-bottom: 1px solid #C5C7C9;
+}
 #bridgle .node.selection .word {
   font-weight: normal;
 }

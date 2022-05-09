@@ -13,6 +13,9 @@ const lev = require('fast-levenshtein');
 
 const nonAlphaFilterRegex = /^[a-z]+$/; /* eliminate words with non-alpha chars */
 const nodeLimit = 20; // no chains more than this number of nodes
+const chains = [];
+const chainNumber = 10;
+let chainCount = 0;
 
 function getSynonyms(word, filter) {
 	const synonyms = [];
@@ -28,7 +31,7 @@ function getSynonyms(word, filter) {
 	return synonyms;
 }
 
-function getChain(query, usedWords, callback) {
+function makeChain(query, usedWords, callback) {
 	const startWord = query.start.toLowerCase();
 	const endWord = query.end.toLowerCase();
 	const synonymLevel = query.synonymLevel; // cut list of synonyms for each word off at this limit
@@ -98,10 +101,14 @@ function getChain(query, usedWords, callback) {
 		for (let i = 0; i < len; i++) {
 			attemptCount++;
 			if (terminals.includes(synonyms[i])) {
-				foundChain = true;
+				if (chainCount < chainNumber) {
+					foundChain = true;
+				} else {
+					
+				}
 				chainClone.push(synonyms[i]);
-				returnChain(chainClone);
-				return;
+				// returnChain(chainClone);
+				// return;
 			}
 
 			// here's the recursive part, start a new chain with each synonym
@@ -137,4 +144,4 @@ function getChain(query, usedWords, callback) {
 	}
 }
 
-exports.getChain = getChain;
+exports.makeChain = makeChain;

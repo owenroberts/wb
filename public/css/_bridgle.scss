@@ -39,6 +39,9 @@
 
 		.word {
 			width: auto;
+			&:focus {
+				border-bottom: 1px solid $gray;
+			}
 		}
 
 		&.selection .word {

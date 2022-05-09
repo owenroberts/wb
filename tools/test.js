@@ -28,10 +28,13 @@ chain.makeChain(query, usedWords, (err, data) => {
 });
 
 start = now();
-n.getChain(query, usedWords, (err, data) => {
+n.makeChain(query, usedWords, (err, data) => {
 	console.log("n time", now() - start);
 	if (err) console.log(err);
 	else {
-		console.log(data);
+		console.log(data.map(n => n.word).join(' > '));
+		// data.forEach(chain => {
+		// 	console.log(chain.chain.map(n => n.word).join(' > '));
+		// });
 	}
 });

@@ -1,17 +1,18 @@
 const express = require('express'),	
 	path = require('path'),	
-	favicon = require('serve-favicon'),	
-	logger = require('morgan'),	
-	bodyParser = require('body-parser'),	
-	wordnet = require('wordnet'),	
-	NodeCache = require('node-cache'),	
-	ChainDb = require('./db').ChainDb,	
-	chain = require('./chain'),	
-	def = require('./def'),	
-	url = require('url'),	
+	favicon = require('serve-favicon'),
+	logger = require('morgan'),
+	bodyParser = require('body-parser'),
+	wordnet = require('wordnet'),
+	NodeCache = require('node-cache'),
+	ChainDb = require('./db').ChainDb,
+	chain = require('./chain'),
+	def = require('./def'),
+	url = require('url'),
 	handlebars = require('express-handlebars'),
 	lev = require('fast-levenshtein'),
-	thesaurus = require('thesaurus');
+	thesaurus = require('thesaurus')
+	fs = require('fs');
 
 const app = express();
 const cache = new NodeCache();
@@ -23,6 +24,9 @@ const hbs = handlebars.create({
 		json: content => { return JSON.stringify(content); }
 	}
 });
+
+const bf = fs.readFileSync('./public/badwords.txt');
+const badWords = bf.toString().split(/\r?\n/);
 
 // view engine setup
 app.engine('handlebars', hbs.engine);
@@ -90,19 +94,41 @@ app.get('/def', function(req,res) {
 });
 
 app.get('/bridgle', async function(req, res) {
+
+	let chain;
 	const collection = db.db.collection('chains');
-	const doc = await collection.aggregate([{ $match: { error: null }}, { $sample: { size: 1 } }]).toArray();
 
-	const { start, end, queryString } = doc[0];
-	// random words like bot? -- make sure not the same word
-	const startSynonyms = getSyns(start);
-	const startSynSyns = {};
-	startSynonyms.forEach(syn => {
-		startSynSyns[syn] = getSyns(syn);
-	});
-	const endSyonyms = getSyns(end);
+	if (req.query.qs) {
+		chain = await collection.findOne({ queryString: req.query.qs });
+	} else {
+		const doc = await collection.aggregate([{ $match: { error: null }}, { $sample: { size: 1 } }]).toArray();
+		chain = doc[0];
+	}
 
-	if (doc.length > 0) {
+	if (chain) {
+
+		const { start, end, queryString } = chain;
+		// random words like bot? -- make sure not the same word
+		let startSynonyms = getSyns(start);
+		let startSynSyns = {};
+		let noSyns = []; // filter out syns with no syns
+		startSynonyms.forEach(syn => {
+			let syns = getSyns(syn);
+			/*
+				filter out syns with no syns ...
+				in filter this becomes infinite loop
+			*/
+			if (syns.length > 0) {
+				startSynSyns[syn] = syns;
+			} else {
+				noSyns.push(syn);
+			}
+		});
+		startSynonyms = startSynonyms.filter(s => !noSyns.includes(s));
+		const endSyonyms = getSyns(end);
+
+		// what if end has no syns (this won't happen if chain already exists)
+
 		res.render('bridgle', { start: start, end: end, startSynonyms: startSynonyms, endSyonyms: endSyonyms, startSynSyns: startSynSyns, queryString: queryString });
 	} else {
 		res.render('index', { errmsg: 'Could not find a bridge.' });
@@ -113,11 +139,22 @@ app.get('/bridgle-selection', function(req, res) {
 	let usedSynonyms = [req.query.word, req.query.end, ...req.query.used.split(',')];
 	let synonyms = getSyns(req.query.word, usedSynonyms);
 	let synonymSynonyms = {};
+	const noSyns = []; // filter out syns with no syns
 	synonyms.forEach(syn => {
-		synonymSynonyms[syn] = getSyns(syn, usedSynonyms);
-	})
+		let syns = getSyns(syn, usedSynonyms);
+		// filter no syns
+		if (syns.length > 0) {
+			synonymSynonyms[syn] = syns;
+		} else {
+			noSyns.push(syn);
+		}
+	});
+	synonyms = synonyms.filter(s => !noSyns.includes(s));
+	// what if no syns left ...
+	if (synonyms.length === 0) console.log('** no syns fuck');
 	res.json({ synonyms: synonyms, synonymSynonyms: synonymSynonyms });
 });
+
 
 function getSyns(word, filter) {
 	filter = filter ? filter : [];
@@ -129,6 +166,7 @@ function getSyns(word, filter) {
 		.filter(s => !s.includes(word) && !word.includes(s))
 		.filter(s => s.substring(0, s.length - 1) !== word)
 		.filter(s => word.substring(0, word.length - 1) !== s)
+		.filter(s => !badWords.includes(s))
 		.slice(0, 12); // limit to 12 results
 }
 
@@ -204,7 +242,6 @@ const mongoUri =
 	process.env.DB_URI ||
 	'mongodb://localhost:27017/';
 const collection = 'bridge'; // check this online ... 
-
 const db = new ChainDb(mongoUri, collection);
 // error handlers
 
