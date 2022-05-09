@@ -1,6 +1,6 @@
 /*  media queries */
 /* desktop */
-@media only screen and (min-width : $desktop-width) {
+@media only screen and (min-width: $desktop-width) {
 	#desktop-container {
 		background-color: $lightgray;
 		width: 100%;
@@ -25,6 +25,8 @@
    	#prev-chain { left: 0; }
    	#next-chain { right: 0; }
 	/* #loader img { width: 2em; } */
+
+
 }
 
 /*  phone  */
@@ -43,6 +45,21 @@
 		#report-title {
 			font-size: 1.5em;
 		}
+	}
+
+	#bridgle-input {
+		position: fixed;
+		background: white;
+		bottom: 0;
+		padding: 0.5rem 0;
+	}
+
+	#bridgle {
+		margin-bottom: 4rem;
+	}
+
+	#bridgle #synonyms button {
+		font-size: 1.25rem;
 	}
 }
 

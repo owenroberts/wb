@@ -102,6 +102,7 @@ button {
   padding: 0;
   cursor: pointer;
   font: inherit;
+  color: black;
 }
 
 button:focus {
@@ -365,6 +366,7 @@ button::-moz-focus-inner {
 #search #bridge {
   margin-top: 1em;
   font-weight: bold;
+  color: black;
 }
 
 #about {
@@ -673,76 +675,6 @@ button::-moz-focus-inner {
   margin: 0.2em 0;
 }
 
-/*  media queries */
-/* desktop */
-@media only screen and (min-width: 540px) {
-  #desktop-container {
-    background-color: #f2f2f2;
-    width: 100%;
-    height: 100%;
-    position: fixed;
-  }
-
-  #container {
-    box-shadow: 0 0 10px #C5C7C9;
-  }
-
-  .overlay {
-    min-width: 0;
-  }
-
-  #chain-nav, .overlay {
-    width: 100%;
-    max-width: 540px;
-    margin: 0 auto;
-  }
-
-  #prev-chain {
-    left: 0;
-  }
-
-  #next-chain {
-    right: 0;
-  }
-
-  /* #loader img { width: 2em; } */
-}
-/*  phone  */
-@media screen and (max-device-width: 480px) {
-  body {
-    -webkit-text-size-adjust: none;
-  }
-
-  .overlay {
-    position: absolute;
-  }
-
-  .overlay .msg .dismiss {
-    position: fixed;
-  }
-
-  #report {
-    padding-top: 3em;
-  }
-  #report #report-title {
-    font-size: 1.5em;
-  }
-}
-/*  non phone   */
-@media screen and (min-device-width: 480px) {
-  #container {
-    padding-top: 50px;
-  }
-
-  .overlay {
-    /*position: fixed;*/
-    top: 0;
-    padding-top: 60px;
-  }
-  .overlay .msg .dismiss {
-    top: 60px;
-  }
-}
 #chain-nav {
   text-align: center;
   height: 0px;
@@ -854,6 +786,8 @@ button::-moz-focus-inner {
 }
 #header.bridgle-header #header-buttons {
   margin-left: auto;
+  display: flex;
+  align-items: center;
 }
 #header.bridgle-header #header-buttons * {
   margin-left: 0.5rem;
@@ -976,6 +910,92 @@ button::-moz-focus-inner {
 }
 #bridgle-input #select-button {
   font-size: 1.25rem;
+}
+
+/*  media queries */
+/* desktop */
+@media only screen and (min-width: 540px) {
+  #desktop-container {
+    background-color: #f2f2f2;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+  }
+
+  #container {
+    box-shadow: 0 0 10px #C5C7C9;
+  }
+
+  .overlay {
+    min-width: 0;
+  }
+
+  #chain-nav, .overlay {
+    width: 100%;
+    max-width: 540px;
+    margin: 0 auto;
+  }
+
+  #prev-chain {
+    left: 0;
+  }
+
+  #next-chain {
+    right: 0;
+  }
+
+  /* #loader img { width: 2em; } */
+}
+/*  phone  */
+@media screen and (max-device-width: 480px) {
+  body {
+    -webkit-text-size-adjust: none;
+  }
+
+  .overlay {
+    position: absolute;
+  }
+
+  .overlay .msg .dismiss {
+    position: fixed;
+  }
+
+  #report {
+    padding-top: 3em;
+  }
+  #report #report-title {
+    font-size: 1.5em;
+  }
+
+  #bridgle-input {
+    position: fixed;
+    background: white;
+    bottom: 0;
+    padding: 0.5rem 0;
+  }
+
+  #bridgle {
+    margin-bottom: 4rem;
+  }
+
+  #bridgle #synonyms button {
+    font-size: 1.25rem;
+  }
+}
+/*  non phone   */
+@media screen and (min-device-width: 480px) {
+  #container {
+    padding-top: 50px;
+  }
+
+  .overlay {
+    /*position: fixed;*/
+    top: 0;
+    padding-top: 60px;
+  }
+  .overlay .msg .dismiss {
+    top: 60px;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */
