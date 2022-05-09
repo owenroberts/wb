@@ -856,19 +856,19 @@ button::-moz-focus-inner {
   margin-left: auto;
 }
 #header.bridgle-header #header-buttons * {
-  margin-left: 0.5em;
+  margin-left: 0.5rem;
 }
 #header.bridgle-header #start-over {
   display: none;
 }
 
 #bridgle {
-  margin: 0 1em;
-  margin-top: 2em;
+  margin: 0 1rem;
+  margin-top: 2rem;
   /* accessibility */
 }
 #bridgle #nodes, #bridgle #synonyms, #bridgle #end-nodes {
-  margin: 1em 0;
+  margin: 1rem 0;
 }
 #bridgle #nodes {
   display: flex;
@@ -896,7 +896,7 @@ button::-moz-focus-inner {
 }
 #bridgle #choose {
   font-weight: bold;
-  font-size: 1.125em;
+  font-size: 1.125rem;
 }
 #bridgle #synonym-instructions {
   display: none;
@@ -904,11 +904,11 @@ button::-moz-focus-inner {
 #bridgle #synonyms {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5em;
+  gap: 0.5rem;
   display: none;
 }
 #bridgle #synonyms button {
-  font-size: 1.5em;
+  font-size: 1.5rem;
 }
 #bridgle #synonyms button:hover {
   background-color: black;
@@ -923,11 +923,11 @@ button::-moz-focus-inner {
   border-bottom: 1px solid #C5C7C9;
 }
 #bridgle #game-instructions {
-  font-size: 1.25em;
+  font-size: 1.25rem;
 }
 #bridgle #play-button {
   text-align: center;
-  font-size: 1.5em;
+  font-size: 1.5rem;
 }
 .keyboard #bridgle .prev:focus, .keyboard #bridgle .next:focus {
   background-color: #f2f2f2;
@@ -937,14 +937,14 @@ button::-moz-focus-inner {
 
 #end-game {
   display: none;
-  margin: 0 1em;
+  margin: 0 1rem;
   font-size: 26px;
 }
 
 #bridgle-input {
   display: none;
-  margin: 0 1em;
-  width: calc(100% - 2em);
+  margin: 0 1rem;
+  width: calc(100% - 2rem);
   position: absolute;
   bottom: 2em;
 }
@@ -975,7 +975,7 @@ button::-moz-focus-inner {
   margin-left: auto;
 }
 #bridgle-input #select-button {
-  font-size: 1.25em;
+  font-size: 1.25rem;
 }
 
 /*# sourceMappingURL=style.css.map */

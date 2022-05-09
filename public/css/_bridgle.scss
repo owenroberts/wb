@@ -7,7 +7,7 @@
 	}
 
 	#header-buttons * {
-		margin-left: 0.5em;
+		margin-left: 0.5rem;
 	}
 
 	#start-over {
@@ -19,11 +19,11 @@
 
 #bridgle {
 
-	margin: 0 1em;
-	margin-top: 2em;
+	margin: 0 1rem;
+	margin-top: 2rem;
 
 	#nodes, #synonyms, #end-nodes {
-		margin: 1em 0;
+		margin: 1rem 0;
 	}
 
 	#nodes {
@@ -59,7 +59,7 @@
 
 	#choose {
 		font-weight: bold;
-		font-size: 1.125em;
+		font-size: 1.125rem;
 	}
 
 	#synonym-instructions {
@@ -69,11 +69,11 @@
 	#synonyms {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.5em;
+		gap: 0.5rem;
 		display: none;
 		
 		button {
-			font-size: 1.5em;
+			font-size: 1.5rem;
 		}
 
 		button:hover {
@@ -93,12 +93,12 @@
 	}
 
 	#game-instructions {
-		font-size: 1.25em;
+		font-size: 1.25rem;
 	}
 
 	#play-button {
 		text-align: center;
-		font-size: 1.5em;
+		font-size: 1.5rem;
 	}
 
 	/* accessibility */
@@ -113,15 +113,15 @@
 
 #end-game {
 	display: none;
-	margin: 0 1em;
+	margin: 0 1rem;
 	font-size: 26px;
 }
 
 #bridgle-input {
 	
 	display: none;
-	margin: 0 1em;
-	width: calc(100% - 2em);
+	margin: 0 1rem;
+	width: calc(100% - 2rem);
 	position: absolute;
 	bottom: 2em;
 
@@ -160,7 +160,7 @@
 	}
 
 	#select-button {
-		font-size: 1.25em;
+		font-size: 1.25rem;
 		
 	}
 }

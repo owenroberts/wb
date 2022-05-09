@@ -120,6 +120,8 @@ window.addEventListener('load', function() {
 		// save to db -- use separate collection? bridgles?
 
 		// save some stats, number of restarts, length of bridge
+
+		// fix start over
 	}
 
 	function select() {
@@ -128,7 +130,7 @@ window.addEventListener('load', function() {
 		
 		// check if it is a match
 		if (B.matches.includes(selection)) {
-			nodes.appendChild(addSelection(selection));
+			nodes.appendChild(addSelection(selection + ' → '));
 			winGame();
 			return;
 		}

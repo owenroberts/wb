@@ -163,7 +163,7 @@ function getSyns(word, filter) {
 		.filter(s => !filter.includes(s))
 		.filter(s => s.match(/^[a-z]+$/))
 		.filter(s => s !== word)
-		.filter(s => !s.includes(word) && !word.includes(s))
+		// .filter(s => !s.includes(word) && !word.includes(s))
 		.filter(s => s.substring(0, s.length - 1) !== word)
 		.filter(s => word.substring(0, word.length - 1) !== s)
 		.filter(s => !badWords.includes(s))
