@@ -60,12 +60,15 @@ function makeChain(query, usedWords, callback) {
 		return callback("The first word has no viable synonyms.");
 	}
 
+	const globalUsedWords = [];
+
 	/*
 		start initial chain search
 		call again if no chain found
 	*/
 	function start() {
 		if (currentNodeLimit >= nodeLimit) {
+			if (chains.length > 0) return callback(null, chains);
 			return callback(`Your search was not able to be performed with the current parameters. ${attemptCount} attempts.`);
 		}
 		
@@ -92,12 +95,21 @@ function makeChain(query, usedWords, callback) {
 	*/
 	function build(chain, usedWords) {
 		if (foundChain) return;
+		// console.log(...chain);
+		// console.log('used', ...globalUsedWords);
+		if (chain.filter(w => globalUsedWords.includes(w)).length > 0) return;
+		
 		const chainClone = chain.slice(); // clone chain
 		const usedClone = usedWords.slice();
 		const synonyms = getSynonyms(chainClone[chainClone.length - 1], usedClone);
 		const len = synonyms.length;
+		
 		for (let i = 0; i < len; i++) {
 			usedClone.push(synonyms[i]);
+		}
+
+		for (let i = 0; i < globalUsedWords.length; i++) {
+			usedClone.push(globalUsedWords[i]);
 		}
 		
 		for (let i = 0; i < len; i++) {
@@ -110,6 +122,9 @@ function makeChain(query, usedWords, callback) {
 					}
 					chainClone.push(synonyms[i]);
 					returnChain(chainClone);
+					for (let j = 1; j < chainClone.length; j++) {
+						globalUsedWords.push(chainClone[j]);
+					}
 					return;
 				}
 			}

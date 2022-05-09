@@ -17,15 +17,17 @@ var query = {
 	synonymLevel: 10
 };
 
-let start = now();
 let usedWords = [program.args[0].toLowerCase(), program.args[1].toLowerCase()];
-chain.makeChain(query, usedWords, (err, data) => {
-	console.log("chain time", (now() - start));
-	if (err) console.log(err);
-	else {
-		console.log(data.map(n => n.word).join(' > '));
-	}
-});
+
+let start = now();
+
+// chain.makeChain(query, usedWords, (err, data) => {
+// 	console.log("chain time", (now() - start));
+// 	if (err) console.log(err);
+// 	else {
+// 		console.log(data.map(n => n.word).join(' > '));
+// 	}
+// });
 
 start = now();
 n.makeChain(query, usedWords, (err, data) => {
