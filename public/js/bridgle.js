@@ -24,6 +24,11 @@ window.addEventListener('load', function() {
 	const selectButton = document.getElementById('select-button');
 	selectButton.addEventListener('click', select);
 
+	document.addEventListener('keydown', ev => {
+		if (ev.which === 39) next();
+		if (ev.which === 37) prev();
+	})
+
 	const nextSynonyms = document.getElementById('next-synonyms');
 	const endGame = document.getElementById('end-game');
 	const shareBridgle = document.getElementById('share-bridgle');
@@ -148,7 +153,10 @@ window.addEventListener('load', function() {
 				choose.textContent = `Choose a synonym of "${selection}".`;
 
 				if (result.synonyms.length === 0) {
-					console.log('no syns fuck');
+					B.report('Uh oh!', 'This bridge cannot be completed. Click Okay to start over.', undefined, () => {
+						startOver();
+						B.dismissReport();
+					});
 					return;
 				}
 
