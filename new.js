@@ -13,9 +13,6 @@ const lev = require('fast-levenshtein');
 
 const nonAlphaFilterRegex = /^[a-z]+$/; /* eliminate words with non-alpha chars */
 const nodeLimit = 20; // no chains more than this number of nodes
-const chains = [];
-const chainNumber = 10;
-let chainCount = 0;
 
 function getSynonyms(word, filter) {
 	const synonyms = [];
@@ -101,14 +98,10 @@ function makeChain(query, usedWords, callback) {
 		for (let i = 0; i < len; i++) {
 			attemptCount++;
 			if (terminals.includes(synonyms[i])) {
-				if (chainCount < chainNumber) {
-					foundChain = true;
-				} else {
-					
-				}
+				foundChain = true;
 				chainClone.push(synonyms[i]);
-				// returnChain(chainClone);
-				// return;
+				returnChain(chainClone);
+				return;
 			}
 
 			// here's the recursive part, start a new chain with each synonym
