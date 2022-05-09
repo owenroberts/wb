@@ -113,7 +113,7 @@ app.get('/bridgle', async function(req, res) {
 		let startSynSyns = {};
 		let noSyns = []; // filter out syns with no syns
 		startSynonyms.forEach(syn => {
-			let syns = getSyns(syn);
+			let syns = getSyns(syn, [start]);
 			/*
 				filter out syns with no syns ...
 				in filter this becomes infinite loop
