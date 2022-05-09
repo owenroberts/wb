@@ -29,6 +29,11 @@ function getSynonyms(word, filter) {
 }
 
 function makeChain(query, usedWords, callback) {
+
+	const chains = [];
+	const chainNumber = 10;
+	let chainCount = 0;
+
 	const startWord = query.start.toLowerCase();
 	const endWord = query.end.toLowerCase();
 	const synonymLevel = query.synonymLevel; // cut list of synonyms for each word off at this limit
@@ -98,10 +103,15 @@ function makeChain(query, usedWords, callback) {
 		for (let i = 0; i < len; i++) {
 			attemptCount++;
 			if (terminals.includes(synonyms[i])) {
-				foundChain = true;
-				chainClone.push(synonyms[i]);
-				returnChain(chainClone);
-				return;
+				if (chainCount < chainNumber) {
+					chainCount++;
+					if (chainCount === chainNumber) {
+						foundChain = true;
+					}
+					chainClone.push(synonyms[i]);
+					returnChain(chainClone);
+					return;
+				}
 			}
 
 			// here's the recursive part, start a new chain with each synonym
@@ -133,7 +143,10 @@ function makeChain(query, usedWords, callback) {
 			};
 		}
 		data.push({ word: endWord });
-		return callback(null, data);
+		chains.push(data);
+		if (chains.length === chainNumber) {
+			return callback(null, chains);
+		}
 	}
 }
 
