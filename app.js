@@ -176,7 +176,6 @@ function loadChain(req, callback) {
 	}
 
 	const queryString = req.query.qs || makeQueryString(req.query);
-	
 	const cacheSearch = cache.get(queryString);
 	if (cacheSearch) callback(cacheSearch);
 	else if (!db.isConnected) makeChain(req.query, callback);
@@ -185,10 +184,11 @@ function loadChain(req, callback) {
 			if (err) console.log(err);
 			else if (result === null) {
 				if (!req.query.s) {
-					req.query.s = queryString.split(/[0-9]+/)[0];
-					req.query.e = queryString.split(/[0-9]+/)[1];
-					req.query.nl = queryString.split(/[a-z]+/)[1];
-					req.query.sl = queryString.split(/[a-z]+/)[2];
+					const [s, nl, e, sl] = queryString.match(/[a-z]+|[0-9]+/g);
+					req.query.s = s;
+					req.query.e = e;
+					req.query.nl = nl;
+					req.query.sl = sl;
 				} /* if db is fucked up, what about hyphen searches ... */
 				makeChain(req.query, callback);
 			} else {
