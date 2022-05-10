@@ -122,9 +122,12 @@ function makeChain(query, usedWords, callback) {
 					}
 					chainClone.push(synonyms[i]);
 					returnChain(chainClone);
+
+					// version where it has some optoins ...
 					for (let j = 1; j < chainClone.length; j++) {
 						globalUsedWords.push(chainClone[j]);
 					}
+					
 					return;
 				}
 			}
