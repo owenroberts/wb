@@ -815,6 +815,7 @@ button::-moz-focus-inner {
 }
 #bridgle .node .word {
   width: auto;
+  border-bottom: 1px solid transparent;
 }
 #bridgle .node .word:focus {
   border-bottom: 1px solid #C5C7C9;

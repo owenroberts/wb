@@ -39,6 +39,8 @@
 
 		.word {
 			width: auto;
+			border-bottom: 1px solid transparent;
+
 			&:focus {
 				border-bottom: 1px solid $gray;
 			}
