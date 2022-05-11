@@ -35,7 +35,6 @@ function makeChain(query, usedWords, callback) {
 	const synonymLevel = query.synonymLevel; // cut list of synonyms for each word off at this limit
 	const nodeLimit = query.nodeLimit;
 	
-	let foundChain = false; // end all chains when one is found
 	let attemptCount = 0; // track attempts for analytics
 	let terminals = getSynonyms(endWord, []); // these are the ending words for the algo
 
@@ -79,7 +78,6 @@ function makeChain(query, usedWords, callback) {
 		for (let i = 0; i < len; i++) {
 			attemptCount++;
 			if (terminals.includes(synonyms[i])) {
-				foundChain = true;
 				chainClone.push(synonyms[i]);
 				return chainClone;
 			}
@@ -92,7 +90,6 @@ function makeChain(query, usedWords, callback) {
 				if (b) return b;
 			}
 		}
-
 
 		if (attemptCount > attemptLimit) {
 			return { error: `Your search was aborted after ${attemptCount} attempts.` };
