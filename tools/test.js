@@ -30,9 +30,14 @@ let start = now();
 // });
 
 start = now();
-let data = n.makeChain(query, usedWords);
+let chain1 = n.makeChain(query, usedWords);
 console.log("n time", now() - start);
-console.log(data.map(n => n.word).join(' > '));
+console.log(chain1.map(n => n.word).join(' > '));
+
+start = now();
+let chain2 = n.makeChain(query, [...usedWords, chain1[1].word]);
+console.log("n time", now() - start);
+console.log(chain2.map(n => n.word).join(' > '));
 
 // n.makeChain(query, usedWords, (err, data) => {
 // 	console.log(err)

@@ -55,49 +55,46 @@ function makeChain(query, usedWords, callback) {
 		return { error: "The first word has no viable synonyms." };
 	}
 
-	return build([startWord], usedWords.slice()); // copy of usedWords -- perf test here
+	let chain = build([startWord], usedWords.slice()); // copy of usedWords -- perf test here
+	if (chain) {
+		return returnChain(chain);
+	} else {
+		return { error: 'A bridge could not be made with the current parameters. }' };
+	}
 
 	/* 
 		main algo function, recursively builds a chain
 	*/
 	function build(chain, usedWords) {
-		// if (foundChain) return { error: 'fuck' };
 		
 		const chainClone = chain.slice(); // clone chain
 		const usedClone = usedWords.slice();
 		const synonyms = getSynonyms(chainClone[chainClone.length - 1], usedClone);
 		const len = synonyms.length;
+		
 		for (let i = 0; i < len; i++) {
 			usedClone.push(synonyms[i]);
 		}
 		
-		// console.log(chainClone, len);
 		for (let i = 0; i < len; i++) {
 			attemptCount++;
 			if (terminals.includes(synonyms[i])) {
-				// console.log(chainClone.length)
 				foundChain = true;
 				chainClone.push(synonyms[i]);
-				return returnChain(chainClone);
+				return chainClone;
 			}
-
-
 
 			// here's the recursive part, start a new chain with each synonym
 			if (chainClone.length < nodeLimit) {
-
 				const newClone = chainClone.slice();
 				newClone.push(synonyms[i]);
-				// console.log('return new', newClone, foundChain);
 				let b = build(newClone, usedClone); // perf test
 				if (b) return b;
 			}
 		}
 
-		// if (foundChain) return { error: 'me' };
 
 		if (attemptCount > attemptLimit) {
-			foundChain = true;
 			return { error: `Your search was aborted after ${attemptCount} attempts.` };
 		}
 	}
@@ -115,7 +112,6 @@ function makeChain(query, usedWords, callback) {
 			};
 		}
 		data.push({ word: endWord });
-		console.log('data');
 		return data;
 	}
 }
