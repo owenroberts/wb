@@ -30,13 +30,15 @@ let start = now();
 // });
 
 start = now();
-n.makeChain(query, usedWords, (err, data) => {
-	console.log("n time", now() - start);
-	if (err) console.log(err);
-	else {
-		// console.log(data.map(n => n.word).join(' > '));
-		data.forEach(chain => {
-			console.log(chain.map(n => n.word).join(' > '));
-		});
-	}
-});
+let data = n.makeChain(query, usedWords);
+console.log("n time", now() - start);
+console.log(data.map(n => n.word).join(' > '));
+
+// n.makeChain(query, usedWords, (err, data) => {
+// 	console.log(err)
+// 	console.log("n time", now() - start);
+// 	if (err) console.log(err);
+// 	else {
+// 		console.log(data.map(n => n.word).join(' > '));
+// 	}
+// });

@@ -12,7 +12,7 @@ const thesaurus = require('thesaurus');
 const lev = require('fast-levenshtein');
 
 const nonAlphaFilterRegex = /^[a-z]+$/; /* eliminate words with non-alpha chars */
-const nodeLimit = 20; // no chains more than this number of nodes
+const attemptLimit = 1000000;
 
 function getSynonyms(word, filter) {
 	const synonyms = [];
@@ -30,121 +30,75 @@ function getSynonyms(word, filter) {
 
 function makeChain(query, usedWords, callback) {
 
-	const chains = [];
-	const chainNumber = 10;
-	let chainCount = 0;
-
 	const startWord = query.start.toLowerCase();
 	const endWord = query.end.toLowerCase();
 	const synonymLevel = query.synonymLevel; // cut list of synonyms for each word off at this limit
+	const nodeLimit = query.nodeLimit;
 	
-	// starting/target node limit, can go up to nodeNumberLimit
-	let currentNodeLimit = query.nodeLimit;
 	let foundChain = false; // end all chains when one is found
 	let attemptCount = 0; // track attempts for analytics
 	let terminals = getSynonyms(endWord, []); // these are the ending words for the algo
 
 	/* test for missing words, words not in db */
-	if (!startWord || !endWord) return callback("Please enter two search words.");
-	if (startWord === endWord) return callback("Please enter different words.");
+	if (!startWord || !endWord) return { error: "Please enter two search words." };
+	if (startWord === endWord) return { error: "Please enter different words." };
 	
 	if (!nonAlphaFilterRegex.test(startWord) || !nonAlphaFilterRegex.test(endWord)) {
-		return callback("Please enter single words with no spaces or special characters.");
+		return { error: "Please enter single words with no spaces or special characters." };
 	}
 	
 	if (terminals.length == 0) {
-		return callback("The second word has no viable synonyms.");
+		return { error: "The second word has no viable synonyms." };
 	}
 
 	if (getSynonyms(startWord, usedWords).length == 0) {
-		return callback("The first word has no viable synonyms.");
+		return { error: "The first word has no viable synonyms." };
 	}
 
-	const globalUsedWords = [];
-
-	/*
-		start initial chain search
-		call again if no chain found
-	*/
-	function start() {
-		if (currentNodeLimit >= nodeLimit) {
-			if (chains.length > 0) return callback(null, chains);
-			return callback(`Your search was not able to be performed with the current parameters. ${attemptCount} attempts.`);
-		}
-		
-		if (foundChain) return;
-		/*
-			this struture is weird, not sure why i need an object for this
-			can i just have end syns from the beginning, who cares what the end word is ...
-		*/
-		build([startWord], usedWords.slice()); // copy of usedWords -- perf test here
-		if (!foundChain) {
-			currentNodeLimit++; // for next chain if not found
-			start();
-		}
-	}
-
-	start();
+	return build([startWord], usedWords.slice()); // copy of usedWords -- perf test here
 
 	/* 
 		main algo function, recursively builds a chain
-		test current word against end syns, keep going
-		why dragging all the synonyms around forever ??
-		do need the chain though ... 
-		maybe get syns later
 	*/
 	function build(chain, usedWords) {
-		if (foundChain) return;
-		// console.log(...chain);
-		// console.log('used', ...globalUsedWords);
-		if (chain.filter(w => globalUsedWords.includes(w)).length > 0) return;
+		// if (foundChain) return { error: 'fuck' };
 		
 		const chainClone = chain.slice(); // clone chain
 		const usedClone = usedWords.slice();
 		const synonyms = getSynonyms(chainClone[chainClone.length - 1], usedClone);
 		const len = synonyms.length;
-		
 		for (let i = 0; i < len; i++) {
 			usedClone.push(synonyms[i]);
 		}
-
-		for (let i = 0; i < globalUsedWords.length; i++) {
-			usedClone.push(globalUsedWords[i]);
-		}
 		
+		// console.log(chainClone, len);
 		for (let i = 0; i < len; i++) {
 			attemptCount++;
 			if (terminals.includes(synonyms[i])) {
-				if (chainCount < chainNumber) {
-					chainCount++;
-					if (chainCount === chainNumber) {
-						foundChain = true;
-					}
-					chainClone.push(synonyms[i]);
-					returnChain(chainClone);
-
-					// version where it has some optoins ...
-					for (let j = 1; j < chainClone.length; j++) {
-						globalUsedWords.push(chainClone[j]);
-					}
-					
-					return;
-				}
+				// console.log(chainClone.length)
+				foundChain = true;
+				chainClone.push(synonyms[i]);
+				return returnChain(chainClone);
 			}
 
+
+
 			// here's the recursive part, start a new chain with each synonym
-			if (chainClone.length < currentNodeLimit) {
+			if (chainClone.length < nodeLimit) {
+
 				const newClone = chainClone.slice();
 				newClone.push(synonyms[i]);
-				build(newClone, usedClone); // perf test
+				// console.log('return new', newClone, foundChain);
+				let b = build(newClone, usedClone); // perf test
+				if (b) return b;
 			}
 		}
 
-		if (foundChain) return;
+		// if (foundChain) return { error: 'me' };
 
-		if (attemptCount > 1000000) {
+		if (attemptCount > attemptLimit) {
 			foundChain = true;
-			return callback(`Your search was aborted after ${attemptCount} attempts.`);
+			return { error: `Your search was aborted after ${attemptCount} attempts.` };
 		}
 	}
 
@@ -161,10 +115,8 @@ function makeChain(query, usedWords, callback) {
 			};
 		}
 		data.push({ word: endWord });
-		chains.push(data);
-		if (chains.length === chainNumber) {
-			return callback(null, chains);
-		}
+		console.log('data');
+		return data;
 	}
 }
 
