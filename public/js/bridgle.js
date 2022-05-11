@@ -35,18 +35,35 @@ window.addEventListener('load', function() {
 	const seeBridgeButton = document.getElementById('see-bridge');
 	seeBridgeButton.addEventListener('click', seeBridge);
 
+	const hintButton = document.getElementById('hint-button');
+	hintButton.addEventListener('click', getHint);
+
 	let currentChoiceIndex = 0;
 	let chain = [B.start];
 	console.log('matches', B.matches);
 	addNextSynonyms();
 
 	function seeBridge() {
-		B.report('Go to bridge?', 'This will reveal one path that connects the bridge, but others are possible.  Click to go to bridge.', undefined, () => {
-			location.href = seeBridgeButton.dataset.url;
-		})
+		B.report('Go to bridge?', 'This will reveal one path that connects the bridge, but others are possible.  Click to go to bridge.', undefined, 
+			[{
+				text: "Okay",
+				callback: () => {
+					location.href = seeBridgeButton.dataset.url;
+				}
+			}]
+		);
 	}
 
 	function startOver() {
+
+		endGame.style.display = 'none';
+
+		input.style.display = 'flex';
+		synonyms.style.display = 'flex';
+		instructions.style.display = 'block';
+		nextSynonyms.style.display = 'block';
+		endNodes.style.display = 'flex';
+
 		chain = [B.start];
 		synonyms.innerHTML = '';
 		choose.textContent = `Choose a synonym of "${B.start}".`;
@@ -132,48 +149,84 @@ window.addEventListener('load', function() {
 	function select() {
 		
 		let selection = choices[currentChoiceIndex].dataset.word;
-		
+
 		// check if it is a match
 		if (B.matches.includes(selection)) {
 			nodes.appendChild(addSelection(selection + ' → '));
 			winGame();
 			return;
 		}
-
-		synonyms.innerHTML = '';
+		
 		// get syns
 		const url = `/bridgle-selection?word=${selection}&end=${B.end}&used=${chain}`;
 		fetch(url)
 			.then(response => { return response.json(); })
 			.then(result => {
-				startOverButton.style.display = 'inline-block';
-				chain.push(selection);
-				nodes.appendChild(addSelection(selection + ' → '));
-
-				choose.textContent = `Choose a synonym of "${selection}".`;
-
-				if (result.synonyms.length === 0) {
-					B.report('Uh oh!', 'This bridge cannot be completed. Click Okay to start over.', undefined, () => {
-						startOver();
-						B.dismissReport();
-					});
-					return;
-				}
-
-				result.synonyms.forEach(syn => {
-					const synonym = addSynonym(syn, selection);
-					synonyms.appendChild(synonym);
-				});
-
-				currentChoiceIndex = 0;
-				choices[currentChoiceIndex].classList.add('selected');
-				selectButton.textContent = `select ${choices[0].dataset.word}`;
-				B.synonymSynonyms = { ...result.synonymSynonyms };
-				addNextSynonyms();
-
+				updateSelection(selection, result);
 			});
 
 		// use chain to check if it's possible?
+	}
+
+	function updateSelection(selection, result) {
+		synonyms.innerHTML = '';
+		startOverButton.style.display = 'inline-block';
+		chain.push(selection);
+		nodes.appendChild(addSelection(selection + ' → '));
+
+		choose.textContent = `Choose a synonym of "${selection}".`;
+
+		if (result.synonyms.length === 0) {
+			B.report('Uh oh!', 'This bridge cannot be completed. Click Okay to start over.', undefined, [{ text: "Okay", callback: startOver }]);
+			return;
+		}
+
+		result.synonyms.forEach(syn => {
+			const synonym = addSynonym(syn, selection);
+			synonyms.appendChild(synonym);
+		});
+
+		currentChoiceIndex = 0;
+		choices[currentChoiceIndex].classList.add('selected');
+		selectButton.textContent = `select ${choices[0].dataset.word}`;
+		B.synonymSynonyms = { ...result.synonymSynonyms };
+		addNextSynonyms();
+	}
+
+	function getHint() {
+		B.report('Are you sure you want a hint?', 'This will select a synonym for you.', undefined, 
+			[{
+				text: "Get synonym with shortest bridge",
+				callback: function() {
+					hintCallback('breadthFirst');
+				}
+			},
+			{
+				text: "Get synonym with most bridges",
+				callback: function() {
+					hintCallback('chainCount');
+				}
+			}]
+		);
+
+		function hintCallback(algo) {
+			B.fade(B.loader, 'in', 'block');
+			const synonyms = Array.from(choices).map(e => e.dataset.word);
+			const url = `/bridgle-hint?synonyms=${synonyms}&end=${B.end}&used=${chain}&algo=${algo}&nodeLimit=${10 - chain.length}`;
+			fetch(url)
+				.then(response => { return response.json(); })
+				.then(result => {
+					if (B.matches.includes(result.selection)) {
+						nodes.appendChild(addSelection(result.selection + ' → '));
+						B.fade(B.loader, 'out', 'none');
+						winGame();
+						return;
+					}
+
+					updateSelection(result.selection, result);
+					B.fade(B.loader, 'out', 'none');
+				});
+		}
 	}
 
 	function addSynonym(word, selection) {

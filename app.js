@@ -11,8 +11,9 @@ const express = require('express'),
 	url = require('url'),
 	handlebars = require('express-handlebars'),
 	lev = require('fast-levenshtein'),
-	thesaurus = require('thesaurus')
-	fs = require('fs');
+	thesaurus = require('thesaurus'),
+	fs = require('fs'),
+	Bridgle = require('./bridgle').Bridgle;
 
 const app = express();
 const cache = new NodeCache();
@@ -93,82 +94,28 @@ app.get('/def', function(req,res) {
 	});
 });
 
+let bridgle;
+
 app.get('/bridgle', async function(req, res) {
-
-	let chain;
-	const collection = db.db.collection('chains');
-
-	if (req.query.qs) {
-		chain = await collection.findOne({ queryString: req.query.qs });
+	bridgle = new Bridgle(db);
+	let data = await bridgle.getData(req.query.qs);
+	if (data.error) {
+		res.render('index', { errmsg: data.error });
 	} else {
-		const doc = await collection.aggregate([{ $match: { error: null }}, { $sample: { size: 1 } }]).toArray();
-		chain = doc[0];
-	}
-
-	if (chain) {
-
-		const { start, end, queryString } = chain;
-		// random words like bot? -- make sure not the same word
-		let startSynonyms = getSyns(start);
-		let startSynSyns = {};
-		let noSyns = []; // filter out syns with no syns
-		startSynonyms.forEach(syn => {
-			let syns = getSyns(syn, [start]);
-			/*
-				filter out syns with no syns ...
-				in filter this becomes infinite loop
-			*/
-			if (syns.length > 0) {
-				startSynSyns[syn] = syns;
-			} else {
-				noSyns.push(syn);
-			}
-		});
-		startSynonyms = startSynonyms.filter(s => !noSyns.includes(s));
-		const endSyonyms = getSyns(end);
-
-		// what if end has no syns (this won't happen if chain already exists)
-
-		res.render('bridgle', { start: start, end: end, startSynonyms: startSynonyms, endSyonyms: endSyonyms, startSynSyns: startSynSyns, queryString: queryString });
-	} else {
-		res.render('index', { errmsg: 'Could not find a bridge.' });
+		res.render('bridgle', data);
 	}
 });
 
 app.get('/bridgle-selection', function(req, res) {
 	let usedSynonyms = [req.query.word, req.query.end, ...req.query.used.split(',')];
-	let synonyms = getSyns(req.query.word, usedSynonyms);
-	let synonymSynonyms = {};
-	const noSyns = []; // filter out syns with no syns
-	synonyms.forEach(syn => {
-		let syns = getSyns(syn, usedSynonyms);
-		// filter no syns
-		if (syns.length > 0) {
-			synonymSynonyms[syn] = syns;
-		} else {
-			noSyns.push(syn);
-		}
-	});
-	synonyms = synonyms.filter(s => !noSyns.includes(s));
-	// what if no syns left ...
-	if (synonyms.length === 0) console.log('** no syns fuck');
-	res.json({ synonyms: synonyms, synonymSynonyms: synonymSynonyms });
+	let data = bridgle.getSelection(req.query.word, usedSynonyms);
+	res.json(data);
 });
 
-
-function getSyns(word, filter) {
-	filter = filter ? filter : [];
-	return thesaurus.find(word)
-		.filter(s => lev.get(word, s) > 1)
-		.filter(s => !filter.includes(s))
-		.filter(s => s.match(/^[a-z]+$/))
-		.filter(s => s !== word)
-		// .filter(s => !s.includes(word) && !word.includes(s))
-		.filter(s => s.substring(0, s.length - 1) !== word)
-		.filter(s => word.substring(0, word.length - 1) !== s)
-		.filter(s => !badWords.includes(s))
-		.slice(0, 12); // limit to 12 results
-}
+app.get('/bridgle-hint', function(req, res) {
+	let data = bridgle.getHint(req.query.synonyms, req.query.end, req.query.used, req.query.algo, req.query.nodeLimit);
+	res.json(data);
+});
 
 function loadChain(req, callback) {
 	if (!req.query.qs && (!req.query.s || !req.query.e)) {

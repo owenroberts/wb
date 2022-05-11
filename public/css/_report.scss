@@ -53,6 +53,7 @@
 
 		#report-title {
 			margin: 0;
+			width: 60vw;
 			span {
 				font-weight: normal;
 			}
@@ -110,5 +111,11 @@
 		.sorry { margin-bottom: 1em; }
 
 		p { margin: 0.2em 0; }
+	}
+}
+
+#report-options {
+	button {
+		margin-bottom: 0.5rem;
 	}
 }

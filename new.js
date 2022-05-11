@@ -13,12 +13,13 @@ const lev = require('fast-levenshtein');
 
 const nonAlphaFilterRegex = /^[a-z]+$/; /* eliminate words with non-alpha chars */
 const attemptLimit = 1000000;
+let synonymLevel = 10;
 
 function getSynonyms(word, filter) {
 	const synonyms = [];
 	const temp = thesaurus.find(word);
 	for (let i = 0; i < temp.length; i++) {
-		if (synonyms.length > 10) return synonyms;
+		if (synonyms.length > synonymLevel) return synonyms;
 		if (!nonAlphaFilterRegex.test(temp[i])) continue;
 		if (lev.get(word, temp[i]) <= 1) continue;
 		if (filter.includes(temp[i])) continue;
@@ -28,15 +29,18 @@ function getSynonyms(word, filter) {
 	return synonyms;
 }
 
-function makeChain(query, usedWords, callback) {
+function makeChain(query, usedWords, whichAlgo) {
 
 	const startWord = query.start.toLowerCase();
 	const endWord = query.end.toLowerCase();
-	const synonymLevel = query.synonymLevel; // cut list of synonyms for each word off at this limit
+	synonymLevel = query.synonymLevel; // cut list of synonyms for each word off at this limit
 	const nodeLimit = query.nodeLimit;
 	
+	const terminals = getSynonyms(endWord, []); // these are the ending words for the algo
+	const terminalsLength = terminals.length;
+	const startSynonyms = getSynonyms(startWord, usedWords); 
+
 	let attemptCount = 0; // track attempts for analytics
-	let terminals = getSynonyms(endWord, []); // these are the ending words for the algo
 
 	/* test for missing words, words not in db */
 	if (!startWord || !endWord) return { error: "Please enter two search words." };
@@ -50,11 +54,20 @@ function makeChain(query, usedWords, callback) {
 		return { error: "The second word has no viable synonyms." };
 	}
 
-	if (getSynonyms(startWord, usedWords).length == 0) {
+	if (startSynonyms.length == 0) {
 		return { error: "The first word has no viable synonyms." };
 	}
 
-	let chain = build([startWord], usedWords.slice()); // copy of usedWords -- perf test here
+	let chainCount = 0;
+	if (whichAlgo === 'chainCount') {
+		depthFirst([startWord], usedWords.slice(), true);
+		return { chainCount: chainCount };
+	}
+
+	let chain = whichAlgo === 'breadthFirst' ?
+		breadthFirst(startSynonyms.map(s => [startWord, s])) :
+		depthFirst([startWord], usedWords.slice());
+		
 	if (chain) {
 		return returnChain(chain);
 	} else {
@@ -64,7 +77,7 @@ function makeChain(query, usedWords, callback) {
 	/* 
 		main algo function, recursively builds a chain
 	*/
-	function build(chain, usedWords) {
+	function depthFirst(chain, usedWords, countChains) {
 		
 		const chainClone = chain.slice(); // clone chain
 		const usedClone = usedWords.slice();
@@ -77,16 +90,22 @@ function makeChain(query, usedWords, callback) {
 		
 		for (let i = 0; i < len; i++) {
 			attemptCount++;
+			// console.log(chainClone.lenth);
 			if (terminals.includes(synonyms[i])) {
-				chainClone.push(synonyms[i]);
-				return chainClone;
+				if (countChains) {
+					// console.log(chainCount);
+					chainCount++;
+				} else {
+					chainClone.push(synonyms[i]);
+					return chainClone;	
+				}
 			}
 
 			// here's the recursive part, start a new chain with each synonym
 			if (chainClone.length < nodeLimit) {
 				const newClone = chainClone.slice();
 				newClone.push(synonyms[i]);
-				let b = build(newClone, usedClone); // perf test
+				let b = depthFirst(newClone, usedClone, countChains); // perf test
 				if (b) return b;
 			}
 		}
@@ -96,6 +115,33 @@ function makeChain(query, usedWords, callback) {
 		}
 	}
 
+	function breadthFirst(chains) {
+		// chains is a list of started chains [[start, syn], [start, syn]] etc
+		let nextSynonyms = []; // collect all synonyms that come after this level
+		for (let i = 0, len = chains.length; i < len; i++) {
+				let chain = chains[i].slice();
+				let end = chain[chain.length - 1];
+				for (let j = 0; j < terminalsLength; j++) {
+					if (end === terminals[j]) {
+						chain.push(terminals[j]);
+						return chain; // this is the chain
+					}
+				}
+				let syns = getSynonyms(end, chain);
+				if (end === 'low') console.log(end, 'syns: ', syns.join(', '));
+				for (let j = 0, l = syns.length; j < l; j++) {
+					let newChain = chain.slice();
+					newChain.push(syns[j]);
+					nextSynonyms.push(newChain);
+				}
+		}
+		let b = breadthFirst(nextSynonyms);
+		if (b) return b;
+
+		if (attemptCount > attemptLimit) {
+			return { error: `Your search was aborted after ${attemptCount} attempts.` };
+		}
+	}
 
 	function returnChain(chain) {
 		const data = [{ word: startWord }];

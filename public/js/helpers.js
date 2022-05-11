@@ -15,10 +15,6 @@ window.addEventListener('load', function() {
 	B.fade = (elem, status, display, end) => {
 
 		if (end) {
-			// e.addEventListener('transitionend', end);
-			// e.addEventListener('transitionend', () => {
-			// 	e.removeEventListener('transitionend', end);
-			// }); // this fails sometimes
 			setTimeout(end, B.fadeDur);
 		}
 
@@ -49,11 +45,12 @@ window.addEventListener('load', function() {
 	const reportSub = document.getElementById('sub-title');
 	const reportTxt = document.getElementById('report-txt');
 	const reportBtn = document.getElementById('report-btn');
-	const reportAccept = document.getElementById('report-accept');
+	// const reportAccept = document.getElementById('report-accept');
+	const reportOptions = document.getElementById('report-options');
 	const fakeTab = document.getElementById('fake-tab');
 	let prevActive;
 
-	B.report = function(title, msg, sub, callback, dismissBack) {
+	B.report = function(title, msg, sub, options) {
 		B.fade(reportDiv, 'in', 'block', () => {
 			if (B.loader) B.fade(B.loader, 'out', 'none');
 		});
@@ -67,14 +64,16 @@ window.addEventListener('load', function() {
 		reportTitle.innerHTML = title;
 		reportSub.innerHTML = sub ? sub : '';
 
-		if (callback) {
-			reportAccept.onclick = function() {
-				callback();
-			};
-		} else {
-			reportAccept.onclick = function() {
-				B.dismissReport();
-			};
+		if (options) {
+			for (const option in options) {
+				const { text, callback } = options[option];
+				const button = B.createElem('button', ['big-btn', 'white'], text);
+				reportOptions.appendChild(button);
+				button.onclick = function() {
+					callback();
+					B.dismissReport();
+				}
+			}
 		}
 
 		addEventListener('keydown', ev => {
@@ -83,9 +82,10 @@ window.addEventListener('load', function() {
 	};
 
 	B.dismissReport = function(ev, callback) {
+		reportOptions.innerHTML = '';
 		prevActive.focus();
 		B.fade(reportDiv, 'out', 'none');
-		document.body.style.overflow = 'auto';	
+		document.body.style.overflow = 'auto';
 		if (callback) callback();
 		reportDiv.removeEventListener('click', B.dismissReport);
 	};

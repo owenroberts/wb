@@ -618,6 +618,7 @@ button::-moz-focus-inner {
 }
 .overlay .msg #report-title {
   margin: 0;
+  width: 60vw;
 }
 .overlay .msg #report-title span {
   font-weight: normal;
@@ -673,6 +674,10 @@ button::-moz-focus-inner {
 }
 .overlay .msg p {
   margin: 0.2em 0;
+}
+
+#report-options button {
+  margin-bottom: 0.5rem;
 }
 
 #chain-nav {
@@ -911,6 +916,10 @@ button::-moz-focus-inner {
 }
 #bridgle-input #select-button {
   font-size: 1.25rem;
+}
+#bridgle-input #hint-button {
+  font-size: 1.25rem;
+  margin-left: 0.5rem;
 }
 
 /*  media queries */

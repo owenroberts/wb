@@ -21,6 +21,31 @@ let usedWords = [program.args[0].toLowerCase(), program.args[1].toLowerCase()];
 
 let start = now();
 
-let chain1 = n.makeChain(query, usedWords, 'breadthFirst');
+let chain1 = n.makeChain(query, usedWords);
 console.log("n time", now() - start);
 console.log(chain1.map(n => n.word).join(' > '));
+
+let syns = chain1[1].alts;
+let len = 100;
+let syn = '';
+for (let i = 0; i < syns.length; i++) {
+	let q = {
+		start: syns[i],
+		end: query.end,
+		nodeLimit: 10,
+		synonymLevel: 10
+	};
+	start = now();
+	let b = n.makeChain(q, [...usedWords], 'breadthFirst');
+
+	if (!b.error) {
+		console.log(b.length, b.map(n => n.word).join(' > '));
+		if (b.length < len) {
+			syn = syns[i];
+			len = b.length;
+		}
+	}
+}
+
+console.log(syn);
+
