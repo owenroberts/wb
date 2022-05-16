@@ -174,7 +174,6 @@ window.addEventListener('load', function() {
 
 		choose.textContent = `Choose a synonym of "${selection}".`;
 
-		console.log(result);
 		if (result.error) {
 			B.report('Uh oh!', 'This bridge cannot be completed. Click Okay to start over.', undefined, [{ text: "Okay", callback: startOver }]);
 			return;
