@@ -166,7 +166,7 @@ function makeTweet(chain) {
 	let w = ctx.measureText(wb).width;
 	ctx.fillText(wb, x, height - sy);
 
-	const url = `https://www.wordbridge.link/bridge?start=${chain.start}&e=${chain.end}&nl=10&sl=10`;
+	const url = `https://www.wordbridge.link/bridge?qs=${chain.queryString}`;
 	const message = `${chain.start} → ${chain.end}: ${url}`;
 	const alt = 'word bridge: ' + chain.chain.map(node => node.word).join(' -> ');
 
