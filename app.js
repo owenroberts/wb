@@ -54,7 +54,6 @@ app.get('/search', function(req, res) {
 
 /* renders main bridge page */
 app.get('/bridge', function(req, res) {
-	console.log('/bridge', req.query);
 	/* loadChain w req for production, makeChain w req.query to skip db/cache */
 	loadChain(req, function(result) {
 		if (result.error) res.render('index', { errmsg: result.error });
@@ -138,10 +137,8 @@ function loadChain(req, callback) {
 					req.query.nl = nl;
 					req.query.sl = sl;
 				} /* if db is fucked up, what about hyphen searches ... */
-				console.log('no db', req.query);
 				makeChain(req.query, callback);
 			} else {
-				console.log('in db', queryString, req.query);
 			 	db.addSearchTime(queryString, err => { if (err) console.log(err) });
 			 	cache.set(queryString, result);
 			 	callback(result);
@@ -177,7 +174,6 @@ function makeChain(_query, callback) {
 }
 
 function makeQueryString(query) {
-	console.log('make qs', query);
 	let string = query.s + (query.nl || 10) + query.e + (query.sl || 10);
 	string = string.toLowerCase().replace(/ /g, ""); // remove spaces 
 	return string;
