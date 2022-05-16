@@ -18,12 +18,11 @@ window.addEventListener('load', function() {
 				synonym = B.chains[B.currentChain][index - 1].word;
 			}
 		}
-		console.log(word, synonym);
+		
 		const url = `/def?word=${word}&synonym=${synonym}`;
 		fetch(url)
 			.then(response => { return response.json(); })
 			.then(result => {
-				console.log(result);
 				const title = `${word}`;
 				const sub = B.isBridgle ? '' : `synonym of “${synonym}”`;
 				let msg = "";
