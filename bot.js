@@ -141,7 +141,7 @@ function makeTweet(chain) {
 	let y = 40;
 
 	const width = 400;
-	const height = sy * 3 + y * (chain.chain.length);
+	const height = sy * 4 + y * (chain.chain.length);
 
 	const canvas = createCanvas(width, height);
 	const ctx = canvas.getContext('2d');
