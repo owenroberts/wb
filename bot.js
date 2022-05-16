@@ -153,7 +153,7 @@ function makeTweet(chain) {
 	ctx.fillStyle = '#000000';
 
 	ctx.fillText(chain.start, x, sy + y);
-	ctx.fillText(chain.end, x, sy + y * (chain.chain.length - 1));
+	ctx.fillText(chain.end, x, sy + y * (chain.chain.length));
 
 	ctx.font = '30px Arial';
 	for (let i = 1; i < chain.chain.length - 1; i++) {
