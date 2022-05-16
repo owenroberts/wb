@@ -26,9 +26,6 @@ const hbs = handlebars.create({
 	}
 });
 
-const bf = fs.readFileSync('./public/badwords.txt');
-const badWords = bf.toString().split(/\r?\n/);
-
 // view engine setup
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
@@ -97,6 +94,7 @@ app.get('/def', function(req,res) {
 let bridgle;
 
 app.get('/bridgle', async function(req, res) {
+	// need to add some error handling, no db etc
 	bridgle = new Bridgle(db);
 	let data = await bridgle.getData(req.query.qs);
 	if (data.error) {
@@ -119,6 +117,7 @@ app.get('/bridgle-hint', function(req, res) {
 
 function loadChain(req, callback) {
 	if (!req.query.qs && (!req.query.s || !req.query.e)) {
+		console.log('no s or qs', req.query);
 		return callback({ error: 'Query is missing start or end parameter.' });
 	}
 
@@ -137,8 +136,10 @@ function loadChain(req, callback) {
 					req.query.nl = nl;
 					req.query.sl = sl;
 				} /* if db is fucked up, what about hyphen searches ... */
+				console.log('no db', req.query);
 				makeChain(req.query, callback);
 			} else {
+				console.log('in db', queryString, req.query);
 			 	db.addSearchTime(queryString, err => { if (err) console.log(err) });
 			 	cache.set(queryString, result);
 			 	callback(result);
@@ -174,6 +175,7 @@ function makeChain(_query, callback) {
 }
 
 function makeQueryString(query) {
+	console.log(query);
 	let string = query.s + (query.nl || 10) + query.e + (query.sl || 10);
 	string = string.toLowerCase().replace(/ /g, ""); // remove spaces 
 	return string;
