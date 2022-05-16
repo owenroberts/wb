@@ -117,6 +117,7 @@ app.get('/bridgle-hint', function(req, res) {
 });
 
 function loadChain(req, callback) {
+	if (req.query.start) req.query.s = req.query.start;
 	if (!req.query.qs && (!req.query.s || !req.query.e)) {
 		console.log('no s or qs', req.query);
 		return callback({ error: 'Query is missing start or end parameter.' });

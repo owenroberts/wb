@@ -63,7 +63,6 @@ async function getSearchFromDatabase() {
 	async function simplePipeline(db) {
 		// add error null
 		const doc =  await collection.aggregate([
-				// $match: { tweeted: null }}, 
 				{ $match: { error: null, tweeted: null }},
 				{ $sample: { size: 1 }}
 			])
@@ -93,7 +92,6 @@ function generateSearch() {
 
 	function getWord() {
 		let word = choice(list);
-		// check simple issues first
 		if (word === startWord || thesaurus.find(word).length === 0) {
 			return getWord();
 		}
@@ -124,6 +122,7 @@ function generateSearch() {
 					query.tweeted = new Date();
 				}
 				db.save(query, err => {
+					console.log('bot save', query);
 					if (err) console.log(err);
 					if (query.error) {
 						if (debug) process.exit();
@@ -169,7 +168,7 @@ function makeTweet(chain) {
 	let w = ctx.measureText(wb).width;
 	ctx.fillText(wb, x, height - sy);
 
-	const url = `https://www.wordbridge.link/bridge?s=${chain.start}&e=${chain.end}&nl=10&sl=10`;
+	const url = `https://www.wordbridge.link/bridge?start=${chain.start}&e=${chain.end}&nl=10&sl=10`;
 	const message = `${chain.start} → ${chain.end}: ${url}`;
 	const alt = 'word bridge: ' + chain.chain.map(node => node.word).join(' -> ');
 
