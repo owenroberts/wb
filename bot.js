@@ -110,8 +110,7 @@ function generateSearch() {
 				start: startWord,
 				end: endWord,
 				nodeLimit: 10,
-				synonymLevel: 10,
-				searches: [{ date: new Date() }]
+				synonymLevel: 10
 			};
 			chain.makeChain(query, [startWord, endWord], (err, chain) => {
 				// try again if error .... ?
@@ -122,7 +121,6 @@ function generateSearch() {
 					query.tweeted = new Date();
 				}
 				db.save(query, err => {
-					console.log('bot save', query);
 					if (err) console.log(err);
 					if (query.error) {
 						if (debug) process.exit();
@@ -158,7 +156,7 @@ function makeTweet(chain) {
 	ctx.fillText(chain.end, x, sy + y * (chain.chain.length - 1));
 
 	ctx.font = '30px Arial';
-	for (let i = 1; i < chain.chain.length - 2; i++) {
+	for (let i = 1; i < chain.chain.length - 1; i++) {
 		y += 40;
 		ctx.fillText(chain.chain[i].word, x, sy + y);
 	}
