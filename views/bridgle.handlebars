@@ -39,6 +39,15 @@
 
 	<div id="end-nodes"></div>
 
+	<div id="end-synonyms">
+		synonyms of <strong>{{end}}</strong>: 
+		{{#each endSyonyms}}
+			<button class="word" data-word="{{this}}" data-synonym="{{../end}}" onclick={B.getDef(this);}>
+				{{this}}
+			</button>{{#unless @last}}, {{/unless}}
+		{{/each}}
+	</div>
+
 	<p id="game-instructions">Connect these two words using synonyms. <br> Press play to begin.</p>
 	<button class="big-btn" id="play-button">Play</button>
 

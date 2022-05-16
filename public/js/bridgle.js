@@ -40,7 +40,6 @@ window.addEventListener('load', function() {
 
 	let currentChoiceIndex = 0;
 	let chain = [B.start];
-	console.log('matches', B.matches);
 	addNextSynonyms();
 
 	function seeBridge() {
@@ -103,7 +102,6 @@ window.addEventListener('load', function() {
 		instructions.style.display = 'block';
 		nextSynonyms.style.display = 'block';
 		
-
 		choices[currentChoiceIndex].classList.add('selected');
 		selectButton.textContent = `select ${choices[0].dataset.word}`;
 	}
@@ -196,13 +194,19 @@ window.addEventListener('load', function() {
 	function getHint() {
 		B.report('Are you sure you want a hint?', 'This will select a synonym for you.', undefined, 
 			[{
-				text: "Get synonym with shortest bridge",
+				text: `Reveal synonyms of ${B.end}`,
+				callback: function() {
+					document.getElementById('end-synonyms').style.display = 'block';
+				}
+			},
+			{
+				text: "Select synonym with shortest bridge",
 				callback: function() {
 					hintCallback('breadthFirst');
 				}
 			},
 			{
-				text: "Get synonym with most bridges",
+				text: "Select synonym with most bridges",
 				callback: function() {
 					hintCallback('chainCount');
 				}

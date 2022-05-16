@@ -618,7 +618,7 @@ button::-moz-focus-inner {
 }
 .overlay .msg #report-title {
   margin: 0;
-  width: 60vw;
+  width: 75%;
 }
 .overlay .msg #report-title span {
   font-weight: normal;
@@ -856,10 +856,10 @@ button::-moz-focus-inner {
 #bridgle #synonyms .selected {
   background-color: lightgreen;
 }
-#bridgle #next-synonyms {
+#bridgle #next-synonyms, #bridgle #end-synonyms {
   display: none;
 }
-#bridgle #next-synonyms button {
+#bridgle #next-synonyms button, #bridgle #end-synonyms button {
   border-bottom: 1px solid #C5C7C9;
 }
 #bridgle #game-instructions {
